@@ -100,13 +100,13 @@ public theorem fundamentalGroupMulEquivOfPath_cast_right
 
 end SphereSixComplex.Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 open SphereSixComplex.LatticeData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The central point obtained from the selected radial lift is the marked order-three overlap
 point after applying the overlap chart. -/
@@ -227,7 +227,7 @@ public theorem cuspCentralNaturalityPair_simultaneouslyConjugate_orderThree
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

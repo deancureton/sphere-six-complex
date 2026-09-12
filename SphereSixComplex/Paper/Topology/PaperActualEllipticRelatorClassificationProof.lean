@@ -12,7 +12,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData
@@ -25,7 +25,7 @@ open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The fixed order-three period-lattice element detected by the principal gauge. -/
 public def orderThreeFillingRelationPrincipalGaugeDeck :
@@ -291,7 +291,7 @@ public theorem orderFourFillingRelationPrincipalGaugeLoop_classification :
     A.orderFourFillingRelationPrincipalGaugeDeck
     A.orderFourFillingRelationPrincipalGaugeLiftPath
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

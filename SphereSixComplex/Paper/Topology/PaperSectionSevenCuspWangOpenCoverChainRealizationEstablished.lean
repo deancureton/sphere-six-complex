@@ -20,7 +20,7 @@ noncomputable section
 open AlgebraicTopology CategoryTheory Set TopologicalSpace
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open EllipticTwoDiscHomologyCoordinates
 open CuspPuncturedCollarBridge
@@ -33,7 +33,7 @@ open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 namespace EllipticTwoDiscCoverData
 
@@ -92,4 +92,4 @@ public noncomputable def actualCuspWangFiberToBandMap
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

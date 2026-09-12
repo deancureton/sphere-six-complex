@@ -19,17 +19,17 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 /-- The side-to-reduced-fibre equivalence selected from the proved order-three overlap
 equivalence. -/
 public noncomputable def affineOrderThreeSideToReducedFiberHomotopyEquiv
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     A.actualAffineHeightSplit.allocation.orderThreeSide ≃ₕ
       orderThreeReducedCentralFiber A.periods :=
   (orderThreeOverlapIsHomotopyEquivalence_inclusion
@@ -42,7 +42,7 @@ public noncomputable def affineOrderThreeSideToReducedFiberHomotopyEquiv
 /-- The side-to-reduced-fibre equivalence selected from the proved order-four overlap
 equivalence. -/
 public noncomputable def affineOrderFourSideToReducedFiberHomotopyEquiv
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     A.actualAffineHeightSplit.allocation.orderFourSide ≃ₕ
       orderFourReducedCentralFiber A.periods :=
   (orderFourOverlapIsHomotopyEquivalence_inclusion
@@ -55,7 +55,7 @@ public noncomputable def affineOrderFourSideToReducedFiberHomotopyEquiv
 /-- The exact remaining side-level geometry.  Each common-band inclusion is deformed, within
 the corresponding affine side, to the inverse image of its explicit marked finite-cover
 projection. -/
-public structure AffineMarkedBandSideContractions (A : PaperAnalyticData) where
+public structure AffineMarkedBandSideContractions (A : AnalyticData) where
   orderThree :
     (IntegralMayerVietoris.interToLeft
       A.actualAffineHeightSplit.allocation.orderThreeSide
@@ -83,7 +83,7 @@ private theorem homotopic_to_inverse_comp_implies_forward_comp_homotopic
 /-- The two exact side-level contractions imply the paper's residual marked-band assertion,
 with no additional topological assumptions. -/
 public theorem markedBandHomotopies_of_sideContractions
-    (A : PaperAnalyticData) (H : A.AffineMarkedBandSideContractions) :
+    (A : AnalyticData) (H : A.AffineMarkedBandSideContractions) :
     A.AffineOverlapBandCompatibility := by
   refine { orderThree := ?_, orderFour := ?_ }
   · rw [← affineBandOrderThreeMarkedProjection_eq_coverMap A]
@@ -102,6 +102,6 @@ public theorem markedBandHomotopies_of_sideContractions
       (affineBandOrderFourMarkedProjection A) H.orderFour
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

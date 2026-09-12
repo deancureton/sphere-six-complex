@@ -4,11 +4,11 @@ public import SphereSixComplex.Paper.Topology.CuspFourthSweepCentralImage
 
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology
 open EllipticTwoDiscCoverData EllipticInteriorMarkedCycleData
 
-public theorem cuspPulledBackBoundaryCoordinateHom_eq_rawFour {A : PaperAnalyticData}
+public theorem cuspPulledBackBoundaryCoordinateHom_eq_rawFour {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     R.twoDiscCover.cuspPulledBackBoundaryCoordinateHom R.homologyAlignment =
       coordinateAfterAddEquiv A.cuspRawHomologyTwoEquiv 4 := by
@@ -34,5 +34,5 @@ public theorem cuspPulledBackBoundaryCoordinateHom_eq_rawFour {A : PaperAnalytic
       rw [cuspRawFive_pulled_back_boundary_zero, map_zero]
       simp [coordinateAfterAddEquiv_apply]
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end

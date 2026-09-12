@@ -41,7 +41,7 @@ public theorem representation_center_fst (g : FiniteCyclic m) (x : Torus) :
 
 end EllipticActionData
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
 open TorusFamily AnalyticTorusFamily
 open EllipticFixedPointCriterion EllipticVaryingFamilyQuotient
@@ -50,7 +50,7 @@ open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 public theorem orderThreeRealPeriodCentralProjection_action
-    (A : PaperAnalyticData) (g : FiniteCyclic 3)
+    (A : AnalyticData) (g : FiniteCyclic 3)
     (q : TotalSpace (parameterMap A.periods)) :
     RadialEllipticActionData.centralFiberCoverProjection
         (orderThreeRadialActionData A.periods)
@@ -90,7 +90,7 @@ public theorem orderThreeRealPeriodCentralProjection_action
       _ = _ := hs.symm
 
 public theorem orderFourRealPeriodCentralProjection_action
-    (A : PaperAnalyticData) (g : FiniteCyclic 4)
+    (A : AnalyticData) (g : FiniteCyclic 4)
     (q : TotalSpace (parameterMap A.periods)) :
     RadialEllipticActionData.centralFiberCoverProjection
         (orderFourRadialActionData A.periods)
@@ -130,7 +130,7 @@ public theorem orderFourRealPeriodCentralProjection_action
       _ = _ := hs.symm
 
 public theorem orderThreeRealPeriodCentralProjection_eq_of_quotient_mk_eq
-    (A : PaperAnalyticData) (q q' : TotalSpace (parameterMap A.periods))
+    (A : AnalyticData) (q q' : TotalSpace (parameterMap A.periods))
     (h : (Quotient.mk _ q :
         Quotient (orbitRelOf (orderThreeAffineFamilyAction A.periods))) =
       Quotient.mk _ q') :
@@ -153,7 +153,7 @@ public theorem orderThreeRealPeriodCentralProjection_eq_of_quotient_mk_eq
   exact A.orderThreeRealPeriodCentralProjection_action g q'
 
 public theorem orderFourRealPeriodCentralProjection_eq_of_quotient_mk_eq
-    (A : PaperAnalyticData) (q q' : TotalSpace (parameterMap A.periods))
+    (A : AnalyticData) (q q' : TotalSpace (parameterMap A.periods))
     (h : (Quotient.mk _ q :
         Quotient (orbitRelOf (orderFourAffineFamilyAction A.periods))) =
       Quotient.mk _ q') :
@@ -175,7 +175,7 @@ public theorem orderFourRealPeriodCentralProjection_eq_of_quotient_mk_eq
   rw [← hg]
   exact A.orderFourRealPeriodCentralProjection_action g q'
 
-end PaperAnalyticData
+end AnalyticData
 
 end SphereSixComplex.Geometry
 
@@ -235,7 +235,7 @@ public theorem continuousMap_comp_add_homotopic_of_contractible
 
 end SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open AnalyticTorusFamily
 open SphereSixComplex.Geometry.ComplexTorus
@@ -245,7 +245,7 @@ open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 /-- The strip coordinate of the marked affine band. -/
-public noncomputable def affineBandStripCoordinate (A : PaperAnalyticData) :
+public noncomputable def affineBandStripCoordinate (A : AnalyticData) :
     C(A.affineMarkedBand, affineVerticalStrip) :=
   ⟨fun x ↦
       (A.affineCentralBandMarkedProductHomeomorph
@@ -259,7 +259,7 @@ public noncomputable def affineBandStripCoordinate (A : PaperAnalyticData) :
 /-- Translate the marked order-three torus coordinate by a gauge depending on the strip
 coordinate, then pass to the reduced central fibre. -/
 public noncomputable def affineOrderThreeGaugeTranslatedProjection
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (g : C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)) :
     C(A.affineMarkedBand, orderThreeReducedCentralFiber A.periods) :=
@@ -276,7 +276,7 @@ public noncomputable def affineOrderThreeGaugeTranslatedProjection
 /-- Translate the marked order-four torus coordinate by a gauge depending on the strip
 coordinate, then pass to the reduced central fibre. -/
 public noncomputable def affineOrderFourGaugeTranslatedProjection
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (g : C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)) :
     C(A.affineMarkedBand, orderFourReducedCentralFiber A.periods) :=
@@ -294,7 +294,7 @@ public noncomputable def affineOrderFourGaugeTranslatedProjection
 real-period coordinates, each selected-filling endpoint differs from the marked band coordinate
 by a torus translation depending only on the strip coordinate. -/
 public structure AffineMarkedEndpointGaugeTranslation
-    (A : PaperAnalyticData) where
+    (A : AnalyticData) where
   orderThreeGauge :
     C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter)
@@ -312,7 +312,7 @@ public structure AffineMarkedEndpointGaugeTranslation
 
 /-- The endpoint-level homotopy statement left after removing the logarithmic gauge. -/
 public structure AffineMarkedDiscEndpointHomotopyCompatibility
-    (A : PaperAnalyticData) where
+    (A : AnalyticData) where
   orderThree :
     ((A.orderThreeFillingImageHomotopyEquiv.toFun.comp
       A.affineOrderThreeDiscFillingEndpoint)).Homotopic
@@ -325,7 +325,7 @@ public structure AffineMarkedDiscEndpointHomotopyCompatibility
 /-- Homotopic disc endpoints suffice for the original marked-band compatibility; literal
 endpoint equality is unnecessary. -/
 public theorem AffineMarkedDiscEndpointHomotopyCompatibility.toBandCompatibility
-    {A : PaperAnalyticData}
+    {A : AnalyticData}
     (H : A.AffineMarkedDiscEndpointHomotopyCompatibility) :
     A.AffineOverlapBandCompatibility := by
   apply markedBandHomotopies_of_sideContractions A
@@ -406,7 +406,7 @@ public theorem AffineMarkedDiscEndpointHomotopyCompatibility.toBandCompatibility
 /-- Reading the order-three disc endpoint in the filling retraction is exactly the same map as
 reading its selected star endpoint. -/
 public theorem affineOrderThreeDiscEndpoint_toFun_eq_starEndpoint
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     A.orderThreeFillingImageHomotopyEquiv.toFun.comp
         A.affineOrderThreeDiscFillingEndpoint =
       (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
@@ -429,7 +429,7 @@ public theorem affineOrderThreeDiscEndpoint_toFun_eq_starEndpoint
 /-- Reading the order-four disc endpoint in the filling retraction is exactly the same map as
 reading its selected star endpoint. -/
 public theorem affineOrderFourDiscEndpoint_toFun_eq_starEndpoint
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     A.orderFourFillingImageHomotopyEquiv.toFun.comp
         A.affineOrderFourDiscFillingEndpoint =
       (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
@@ -452,7 +452,7 @@ public theorem affineOrderFourDiscEndpoint_toFun_eq_starEndpoint
 /-- A base-dependent gauge translation gives the order-three selected-filling endpoint
 homotopy. -/
 public theorem AffineMarkedEndpointGaugeTranslation.orderThreeEndpointHomotopy
-    {A : PaperAnalyticData} (G : A.AffineMarkedEndpointGaugeTranslation) :
+    {A : AnalyticData} (G : A.AffineMarkedEndpointGaugeTranslation) :
     ((orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
         A.affineOrderThreeStarEndpoint).Homotopic
         (affineBandOrderThreeMarkedProjection A) := by
@@ -473,7 +473,7 @@ public theorem AffineMarkedEndpointGaugeTranslation.orderThreeEndpointHomotopy
 /-- A base-dependent gauge translation gives the order-four selected-filling endpoint
 homotopy. -/
 public theorem AffineMarkedEndpointGaugeTranslation.orderFourEndpointHomotopy
-    {A : PaperAnalyticData} (G : A.AffineMarkedEndpointGaugeTranslation) :
+    {A : AnalyticData} (G : A.AffineMarkedEndpointGaugeTranslation) :
     ((orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
         A.affineOrderFourStarEndpoint).Homotopic
         (affineBandOrderFourMarkedProjection A) := by
@@ -494,7 +494,7 @@ public theorem AffineMarkedEndpointGaugeTranslation.orderFourEndpointHomotopy
 /-- The base-dependent logarithmic-gauge formula implies the original Section Seven marked-band
 compatibility. -/
 public theorem AffineMarkedEndpointGaugeTranslation.toBandCompatibility
-    {A : PaperAnalyticData} (G : A.AffineMarkedEndpointGaugeTranslation) :
+    {A : AnalyticData} (G : A.AffineMarkedEndpointGaugeTranslation) :
     A.AffineOverlapBandCompatibility := by
   apply AffineMarkedDiscEndpointHomotopyCompatibility.toBandCompatibility
   refine { orderThree := ?_, orderFour := ?_ }
@@ -503,6 +503,6 @@ public theorem AffineMarkedEndpointGaugeTranslation.toBandCompatibility
   · rw [affineOrderFourDiscEndpoint_toFun_eq_starEndpoint]
     exact G.orderFourEndpointHomotopy
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

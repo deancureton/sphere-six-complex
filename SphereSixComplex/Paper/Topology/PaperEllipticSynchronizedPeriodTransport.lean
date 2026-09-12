@@ -11,9 +11,9 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.LatticeData
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem orderFour_correctedPeriodTransportIdentity :
     (let _ := A.ellipticFourBoundaryAction
@@ -344,9 +344,8 @@ public theorem ellipticThree_exists_regularLoop_eq_of_factorHomotopies
     exact congrArg (fun p : Path _ _ ↦ p r) hsplitTrace
   · exact hglobalTrace
 
-public theorem ellipticRelatorMembership_proved :
-    Nonempty (A.EllipticRelatorMembership A.cuspCentralNaturality) := by
-  constructor
+public theorem ellipticRelatorMembership :
+    A.EllipticRelatorMembership A.cuspCentralNaturality := by
   constructor
   · exact A.ellipticThree_relator_mem_normalClosure_of_relator_eq
       (A.ellipticThree_exists_relator_eq_of_regularLoop_eq
@@ -356,4 +355,4 @@ public theorem ellipticRelatorMembership_proved :
   · exact A.ellipticFour_relator_mem_normalClosure_of_periodTransport
       A.orderFour_correctedPeriodTransportIdentity
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

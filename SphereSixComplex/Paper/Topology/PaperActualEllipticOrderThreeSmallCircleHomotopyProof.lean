@@ -16,7 +16,7 @@ noncomputable section
 
 open Complex Filter Metric Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology
 open SphereSixComplex.Periods.SourceAutomaticBranch
@@ -25,7 +25,7 @@ open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 open SphereSixComplex.Geometry.GlobalTorusFamily
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Every noncentral Cayley point in the selected order-three collar has affine coordinate
 different from both punctures. -/
@@ -225,7 +225,7 @@ public theorem exists_orderThreeCayleyBaseCoordinate_alignedSmallCircleData :
   · simpa [hanorm] using hboundb
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

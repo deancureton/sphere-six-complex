@@ -4,13 +4,13 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspDegreeOneInde
 @[expose] public section
 noncomputable section
 open AlgebraicTopology
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology
 open EllipticInteriorMarkedCycleData EllipticTwoDiscCoverData
 open EstablishedSectionSevenCuspTopology EllipticTwoDiscHomologyCoordinates
 
 public theorem cuspDegreeOneMappingTorusCoordinates_of_fullIterate
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
+    {A : AnalyticData} (R : A.AffineRadialCompletionInput)
     (h : ActualCuspDegreeOneIndexTwoFullIterateRelation R) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -38,7 +38,7 @@ public theorem cuspDegreeOneMappingTorusCoordinates_of_fullIterate
       (actualCuspDegreeOneIndexTwo_iff_fullIterateRelation R).mpr h
 
 public theorem cuspDegreeOneUnionCoordinates_of_fullIterate
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
+    {A : AnalyticData} (R : A.AffineRadialCompletionInput)
     (h : ActualCuspDegreeOneIndexTwoFullIterateRelation R)
     (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
     R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyOneEquiv
@@ -59,5 +59,5 @@ public theorem cuspDegreeOneUnionCoordinates_of_fullIterate
     ← actualCuspRawHomologyOneEquiv_apply_mappingTorus A x] at hx
   exact hx
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end

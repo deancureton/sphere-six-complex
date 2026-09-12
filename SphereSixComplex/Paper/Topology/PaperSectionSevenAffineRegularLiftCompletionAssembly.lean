@@ -19,12 +19,12 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 /-! ### Proposition-level overlap inputs
 
@@ -155,6 +155,6 @@ public theorem toRadialCompletion
 
 end AffineOverlapCompletionInput
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

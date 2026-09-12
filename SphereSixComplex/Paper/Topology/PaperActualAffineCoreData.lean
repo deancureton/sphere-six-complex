@@ -15,13 +15,13 @@ Kampen calculation.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open ComplexTorus GlobalTorusFamily
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.TriangleGroup
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The chosen affine universal cover of the paper's punctured central family. -/
 public noncomputable def centralAffineUniversalCover :=
@@ -97,6 +97,6 @@ public theorem centralAffineCorePiOneData_rhoTwo :
       A.cuspToCentralAffineBaseEquiv A.geometricCentralRhoTwo := by
   rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

@@ -48,13 +48,18 @@ public theorem establishedStandardA2ToricCentralFiberCellularIncidence
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     let C := establishedStandardA2ToricCentralFiberCWDecomposition W R
-    C.CellularIncidenceData := by
+    let _ := C.topology
+    let _ := C.cwComplex
+    ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
+      C.establishedIntegralCellularChainModel.chainComplex.d n.succ n
+          (labelledA2CellBasis C.cellEquiv C.establishedIntegralCellularChainModel n.succ x) =
+        labelledA2CellBasis C.cellEquiv C.establishedIntegralCellularChainModel n
+          (cuspToricCellularBoundary n x) := by
   let T := establishedStandardA2ToricCentralFiberCellularRealization W R
-  change T.decomposition.CellularIncidenceData
   let C := T.decomposition
   let _ := C.topology
   let _ := C.cwComplex
-  constructor
+  dsimp only
   intro n x
   change C.establishedIntegralCellularChainModel.chainComplex.d n.succ n
       (labelledA2CellBasis C.cellEquiv C.establishedIntegralCellularChainModel n.succ x) =
@@ -105,11 +110,11 @@ public noncomputable def actualLocalCuspFillingHomologyTwoEquiv
 
 end Geometry.CuspPuncturedCollarBridge
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The cusp filling selected in the paper's four-piece star has first integral homology `ℤ²`. -/
 public noncomputable def cuspFillingHomologyOneEquiv
@@ -128,6 +133,6 @@ public noncomputable def cuspFillingHomologyTwoEquiv
 
 
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

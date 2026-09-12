@@ -980,7 +980,7 @@ private theorem centralOrbitPartialEquiv_continuousOn_symm
     let e := Set.InjOn.toPartialEquiv f (Metric.ball 0 1) hinjOpen
     ContinuousOn e.symm e.target := by
   let _ : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
   let e := Set.InjOn.toPartialEquiv f (Metric.ball 0 1) hinjOpen

@@ -18,7 +18,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
@@ -42,7 +42,7 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 /-- The marked-band point lifted to the order-three affine half-plane carrier. -/
 public noncomputable def affineOrderThreeNamedHalfPlaneLiftPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.orderThreeAffineHalfPlaneLiftCarrier.carrier :=
   let z := A.affineBandStripCoordinate x
   let t := A.affineBandFiberCoordinateOfLift
@@ -58,7 +58,7 @@ public noncomputable def affineOrderThreeNamedHalfPlaneLiftPoint
 /-- The corresponding point of the order-three affine disc carrier selected by the explicit
 radial inverse. -/
 public noncomputable def affineOrderThreeNamedDiscLiftPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     (A.orderThreeAffineDiscLiftCarrier
       A.affineOrderThreeMarkedDiscRadius).carrier := by
   let r := A.affineOrderThreeMarkedDiscRadius
@@ -71,7 +71,7 @@ public noncomputable def affineOrderThreeNamedDiscLiftPoint
 
 /-- The named half-plane lift represents the marked-band point in the central family. -/
 public theorem affineOrderThreeNamedHalfPlaneLiftPoint_toCentralFamily
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.orderThreeAffineHalfPlaneLiftQuotientToCentralFamily
         (Quotient.mk _ (A.affineOrderThreeNamedHalfPlaneLiftPoint x)) =
       A.affineCentralBandToCentralFamily
@@ -96,7 +96,7 @@ public theorem affineOrderThreeNamedHalfPlaneLiftPoint_toCentralFamily
 /-- In fixed order-three real-period coordinates, the named half-plane lift has the marked-band
 fibre coordinate. -/
 public theorem orderThreeRealPeriod_namedHalfPlaneLiftPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     (orderThreeRealPeriodProductHomeomorph A.periods
       (regularFamilyInclusion A.periods
         (A.affineOrderThreeNamedHalfPlaneLiftPoint x).1)).2 =
@@ -125,7 +125,7 @@ public theorem orderThreeRealPeriod_namedHalfPlaneLiftPoint
 
 /-- The named disc lift lies over the explicit order-three radial base. -/
 public theorem regularTotalSpaceBase_namedOrderThreeDiscLiftPoint
-    {A : PaperAnalyticData} (x : A.affineMarkedBand) :
+    {A : AnalyticData} (x : A.affineMarkedBand) :
     regularTotalSpaceBase A.periods
         (A.affineOrderThreeNamedDiscLiftPoint x).1 =
       A.affineOrderThreeRadialBaseLift
@@ -148,7 +148,7 @@ public theorem regularTotalSpaceBase_namedOrderThreeDiscLiftPoint
 
 /-- Order-three affine radial transport preserves the named real-period coordinate. -/
 public theorem orderThreeRealPeriod_namedDiscLiftPoint
-    {A : PaperAnalyticData} (x : A.affineMarkedBand) :
+    {A : AnalyticData} (x : A.affineMarkedBand) :
     (orderThreeRealPeriodProductHomeomorph A.periods
       (regularFamilyInclusion A.periods
         (A.affineOrderThreeNamedDiscLiftPoint x).1)).2 =
@@ -172,7 +172,7 @@ public theorem orderThreeRealPeriod_namedDiscLiftPoint
 /-- The central-region quotient coordinate of the marked-band point is represented by its
 named order-three half-plane lift. -/
 public theorem affineOrderThreeCentralRegionQuotient_band
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.affineOrderThreeCentralRegionQuotientHomeomorph
         (A.affineBandToOrderThreeCentralRegion x) =
       Quotient.mk _ (A.affineOrderThreeNamedHalfPlaneLiftPoint x) := by
@@ -199,7 +199,7 @@ public theorem affineOrderThreeCentralRegionQuotient_band
 
 /-- The unembedded order-three affine-disc endpoint. -/
 public noncomputable def affineOrderThreeDiscRegionEndpoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.affineOrderThreeDiscRegion
       A.affineOrderThreeMarkedDiscRadius :=
   let r := A.affineOrderThreeMarkedDiscRadius
@@ -211,7 +211,7 @@ public noncomputable def affineOrderThreeDiscRegionEndpoint
 
 /-- Its affine-disc quotient coordinate is the selected named disc lift. -/
 public theorem affineOrderThreeDiscRegionQuotient_endpoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.affineOrderThreeDiscRegionQuotientHomeomorph
         A.affineOrderThreeMarkedDiscRadius
         (A.affineOrderThreeDiscRegionEndpoint x) =
@@ -232,14 +232,14 @@ public theorem affineOrderThreeDiscRegionQuotient_endpoint
 
 /-- The overlap endpoint and the disc-region endpoint have the same underlying point. -/
 public theorem affineOrderThreeDiscOverlapEndpoint_val
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     (A.affineOrderThreeDiscOverlapEndpoint x).1 =
       (A.affineOrderThreeDiscRegionEndpoint x).1 :=
   rfl
 
 /-- Undo the principal gauge on the named radial disc representative. -/
 public noncomputable def affineOrderThreeNamedCollarTotalPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     TotalSpace (parameterMap A.periods) :=
   (orderThreePrincipalGaugeEquiv A.periods).symm
     (regularFamilyInclusion A.periods
@@ -247,7 +247,7 @@ public noncomputable def affineOrderThreeNamedCollarTotalPoint
 
 /-- Its collar radius is the Cayley radius of the explicit radial base lift. -/
 public theorem orderThreeFamilyRadius_namedCollarTotalPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     orderThreeFamilyRadius A.periods
         (A.affineOrderThreeNamedCollarTotalPoint x) =
       ‖(orderThreeCayleyHomeomorph
@@ -261,7 +261,7 @@ public theorem orderThreeFamilyRadius_namedCollarTotalPoint
 
 /-- The named representative does not hit the order-three puncture. -/
 public theorem orderThreeFamilyRadius_namedCollarTotalPoint_pos
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     0 < orderThreeFamilyRadius A.periods
       (A.affineOrderThreeNamedCollarTotalPoint x) := by
   rw [A.orderThreeFamilyRadius_namedCollarTotalPoint x]
@@ -286,7 +286,7 @@ public theorem orderThreeFamilyRadius_namedCollarTotalPoint_pos
 /-- The established overlap inclusion supplies the selected Cayley bound after some regular
 deck translation of the named radial base. -/
 public theorem exists_regularDeck_namedOrderThreeRadialBase_cayley_lt
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     ∃ g : Delta,
       ‖(orderThreeCayleyHomeomorph
         (fuchsianSourceAction g •
@@ -379,7 +379,7 @@ public theorem exists_regularDeck_namedOrderThreeRadialBase_cayley_lt
 /-- Under the exact Cayley bound, the named representative is a point of the selected affine
 collar carrier. -/
 public noncomputable def affineOrderThreeNamedCollarLiftPoint
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (h : ∀ x : A.affineMarkedBand,
       ‖(orderThreeCayleyHomeomorph
         (A.affineOrderThreeRadialBaseLift
@@ -401,7 +401,7 @@ public noncomputable def affineOrderThreeNamedCollarLiftPoint
 
 /-- Gauging the named collar point recovers the named radial disc representative. -/
 public theorem orderThreePrincipalGauge_namedCollarLiftPoint
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (h : ∀ x : A.affineMarkedBand,
       ‖(orderThreeCayleyHomeomorph
         (A.affineOrderThreeRadialBaseLift
@@ -421,7 +421,7 @@ public theorem orderThreePrincipalGauge_namedCollarLiftPoint
 
 /-- The linear collar's regular representative is the named radial disc representative. -/
 public theorem orderThreeCollarToRegular_namedCollarLiftPoint
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (h : ∀ x : A.affineMarkedBand,
       ‖(orderThreeCayleyHomeomorph
         (A.affineOrderThreeRadialBaseLift
@@ -442,7 +442,7 @@ public theorem orderThreeCollarToRegular_namedCollarLiftPoint
 
 /-- The named radial disc representative maps to the actual affine-disc endpoint. -/
 public theorem centralQuotientProjection_namedOrderThreeDiscLiftPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.centralQuotientProjection
         (A.affineOrderThreeNamedDiscLiftPoint x).1 =
       A.ellipticCentralImageHomeomorph
@@ -459,7 +459,7 @@ public theorem centralQuotientProjection_namedOrderThreeDiscLiftPoint
 
 /-- The selected star-collar image of the named representative is the radial endpoint. -/
 public theorem starToCentral_namedOrderThreeCollarLiftPoint
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (h : ∀ x : A.affineMarkedBand,
       ‖(orderThreeCayleyHomeomorph
         (A.affineOrderThreeRadialBaseLift
@@ -480,7 +480,7 @@ public theorem starToCentral_namedOrderThreeCollarLiftPoint
 
 /-- The concrete overlap collar coordinate is the orbit class of the named representative. -/
 public theorem orderThreeOverlapCollarHomeomorph_endpoint_eq_named
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (h : ∀ x : A.affineMarkedBand,
       ‖(orderThreeCayleyHomeomorph
         (A.affineOrderThreeRadialBaseLift
@@ -500,14 +500,30 @@ public theorem orderThreeOverlapCollarHomeomorph_endpoint_eq_named
 /-- The exact named-sheet Cayley bound implies the full representative-independent order-three
 endpoint real-period identity. -/
 public theorem affineOrderThreeEndpointRealPeriodIdentity
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (h : ∀ x : A.affineMarkedBand,
       ‖(orderThreeCayleyHomeomorph
         (A.affineOrderThreeRadialBaseLift
           (A.affineBandStripCoordinate x)).1 : ℂ)‖ <
         A.starSeparation.orderThree.radius) :
-    A.AffineOrderThreeEndpointRealPeriodIdentity := by
-  refine ⟨?_⟩
+    ∀ (x : A.affineMarkedBand)
+      (q : (orderThreeAffinePuncturedCarrier A.periods
+        A.modular.modularParameter.toTriangleUniformization_sourceAction
+        A.starSeparation.orderThree.radius).carrier),
+    A.orderThreeOverlapCollarHomeomorph
+        (A.affineOrderThreeDiscOverlapEndpoint x) = Quotient.mk _ q →
+      RadialEllipticActionData.centralFiberCoverProjection
+          (orderThreeRadialActionData A.periods)
+          ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
+            (orderThreeRadialActionData A.periods)).symm
+              (orderThreeRealPeriodProductHomeomorph A.periods q.1).2) =
+        RadialEllipticActionData.centralFiberCoverProjection
+          (orderThreeRadialActionData A.periods)
+          (A.duplicatedSectionSevenBandToOrderThreeCoverSource
+            (A.affineOrderThreeEndpointGauge
+                (A.affineBandStripCoordinate x) +
+              A.affineBandFiberCoordinateOfLift
+                A.affineNamedStripLift x)) := by
   intro x q hq
   let q₀ := A.affineOrderThreeNamedCollarLiftPoint h x
   have hquot : (Quotient.mk _ q : A.StarCollarSource (1 : Fin 3)) =
@@ -535,7 +551,7 @@ public theorem affineOrderThreeEndpointRealPeriodIdentity
     A.affineOrderThreeEndpointGauge_apply]
   rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

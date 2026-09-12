@@ -35,11 +35,11 @@ public noncomputable def openRadialIntervalProdHomotopyEquiv
       (ContinuousMap.HomotopyEquiv.refl X)).trans
     (Homeomorph.uniqueProd Unit X).toHomotopyEquiv
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open SphereSixComplex.CircleMappingTorusHomologyBases
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The dimensionally correct clutching realization of the actual punctured cusp collar. -/
 public structure CuspCollarRadialMappingTorusRealization where
@@ -56,7 +56,7 @@ public structure CuspCollarRadialMappingTorusRealization where
 
 namespace CuspCollarRadialMappingTorusRealization
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
     (R : A.CuspCollarRadialMappingTorusRealization)
 
 /-- The actual cusp collar is homotopy equivalent to its four-torus mapping torus. -/
@@ -85,6 +85,6 @@ public noncomputable def homologyTwoEquiv :
 
 end CuspCollarRadialMappingTorusRealization
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

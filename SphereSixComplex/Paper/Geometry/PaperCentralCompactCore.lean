@@ -28,9 +28,9 @@ open EllipticLinearCollarGlobalDescent
 
 noncomputable section
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (P : PaperAnalyticData)
+variable (P : AnalyticData)
 
 /-- The affine quotient coordinate with the two elliptic values removed. -/
 public abbrev regularCoordinateBase := ({0, 1} : Set ℂ)ᶜ
@@ -221,7 +221,7 @@ public structure ThresholdedCentralEndCoverData where
 
 namespace ThresholdedCentralEndCoverData
 
-variable {P : PaperAnalyticData} (C : P.ThresholdedCentralEndCoverData)
+variable {P : AnalyticData} (C : P.ThresholdedCentralEndCoverData)
 
 /-- A selected compact set of regular source representatives for the coordinate core. -/
 @[expose] public noncomputable def representativeSubset :
@@ -324,7 +324,7 @@ public noncomputable def toOpenEmbeddingStarCompactCoverData
 
 end ThresholdedCentralEndCoverData
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

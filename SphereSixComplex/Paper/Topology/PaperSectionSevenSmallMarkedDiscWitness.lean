@@ -3,11 +3,11 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOverlapInte
 
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open Set SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 
-public theorem exists_small_discRegion_subset_orderThreeOverlap (A : PaperAnalyticData) :
+public theorem exists_small_discRegion_subset_orderThreeOverlap (A : AnalyticData) :
     ∃ r : ℝ, 0 < r ∧ r ≤ 1 / 3 ∧
       A.affineOrderThreeDiscRegion r ⊆
         A.orderThreeFillingImage ∩ A.affineOrderThreeCentralRegion ∧
@@ -23,7 +23,7 @@ public theorem exists_small_discRegion_subset_orderThreeOverlap (A : PaperAnalyt
   apply hcoordinate z
   exact hz.trans ((min_le_right _ _).trans_lt (half_lt_self hδ))
 
-public theorem exists_small_discRegion_subset_orderFourOverlap (A : PaperAnalyticData) :
+public theorem exists_small_discRegion_subset_orderFourOverlap (A : AnalyticData) :
     ∃ r : ℝ, 0 < r ∧ r ≤ 1 / 3 ∧
       A.affineOrderFourDiscRegion r ⊆
         A.orderFourFillingImage ∩ A.affineOrderFourCentralRegion ∧
@@ -39,4 +39,4 @@ public theorem exists_small_discRegion_subset_orderFourOverlap (A : PaperAnalyti
   apply hcoordinate z
   exact hz.trans ((min_le_right _ _).trans_lt (half_lt_self hδ))
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

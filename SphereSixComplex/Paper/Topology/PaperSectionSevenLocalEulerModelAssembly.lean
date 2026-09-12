@@ -15,11 +15,11 @@ existence is neither assumed nor asserted here.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Assemble every local Euler model from an explicitly supplied actual cusp retraction. -/
 public noncomputable def localEulerModelsOfCuspRetraction
@@ -39,4 +39,4 @@ public noncomputable def localEulerModels :
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

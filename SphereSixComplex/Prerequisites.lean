@@ -463,3 +463,4 @@ public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianTriangleGeome
 public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianTwoFixedCommutation
 public import SphereSixComplex.Prerequisites.TriangleGroup.ModularParameter
 public import SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
+public import SphereSixComplex.Prerequisites.Topology.ToricPhaseSpreading

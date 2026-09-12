@@ -23,9 +23,9 @@ open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 /-- The part of the regular central image below an upper height. -/
 public def centralHeightLowerRegion
@@ -219,4 +219,4 @@ end RadialHomotopyData
 
 end CentralHeightSplit
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

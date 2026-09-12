@@ -43,7 +43,7 @@ candidate="$work/ChallengeAxioms.lean"
 } > "$print_source"
 
 cd "$project_root"
-if ! lake env lean -Dpp.proofs=true "$print_source" > "$print_output"; then
+if ! lake env lean -Dpp.proofs=true -Dpp.funBinderTypes=true "$print_source" > "$print_output"; then
   cat "$print_output" >&2
   exit 1
 fi
@@ -58,7 +58,8 @@ fi
 
 {
   echo "This block is generated from scripts/allowed-axioms.txt by Lean's pretty-printer."
-  echo "It is the single human-review surface for every permitted constant and its exact type."
+  echo "It displays every permitted constant and its type, including existential binder types."
+  echo "Read the definitions of the mathematical objects alongside these signatures."
   echo "Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write."
   echo
   while IFS= read -r line || [[ -n "$line" ]]; do

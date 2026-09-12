@@ -18,7 +18,7 @@ noncomputable section
 
 open Complex Filter Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.ComplexTorus
@@ -37,7 +37,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem orderFourCollarRegularRepresentative_coordinate
     (lift : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
@@ -327,4 +327,4 @@ public theorem orderThreeBoundaryBaseHom_fillingRelation
     A.orderThreeBoundaryBaseHom_translation, inv_one, one_mul]
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

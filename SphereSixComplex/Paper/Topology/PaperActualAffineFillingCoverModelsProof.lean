@@ -156,7 +156,7 @@ public theorem fundamentalGroupHomOfBaseEq_map_transport
 
 end SphereSixComplex
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
@@ -168,7 +168,7 @@ open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The analytic order-three collar source, identified with the exact overlap in the actual
 four-piece cover. -/
@@ -1148,6 +1148,6 @@ public noncomputable def actualCentralTranslationToCore
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

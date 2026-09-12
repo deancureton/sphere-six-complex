@@ -36,9 +36,9 @@ public theorem movingToFixedCover_scaled_period
 
 end SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem orderFour_fixedToMoving_period_realization
     (z : A.OrderFourCayleyPuncturedDisc)
@@ -342,4 +342,4 @@ public theorem orderThreeLocalOffsetFiberCentralPath_homotopic_actualBasedStraig
     rfl
   exact ⟨Hmapped.cast hsource htarget⟩
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

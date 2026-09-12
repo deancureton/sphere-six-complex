@@ -50,9 +50,9 @@ public theorem subsingleton_homology_six_of_radialMappingTorus_fourTorusFiber
   subsingleton_homology_six_of_radialMappingTorus φ hr e
     M.subsingleton_homology_five M.subsingleton_homology_six
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The order-three elliptic collar has no sixth integral singular homology. -/
 public theorem subsingleton_homology_six_orderThreeCollar :
@@ -105,7 +105,7 @@ public theorem stageTopDegreeVanishing_of_actualCuspCollar
     A.openEmbeddingStarData.SectionSevenStageTopDegreeVanishing :=
   A.stageTopDegreeVanishing_of_cuspCollar A.localEulerModels hcusp
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex
 

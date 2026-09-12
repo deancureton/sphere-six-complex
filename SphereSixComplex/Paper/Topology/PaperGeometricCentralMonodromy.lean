@@ -17,7 +17,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -27,7 +27,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open CuspPeriodExpansion CuspPuncturedCollarBridge
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The chosen actual cusp point before either of the two central-family quotients. -/
 public def cuspRegularCoverPoint :
@@ -228,6 +228,6 @@ public theorem cuspOuterDeckHom_meridian :
     A.cuspOuterDeckHom A.cuspCentralMeridian = MulOpposite.op g₀ := by
   exact A.cuspCentralMeridian_outerDeck
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

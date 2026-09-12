@@ -12,7 +12,7 @@ noncomputable section
 open AlgebraicTopology CategoryTheory Set TopologicalSpace
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.AnalyticTorusFamily
@@ -24,14 +24,14 @@ open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
-public def centralFamilyToEllipticInteriorMap (A : PaperAnalyticData) :
+public def centralFamilyToEllipticInteriorMap (A : AnalyticData) :
     C(A.CentralFamily, A.ellipticInterior) :=
   ⟨fun x ↦ (A.ellipticCentralImageHomeomorph.symm x).1,
     continuous_subtype_val.comp A.ellipticCentralImageHomeomorph.symm.continuous⟩
 
-public theorem centralFamilyToEllipticInteriorMap_band (A : PaperAnalyticData)
+public theorem centralFamilyToEllipticInteriorMap_band (A : AnalyticData)
     (c : centralHeightBand (A.affineCentralHeightSplit
       A.affineCentralSeparation).height
       (A.affineCentralHeightSplit A.affineCentralSeparation).lower
@@ -237,4 +237,4 @@ public theorem actualCuspWangFiberToEllipticInteriorMap_homotopic_fixed_canonica
     (ContinuousMap.Homotopic.comp (A.regularFixedFiberMap_homotopic _ _) (.refl _))
 
 end EllipticTwoDiscCoverData
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

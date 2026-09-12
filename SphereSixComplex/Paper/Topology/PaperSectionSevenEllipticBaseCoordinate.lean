@@ -17,7 +17,7 @@ noncomputable section
 
 open Set
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
@@ -28,7 +28,7 @@ open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The modular base coordinate is constant on triangle-group orbits of the regular torus
 family. -/
@@ -302,4 +302,4 @@ public noncomputable def affineCentralHeightSplit
   orderThreeFilling_disjoint_upper := S.orderThreeFilling_disjoint_upper
   orderFourFilling_disjoint_lower := S.orderFourFilling_disjoint_lower
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

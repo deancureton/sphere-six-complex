@@ -14,7 +14,7 @@ formulas remove the radial-transport part of the marked-band endpoint calculatio
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Periods
@@ -27,7 +27,7 @@ open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 /-- The explicit order-three fibre transfer preserves the fixed order-three real-period torus
 coordinate. -/
 public theorem orderThreeRealPeriodProductHomeomorph_fiberTransfer_snd
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (w : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
     (q : RegularTotalSpace A.periods) :
     (orderThreeRealPeriodProductHomeomorph A.periods
@@ -55,7 +55,7 @@ public theorem orderThreeRealPeriodProductHomeomorph_fiberTransfer_snd
 /-- The explicit order-four flat transport preserves the fixed order-four real-period torus
 coordinate. -/
 public theorem orderFourRealPeriodProductHomeomorph_regularFlatTransport_snd
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (w : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
     (q : RegularTotalSpace A.periods) :
     (orderFourRealPeriodProductHomeomorph A.periods
@@ -81,7 +81,7 @@ public theorem orderFourRealPeriodProductHomeomorph_regularFlatTransport_snd
     simp [periodCoordinates]
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

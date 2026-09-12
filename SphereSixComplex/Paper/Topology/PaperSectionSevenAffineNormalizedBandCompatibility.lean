@@ -3,9 +3,9 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineNormalizedC
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineNamedSheetCompletion
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-public theorem actualMarkedBandHomotopies (A : PaperAnalyticData) :
+public theorem actualMarkedBandHomotopies (A : AnalyticData) :
     A.AffineOverlapBandCompatibility := by
   apply A.markedBandHomotopies_of_affineNamedSheetStabilizingDecks
   · intro x
@@ -17,4 +17,4 @@ public theorem actualMarkedBandHomotopies (A : PaperAnalyticData) :
     exact A.affineNormalizedOrderFourRadialLift_cayley
       (A.affineBandStripCoordinate x)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

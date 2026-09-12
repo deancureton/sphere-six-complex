@@ -10,14 +10,14 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The fixed order-three fibre coordinate of the complete filling loop before removing the
 constant collar offset. -/
@@ -36,7 +36,7 @@ public noncomputable def orderThreePrincipalGaugeWithOffsetMap :
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

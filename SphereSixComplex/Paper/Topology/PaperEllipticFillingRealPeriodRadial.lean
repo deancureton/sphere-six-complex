@@ -25,12 +25,12 @@ open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
-open SphereSixComplex.Geometry.PaperAnalyticData
+open SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 
 noncomputable section
 
-variable (A : PaperAnalyticData) (r : ℝ)
+variable (A : AnalyticData) (r : ℝ)
 
 /-- The whole-family order-three product chart restricted to the radius-`r` filling. -/
 @[expose] public def orderThreeFillingProductMap :
@@ -267,14 +267,14 @@ public theorem orderFourRadialWholeFillingChart_apply_snd
         orderFourRadialWholeFillingChart_apply_snd]
 
 /-- The order-three radial compatibility at the radius selected by the paper's star data. -/
-@[expose] public def orderThreeSelectedAffineRadialCompatibility (A : PaperAnalyticData) :
+@[expose] public def orderThreeSelectedAffineRadialCompatibility (A : AnalyticData) :
     OrderThreeAffineRadialWholeFillingCompatibility A
       A.starSeparation.orderThree.radius :=
   orderThreeAffineRadialCompatibility A A.starSeparation.orderThree.radius
     A.starSeparation.orderThree.radius_pos A.starSeparation.orderThree.radius_lt_one
 
 /-- The order-four radial compatibility at the radius selected by the paper's star data. -/
-@[expose] public def orderFourSelectedAffineRadialCompatibility (A : PaperAnalyticData) :
+@[expose] public def orderFourSelectedAffineRadialCompatibility (A : AnalyticData) :
     OrderFourAffineRadialWholeFillingCompatibility A
       A.starSeparation.orderFour.radius :=
   orderFourAffineRadialCompatibility A A.starSeparation.orderFour.radius
@@ -283,7 +283,7 @@ public theorem orderFourRadialWholeFillingChart_apply_snd
 /-- The selected actual order-three filling retracts, up to homotopy, to its reduced central
 bielliptic fibre. -/
 @[expose] public def orderThreeSelectedFillingHomotopyEquivCentralFiber
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius ≃ₕ
       orderThreeReducedCentralFiber A.periods :=
   orderThreeVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart A
@@ -292,7 +292,7 @@ bielliptic fibre. -/
 /-- The selected actual order-four filling retracts, up to homotopy, to its reduced central
 bielliptic fibre. -/
 @[expose] public def orderFourSelectedFillingHomotopyEquivCentralFiber
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     A.OrderFourVaryingFilling A.starSeparation.orderFour.radius ≃ₕ
       orderFourReducedCentralFiber A.periods :=
   orderFourVaryingFillingHomotopyEquivCentralFiber_of_affineRadialChart A

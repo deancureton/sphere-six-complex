@@ -9,13 +9,13 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
 open SphereSixComplex.Geometry.GlobalTorusFamily
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The fibre-then-base factorization after projection to the central family and the canonical
 endpoint cast to the selected order-four elliptic basepoint. -/
@@ -73,7 +73,7 @@ public theorem orderFourProjectedRegularLoop_freeHomotopy_fiberThenBase_with_tra
   let H := pathHomotopyToFreeHomotopy Hpath
   exact ⟨H, pathHomotopyToFreeHomotopy_trace Hpath⟩
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

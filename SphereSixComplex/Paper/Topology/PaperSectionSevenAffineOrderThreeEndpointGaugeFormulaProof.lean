@@ -18,7 +18,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
@@ -40,7 +40,7 @@ open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 /-- The order-three principal translation, expressed in the fixed real-period torus. -/
 public noncomputable def orderThreePrincipalRealPeriodGauge
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (z : UpperHalfPlane) :
     AdditiveTorus
       (parameterMap A.periods
@@ -53,7 +53,7 @@ public noncomputable def orderThreePrincipalRealPeriodGauge
 /-- The principal gauge changes only the fixed real-period fibre coordinate, by addition of its
 base-dependent gauge element. -/
 public theorem orderThreeRealPeriodProductHomeomorph_principalGauge_snd
-    (A : PaperAnalyticData) (q : TotalSpace (parameterMap A.periods)) :
+    (A : AnalyticData) (q : TotalSpace (parameterMap A.periods)) :
     (orderThreeRealPeriodProductHomeomorph A.periods
       (orderThreePrincipalGaugeEquiv A.periods q)).2 =
       A.orderThreePrincipalRealPeriodGauge (familyTotalSpaceBase A.periods q) +
@@ -69,7 +69,7 @@ public theorem orderThreeRealPeriodProductHomeomorph_principalGauge_snd
 
 /-- Undoing the principal gauge subtracts the same base-dependent fixed real-period element. -/
 public theorem orderThreeRealPeriodProductHomeomorph_principalGauge_symm_snd
-    (A : PaperAnalyticData) (q : TotalSpace (parameterMap A.periods)) :
+    (A : AnalyticData) (q : TotalSpace (parameterMap A.periods)) :
     (orderThreeRealPeriodProductHomeomorph A.periods
       ((orderThreePrincipalGaugeEquiv A.periods).symm q)).2 =
       -A.orderThreePrincipalRealPeriodGauge (familyTotalSpaceBase A.periods q) +
@@ -87,7 +87,7 @@ public theorem orderThreeRealPeriodProductHomeomorph_principalGauge_symm_snd
 collar of radius two.  The large auxiliary radius is used only to obtain a global continuous
 principal-gauge chart. -/
 public noncomputable def affineOrderThreeRadialZeroCollarPoint
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(affineVerticalStrip,
       orderThreePuncturedFamilyCollar A.periods 2) :=
   ⟨fun z ↦
@@ -132,7 +132,7 @@ public noncomputable def affineOrderThreeRadialZeroCollarPoint
 /-- The explicit continuous strip gauge: undo the principal logarithmic gauge at the zero vector
 over the radial strip lift, then read the fixed order-three real-period coordinate. -/
 public noncomputable def affineOrderThreeEndpointGauge
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter) :=
   let _ := A.totalSpaceCharts
@@ -149,7 +149,7 @@ public noncomputable def affineOrderThreeEndpointGauge
 /-- Pointwise, the continuous strip gauge is the negative principal real-period gauge evaluated
 at the explicit radial base lift. -/
 public theorem affineOrderThreeEndpointGauge_apply
-    (A : PaperAnalyticData) (z : affineVerticalStrip) :
+    (A : AnalyticData) (z : affineVerticalStrip) :
     A.affineOrderThreeEndpointGauge z =
       -A.orderThreePrincipalRealPeriodGauge
         (A.affineOrderThreeRadialBaseLift z).1 := by
@@ -178,12 +178,11 @@ public theorem affineOrderThreeEndpointGauge_apply
         (0 : AdditiveTorus p) := congrArg _ (additiveTorus_mk_zero p)
     _ = _ := add_zero _
 
-/-- The remaining representative-level identity.  It compares the actual star-collar endpoint
-with the explicit inverse-principal-gauge radial model after passing to the finite central cover.
-All maps and the gauge in this statement have already been constructed. -/
-public structure AffineOrderThreeEndpointRealPeriodIdentity
-    (A : PaperAnalyticData) : Prop where
-  eq_projection : ∀ (x : A.affineMarkedBand)
+/-- The single representative-level identity gives exactly the order-three field of the pinned
+lift endpoint-gauge formulas, for the named strip lift and the explicit continuous gauge. -/
+public theorem affineOrderThreeEndpointGauge_formula
+    (A : AnalyticData)
+    (H : (∀ (x : A.affineMarkedBand)
       (q : (orderThreeAffinePuncturedCarrier A.periods
         A.modular.modularParameter.toTriangleUniformization_sourceAction
         A.starSeparation.orderThree.radius).carrier),
@@ -200,13 +199,7 @@ public structure AffineOrderThreeEndpointRealPeriodIdentity
             (A.affineOrderThreeEndpointGauge
                 (A.affineBandStripCoordinate x) +
               A.affineBandFiberCoordinateOfLift
-                A.affineNamedStripLift x))
-
-/-- The single representative-level identity gives exactly the order-three field of the pinned
-lift endpoint-gauge formulas, for the named strip lift and the explicit continuous gauge. -/
-public theorem affineOrderThreeEndpointGauge_formula
-    (A : PaperAnalyticData)
-    (H : A.AffineOrderThreeEndpointRealPeriodIdentity) :
+                A.affineNamedStripLift x)))) :
     (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
         A.affineOrderThreeStarEndpoint =
       A.affineOrderThreeGaugeProjectionOfLift
@@ -221,8 +214,8 @@ public theorem affineOrderThreeEndpointGauge_formula
   induction y using Quotient.inductionOn with
   | _ q =>
       rw [orderThreeSelectedFilling_toFun_starToFilling_mk]
-      exact H.eq_projection x q hq
+      exact H x q hq
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

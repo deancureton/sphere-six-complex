@@ -45,9 +45,9 @@ public theorem pathConnectedSpace_of_homotopyEquiv
     (PathConnectedSpace.joined (e.toFun x) (e.toFun y)).map e.invFun.continuous
   exact hx.symm.trans (hxy.trans hy)
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
-variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
+variable {A : AnalyticData} {D : A.EllipticTwoDiscCoverData}
 
 /-- The two trivializations of the regular band induce one common period basis.  This is the
 precise naturality input needed to compare the two finite-cover projections; it contains no
@@ -449,6 +449,6 @@ public noncomputable def actualHomologyCoordinates :
 
 end EllipticBandHomologyAlignment
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

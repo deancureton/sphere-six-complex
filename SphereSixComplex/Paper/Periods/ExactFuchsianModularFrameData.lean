@@ -37,6 +37,12 @@ parameter. -/
     (E : NormalizedFuchsianModularParameter) (z : UpperHalfPlane) : ℂ :=
   ModularForm.discriminant (E.modularParameter.tau z)
 
+/-- The weight-minus-one modular expression associated to a chosen square root of `E₆`. -/
+@[expose] public def modularNegOneFrame
+    (E : NormalizedFuchsianModularParameter) (root : UpperHalfPlane → ℂ)
+    (z : UpperHalfPlane) : ℂ :=
+  liftedEisensteinFour E z ^ 2 * root z / liftedModularDiscriminant E z
+
 /-- Exact classical modular-form data used in Lemma 3.10 of the paper.
 
 The square root is included together with its square identity and exact divisor data.  The final
@@ -51,29 +57,24 @@ public structure ExactLiftedModularNegOneFrame
   /-- The chosen function really is a square root. -/
   sqrtEisensteinSix_sq : ∀ z,
     sqrtEisensteinSix z ^ 2 = liftedEisensteinSix E z
-  /-- The meromorphic modular expression, holomorphic on the source because the discriminant
-  never vanishes there. -/
-  frame : UpperHalfPlane → ℂ
-  /-- Identification with the normalized modular-form expression. -/
-  frame_eq : ∀ z,
-    frame z = liftedEisensteinFour E z ^ 2 * sqrtEisensteinSix z /
-      liftedModularDiscriminant E z
   /-- Holomorphicity of the pulled-back frame. -/
-  frame_holomorphic : MDiff frame
+  frame_holomorphic : MDiff (modularNegOneFrame E sqrtEisensteinSix)
   /-- Exact order-two zero over the order-three orbifold point. -/
-  frame_branch_one : HasExactHolomorphicBranchAt frame fuchsianOneFixedPoint 0 2
+  frame_branch_one :
+    HasExactHolomorphicBranchAt (modularNegOneFrame E sqrtEisensteinSix) fuchsianOneFixedPoint 0 2
   /-- Exact order-one zero over the order-four orbifold point. -/
-  frame_branch_two : HasExactHolomorphicBranchAt frame fuchsianTwoFixedPoint 0 1
+  frame_branch_two :
+    HasExactHolomorphicBranchAt (modularNegOneFrame E sqrtEisensteinSix) fuchsianTwoFixedPoint 0 1
   /-- There are no further zeros. -/
-  frame_zero_iff : ∀ z, frame z = 0 ↔
+  frame_zero_iff : ∀ z, modularNegOneFrame E sqrtEisensteinSix z = 0 ↔
     (∃ g : Delta, fuchsianSourceAction g • fuchsianOneFixedPoint = z) ∨
       ∃ g : Delta, fuchsianSourceAction g • fuchsianTwoFixedPoint = z
   /-- The order-three homogeneous automorphy factor. -/
-  frame_one : ∀ z, frame (fuchsianSourceAction g₁ • z) =
-    -frame z / E.modularParameter.tau z
+  frame_one : ∀ z, modularNegOneFrame E sqrtEisensteinSix (fuchsianSourceAction g₁ • z) =
+    -modularNegOneFrame E sqrtEisensteinSix z / E.modularParameter.tau z
   /-- The order-four homogeneous automorphy factor. -/
-  frame_two : ∀ z, frame (fuchsianSourceAction g₂ • z) =
-    frame z / E.modularParameter.tau z
+  frame_two : ∀ z, modularNegOneFrame E sqrtEisensteinSix (fuchsianSourceAction g₂ • z) =
+    modularNegOneFrame E sqrtEisensteinSix z / E.modularParameter.tau z
   /-- The holomorphic unit after removing the simple pole at the completed cusp. -/
   cuspUnit : ℂ → ℂ
   /-- Radius of a completed cusp-coordinate neighbourhood. -/
@@ -91,7 +92,12 @@ public structure ExactLiftedModularNegOneFrame
       (E.sourceCoordinate.coordinate z)⁻¹ ∈ Metric.closedBall 0 (cuspRadius / 2)
   /-- Exact simple-pole normalization as a germ at the completed cusp. -/
   cusp_factorization_eventually : ∀ᶠ z in upperHalfPlaneAtInfinity,
-    (E.sourceCoordinate.coordinate z)⁻¹ * frame z =
+    (E.sourceCoordinate.coordinate z)⁻¹ * modularNegOneFrame E sqrtEisensteinSix z =
       cuspUnit ((E.sourceCoordinate.coordinate z)⁻¹)
+
+/-- The modular frame is determined by the chosen square root. -/
+@[expose] public def ExactLiftedModularNegOneFrame.frame
+    {E : NormalizedFuchsianModularParameter} (F : ExactLiftedModularNegOneFrame E) :
+    UpperHalfPlane → ℂ := modularNegOneFrame E F.sqrtEisensteinSix
 
 end SphereSixComplex.Periods

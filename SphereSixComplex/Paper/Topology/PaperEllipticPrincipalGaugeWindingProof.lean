@@ -12,7 +12,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.CyclicAngularFundamentalDomain
@@ -31,7 +31,7 @@ open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem angleMap_three_linear_fullTurn (θ s : ℝ) :
     angleMap 3 (θ + 3 * s) =
@@ -699,7 +699,7 @@ public noncomputable def orderFourFillingRelationPrincipalGaugeCoverLiftMap :
         A.modular.modularParameter.toTriangleUniformization.zTwo).comp
           (hz.prodMk hv))
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

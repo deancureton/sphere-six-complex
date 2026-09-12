@@ -42,7 +42,7 @@ private theorem homologyEquiv_map_trans_symm
       (integralSingularHomologyMap k
         ((⟨e.symm, e.symm.continuous⟩ : C(Y, X)).comp
           (⟨h, h.continuous⟩ : C(Z, Y))) z) = _
-  rw [Geometry.PaperAnalyticData.EllipticBandHomologyAlignment.integralHomologyMap_comp]
+  rw [Geometry.AnalyticData.EllipticBandHomologyAlignment.integralHomologyMap_comp]
   exact (integralSingularHomologyEquiv k e).apply_symm_apply _
 
 namespace EstablishedTorusHomology
@@ -53,24 +53,24 @@ coordinates of the standard real four-torus along the real-period-coordinate ide
 this is functoriality of integral singular homology. -/
 public theorem fullRankAdditiveTorusHomeomorph_naturality
     (x y : Periods.Parameters) (hx : FullRank x) (hy : FullRank y) :
-    let e := Geometry.PaperAnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy
+    let e := Geometry.AnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy
     let Bx := additiveTorusHomologyBasis x hx
     let By := additiveTorusHomologyBasis y hy
     (∀ z, By.degreeOne (integralSingularHomologyMap 1 e z) = Bx.degreeOne z) ∧
       (∀ z, By.degreeTwo (integralSingularHomologyMap 2 e z) = Bx.degreeTwo z) := by
   have he : ∀ z : ComplexTwoSpace,
-      Geometry.PaperAnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy (Quotient.mk _ z) =
+      Geometry.AnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy (Quotient.mk _ z) =
         Quotient.mk _ (hy.realEquiv (hx.realEquiv.symm z)) := fun _ ↦ rfl
   exact ⟨fun z ↦ StandardTorusHomology.additiveTorusHomologyDegreeOne_naturality x y hx hy
-      (Geometry.PaperAnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy) he z,
+      (Geometry.AnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy) he z,
     fun z ↦ StandardTorusHomology.additiveTorusHomologyDegreeTwo_naturality x y hx hy
-      (Geometry.PaperAnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy) he z⟩
+      (Geometry.AnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy) he z⟩
 
 end EstablishedTorusHomology
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
-variable {A : PaperAnalyticData} {S : A.CentralHeightSplit}
+variable {A : AnalyticData} {S : A.CentralHeightSplit}
 
 /-- The canonical period-coordinate identifications in a genuine height-split radial input
 induce the same integral period basis from both sides of its central band. -/
@@ -179,6 +179,6 @@ public theorem CentralHeightSplit.RadialHomotopyData.bandHomologyAlignment
           (orderThreeRadialActionData A.periods)) z]
     exact h
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

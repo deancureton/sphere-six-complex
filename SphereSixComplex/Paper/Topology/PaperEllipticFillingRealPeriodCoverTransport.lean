@@ -16,14 +16,14 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 
-variable (A : PaperAnalyticData) (r : ℝ)
+variable (A : AnalyticData) (r : ℝ)
 
 /-- Fixed real-period coordinates on the order-three vector-bundle filling cover. -/
 public def orderThreeFillingCoverRealPeriodHomeomorph :
@@ -135,4 +135,4 @@ public theorem orderFourFillingProductMap_coverMap_eq_fixed
     orderFourCayleyHomeomorph.apply_symm_apply]
   rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

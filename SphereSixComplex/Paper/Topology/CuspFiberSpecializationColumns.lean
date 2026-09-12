@@ -5,17 +5,17 @@ public import SphereSixComplex.Paper.Topology.CuspMixedTorusPositiveProjection
 
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.StandardTorusHomology
 open CuspPuncturedCollarBridge CuspStraighteningRetraction
 open InfiniteA2Toric
 
-def cuspFiberSpecializationColumn (A : PaperAnalyticData) (j : Fin 4) :
+def cuspFiberSpecializationColumn (A : AnalyticData) (j : Fin 4) :
     IntegralSingularHomology 2 (ActualLocalCuspFilling A.starCuspWitness) :=
   integralSingularHomologyMap 2 (A.cuspFiniteFiberTorusToFilling j)
     standardTwoTorusHomologyGenerator
 
-theorem cuspFiberSpecializationColumn_positive_zero (A : PaperAnalyticData) (j : Fin 3) :
+theorem cuspFiberSpecializationColumn_positive_zero (A : AnalyticData) (j : Fin 3) :
     constructedCuspHomologyTwoPositiveReadout A (A.cuspFiberSpecializationColumn j.succ) = 0 := by
   have hj : cuspMixedTorusIndex j = j.succ := by fin_cases j <;> rfl
   change constructedPositiveHomologyTwoReadout A
@@ -25,8 +25,8 @@ theorem cuspFiberSpecializationColumn_positive_zero (A : PaperAnalyticData) (j :
   rw [← hj, A.cuspMixedTorus_positiveProjection_zero j]
   exact map_zero _
 
-theorem cuspFiberSpecializationColumn_positive_one (A : PaperAnalyticData) :
+theorem cuspFiberSpecializationColumn_positive_one (A : AnalyticData) :
     constructedCuspHomologyTwoPositiveReadout A (A.cuspFiberSpecializationColumn 0) = 1 :=
   constructedPositiveHomologyTwoReadout_firstTorus A
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

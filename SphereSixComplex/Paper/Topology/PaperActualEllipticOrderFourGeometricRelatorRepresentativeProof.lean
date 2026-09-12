@@ -10,7 +10,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData
@@ -21,7 +21,7 @@ open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.GlobalTorusFamily
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The fixed order-four fibre coordinate of the complete filling loop before removing the
 constant collar offset. -/
@@ -180,7 +180,7 @@ public theorem orderFourFillingRelationPrincipalGaugeLoop_class_eq_straight :
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

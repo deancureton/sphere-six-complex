@@ -53,7 +53,7 @@ public structure PrePeriodFunctions (U : TriangleUniformization) where
   beta_add_tau_cusp_bounded :
     BoundedOn (fun z ↦ beta z + (tau z : ℂ)) U.cuspRegion
 
-/-- Equivariant analytic period functions before the final nondegeneracy shift. -/
+/-- Equivariant analytic period functions satisfying the nondegeneracy inequalities. -/
 public structure PeriodFunctions (U : TriangleUniformization) extends PrePeriodFunctions U where
   setup_inequalities : ∀ z, SetupInequalities (periodValues tau mu beta z)
 

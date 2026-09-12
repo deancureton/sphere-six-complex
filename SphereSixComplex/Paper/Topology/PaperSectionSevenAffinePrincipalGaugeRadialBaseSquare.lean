@@ -49,7 +49,7 @@ open SphereSixComplex.TriangleGroup SphereSixComplex.Periods
 open TorusFamily GlobalTorusFamily AnalyticTorusFamily
 open EllipticPuncturedCollarGaugeHomeomorph EllipticVaryingFamilyQuotient
 open EllipticLinearCollarGlobalDescent EllipticWholeFiberCompactCover
-open PaperAnalyticData
+open AnalyticData
 
 /-- After the order-three principal gauge and collar-to-regular conversion, the regular base is
 the original collar representative's base. -/

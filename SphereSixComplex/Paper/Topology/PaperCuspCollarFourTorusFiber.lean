@@ -14,12 +14,12 @@ its fifth and sixth homology.  That is the last hypothesis of the Section 7 top-
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The cusp collar has no sixth integral singular homology. -/
 public theorem subsingleton_homology_six_actualCuspCollar :
@@ -43,7 +43,7 @@ public theorem stageTopDegreeVanishing :
   A.stageTopDegreeVanishing_of_actualCuspCollar
     A.subsingleton_homology_six_actualCuspCollar
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

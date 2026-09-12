@@ -7,14 +7,14 @@ public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorFreeHomo
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Topology
 open SphereSixComplex.TriangleGroup
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The literal global period loop carrying the corrected order-three `epsilon` label. -/
 public noncomputable def ellipticThreeCuspCorrectedEpsilonPeriodPath :
@@ -84,7 +84,7 @@ public theorem orderThreeCentralAffineCorrectedGeometricRelatorPath_class :
   unfold cuspToCentralAffineBaseEquiv
   rw [SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply]
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

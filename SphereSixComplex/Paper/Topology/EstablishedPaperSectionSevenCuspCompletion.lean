@@ -14,11 +14,11 @@ coefficient are proved from the actual marked geometry.
 @[expose] public section
 noncomputable section
 open AlgebraicTopology
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 namespace EstablishedSectionSevenCuspTopology
 
 public def correctedPositiveDegreeAssembly_of_rawFive
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
+    {A : AnalyticData} (R : A.AffineRadialCompletionInput)
     (hFive : A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1) :
     A.PositiveDegreeHomologyAssembly :=
@@ -29,11 +29,11 @@ public def correctedPositiveDegreeAssembly_of_rawFive
     (correctedCuspDegreeTwoSplitting_boundary R)
 
 public def correctedPositiveDegreeAssembly
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
+    {A : AnalyticData} (R : A.AffineRadialCompletionInput) :
     A.PositiveDegreeHomologyAssembly :=
   correctedPositiveDegreeAssembly_of_rawFive R
     (A.cuspEllipticFiberCoordinate_rawFive R (correctedCuspDegreeTwoSplitting R))
 
 end EstablishedSectionSevenCuspTopology
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

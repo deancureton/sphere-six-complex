@@ -18,10 +18,10 @@ public theorem loopHomologyClass_eq_of_pointwise {X : Type} [TopologicalSpace X]
   ext t
   exact h t
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 open SphereSixComplex.Topology Hurewicz.Chains
 open CuspPuncturedCollarBridge CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem cuspBridgeMeridian_hurewicz :
     hurewiczFunction A.cuspOverlapBase A.cuspAffineBridgeMeridian =
@@ -76,6 +76,6 @@ public theorem cuspRawTwo_homology_image
   erw [A.cuspBridgeMeridian_homology_image D]
   rfl
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 end SphereSixComplex
 end

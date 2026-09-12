@@ -399,7 +399,7 @@ the quotient strong deformation retraction. -/
 
 end AffineRadialWholeFillingCompatibility
 
-variable (A : PaperAnalyticData) (r : ℝ)
+variable (A : AnalyticData) (r : ℝ)
 
 /-- The missing exact topology bridge for the order-three varying filling. -/
 public abbrev OrderThreeVaryingFillingProductIdentification :=

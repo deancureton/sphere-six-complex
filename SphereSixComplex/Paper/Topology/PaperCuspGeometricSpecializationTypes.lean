@@ -262,12 +262,12 @@ public theorem cuspSectionSevenTwoCoordinateChange_specialization (x : Fin 6 →
     simp [cuspSectionSevenTwoCoordinateChange, sectionSevenMayerVietorisFinalTwoHom,
       sectionSevenMayerVietorisFinalTwoMatrix, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 open SphereSixComplex.CircleMappingTorusHomologyBases
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The source-independent radial fundamental-domain theorem specialized to the paper's chosen
 cusp witness. -/
@@ -287,11 +287,11 @@ public theorem cuspCentralFiberRetractionData_eq_radial :
       UnnormalizedCuspRadialClutchingData.radialCentralFiberRetractionData
         A.starCuspWitness := rfl
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 namespace Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
 
-open Geometry.PaperAnalyticData
+open Geometry.AnalyticData
 
 /-- Projection from the raw degree-one Wang basis to its two fibre coinvariants. -/
 public def degreeOneFiberProjection : (Fin 3 → ℤ) →+ (Fin 2 → ℤ) where
@@ -308,7 +308,7 @@ public def degreeTwoFiberProjection : (Fin 6 → ℤ) →+ (Fin 4 → ℤ) where
 /-- The remaining cellular naturality input, stated as two equalities of homomorphisms in the
 explicit finite bases.  The radial coordinates are the constructed additive-period coordinates,
 not an arbitrary clutching datum. -/
-public structure FiniteBasisNaturality (A : PaperAnalyticData)
+public structure FiniteBasisNaturality (A : AnalyticData)
     (K : (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ) := AddEquiv.refl _) : Prop where
   degreeOne :
     (actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness

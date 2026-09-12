@@ -16,12 +16,12 @@ has odd fibre coordinate. This does not control the cusp specialization of that 
 @[expose] public section
 noncomputable section
 open AlgebraicTopology
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology
 open EllipticTwoDiscCoverData EllipticTwoDiscHomologyCoordinates
 open EllipticInteriorMarkedCycleData
 
-public def cuspEllipticFiberCoordinate (A : PaperAnalyticData)
+public def cuspEllipticFiberCoordinate (A : AnalyticData)
     (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover))) :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) →+ ℤ :=
@@ -29,7 +29,7 @@ public def cuspEllipticFiberCoordinate (A : PaperAnalyticData)
     (R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv S)
       0).comp (integralSingularHomologyMap 2 R.twoDiscCover.cuspToEllipticInteriorMap.hom)
 
-public theorem cuspEllipticFiberCoordinate_raw_fiber (A : PaperAnalyticData)
+public theorem cuspEllipticFiberCoordinate_raw_fiber (A : AnalyticData)
     (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover)))
     (i : Fin 4) :
@@ -52,7 +52,7 @@ public theorem cuspEllipticFiberCoordinate_raw_fiber (A : PaperAnalyticData)
     (canonicalCuspFiberBandTopologicalCompatibility R)) i
 
 
-public def cuspFourthSweepClass (A : PaperAnalyticData) :
+public def cuspFourthSweepClass (A : AnalyticData) :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) :=
   integralSingularHomologyMap 2 (cuspFourthSweep A)
     PositiveCircleCross.positiveCircleProductGenerator
@@ -63,4 +63,4 @@ public def cuspFourthSweepClass (A : PaperAnalyticData) :
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

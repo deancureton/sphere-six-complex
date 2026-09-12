@@ -8,7 +8,7 @@ Classical.choice
 Quot.sound
 propext
 SphereSixComplex.PoincareDuality.nonempty_addEquiv
-SphereSixComplex.IntegralCohomology.universalCoefficients
+SphereSixComplex.IntegralCohomology.universal_coefficients
 SphereSixComplex.SmoothManifold.finiteCWModel
 SphereSixComplex.CellularHomology.integralComparison
 

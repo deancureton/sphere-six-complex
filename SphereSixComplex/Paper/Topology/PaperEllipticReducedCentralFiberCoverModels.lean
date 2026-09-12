@@ -15,12 +15,12 @@ noncomputable section
 
 namespace SphereSixComplex
 
-namespace Geometry.PaperAnalyticData.LocalEulerModels
+namespace Geometry.AnalyticData.LocalEulerModels
 
 open CuspPuncturedCollarBridge
 open Topology.PaperEllipticFillingRealPeriodRadial
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Supply direct central homology and Euler data together with the actual collars' explicit
 circle mapping-torus models. -/
@@ -39,7 +39,7 @@ public noncomputable def ofCuspCentralModelAndCollarMappingTorusModels
   cuspCells := cuspCells
   collarModel := collarMappingTorus
 
-end Geometry.PaperAnalyticData.LocalEulerModels
+end Geometry.AnalyticData.LocalEulerModels
 
 end SphereSixComplex
 

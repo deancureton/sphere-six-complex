@@ -20,7 +20,7 @@ noncomputable section
 open AlgebraicTopology Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open CuspPuncturedCollarBridge
@@ -36,7 +36,7 @@ open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Periods
 open SphereSixComplex.TriangleGroup
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 private def subtractCircle (c : UnitAddCircle) : C(UnitAddCircle, UnitAddCircle) where
   toFun x := x - c
@@ -297,6 +297,6 @@ public theorem cuspSelectedPositiveMeridianClass_eq_neg_explicit :
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.ComplexModelRechart
-public import SphereSixComplex.Paper.Geometry.PaperAnalyticData
+public import SphereSixComplex.Paper.Geometry.AnalyticData
 public import SphereSixComplex.Paper.Geometry.EllipticLinearCollarGlobalDescent
 public import SphereSixComplex.Paper.Geometry.EllipticAnalyticCollarDescent
 
@@ -53,9 +53,9 @@ public theorem restrictedContinuousConstSMul
   exact ⟨fun g => Continuous.subtype_mk
     ((continuous_const_smul g).comp continuous_subtype_val) _⟩
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 @[expose] public noncomputable def orderThreeFillingOpen (r : ℝ) :
     TopologicalSpace.Opens (TotalSpace (parameterMap A.periods)) :=
@@ -942,7 +942,7 @@ public theorem orderFourFilling_connected {r : ℝ} (hr : 0 < r) (hr1 : r < 1) :
 
 
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

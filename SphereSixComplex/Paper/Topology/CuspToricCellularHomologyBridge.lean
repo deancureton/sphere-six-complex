@@ -8,12 +8,12 @@ public import Mathlib.Algebra.Homology.ShortComplex.Ab
 
 This file keeps the geometric input at the incidence level.  A general cellular-homology
 comparison supplies the integral cellular complex of a CW complex and a quasi-isomorphism to
-singular chains.  For the standard periodic `A₂` decomposition, the additional datum below says
+singular chains.  For the standard periodic `A₂` decomposition, the boundary equation below says
 exactly that the cellular boundary, in the labelled cell bases, is the explicit incidence map from
 `CuspToricCellularAlgebra` in degree one and is zero in every higher degree.  It contains no
 homology ranks or homology equivalences.
 
-Existence of that incidence datum for the toric decomposition is deliberately not asserted here.
+Existence of that incidence equation for the toric decomposition is deliberately not asserted here.
 -/
 
 @[expose] public section
@@ -97,18 +97,7 @@ public noncomputable def labelledA2CellBasis
     (integerFunctionReindexAddEquiv (e n)).trans
       Finsupp.addEquivFunOnFinite.symm |>.trans (M.cellBasis n)
 
-/-- Exact attaching-incidence data for a labelled standard `A₂` toric CW decomposition.
-The field identifies the genuine cellular boundary in every degree; it neither states nor assumes
-any homology calculation. -/
-public structure StandardA2ToricCellularIncidenceData
-    {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
-    (e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n)
-    (M : IntegralCWCellularHomologyModel Y) : Prop where
-  boundary_eq : ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
-    M.chainComplex.d n.succ n (labelledA2CellBasis e M n.succ x) =
-      labelledA2CellBasis e M n (cuspToricCellularBoundary n x)
-
-namespace StandardA2ToricCellularIncidenceData
+namespace CuspToricCellular
 
 variable {Y : Type} [TopologicalSpace Y] [Topology.CWComplex (Set.univ : Set Y)]
 variable {e : ∀ n, Topology.CWComplex.cell (Set.univ : Set Y) n ≃ CuspWCellIndex n}
@@ -116,7 +105,9 @@ variable {M : IntegralCWCellularHomologyModel Y}
 
 /-- Exact incidence formulas identify the explicit cusp complex with the genuine cellular
 complex. -/
-public noncomputable def chainIso (I : StandardA2ToricCellularIncidenceData e M) :
+public noncomputable def chainIso (I : ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
+      M.chainComplex.d n.succ n (labelledA2CellBasis e M n.succ x) =
+        labelledA2CellBasis e M n (cuspToricCellularBoundary n x)) :
     cuspToricCellularChainComplex ≅ M.chainComplex :=
   HomologicalComplex.Hom.isoOfComponents
     (fun n ↦ (labelledA2CellBasis e M n).toAddCommGrpIso)
@@ -130,30 +121,34 @@ public noncomputable def chainIso (I : StandardA2ToricCellularIncidenceData e M)
       simp only [AddEquiv.toAddCommGrpIso_hom, AddCommGrpCat.hom_comp,
         cuspToricCellularChainComplex, ChainComplex.of_d,
         AddCommGrpCat.hom_ofHom]
-      exact I.boundary_eq j x)
+      exact I j x)
 
 /-- The incidence isomorphism and classical cellular homology identify singular homology with the
 homology of the explicit incidence complex. -/
 public noncomputable def integralSingularHomologyEquiv
-    (I : StandardA2ToricCellularIncidenceData e M) (n : ℕ) :
+    (I : ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
+      M.chainComplex.d n.succ n (labelledA2CellBasis e M n.succ x) =
+        labelledA2CellBasis e M n (cuspToricCellularBoundary n x)) (n : ℕ) :
     IntegralSingularHomology n Y ≃+ cuspToricCellularChainComplex.homology n := by
-  let _ : IsIso (cuspToricCellularChainComplex.homologyMap I.chainIso.hom n) := by
+  let _ : IsIso (cuspToricCellularChainComplex.homologyMap (chainIso I).hom n) := by
     infer_instance
   exact (M.homologyEquiv n).symm.trans
-    ((asIso (cuspToricCellularChainComplex.homologyMap I.chainIso.hom n)).symm
+    ((asIso (cuspToricCellularChainComplex.homologyMap (chainIso I).hom n)).symm
       |>.addCommGroupIsoToAddEquiv)
 
 
 /-- The labelled incidence formulas compute the carrier's second singular homology as `ℤ⁴`. -/
 public noncomputable def integralSingularHomologyTwoEquiv
-    (I : StandardA2ToricCellularIncidenceData e M) :
+    (I : ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
+      M.chainComplex.d n.succ n (labelledA2CellBasis e M n.succ x) =
+        labelledA2CellBasis e M n (cuspToricCellularBoundary n x)) :
     IntegralSingularHomology 2 Y ≃+ (Fin 4 → ℤ) :=
-  (I.integralSingularHomologyEquiv 2).trans
+  (integralSingularHomologyEquiv I 2).trans
     cuspToricCellularChainComplex_homologyTwoEquiv
 
 
 
-end StandardA2ToricCellularIncidenceData
+end CuspToricCellular
 
 namespace StandardA2ToricCentralFiberCWDecomposition
 
@@ -171,23 +166,20 @@ public noncomputable def establishedIntegralCellularChainModel
   letI := D.cwComplex
   exact CellularHomology.normalizedModel D.Carrier
 
-/-- The exact boundary-formula input still required for the concrete standard toric CW
-decomposition. -/
-public abbrev CellularIncidenceData
-    (D : StandardA2ToricCentralFiberCWDecomposition X) :=
-  let _ := D.topology
-  let _ := D.cwComplex
-  StandardA2ToricCellularIncidenceData D.cellEquiv D.establishedIntegralCellularChainModel
-
-
 /-- Conditional on the exact attaching incidences, the CW carrier has second homology `ℤ⁴`. -/
 public noncomputable def carrierIntegralSingularHomologyTwoEquiv
-    (D : StandardA2ToricCentralFiberCWDecomposition X) (I : D.CellularIncidenceData) :
+    (D : StandardA2ToricCentralFiberCWDecomposition X) (I : let _ := D.topology
+      let _ := D.cwComplex
+      ∀ (n : ℕ) (x : CuspWCellIndex n.succ → ℤ),
+        D.establishedIntegralCellularChainModel.chainComplex.d n.succ n
+            (labelledA2CellBasis D.cellEquiv D.establishedIntegralCellularChainModel n.succ x) =
+          labelledA2CellBasis D.cellEquiv D.establishedIntegralCellularChainModel n
+            (cuspToricCellularBoundary n x)) :
     let _ := D.topology
     IntegralSingularHomology 2 D.Carrier ≃+ (Fin 4 → ℤ) := by
   letI := D.topology
   letI := D.cwComplex
-  exact I.integralSingularHomologyTwoEquiv
+  exact CuspToricCellular.integralSingularHomologyTwoEquiv I
 
 
 

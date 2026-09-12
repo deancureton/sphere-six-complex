@@ -6,7 +6,7 @@ public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourLocalG
 @[expose] public section
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.GlobalTorusFamily
@@ -14,7 +14,7 @@ open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem orderFourPuncturedProductCentralRealization_coordinate_fiber_independent
     (z : A.OrderFourCayleyPuncturedDisc) (v w : A.OrderFourTorus) :
@@ -254,4 +254,4 @@ public theorem orderThreeCentralBaseComparisonTrace_first_power
   rw [← A.orderThreeBoundaryBaseHom_ofDeck,
     ← A.orderThreeBoundaryBaseHom_fillingRelation, A.orderThreeBoundaryBaseHom_ofDeck]
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

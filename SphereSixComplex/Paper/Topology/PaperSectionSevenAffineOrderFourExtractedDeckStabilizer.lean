@@ -14,7 +14,7 @@ in the order-four stabilizer exactly when the named lift already lies in that co
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
@@ -24,7 +24,7 @@ open SphereSixComplex.TriangleGroup
 /-- If both the named radial lift and its deck translate lie in the selected order-four collar,
 collar separation forces the deck element into the embedded `C₄` factor. -/
 public theorem mem_orderFourFactor_of_named_and_deck_cayley_lt
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
+    (A : AnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hdeck : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
         (A.affineOrderFourRadialBaseLift
@@ -51,7 +51,7 @@ public theorem mem_orderFourFactor_of_named_and_deck_cayley_lt
 /-- For any deck element already known to carry the named radial lift into the collar, membership
 in the order-four factor is equivalent to the missing named-sheet Cayley bound. -/
 public theorem mem_orderFourFactor_iff_namedOrderFourRadialBase_cayley_lt
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
+    (A : AnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hdeck : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
         (A.affineOrderFourRadialBaseLift
@@ -71,7 +71,7 @@ public theorem mem_orderFourFactor_iff_namedOrderFourRadialBase_cayley_lt
 /-- Equivalently, an extracted deck element fixes the order-four elliptic centre exactly when
 the named radial lift satisfies the missing collar bound. -/
 public theorem fixes_fuchsianTwo_iff_namedOrderFourRadialBase_cayley_lt
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
+    (A : AnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hdeck : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
         (A.affineOrderFourRadialBaseLift
@@ -87,6 +87,6 @@ public theorem fixes_fuchsianTwo_iff_namedOrderFourRadialBase_cayley_lt
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

@@ -14,8 +14,8 @@ open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
-variable (A : PaperAnalyticData)
+namespace SphereSixComplex.Geometry.AnalyticData
+variable (A : AnalyticData)
 
 public def regularFixedFiberCover
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
@@ -91,4 +91,4 @@ public theorem regularFixedFiberPoint_strip (L : A.AffineStripLift)
     (z : affineVerticalStrip) (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
     A.regularFixedFiberPoint (L.lift z) t = A.stripLiftPoint L z t := rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

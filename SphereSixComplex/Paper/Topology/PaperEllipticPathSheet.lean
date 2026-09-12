@@ -6,7 +6,7 @@ import all SphereSixComplex.Paper.TriangleGroup.Representation
 @[expose] public section
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open Set Topology
 open SphereSixComplex.TriangleGroup
@@ -14,7 +14,7 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 
-public theorem orderThree_path_stays_entering_sheet (A : PaperAnalyticData)
+public theorem orderThree_path_stays_entering_sheet (A : AnalyticData)
     {R : ℝ}
     (D : OrderThreeLinearCollarSourceData
       (U := A.modular.modularParameter.toTriangleUniformization) R)
@@ -65,7 +65,7 @@ public theorem orderThree_path_stays_entering_sheet (A : PaperAnalyticData)
     exact mem_univ t
   exact ht
 
-public theorem orderFour_path_stays_entering_sheet (A : PaperAnalyticData)
+public theorem orderFour_path_stays_entering_sheet (A : AnalyticData)
     {R : ℝ}
     (D : OrderFourLinearCollarSourceData
       (U := A.modular.modularParameter.toTriangleUniformization) R)
@@ -140,7 +140,7 @@ public theorem orderFour_fixes_of_generator_conjugate_in_factor
   exact ((SphereSixComplex.TriangleGroup.FreeProductTorsion.fixed_by_conjugate_inr_iff
     g (Multiplicative.ofAdd (1 : ZMod 4)) (by decide) fuchsianTwoFixedPoint).mp hfix).symm
 
-public theorem orderThree_generator_path_stays_standard_collar (A : PaperAnalyticData)
+public theorem orderThree_generator_path_stays_standard_collar (A : AnalyticData)
     {R : ℝ}
     (D : OrderThreeLinearCollarSourceData
       (U := A.modular.modularParameter.toTriangleUniformization) R)
@@ -168,7 +168,7 @@ public theorem orderThree_generator_path_stays_standard_collar (A : PaperAnalyti
   rw [hb, orderThreeCayleyHomeomorph_norm_inl] at ht
   exact ht
 
-public theorem orderFour_generator_path_stays_standard_collar (A : PaperAnalyticData)
+public theorem orderFour_generator_path_stays_standard_collar (A : AnalyticData)
     {R : ℝ}
     (D : OrderFourLinearCollarSourceData
       (U := A.modular.modularParameter.toTriangleUniformization) R)
@@ -196,4 +196,4 @@ public theorem orderFour_generator_path_stays_standard_collar (A : PaperAnalytic
   rw [hb, orderFourCayleyHomeomorph_norm_inr] at ht
   exact ht
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

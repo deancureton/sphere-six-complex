@@ -20,13 +20,13 @@ formula is the affine lift convention and is not the marked deck translation in 
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.Geometry.ComplexTorus
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The exact order-four overlap chart into the punctured central family. -/
 public noncomputable def ellipticFourOverlapToCentral :
@@ -196,6 +196,6 @@ public noncomputable def orderFourCentralBaseWhisker :
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

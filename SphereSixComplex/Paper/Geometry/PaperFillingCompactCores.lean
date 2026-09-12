@@ -49,9 +49,9 @@ public theorem quotientRadialBand_isCompact
     rw [hrhoQ]
     exact hx
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (P : PaperAnalyticData)
+variable (P : AnalyticData)
 
 /-- The exact remaining compactness boundary on the phase-corrected toric cusp quotient.  It is
 local at the missing central fibre: every closed radial sublevel strictly inside the chosen open
@@ -270,7 +270,7 @@ public noncomputable def openEmbeddingStarCompactCoverData_of_radialCores
   central_covers := hcentralCovers
   filling_covers := P.starFilling_covers_radialCore a ha0 K houterCentral
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

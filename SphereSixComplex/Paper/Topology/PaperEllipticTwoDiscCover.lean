@@ -33,9 +33,9 @@ open Geometry.EllipticFamilySpecialization
 open Topology.PaperEllipticFillingRadialRetraction
 open Topology.PaperEllipticReducedCentralFiberCoverModels
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The actual cusp-complement: the central family with both elliptic fillings attached. -/
 public abbrev ellipticInterior :=
@@ -84,7 +84,7 @@ public structure EllipticTwoDiscCoverData where
 
 namespace EllipticTwoDiscCoverData
 
-variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
+variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
 
 /-- The homology basis change from the actual band overlap to its selected regular fibre. -/
 public noncomputable def bandHomologyEquiv (k : ℕ) :
@@ -215,6 +215,6 @@ public theorem differenceMap_two_conjugacy
 
 end EllipticTwoDiscCoverData
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

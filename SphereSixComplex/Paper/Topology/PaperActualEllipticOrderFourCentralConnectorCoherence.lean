@@ -16,13 +16,13 @@ conjugation after transport to the actual core.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 open SphereSixComplex.LatticeData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem ellipticFourCentralBase_eq_overlapCentralBase :
     A.ellipticFourCentralBase = A.ellipticFourOverlapCentralBase := by
@@ -115,7 +115,7 @@ public theorem cuspCentralNaturalityPair_simultaneouslyConjugate_orderFour
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

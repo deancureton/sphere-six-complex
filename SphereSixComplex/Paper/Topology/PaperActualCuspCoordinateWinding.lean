@@ -33,13 +33,13 @@ public def twicePuncturedComplexForgetZero : C(TwicePuncturedComplex, PuncturedC
 
 end SphereSixComplex.Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
 open CuspPeriodExpansion CuspPuncturedCollarBridge
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The completed-cusp parameter disc retained by the actual collar choice. -/
 public def cuspParameterBall : Set ℂ :=
@@ -277,6 +277,6 @@ public noncomputable def cuspAngularZeroLogLift :
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

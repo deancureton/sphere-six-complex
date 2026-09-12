@@ -20,7 +20,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
@@ -42,7 +42,7 @@ open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 /-- The period-basis transport used for the duplicated band preserves addition. -/
 public theorem duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph_add
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (x y : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
     A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph (x + y) =
       A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph x +
@@ -62,7 +62,7 @@ public theorem duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph_add
 
 /-- The order-four principal translation, expressed in the fixed real-period torus. -/
 public noncomputable def orderFourPrincipalRealPeriodGauge
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (z : UpperHalfPlane) :
     AdditiveTorus
       (parameterMap A.periods
@@ -75,7 +75,7 @@ public noncomputable def orderFourPrincipalRealPeriodGauge
 /-- The principal gauge changes only the fixed real-period fibre coordinate, by addition of its
 base-dependent gauge element. -/
 public theorem orderFourRealPeriodProductHomeomorph_principalGauge_snd
-    (A : PaperAnalyticData) (q : TotalSpace (parameterMap A.periods)) :
+    (A : AnalyticData) (q : TotalSpace (parameterMap A.periods)) :
     (orderFourRealPeriodProductHomeomorph A.periods
       (orderFourPrincipalGaugeEquiv A.periods q)).2 =
       A.orderFourPrincipalRealPeriodGauge (familyTotalSpaceBase A.periods q) +
@@ -91,7 +91,7 @@ public theorem orderFourRealPeriodProductHomeomorph_principalGauge_snd
 
 /-- Undoing the principal gauge subtracts the same base-dependent fixed real-period element. -/
 public theorem orderFourRealPeriodProductHomeomorph_principalGauge_symm_snd
-    (A : PaperAnalyticData) (q : TotalSpace (parameterMap A.periods)) :
+    (A : AnalyticData) (q : TotalSpace (parameterMap A.periods)) :
     (orderFourRealPeriodProductHomeomorph A.periods
       ((orderFourPrincipalGaugeEquiv A.periods).symm q)).2 =
       -A.orderFourPrincipalRealPeriodGauge (familyTotalSpaceBase A.periods q) +
@@ -108,7 +108,7 @@ public theorem orderFourRealPeriodProductHomeomorph_principalGauge_symm_snd
 /-- The zero vector over the explicit order-four radial strip lift lies in a fixed punctured
 collar of radius two. -/
 public noncomputable def affineOrderFourRadialZeroCollarPoint
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(affineVerticalStrip,
       orderFourPuncturedFamilyCollar A.periods 2) :=
   ⟨fun z ↦
@@ -152,7 +152,7 @@ public noncomputable def affineOrderFourRadialZeroCollarPoint
 
 /-- The explicit continuous order-four strip gauge, transported back to the common band torus. -/
 public noncomputable def affineOrderFourEndpointGauge
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(affineVerticalStrip,
       AdditiveTorus A.duplicatedSectionSevenBandParameter) :=
   let _ := A.totalSpaceCharts
@@ -171,7 +171,7 @@ public noncomputable def affineOrderFourEndpointGauge
 /-- Pointwise, the common-band gauge is the inverse period-basis transport of the negative
 order-four principal real-period gauge. -/
 public theorem affineOrderFourEndpointGauge_apply
-    (A : PaperAnalyticData) (z : affineVerticalStrip) :
+    (A : AnalyticData) (z : affineVerticalStrip) :
     A.affineOrderFourEndpointGauge z =
       A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.symm
         (-A.orderFourPrincipalRealPeriodGauge
@@ -202,12 +202,11 @@ public theorem affineOrderFourEndpointGauge_apply
         (0 : AdditiveTorus p) := congrArg _ (additiveTorus_mk_zero p)
     _ = _ := add_zero _
 
-/-- The remaining representative-level identity after the explicit gauge and all continuous
-maps have been constructed.  It is stated in the fixed order-four torus: the endpoint coordinate
-is the negative principal gauge plus the transported named-strip fibre coordinate. -/
-public structure AffineOrderFourEndpointRealPeriodIdentity
-    (A : PaperAnalyticData) : Prop where
-  eq_projection : ∀ (x : A.affineMarkedBand)
+/-- The representative-level identity gives exactly the order-four field of the pinned-lift
+endpoint-gauge formulas. -/
+public theorem affineOrderFourEndpointGauge_formula
+    (A : AnalyticData)
+    (H : (∀ (x : A.affineMarkedBand)
       (q : (orderFourAffinePuncturedCarrier A.periods
         A.modular.modularParameter.toTriangleUniformization_sourceAction
         A.starSeparation.orderFour.radius).carrier),
@@ -227,13 +226,7 @@ public structure AffineOrderFourEndpointRealPeriodIdentity
                     (A.affineBandStripCoordinate x)).1 +
                 A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph
                   (A.affineBandFiberCoordinateOfLift
-                    A.affineNamedStripLift x)))
-
-/-- The representative-level identity gives exactly the order-four field of the pinned-lift
-endpoint-gauge formulas. -/
-public theorem affineOrderFourEndpointGauge_formula
-    (A : PaperAnalyticData)
-    (H : A.AffineOrderFourEndpointRealPeriodIdentity) :
+                    A.affineNamedStripLift x))))) :
     (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
         A.affineOrderFourStarEndpoint =
       A.affineOrderFourGaugeProjectionOfLift
@@ -248,7 +241,7 @@ public theorem affineOrderFourEndpointGauge_formula
   induction y using Quotient.inductionOn with
   | _ q =>
       rw [orderFourSelectedFilling_toFun_starToFilling_mk]
-      rw [H.eq_projection x q hq]
+      rw [H x q hq]
       change RadialEllipticActionData.centralFiberCoverProjection
           (orderFourRadialActionData A.periods)
           ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
@@ -275,6 +268,6 @@ public theorem affineOrderFourEndpointGauge_formula
       exact
         (A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.apply_symm_apply _).symm
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.PaperAnalyticData
+public import SphereSixComplex.Paper.Geometry.AnalyticData
 public import SphereSixComplex.Paper.Geometry.FuchsianRegularTorusFamily
 public import SphereSixComplex.Paper.Geometry.ComplexModelRechart
 public import SphereSixComplex.Prerequisites.Geometry.EllipticCayleyHomeomorph
@@ -205,9 +205,9 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 noncomputable section
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Product-model charts on the selected central family. -/
 @[expose, instance_reducible] public noncomputable def centralFamilyProductCharts :
@@ -294,7 +294,7 @@ public theorem centralFamily_secondCountable : SecondCountableTopology A.Central
   exact fuchsianPuncturedGlobalFamily_secondCountable
     A.modular.modularParameter A.periods
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

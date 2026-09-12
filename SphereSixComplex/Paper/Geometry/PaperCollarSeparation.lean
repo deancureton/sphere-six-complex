@@ -27,9 +27,9 @@ open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 
 noncomputable section
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 private theorem eventually_upperHalfPlaneAtInfinity_iff
     {P : UpperHalfPlane → Prop} :
@@ -100,7 +100,7 @@ public theorem orderFourCollarToRegular_base
 
 /-- The fixed exact modular uniformization used to control the paper cusp collar. -/
 @[expose] public noncomputable def actualNormalizedModularJUniformization
-    (_A : PaperAnalyticData) : ExactNormalizedModularJUniformization :=
+    (_A : AnalyticData) : ExactNormalizedModularJUniformization :=
   SphereSixComplex.Periods.ExactNormalizedModularJTau.exactNormalizedModularJUniformization
 
 /-- Analytic facts retained by the quantitative choice of the actual cusp collar. -/
@@ -481,7 +481,7 @@ public theorem exists_collarSeparationData
 
 namespace CollarSeparationData
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
   {W : ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel}
 
 /-- The two simultaneously shrunk elliptic collar images are disjoint in the central family. -/
@@ -660,7 +660,7 @@ end CollarSeparationData
     A.CollarSeparationData A.actualPuncturedCuspWitness :=
   Classical.choice (A.exists_collarSeparationData A.actualPuncturedCuspWitness)
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

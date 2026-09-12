@@ -9,7 +9,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
@@ -23,7 +23,7 @@ open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 open SphereSixComplex.Geometry.GlobalTorusFamily
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The restricted order-four product chart followed by projection to the central family. -/
 public noncomputable def orderFourPuncturedProductCentralRealizationMap :
@@ -150,7 +150,7 @@ public def orderFourCentralBaseFactor_zeroFiberHomotopy :
         rfl }
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

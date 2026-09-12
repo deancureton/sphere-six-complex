@@ -148,22 +148,22 @@ theorem phaseSweepFillingGraph_coordinates
 
 end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Periods StandardCircleHomologyLiftDegree
 open StandardTorusHomology CuspPuncturedCollarBridge CuspFilling CuspPeriodExpansion
 
-local instance (A : PaperAnalyticData) :
+local instance (A : AnalyticData) :
     T2Space (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness) := by
   let _ := actualLocalCuspFilling_t2 A.starCuspWitness
   exact (actualLocalCuspCentralOrbitMap_isEmbedding A.starCuspWitness).t2Space
 
-def cuspMixedSourceColumn (A : PaperAnalyticData)
+def cuspMixedSourceColumn (A : AnalyticData)
     (T : CellularHomology.IntegralComparison) (j : Fin 4) : Fin 4 → ℤ :=
   phaseSweepFillingHomologyTwoEquiv A.starCuspWitness A.cuspCentralFiberRetractionData T
     (integralSingularHomologyMap 2 (A.cuspFiniteFiberTorusToFilling j)
       standardTwoTorusHomologyGenerator)
 
-theorem cuspMixedSourceColumns_of_graphReadout (A : PaperAnalyticData)
+theorem cuspMixedSourceColumns_of_graphReadout (A : AnalyticData)
     (T : CellularHomology.IntegralComparison) (n : ℤ) (hn : n = 1 ∨ n = -1)
     (hread : ∀ (i : Fin 2) (j k : Fin 3),
       phaseSweepFillingHomologyTwoEquiv A.starCuspWitness A.cuspCentralFiberRetractionData T
@@ -194,7 +194,7 @@ theorem cuspMixedSourceColumns_of_graphReadout (A : PaperAnalyticData)
     ext l
     fin_cases l <;> simp
 
-theorem cuspMixedSourceColumns (A : PaperAnalyticData)
+theorem cuspMixedSourceColumns (A : AnalyticData)
     (T : CellularHomology.IntegralComparison) :
     ∃ a b c : ℤ, (a = 1 ∨ a = -1) ∧ (b = 1 ∨ b = -1) ∧ (c = 1 ∨ c = -1) ∧
       A.cuspMixedSourceColumn T 1 = ![0,a,0,-c] ∧
@@ -210,4 +210,4 @@ theorem cuspMixedSourceColumns (A : PaperAnalyticData)
     exact phaseSweepFillingGraph_coordinates A.starCuspWitness A.cuspCentralFiberRetractionData
       T (-1) (Or.inr rfl) (by simpa using h) i j k
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

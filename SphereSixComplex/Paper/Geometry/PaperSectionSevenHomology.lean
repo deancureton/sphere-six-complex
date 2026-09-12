@@ -18,9 +18,9 @@ namespace SphereSixComplex.Geometry
 
 noncomputable section
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (P : PaperAnalyticData)
+variable (P : AnalyticData)
 
 /-- The Section 7 map calculation and the seven local Euler calculations give the integral
 homology of the standard six-sphere for the actual analytic star. -/
@@ -91,7 +91,7 @@ public theorem star_nonempty_homologyEquiv_sixSphere_of_positiveDegree
   P.star_hasIntegralHomologyOfSixSphere_of_localModels
     H.toSectionSevenMayerVietorisHomologyAssembly P.localEulerModels hTop
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

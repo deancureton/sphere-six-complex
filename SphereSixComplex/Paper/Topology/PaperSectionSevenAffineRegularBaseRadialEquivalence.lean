@@ -18,13 +18,13 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public abbrev orderThreeAffineDiscCoordinateRegion (r : ℝ) : Set regularCoordinateBase :=
   {z | ‖z.1‖ < r}
@@ -371,4 +371,4 @@ public noncomputable def orderFourBaseRadialEquiv
     A.regularBaseDeckAction A.regularCoordinate A.regularCoordinate_deck_invariant
     A.regularCoordinate_isCoveringMap A.regularBaseDeckAction_continuous
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

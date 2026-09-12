@@ -7,7 +7,7 @@ public import SphereSixComplex.Prerequisites.Topology.UnitCircleExponential
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open CuspPuncturedCollarBridge CuspRadialClutchingConstruction
 open CuspLocalPhaseAction InfiniteA2Toric
@@ -23,7 +23,7 @@ public theorem fourthToricCircle_last (z : UnitAddCircle) : fourthToricCircle z 
 
 open CuspPeriodExpansion
 
-public def cuspAngularDenseLoop (A : PaperAnalyticData) : C(UnitAddCircle, DenseTorus) where
+public def cuspAngularDenseLoop (A : AnalyticData) : C(UnitAddCircle, DenseTorus) where
   toFun z := ![1, 1, (denseCuspExponential 0
     (cuspParameterOfPolar (A.starCuspWitness.localWitness.radius / 2) 0) 2) *
       CircleExponential.toUnits z]
@@ -32,7 +32,7 @@ public def cuspAngularDenseLoop (A : PaperAnalyticData) : C(UnitAddCircle, Dense
     intro i
     fin_cases i <;> fun_prop
 
-public theorem cuspAngularDenseLoop_real (A : PaperAnalyticData) (t : ℝ) :
+public theorem cuspAngularDenseLoop_real (A : AnalyticData) (t : ℝ) :
     cuspAngularDenseLoop A (t : UnitAddCircle) =
       denseCuspExponential 0
         (cuspParameterOfPolar (A.starCuspWitness.localWitness.radius / 2) t) := by
@@ -51,7 +51,7 @@ public theorem cuspAngularDenseLoop_real (A : PaperAnalyticData) (t : ℝ) :
     push_cast
     ring
 
-public def cuspAngularLocalLoop (A : PaperAnalyticData) :
+public def cuspAngularLocalLoop (A : AnalyticData) :
     C(UnitAddCircle, localCarrier A.toricModel A.starCuspWitness.localWitness.radius) where
   toFun z := ⟨A.toricModel.torusEmbedding (cuspAngularDenseLoop A z), by
     obtain ⟨t, rfl⟩ := QuotientAddGroup.mk_surjective z
@@ -66,20 +66,20 @@ public def cuspAngularLocalLoop (A : PaperAnalyticData) :
   continuous_toFun := (A.toricModel.torus_openEmbedding.continuous.comp
     (cuspAngularDenseLoop A).continuous).subtype_mk _
 
-public def fourthSweepToricFactor (A : PaperAnalyticData) :
+public def fourthSweepToricFactor (A : AnalyticData) :
     C(UnitAddCircle × StdTorus 1,
       UnitAddCircle × localCarrier A.toricModel A.starCuspWitness.localWitness.radius) where
   toFun z := (z.2 0, cuspAngularLocalLoop A z.1)
   continuous_toFun := ((continuous_apply 0).comp continuous_snd).prodMk
     ((cuspAngularLocalLoop A).continuous.comp continuous_fst)
 
-public def fourthSweepToricLift (A : PaperAnalyticData) :
+public def fourthSweepToricLift (A : AnalyticData) :
     C(UnitAddCircle × StdTorus 1,
       localCarrier A.toricModel A.starCuspWitness.localWitness.radius) :=
   (localHeightPreservingCircleAction A.toricModel A.starCuspWitness.localWitness.radius
     fourthToricCircle fourthToricCircle_last).comp (fourthSweepToricFactor A)
 
-public theorem fourthSweepToricLift_homology_zero (A : PaperAnalyticData)
+public theorem fourthSweepToricLift_homology_zero (A : AnalyticData)
     (x : IntegralSingularHomology 2 (UnitAddCircle × StdTorus 1)) :
     integralSingularHomologyMap 2 (fourthSweepToricLift A) x = 0 := by
   exact localHeightPreservingCircleSweep_zero _ _ A.starCuspWitness.localWitness.radius_pos
@@ -88,7 +88,7 @@ public theorem fourthSweepToricLift_homology_zero (A : PaperAnalyticData)
     ⟨fun z _ ↦ z.1, continuous_pi fun _ ↦ continuous_fst⟩ rfl x
 
 open ComplexTorus SphereSixComplex.Periods
-public theorem fourthSweepToricLift_real (A : PaperAnalyticData) (r t : ℝ) :
+public theorem fourthSweepToricLift_real (A : AnalyticData) (r t : ℝ) :
     fourthSweepToricLift A ((r : UnitAddCircle), fun _ ↦ (t : UnitAddCircle)) =
       additiveCuspFillingLift A.starCuspWitness
         ⟨(t • periodVector (cuspBasePoint A.cuspCoordinate
@@ -113,7 +113,7 @@ public theorem fourthSweepToricLift_real (A : PaperAnalyticData) (r t : ℝ) :
       NormalizedFuchsianCuspCoordinate.exponentialUnit, CircleExponential.toUnits_real,
       periodVector, periodMatrix, Matrix.vecHead, Matrix.vecTail]
 
-public theorem cuspFourthSweep_filling_factor (A : PaperAnalyticData) :
+public theorem cuspFourthSweep_filling_factor (A : AnalyticData) :
     (⟨puncturedLocalCuspToFilling A.starCuspWitness,
       puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ :
       C(A.openEmbeddingStarData.collarSource 0, ActualLocalCuspFilling A.starCuspWitness)).comp
@@ -134,7 +134,7 @@ public theorem cuspFourthSweep_filling_factor (A : PaperAnalyticData) :
   change _ = actualCuspFillingProjection A.starCuspWitness (fourthSweepToricLift A _)
   rw [fourthSweepToricLift_real]
 
-public theorem cuspFourthSweep_filling_homology_zero (A : PaperAnalyticData)
+public theorem cuspFourthSweep_filling_homology_zero (A : AnalyticData)
     (x : IntegralSingularHomology 2 (UnitAddCircle × StdTorus 1)) :
     integralSingularHomologyMap 2
       (⟨puncturedLocalCuspToFilling A.starCuspWitness,
@@ -144,4 +144,4 @@ public theorem cuspFourthSweep_filling_homology_zero (A : PaperAnalyticData)
   rw [integralSingularHomologyMap_comp_wang, cuspFourthSweep_filling_factor,
     ← integralSingularHomologyMap_comp_wang, fourthSweepToricLift_homology_zero, map_zero]
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

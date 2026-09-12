@@ -67,7 +67,7 @@ public theorem eq_of_totalToInvariants_eq_of_map_eq_zero
 
 end WangHomologyPresentation
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 open CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
@@ -76,7 +76,7 @@ open EllipticTwoDiscCoverData
 
 /-- The positive generator of the actual cusp degree-one Wang invariant lattice. -/
 public noncomputable def cuspPositiveDegreeOneInvariantGenerator
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     (circleMappingTorusHOnePresentation G.clutching).invariants := by
@@ -86,7 +86,7 @@ public noncomputable def cuspPositiveDegreeOneInvariantGenerator
 
 /-- The specialization-adjusted section lift of the positive invariant generator. -/
 public noncomputable def cuspSelectedPositiveMeridianClass
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     IntegralSingularHomology 1 (CircleMappingTorus G.clutching) := by
@@ -97,7 +97,7 @@ public noncomputable def cuspSelectedPositiveMeridianClass
 
 /-- The chosen positive invariant generator has invariant coordinate one. -/
 public theorem cuspPositiveDegreeOneInvariantGenerator_coordinate
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     degreeOneWangInvariantEquivInteger G
@@ -109,7 +109,7 @@ public theorem cuspPositiveDegreeOneInvariantGenerator_coordinate
 
 /-- The selected positive section class is exactly the third raw degree-one basis class. -/
 public theorem cuspSelectedPositiveMeridianClass_raw_coordinate
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     G.geometricWangSections.circleMappingTorusHOneAddEquiv
@@ -144,7 +144,7 @@ public theorem cuspSelectedPositiveMeridianClass_raw_coordinate
 /-- Equivalently, the inverse raw coordinate map sends the third basis vector to the selected
 positive section lift. -/
 public theorem cuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     G.geometricWangSections.circleMappingTorusHOneAddEquiv.symm
@@ -160,7 +160,7 @@ public theorem cuspRawDegreeOneThirdBasis_eq_selectedPositiveMeridianClass
 /-- The actual filling map is an isomorphism on the degree-one Wang coinvariants, without using
 the coordinate specialization matrix. -/
 public theorem cuspRawDegreeOneFiberSpecialization_bijective
-    (A : PaperAnalyticData) (b : PuncturedLocalCuspQuotient A.starCuspWitness) :
+    (A : AnalyticData) (b : PuncturedLocalCuspQuotient A.starCuspWitness) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     Function.Bijective (rawDegreeOneFiberSpecialization G) := by
@@ -179,7 +179,7 @@ public theorem cuspRawDegreeOneFiberSpecialization_bijective
 is killed by specialization, uniqueness in the specialization kernel identifies the selected
 positive class with the negative angular meridian. -/
 public theorem cuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizations
-    (A : PaperAnalyticData) (b : PuncturedLocalCuspQuotient A.starCuspWitness)
+    (A : AnalyticData) (b : PuncturedLocalCuspQuotient A.starCuspWitness)
     (hselected :
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -221,7 +221,7 @@ public theorem cuspSelectedPositiveMeridianClass_eq_neg_explicit_of_normalizatio
 
 
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex
 

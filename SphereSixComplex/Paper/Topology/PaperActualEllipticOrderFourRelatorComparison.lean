@@ -16,11 +16,11 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 
 /-- The order-four affine relator in the central marking transported to the actual core. -/
@@ -36,6 +36,6 @@ public noncomputable def orderFourCentralRelatorToCore
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

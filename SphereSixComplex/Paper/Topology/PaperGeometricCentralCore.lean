@@ -18,7 +18,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
@@ -28,7 +28,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open CuspPuncturedCollarBridge
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The marked lattice translations transported to the selected actual cusp point. -/
 public noncomputable def geometricCentralTranslation :
@@ -819,6 +819,6 @@ public noncomputable def cuspGeometricCorePiOneData :
     rw [A.correctedActualCuspCentralTranslation_range_eq_actual]
     exact A.cuspCentralFundamentalGroup_generated
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

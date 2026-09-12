@@ -145,14 +145,14 @@ public noncomputable def puncturedGlobalBaseProjection :
 
 end SphereSixComplex.Geometry.GlobalTorusFamily
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public abbrev paperTriangleUniformization :=
   A.modular.modularParameter.toTriangleUniformization
@@ -430,6 +430,6 @@ public theorem centralZeroSectionFundamentalGroupMap_range_le_markedClosure :
   rw [A.markedBaseMeridians_generate]
   trivial
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

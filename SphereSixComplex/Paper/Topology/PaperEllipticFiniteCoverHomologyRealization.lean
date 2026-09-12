@@ -67,12 +67,20 @@ public theorem orderFourFixedHOneBasis_projection (x : Lattice) :
       orderTwoCoinvariantsEquivIntSquared_mk, orderTwoCoordinates, psiTwo]
 
 /-- Degree-one naturality for the actual order-three finite cover. -/
-public theorem orderThreeHOneNaturality : OrderThreeCentralFiberHOneNaturality F where
-  projection_coordinates := orderThreeFixedHOneBasis_projection F
+public theorem orderThreeHOneNaturality : ∀ x : Lattice,
+    (orderThreeReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection (orderThreeRadialActionData F))
+        ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderOneLatticeProjectionCoordinates x := orderThreeFixedHOneBasis_projection F
 
 /-- Degree-one naturality for the actual order-four finite cover. -/
-public theorem orderFourHOneNaturality : OrderFourCentralFiberHOneNaturality F where
-  projection_coordinates := orderFourFixedHOneBasis_projection F
+public theorem orderFourHOneNaturality : ∀ x : Lattice,
+    (orderFourReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection (orderFourRadialActionData F))
+        ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderTwoLatticeProjectionCoordinates x := orderFourFixedHOneBasis_projection F
 
 namespace EllipticDegreeTwoPullbackBases
 

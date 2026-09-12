@@ -3,10 +3,10 @@ public import SphereSixComplex.Paper.Topology.CuspNormalizedRegularPaths
 
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology GlobalTorusFamily TriangleGroup
 
-public theorem cuspPositiveWhisker_class (A : PaperAnalyticData) :
+public theorem cuspPositiveWhisker_class (A : AnalyticData) :
     Path.Homotopic.Quotient.mk
       (A.cuspMarkedCentralWhisker.trans
         (A.cuspAngularCentralLoop.symm.trans
@@ -22,7 +22,7 @@ public theorem cuspPositiveWhisker_class (A : PaperAnalyticData) :
     Path.Homotopic.Quotient.mk_symm, homotopicQuotient_symm_trans,
     homotopicQuotient_symm_symm, Path.Homotopic.Quotient.trans_assoc]
 
-public theorem centralFamilyCoordinate_markedZero (A : PaperAnalyticData) :
+public theorem centralFamilyCoordinate_markedZero (A : AnalyticData) :
     FundamentalGroup.mapOfEq
       ⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩
       A.affineMarkedCentralCoordinate_base A.markedZeroCentralMeridianClass =
@@ -41,7 +41,7 @@ public theorem centralFamilyCoordinate_markedZero (A : PaperAnalyticData) :
   rw [A.centralFamilyCoordinate_zeroSection]
   exact A.puncturedBaseHomeomorphTwicePuncturedComplex.apply_symm_apply _
 
-public theorem centralFamilyCoordinate_markedOne (A : PaperAnalyticData) :
+public theorem centralFamilyCoordinate_markedOne (A : AnalyticData) :
     FundamentalGroup.mapOfEq
       ⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩
       A.affineMarkedCentralCoordinate_base A.markedOneCentralMeridianClass =
@@ -60,7 +60,7 @@ public theorem centralFamilyCoordinate_markedOne (A : PaperAnalyticData) :
   rw [A.centralFamilyCoordinate_zeroSection]
   exact A.puncturedBaseHomeomorphTwicePuncturedComplex.apply_symm_apply _
 
-public theorem cuspPositiveWhisker_coordinate_homotopy (A : PaperAnalyticData) :
+public theorem cuspPositiveWhisker_coordinate_homotopy (A : AnalyticData) :
     (((A.cuspMarkedCentralWhisker.trans
       (A.cuspAngularCentralLoop.symm.trans A.cuspMarkedCentralWhisker.symm)).map
         A.centralFamilyCoordinate_continuous).cast
@@ -77,12 +77,12 @@ public theorem cuspPositiveWhisker_coordinate_homotopy (A : PaperAnalyticData) :
   rw [FundamentalGroup.mapOfEq_apply] at h
   exact h
 
-public theorem regularCoordinate_sourceEquiv (A : PaperAnalyticData) (g : Delta)
+public theorem regularCoordinate_sourceEquiv (A : AnalyticData) (g : Delta)
     (b : RegularBase (U := A.paperTriangleUniformization)) :
     A.regularCoordinate (regularSourceEquiv g b) = A.regularCoordinate b :=
   A.regularCoordinate_deck_invariant g b
 
-public theorem normalizedWhiskeredCuspRegularPath_projects (A : PaperAnalyticData)
+public theorem normalizedWhiskeredCuspRegularPath_projects (A : AnalyticData)
     (t : unitInterval) :
     A.regularCoordinate (A.normalizedWhiskeredCuspRegularPath t) =
       A.centralFamilyCoordinate
@@ -96,7 +96,7 @@ public theorem normalizedWhiskeredCuspRegularPath_projects (A : PaperAnalyticDat
       A.normalizedCuspPositiveRegularPath_projects, A.regularCoordinate_sourceEquiv,
       cuspAngularCoordinateLoop, Path.symm_apply, Path.map_coe, Function.comp_apply]
 
-public theorem normalizedMeridianPairRegularPath_projects (A : PaperAnalyticData)
+public theorem normalizedMeridianPairRegularPath_projects (A : AnalyticData)
     (t : unitInterval) :
     A.regularCoordinate (A.normalizedMeridianPairRegularPath t) =
       (twicePuncturedClockwiseZeroMeridian.trans twicePuncturedClockwiseOneMeridian) t := by
@@ -107,7 +107,7 @@ public theorem normalizedMeridianPairRegularPath_projects (A : PaperAnalyticData
       A.affineNormalizedOneLift_projects, A.regularCoordinate_sourceEquiv]
 
 public theorem normalizedWhiskeredCuspRegularPath_homotopic_meridianPair
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     A.normalizedWhiskeredCuspRegularPath.Homotopic A.normalizedMeridianPairRegularPath := by
   apply (A.regularCoordinate_isCoveringMap.homotopicRel_iff_comp
     (f₀ := A.normalizedWhiskeredCuspRegularPath.toContinuousMap)
@@ -127,5 +127,5 @@ public theorem normalizedWhiskeredCuspRegularPath_homotopic_meridianPair
   · ext t
     exact congrArg Subtype.val (A.normalizedMeridianPairRegularPath_projects t)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end

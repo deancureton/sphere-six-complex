@@ -15,7 +15,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.CyclicAngularFundamentalDomain
@@ -29,7 +29,7 @@ open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.Topology
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public noncomputable def orderThreeCollarInverseRepresentativeMap :
     C(OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace),
@@ -517,7 +517,7 @@ public theorem orderFourFillingRelationRegularLoop_realPeriod_snd
   rw [A.orderFourCollarRegularRepresentativeMap_realPeriod_snd]
   rw [A.orderFourFillingRelationStraightLift_vector]
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

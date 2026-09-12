@@ -18,7 +18,7 @@ noncomputable section
 
 open AlgebraicTopology CategoryTheory Set
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open EllipticTwoDiscHomologyCoordinates
 open EllipticInteriorMarkedCycleData
@@ -27,7 +27,7 @@ open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.LatticeData SphereSixComplex.LatticeWangAlgebra
 open SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
 
-variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
+variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
 
 namespace EllipticTwoDiscCoverData
 
@@ -116,4 +116,4 @@ public theorem cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

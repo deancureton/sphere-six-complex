@@ -443,7 +443,7 @@ public theorem centralFundamentalGroup_generated_by_translations_and_zeroSection
 
 end SphereSixComplex.Geometry.GlobalTorusFamily
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -453,7 +453,7 @@ open SphereSixComplex.LatticeData
 open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- A concrete regular-source representative of the marked ordinary basepoint. -/
 public noncomputable def markedRegularBaseLift :
@@ -587,6 +587,6 @@ public theorem markedCentralFundamentalGroup_generated_by_translations_and_zeroS
   rw [hgen]
   trivial
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

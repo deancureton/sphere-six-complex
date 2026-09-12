@@ -28,7 +28,12 @@ namespace SphereSixComplex
 is stated for arbitrary spaces and degrees; no application-specific sphere or homology class is
 mentioned. -/
 public axiom Hurewicz.exists_map :
-    ∃ H : Hurewicz.Map, Hurewicz.IsIsoInRange H
+    ∃ H : Hurewicz.Map,
+      ∀ (n : ℕ) (hn : 2 ≤ n)
+        (X : Type) [TopologicalSpace X] [PathConnectedSpace X] (x : X),
+        letI : Nontrivial (Fin n) := Fin.nontrivial_iff_two_le.mpr hn
+        (∀ k : ℕ, 0 < k → k < n → Subsingleton (HomotopyGroup.Pi k X x)) →
+          Function.Bijective (H.hom n X x)
 
 /-- For a simply connected space whose positive integral homology vanishes below `n`, every
 degree-`n` class is represented by a map from the standard `n`-sphere. This is the application
@@ -58,8 +63,11 @@ public axiom CWType.homological_whitehead
 /-- Smooth Poincare in dimension six for the specified smooth atlas. Equivalently, this is the
 dimension-six generalized Poincare and h-cobordism argument together with the Kervaire--Milnor
 calculation that the group of smooth homotopy six-spheres is trivial. -/
-public axiom SmoothSixSphere.poincare :
-    SmoothSixSphere.Poincare
+public axiom SmoothSixSphere.poincare
+    (M : Type) [TopologicalSpace M] [ChartedSpace RealModel M]
+    [IsManifold 𝓘(ℝ, RealModel) ∞ M] [T2Space M] [SecondCountableTopology M]
+    [CompactSpace M] (hM : Nonempty (M ≃ₕ SixSphere)) :
+    Nonempty (Diffeomorph 𝓘(ℝ, RealModel) 𝓘(ℝ, RealModel) M SixSphere ∞)
 
 private theorem intAddMonoidHom_bijective_of_one_mem_range
     (g : ℤ →+ ℤ) (h : ∃ z, g z = 1) :

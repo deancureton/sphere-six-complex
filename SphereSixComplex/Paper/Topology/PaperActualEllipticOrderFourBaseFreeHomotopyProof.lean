@@ -354,11 +354,11 @@ public theorem frozenLocalDegreeCircleTwoPunctures_map_eq_positiveOneQuadruple
 
 end SphereSixComplex.Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 
 /-- The affine base coordinate of the projected complete order-four filling loop. -/
@@ -393,7 +393,7 @@ public theorem orderFourFillingRelationBaseCoordinateMap_eq_cayley :
     puncturedComplexIntegerCirclePoint] using h
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

@@ -83,9 +83,9 @@ open EllipticLocalCoordinates EllipticCayleyHomeomorph
 open EllipticWholeFiberCompactCover
 open TriangleGroup.FuchsianArithmeticTermination
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public abbrev OrderThreeAffinePuncturedQuotient (r : ℝ) :=
   Quotient (restrictedOrbitRel (orderThreeAffineFamilyAction A.periods)
@@ -612,7 +612,7 @@ private theorem totalSpace_isManifold_analytic :
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
   let _ := A.totalSpaceCharts
-  simpa [PaperAnalyticData.totalSpaceCharts] using
+  simpa [AnalyticData.totalSpaceCharts] using
     (totalSpace_isManifold_and_projection_isLocalDiffeomorph A.periods ω).1
 
 private theorem totalSpaceProjection_isLocalDiffeomorph_analytic :
@@ -626,7 +626,7 @@ private theorem totalSpaceProjection_isLocalDiffeomorph_analytic :
     (compactlyUniformPeriods_of_compactUniformLowerBound (parameterMap A.periods)
       (parameterMap_compactUniformLowerBound A.periods))
   let _ := A.totalSpaceCharts
-  simpa [PaperAnalyticData.totalSpaceCharts] using
+  simpa [AnalyticData.totalSpaceCharts] using
     (totalSpace_isManifold_and_projection_isLocalDiffeomorph A.periods ω).2
 
 private theorem centralFamilyProjection_isLocalDiffeomorph :
@@ -664,7 +664,7 @@ private theorem centralFamilyProjection_isLocalDiffeomorph :
   let cProduct : ChartedSpace (ℂ × ComplexTwoSpace) A.CentralFamily :=
     A.centralFamilyProductCharts
   let _ : ChartedSpace (ℂ × ComplexTwoSpace) A.CentralFamily := cProduct
-  simpa [PaperAnalyticData.centralFamilyProductCharts, regularSmoothnessOrder] using
+  simpa [AnalyticData.centralFamilyProductCharts, regularSmoothnessOrder] using
     (fuchsianPuncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph
       A.modular.modularParameter A.periods).2
 
@@ -875,7 +875,7 @@ public theorem centralFamilyProduct_isManifold :
   let _ : ContinuousConstSMul Delta (RegularTotalSpace A.periods) :=
     regularFamilyDeckAction_continuousConstSMul A.periods hproper
   let _ := A.centralFamilyProductCharts
-  simpa [PaperAnalyticData.centralFamilyProductCharts, regularSmoothnessOrder] using
+  simpa [AnalyticData.centralFamilyProductCharts, regularSmoothnessOrder] using
     (fuchsianPuncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph
       A.modular.modularParameter A.periods).1
 
@@ -900,7 +900,7 @@ public theorem orderThreePuncturedCollarToCentralFamily_isLocalDiffeomorph_compl
   let _ : ChartedSpace ComplexModel (A.OrderThreeAffinePuncturedQuotient P.radius) :=
     globalDeckComplexCharts
   let _ := A.centralFamilyComplexCharts
-  simpa only [PaperAnalyticData.centralFamilyComplexCharts] using
+  simpa only [AnalyticData.centralFamilyComplexCharts] using
     (isLocalDiffeomorph_globalDeckComplex h)
 
 public theorem orderThreePuncturedCollarToFilling_isLocalDiffeomorph_complex
@@ -927,7 +927,7 @@ public theorem orderThreePuncturedCollarToFilling_isLocalDiffeomorph_complex
   let _ : ChartedSpace ComplexModel (A.OrderThreeAffinePuncturedQuotient P.radius) :=
     globalDeckComplexCharts
   let _ := A.orderThreeFillingComplexCharts P.radius
-  simpa only [PaperAnalyticData.orderThreeFillingComplexCharts] using
+  simpa only [AnalyticData.orderThreeFillingComplexCharts] using
     (isLocalDiffeomorph_globalDeckComplex h)
 
 public theorem orderFourPuncturedCollarToCentralFamily_isLocalDiffeomorph_complex
@@ -951,7 +951,7 @@ public theorem orderFourPuncturedCollarToCentralFamily_isLocalDiffeomorph_comple
   let _ : ChartedSpace ComplexModel (A.OrderFourAffinePuncturedQuotient P.radius) :=
     globalDeckComplexCharts
   let _ := A.centralFamilyComplexCharts
-  simpa only [PaperAnalyticData.centralFamilyComplexCharts] using
+  simpa only [AnalyticData.centralFamilyComplexCharts] using
     (isLocalDiffeomorph_globalDeckComplex h)
 
 public theorem orderFourPuncturedCollarToFilling_isLocalDiffeomorph_complex
@@ -978,7 +978,7 @@ public theorem orderFourPuncturedCollarToFilling_isLocalDiffeomorph_complex
   let _ : ChartedSpace ComplexModel (A.OrderFourAffinePuncturedQuotient P.radius) :=
     globalDeckComplexCharts
   let _ := A.orderFourFillingComplexCharts P.radius
-  simpa only [PaperAnalyticData.orderFourFillingComplexCharts] using
+  simpa only [AnalyticData.orderFourFillingComplexCharts] using
     (isLocalDiffeomorph_globalDeckComplex h)
 
 public noncomputable def orderThreeFillingCollarPartialDiffeomorph
@@ -1079,7 +1079,7 @@ public theorem orderFourFillingCollarPartialDiffeomorph_apply
       A.orderFourPuncturedCollarToFilling P.radius x := by
   simp [orderFourFillingCollarPartialDiffeomorph]
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

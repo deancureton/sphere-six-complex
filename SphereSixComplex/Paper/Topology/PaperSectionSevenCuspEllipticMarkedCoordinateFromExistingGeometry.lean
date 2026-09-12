@@ -22,7 +22,7 @@ noncomputable section
 open AlgebraicTopology CategoryTheory Set
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.LatticeData
@@ -32,7 +32,7 @@ open EllipticInteriorMarkedCycleData
 open EllipticTwoDiscHomologyCoordinates
 open EllipticTwoDiscCoverData
 
-variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
+variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
 
 namespace EllipticTwoDiscCoverData
 
@@ -239,7 +239,7 @@ public theorem canonicalCuspFiberToBand_degreeTwoPeriodMarking
 /-- A fibre class representing the `i`-th degree-one coinvariant basis vector in the geometric
 Wang coordinates. -/
 public noncomputable def actualCuspFiberCoinvariantHomologyOneBasis
-    (A : PaperAnalyticData) (i : Fin 2) :
+    (A : AnalyticData) (i : Fin 2) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     IntegralSingularHomology 1 G.Fiber := by
@@ -250,7 +250,7 @@ public noncomputable def actualCuspFiberCoinvariantHomologyOneBasis
 
 /-- The selected degree-one fibre classes are the first two geometric Wang basis vectors. -/
 public theorem actualCuspFiberCoinvariantHomologyOneBasis_inclusion
-    (A : PaperAnalyticData) (i : Fin 2) :
+    (A : AnalyticData) (i : Fin 2) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     G.geometricWangSections.circleMappingTorusHOneAddEquiv
@@ -307,7 +307,7 @@ public theorem actualCuspFiberCoinvariantHomologyOneBasis_inclusion
 /-- A fibre class representing the `i`-th degree-two coinvariant basis vector in the geometric
 Wang coordinates. -/
 public noncomputable def actualCuspFiberCoinvariantHomologyTwoBasis
-    (A : PaperAnalyticData) (i : Fin 4) :
+    (A : AnalyticData) (i : Fin 4) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     IntegralSingularHomology 2 G.Fiber := by
@@ -318,7 +318,7 @@ public noncomputable def actualCuspFiberCoinvariantHomologyTwoBasis
 
 /-- The selected fibre classes are the first four geometric Wang basis vectors. -/
 public theorem actualCuspFiberCoinvariantHomologyTwoBasis_inclusion
-    (A : PaperAnalyticData) (i : Fin 4) :
+    (A : AnalyticData) (i : Fin 4) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     G.geometricWangSections.circleMappingTorusHTwoAddEquiv
@@ -443,6 +443,6 @@ public theorem actualCuspDegreeTwoFiberBasis_eq_canonicalBand
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

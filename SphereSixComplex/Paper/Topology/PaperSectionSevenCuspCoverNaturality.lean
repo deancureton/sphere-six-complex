@@ -17,11 +17,11 @@ noncomputable section
 
 open AlgebraicTopology CategoryTheory Set TopologicalSpace
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open EllipticTwoDiscHomologyCoordinates
 
-variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
+variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
 
 namespace EllipticTwoDiscCoverData
 
@@ -150,4 +150,4 @@ public theorem canonicalBoundary_cuspToEllipticUnionHomology
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

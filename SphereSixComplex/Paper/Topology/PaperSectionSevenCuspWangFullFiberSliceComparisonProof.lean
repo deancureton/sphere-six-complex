@@ -10,7 +10,7 @@ noncomputable section
 open AlgebraicTopology
 open CategoryTheory.Limits
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.LatticeWangAlgebra
 open SphereSixComplex.CircleMappingTorusHomologyBases
@@ -52,7 +52,7 @@ private theorem circleMappingTorusBoundary_coordinates
     rfl
 
 public theorem actualCuspWangBoundaryHom_rawCoordinates
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
@@ -74,7 +74,7 @@ public def actualCuspWangBoundaryRawBasisCoordinates (i : Fin 6) : Fin 4 → ℤ
 
 /-- The actual Wang boundary on each raw basis vector, expressed as an explicit element of the
 marked first homology of the fibre. -/
-public theorem actualCuspWangBoundaryHom_rawBasis (A : PaperAnalyticData) (i : Fin 6) :
+public theorem actualCuspWangBoundaryHom_rawBasis (A : AnalyticData) (i : Fin 6) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     actualCuspWangBoundaryHom A
@@ -102,7 +102,7 @@ private theorem openRadialIntervalProdHomotopyEquiv_apply_snd
   rfl
 
 private theorem totalHomeomorph_actualCuspFullFiberSlice_snd
-    {A : PaperAnalyticData} (s : ℂ)
+    {A : AnalyticData} (s : ℂ)
     (hs : ‖SphereSixComplex.Geometry.CuspPeriodExpansion.cuspQ s‖ <
       A.starCuspWitness.localWitness.radius)
     (y : let G := A.actualCuspRadialClutchingData
@@ -160,7 +160,7 @@ private def circleMappingTorusRealFiberSliceHomotopy
         phi x
 
 private theorem cuspOpenCoverConnectingHom_eq_zero_of_intersection_image
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
+    {A : AnalyticData} (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0))
     (w : IntegralSingularHomology 2
       ((TopologicalSpace.Opens.toTopCat
@@ -198,7 +198,7 @@ private theorem cuspOpenCoverConnectingHom_eq_zero_of_intersection_image
   exact hw
 
 private theorem actualCuspWangFiberSlice_to_mappingTorus
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput) :
+    {A : AnalyticData} (R : A.AffineRadialCompletionInput) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     G.totalHomotopyEquiv.toFun.comp
@@ -222,7 +222,7 @@ private theorem actualCuspWangFiberSlice_to_mappingTorus
   exact totalHomeomorph_actualCuspFullFiberSlice_snd _ _ y
 
 private theorem actualCuspRawCastAdd_mem_cuspCoverIntersectionImage
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
+    {A : AnalyticData} (R : A.AffineRadialCompletionInput)
     (i : Fin 4) :
     ∃ w : IntegralSingularHomology 2
         ((TopologicalSpace.Opens.toTopCat
@@ -293,7 +293,7 @@ private theorem actualCuspRawCastAdd_mem_cuspCoverIntersectionImage
 /-- The four raw degree-two basis vectors with zero Wang boundary are represented by the
 full-fibre slice inside the cusp-cover intersection, so their cover connecting classes vanish. -/
 public theorem cuspOpenCoverConnectingHom_rawBasis_castAdd_eq_zero
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
+    {A : AnalyticData} (R : A.AffineRadialCompletionInput)
     (i : Fin 4) :
     R.twoDiscCover.cuspOpenCoverConnectingHom
         (A.cuspRawHomologyTwoEquiv.symm
@@ -307,4 +307,4 @@ public theorem cuspOpenCoverConnectingHom_rawBasis_castAdd_eq_zero
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

@@ -18,9 +18,9 @@ open CuspPuncturedCollarBridge
 
 noncomputable section
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The selected complex atlas on the central piece of the star. -/
 @[instance_reducible, expose] public noncomputable def starCentralCharts :
@@ -51,7 +51,7 @@ public theorem starFilling_isManifold :
   · exact A.orderThreeFilling_isManifold A.starSeparation.orderThree.radius
   · exact A.orderFourFilling_isManifold A.starSeparation.orderFour.radius
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

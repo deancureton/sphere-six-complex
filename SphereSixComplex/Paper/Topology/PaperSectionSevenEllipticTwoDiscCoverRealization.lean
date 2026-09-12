@@ -26,13 +26,13 @@ open Geometry.ComplexTorus Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Periods
 
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open Topology.PaperEllipticFillingRealPeriodRadial
 open Topology.PaperEllipticFillingRadialRetraction
 open Topology.PaperEllipticReducedCentralFiberCoverModels
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public abbrev starCover :=
   A.openEmbeddingStarData.sectionSevenMayerVietorisCover
@@ -97,7 +97,7 @@ public structure EllipticCentralAllocation where
 
 namespace EllipticCentralAllocation
 
-variable {A : PaperAnalyticData} (D : A.EllipticCentralAllocation)
+variable {A : AnalyticData} (D : A.EllipticCentralAllocation)
 
 /-- The order-three side obtained by adjoining its allocated central region to the actual
 order-three filling image. -/
@@ -283,6 +283,6 @@ public def toSectionSevenEllipticTwoDiscCoverData :
 
 end EllipticCentralAllocation.RadialRealization
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

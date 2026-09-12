@@ -216,16 +216,16 @@ public theorem actualLocalCuspFillingRadius_lt
   induction y using Quotient.inductionOn with
   | _ p => exact mem_ball_zero_iff.mp p.property
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (P : PaperAnalyticData)
+variable (P : AnalyticData)
 
 public theorem orderThreeFamilyRadiusBand_isCompact
     (a b : ℝ) (hb : b < 1) :
     IsCompact (familyTotalSpaceBase P.periods ⁻¹'
     {z : UpperHalfPlane | a ≤ ‖(orderThreeCayleyHomeomorph z).1‖ ∧
       ‖(orderThreeCayleyHomeomorph z).1‖ ≤ b}) :=
-  (familyTotalSpaceBase_isProperMap P.periods).isCompact_preimage
+  (isProperMap_familyTotalSpaceBase P.periods).isCompact_preimage
     (orderThreeCayleyRadiusBand_isCompact a b hb)
 
 public theorem orderFourFamilyRadiusBand_isCompact
@@ -233,7 +233,7 @@ public theorem orderFourFamilyRadiusBand_isCompact
     IsCompact (familyTotalSpaceBase P.periods ⁻¹'
     {z : UpperHalfPlane | a ≤ ‖(orderFourCayleyHomeomorph z).1‖ ∧
       ‖(orderFourCayleyHomeomorph z).1‖ ≤ b}) :=
-  (familyTotalSpaceBase_isProperMap P.periods).isCompact_preimage
+  (isProperMap_familyTotalSpaceBase P.periods).isCompact_preimage
     (orderFourCayleyRadiusBand_isCompact a b hb)
 
 /-- The invariant order-three elliptic radius descended to the finite filling quotient. -/
@@ -517,7 +517,7 @@ public theorem orderFourCollarPairMap_isProper_of_centralLowerTrap
   · exact hcentral
   · exact P.starCollarRadius_compact_upperTrap_lt (2 : Fin 3)
 
-end PaperAnalyticData
+end AnalyticData
 
 end Geometry
 

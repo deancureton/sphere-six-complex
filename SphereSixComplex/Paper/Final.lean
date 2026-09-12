@@ -16,19 +16,20 @@ open scoped ContDiff Manifold
 namespace SphereSixComplex
 
 /-- The glued threefold is simply connected and has the integral homology of the six-sphere. -/
-public theorem exists_simplyConnected_complexThreefold :
+public theorem exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere :
     ∃ X : ComplexThreefold, SimplyConnectedSpace X.Carrier ∧
       ∀ k : ℕ, Nonempty
         (IntegralSingularHomology k X.Carrier ≃+ IntegralSingularHomology k SixSphere) := by
-  let P := Geometry.chosenPaperAnalyticData
+  let P := Geometry.analyticData
   exact ⟨P.compactComplexStar.toComplexThreefold,
     P.star_simplyConnectedSpace, P.star_nonempty_homologyEquiv_sixSphere⟩
 
-/-- The underlying real manifold of a compact complex threefold is diffeomorphic to standard S⁶. -/
-public theorem exists_complex_threefold_diffeomorphic_sixSphere :
+/-- There exists a compact complex threefold whose underlying real manifold is diffeomorphic
+to S⁶. -/
+public theorem exists_complexThreefold_nonempty_diffeomorph_sixSphere :
     ∃ X : ComplexThreefold,
       Nonempty (Diffeomorph 𝓘(ℝ, RealModel) 𝓘(ℝ, RealModel) X.Carrier SixSphere ∞) := by
-  obtain ⟨X, hπ, hH⟩ := exists_simplyConnected_complexThreefold
+  obtain ⟨X, hπ, hH⟩ := exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere
   let := hπ
   exact ⟨X, SmoothSixSphere.nonempty_diffeomorph hH⟩
 
@@ -36,7 +37,7 @@ public theorem exists_complex_threefold_diffeomorphic_sixSphere :
 /-- A threefold satisfying the construction contract gives the standard six-sphere a complex
 structure. -/
 public theorem sphere_six_admits_complex_structure : AdmitsComplexStructure SixSphere := by
-  obtain ⟨X, ⟨d⟩⟩ := exists_complex_threefold_diffeomorphic_sixSphere
+  obtain ⟨X, ⟨d⟩⟩ := exists_complexThreefold_nonempty_diffeomorph_sixSphere
   let _ : TopologicalSpace X.Carrier := X.topology
   exact admitsComplexStructure_of_diffeomorph X.charts X.manifold X.realManifold d
 

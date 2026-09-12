@@ -12,12 +12,12 @@ extends the bound along the entire lifted strip.
 @[expose] public section
 noncomputable section
 open Set Topology
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology SphereSixComplex.TriangleGroup
 open GlobalTorusFamily EquivariantQuotientHomeomorph EllipticCayleyHomeomorph
 open EllipticLinearCollarGlobalDescent
 
-public def affineNormalizedOrderThreeHalfPlaneLift (A : PaperAnalyticData) :
+public def affineNormalizedOrderThreeHalfPlaneLift (A : AnalyticData) :
     C(affineVerticalStrip, A.OrderThreeAffineHalfPlaneBaseLift) :=
   ⟨fun z ↦ ⟨A.affineNormalizedStripContinuousLift z, by
       change (A.regularCoordinate (A.affineNormalizedStripContinuousLift z)).1.re < 2 / 3
@@ -28,7 +28,7 @@ public def affineNormalizedOrderThreeHalfPlaneLift (A : PaperAnalyticData) :
       exact z.2.2⟩,
     A.affineNormalizedStripContinuousLift.continuous.subtype_mk _⟩
 
-public def affineNormalizedOrderThreeRadialLift (A : PaperAnalyticData) :
+public def affineNormalizedOrderThreeRadialLift (A : AnalyticData) :
     C(affineVerticalStrip,
       A.OrderThreeAffineDiscBaseLift A.affineOrderThreeMarkedDiscRadius) :=
   let r := A.affineOrderThreeMarkedDiscRadius
@@ -40,7 +40,7 @@ public def affineNormalizedOrderThreeRadialLift (A : PaperAnalyticData) :
       A.affineNormalizedOrderThreeHalfPlaneLift
 
 public theorem affineNormalizedOrderThreeRadialLift_midpoint_cayley
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     ‖(orderThreeCayleyHomeomorph
       (A.affineNormalizedOrderThreeRadialLift affineStripMidpoint).1.1 : ℂ)‖ <
       A.starSeparation.orderThree.radius := by
@@ -106,7 +106,7 @@ public theorem affineNormalizedOrderThreeRadialLift_midpoint_cayley
   rw [hmid]
   simpa only [Qsmall.source] using hbound
 
-public def affineNormalizedOrderFourHalfPlaneLift (A : PaperAnalyticData) :
+public def affineNormalizedOrderFourHalfPlaneLift (A : AnalyticData) :
     C(affineVerticalStrip, A.OrderFourAffineHalfPlaneBaseLift) :=
   ⟨fun z ↦ ⟨A.affineNormalizedStripContinuousLift z, by
       change 1 / 3 < (A.regularCoordinate (A.affineNormalizedStripContinuousLift z)).1.re
@@ -117,7 +117,7 @@ public def affineNormalizedOrderFourHalfPlaneLift (A : PaperAnalyticData) :
       exact z.2.1⟩,
     A.affineNormalizedStripContinuousLift.continuous.subtype_mk _⟩
 
-public def affineNormalizedOrderFourRadialLift (A : PaperAnalyticData) :
+public def affineNormalizedOrderFourRadialLift (A : AnalyticData) :
     C(affineVerticalStrip,
       A.OrderFourAffineDiscBaseLift A.affineOrderFourMarkedDiscRadius) :=
   let r := A.affineOrderFourMarkedDiscRadius
@@ -129,7 +129,7 @@ public def affineNormalizedOrderFourRadialLift (A : PaperAnalyticData) :
       A.affineNormalizedOrderFourHalfPlaneLift
 
 public theorem affineNormalizedOrderFourRadialLift_midpoint_cayley
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     ‖(orderFourCayleyHomeomorph
       (A.affineNormalizedOrderFourRadialLift affineStripMidpoint).1.1 : ℂ)‖ <
       A.starSeparation.orderFour.radius := by
@@ -196,7 +196,7 @@ public theorem affineNormalizedOrderFourRadialLift_midpoint_cayley
   simpa only [Qsmall.source] using hbound
 
 public theorem affineNormalizedOrderThreeRadialLift_cayley
-    (A : PaperAnalyticData) (z : affineVerticalStrip) :
+    (A : AnalyticData) (z : affineVerticalStrip) :
     ‖(orderThreeCayleyHomeomorph
       (A.affineNormalizedOrderThreeRadialLift z).1.1 : ℂ)‖ <
       A.starSeparation.orderThree.radius := by
@@ -222,7 +222,7 @@ public theorem affineNormalizedOrderThreeRadialLift_cayley
   simpa only [map_one, one_smul, Q.target] using h
 
 public theorem affineNormalizedOrderFourRadialLift_cayley
-    (A : PaperAnalyticData) (z : affineVerticalStrip) :
+    (A : AnalyticData) (z : affineVerticalStrip) :
     ‖(orderFourCayleyHomeomorph
       (A.affineNormalizedOrderFourRadialLift z).1.1 : ℂ)‖ <
       A.starSeparation.orderFour.radius := by
@@ -247,4 +247,4 @@ public theorem affineNormalizedOrderFourRadialLift_cayley
   change ‖(orderFourCayleyHomeomorph (fuchsianSourceAction 1 • Q 1) : ℂ)‖ < _ at h
   simpa only [map_one, one_smul, Q.target] using h
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

@@ -11,7 +11,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData
@@ -31,7 +31,7 @@ open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The actual one-turn Cayley circle, retaining its radius bound as a point of the unit disc. -/
 public noncomputable def orderFourFillingRelationCayleyDiscLoop :
@@ -132,7 +132,7 @@ public theorem orderFourRegularLoop_cayleyGaugeProductCoordinate
         Quotient.mk _ A.ellipticFourBoundaryBase.2.2
     exact congrArg Prod.snd hcoord
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

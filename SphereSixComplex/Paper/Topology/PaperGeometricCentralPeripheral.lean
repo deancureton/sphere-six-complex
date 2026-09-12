@@ -16,13 +16,13 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open CuspPuncturedCollarBridge
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The map on fundamental groups induced by the literal cusp collar chart. -/
 public noncomputable def cuspOverlapToCentralPiOne :
@@ -144,6 +144,6 @@ public theorem cuspCentralMeridian_eq_geometricRhoProduct :
         A.markedCentralToActualCuspEquiv.apply_symm_apply]
     _ = A.geometricCentralRhoOne * A.geometricCentralRhoTwo := h
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

@@ -27,7 +27,7 @@ Concrete precedents in the pinned Mathlib are `Geometry/Manifold/PoincareConject
 
 ## Construction and recognition
 
-`exists_simplyConnected_complexThreefold` exhibits a compact complex threefold, asserts
+`exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere` exhibits a compact complex threefold, asserts
 `SimplyConnectedSpace` on its carrier, and gives an additive isomorphism with the integral
 homology of the six-sphere in every degree. It no longer returns a `CompletedPaperThreefold`
 certificate. The recognition theorem takes ordinary manifold, compactness, and simple
@@ -39,7 +39,7 @@ and atlas. Its induced real smoothness is derived from the complex atlas. Generi
 such manifolds belongs to the prerequisite library. `CompactComplexStar` contains only the
 geometric gluing inputs. Simple connectedness and degreewise homology are separate theorems
 about its actual glued carrier, rather than prerequisites to constructing the manifold.
-`PaperAnalyticData` retains coherent dependent choices of parameters, periods, and cusp
+`AnalyticData` retains coherent dependent choices of parameters, periods, and cusp
 coordinates. Atlas transport is stated for arbitrary source and target manifolds with the
 specified atlases; the six-sphere result is its paper-specific application.
 
@@ -83,10 +83,26 @@ Historical names in reduction notes are not promises of current APIs.
 
 ## Validation
 
-The externally checked challenge and classical axiom declarations are preserved. Full builds,
+The externally checked challenge is preserved. Changes to a classical axiom interface must
+preserve its mathematical contract; explicit expansion of a definition is permitted. Full builds,
 placeholder and import-layer checks, recursive axiom audits, and Comparator kernel validation
 are separate gates. Intermediate API changes require mathematical review as well as elaboration:
 removing a redundant field, weakening an unnecessary hypothesis, and merely renaming a
 constant are different operations. Review combines the compiled environment's predicate and
 small-structure inventory with inspection of fields, consumers, and mathematical dependencies;
 it does not infer correctness from a declaration's name or size.
+
+## Statement transparency
+
+The universal coefficient axiom displays its degree-zero duality and positive-degree
+`Ext`/dual decomposition, rather than returning a record named after the theorem. Its former
+record and the new proposition are equivalent using `Classical.choice`; no natural splitting
+has been added. The Hurewicz range and smooth Poincaré hypotheses are also displayed at their
+axiom declarations. The cellular comparison still bundles dependent choices of disk generators,
+cell bases and comparison maps: its compatibility equations must remain synchronized.
+
+The modular frame is computed from its Eisenstein root, rather than stored alongside an equation
+fixing its value. Equivariant roots extend the same root object. Cellular incidence, elliptic
+endpoint period identities, and degree-one homology coordinate comparisons state their equations
+directly. A proposition already proved about elliptic relators is used directly without
+`Nonempty` or a choice operation.

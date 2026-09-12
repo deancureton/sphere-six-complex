@@ -708,14 +708,14 @@ end
 
 end SphereSixComplex.Geometry.CuspFillingRadialCompactness
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open Set CuspFilling CuspPuncturedCollarBridge
 open CuspFillingRadialCompactness
 
 noncomputable section
 
-variable (P : PaperAnalyticData)
+variable (P : AnalyticData)
 
 /-- The toric cocompactness statement discharges the exact cusp compact-core boundary
 used by the four-piece compact cover. -/
@@ -750,4 +750,4 @@ public theorem actualLocalCuspRadialCoreCompactness_of_twoChartRepresentatives
 
 end
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

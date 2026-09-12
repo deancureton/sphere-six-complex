@@ -9,13 +9,13 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology
 open SphereSixComplex.Periods.SourceAutomaticBranch
 open SphereSixComplex.TriangleGroup
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 private theorem homotopyTrans_trace
     {Y : Type*} [TopologicalSpace Y]
@@ -250,7 +250,7 @@ public theorem ellipticThreeCuspZeroSectionTriplePath_class :
   rw [map_pow] at h
   exact h
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

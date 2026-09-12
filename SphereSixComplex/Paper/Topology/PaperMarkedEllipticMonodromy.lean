@@ -90,7 +90,7 @@ public theorem fundamentalGroupToMulOpposite_pow_transport
 
 end SphereSixComplex
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -100,7 +100,7 @@ open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The outer triangle-group monodromy of the actual regular base cover at the marked lift. -/
 public noncomputable def markedBaseOuterDeckHom :
@@ -495,6 +495,6 @@ public theorem markedCentralOuterDeckHom_one_pow_four :
     A.markedCentralOuterDeckHom_zeroSection]
   exact A.markedBaseOuterDeckHom_one_pow_four
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

@@ -19,13 +19,13 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 open CuspPuncturedCollarBridge
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The actual cusp overlap included into the core and transported along the specified connector
 to the base point of the four-piece cover. -/
@@ -267,7 +267,7 @@ public noncomputable def cuspCentralNaturality :
 
 namespace CuspCentralNaturality
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 /-- Pointwise form of marked translation naturality, in multiplicative notation. -/
 public theorem translation_core (N : A.CuspCentralNaturality) (a : Lattice) :
@@ -292,6 +292,6 @@ public theorem meridian_core (N : A.CuspCentralNaturality) :
 
 end CuspCentralNaturality
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

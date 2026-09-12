@@ -20,7 +20,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open GlobalTorusFamily TorusFamily
 open EquivariantQuotientHomeomorph
@@ -28,7 +28,7 @@ open SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open SphereSixComplex.OpenUnionHomotopy
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The regular total-space lift of the order-three punctured affine disc. -/
 public noncomputable def orderThreeAffineDiscLiftCarrier (r : ℝ) :
@@ -423,4 +423,4 @@ public theorem quotientToFun_eq_orderFourAffineDiscLiftQuotientInclusion
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

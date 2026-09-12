@@ -14,7 +14,7 @@
     "SphereSixComplex.CWType.homological_whitehead",
     "SphereSixComplex.SmoothSixSphere.poincare",
     "SphereSixComplex.PoincareDuality.nonempty_addEquiv",
-    "SphereSixComplex.IntegralCohomology.universalCoefficients",
+    "SphereSixComplex.IntegralCohomology.universal_coefficients",
     "SphereSixComplex.SmoothManifold.finiteCWModel",
     "SphereSixComplex.CellularHomology.integralComparison",
     "SphereSixComplex.CWPair.whitehead",

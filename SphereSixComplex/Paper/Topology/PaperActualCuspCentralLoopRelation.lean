@@ -107,7 +107,7 @@ public theorem loopClass_eq_whiskered_of_freeHomotopy
 
 end SphereSixComplex
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
@@ -115,7 +115,7 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open CuspPeriodExpansion CuspPuncturedCollarBridge
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The actual cusp coordinate, regarded as a loop in the marked ordinary quotient base. -/
 public noncomputable def cuspAngularMarkedBaseLoop :
@@ -463,6 +463,6 @@ public theorem cuspMarkedCentralLoop_class_eq_finiteProduct :
   rw [A.cuspMarkedCentralLoop_class_eq_zeroSectionLoop,
     A.cuspCommonZeroSectionLoop_class_eq_finiteProduct]
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

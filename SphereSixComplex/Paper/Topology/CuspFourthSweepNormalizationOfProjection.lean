@@ -5,12 +5,12 @@ public import SphereSixComplex.Paper.Topology.CuspFourthSweepFiberParity
 @[expose] public section
 noncomputable section
 open AlgebraicTopology
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology CuspPuncturedCollarBridge
 open EllipticTwoDiscCoverData
 
 public theorem cuspFourthSweepClass_raw_fiber_zero_of_projection
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (r : IntegralSingularHomology 2 (A.openEmbeddingStarData.filling 0) →+ (Fin 4 → ℤ))
     (hproj : ∀ x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0),
       r (integralSingularHomologyMap 2 (A.openEmbeddingStarData.toFilling 0).hom x) =
@@ -26,7 +26,7 @@ public theorem cuspFourthSweepClass_raw_fiber_zero_of_projection
   exact (congrFun h i).symm
 
 public theorem cuspFourthSweepClass_eq_rawFive_of_projection
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (r : IntegralSingularHomology 2 (A.openEmbeddingStarData.filling 0) →+ (Fin 4 → ℤ))
     (hproj : ∀ x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0),
       r (integralSingularHomologyMap 2 (A.openEmbeddingStarData.toFilling 0).hom x) =
@@ -51,4 +51,4 @@ public theorem cuspFourthSweepClass_eq_rawFive_of_projection
   · exact (congrFun hw (2 : Fin 4)).symm
   · exact (congrFun hw (3 : Fin 4)).symm
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

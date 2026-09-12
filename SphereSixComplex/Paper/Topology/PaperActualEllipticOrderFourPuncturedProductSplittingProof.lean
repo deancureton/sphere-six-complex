@@ -9,7 +9,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData
@@ -27,7 +27,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Transport both endpoints of an endpoint-relative path homotopy along one equality. -/
 public def pathHomotopy_castEndpoints
@@ -232,7 +232,7 @@ public theorem orderFourRegularLoop_homotopic_fiberThenBase :
     exact A.orderFourRegularLoop_eq_puncturedProductRealization t
   · rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

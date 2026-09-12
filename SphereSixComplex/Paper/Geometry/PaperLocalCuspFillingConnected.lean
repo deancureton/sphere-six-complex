@@ -182,9 +182,9 @@ public theorem actualLocalCuspFilling_connected
     localCarrier_connected M W.localWitness.radius_pos
   exact Quotient.mk_surjective.connectedSpace continuous_quot_mk
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Each of the three concrete filling pieces is connected. -/
 public theorem starFilling_connected (i : Fin 3) : ConnectedSpace (A.StarFilling i) := by
@@ -202,7 +202,7 @@ public theorem starPiece_connected (i : Option (Fin 3)) :
   | none => exact A.centralFamily_connected
   | some i => exact A.starFilling_connected i
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

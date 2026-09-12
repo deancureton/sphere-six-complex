@@ -10,7 +10,7 @@ public import SphereSixComplex.Paper.Topology.PaperActualEllipticLocalMarkedLoop
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.CyclicAngularFundamentalDomain
@@ -18,7 +18,7 @@ open SphereSixComplex.LatticeData
 open SphereSixComplex.Topology
 open SphereSixComplex.Geometry.ComplexTorus
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem ellipticThreeOverlapToCentral_boundaryProjection_apply
     (q : OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace)) :
@@ -156,7 +156,7 @@ public theorem ellipticFourBoundaryDeckStraightCentralLoop_apply_segment
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

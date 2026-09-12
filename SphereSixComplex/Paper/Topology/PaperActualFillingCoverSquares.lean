@@ -31,9 +31,9 @@ public theorem additiveCuspRadiusCover_simplyConnected {r : ℝ} (hr : 0 < r) :
       (additiveCuspRadiusCover_nonempty r hr)
   infer_instance
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The vector-bundle cover composed with the order-three affine filling quotient. -/
 public noncomputable def ellipticThreeFillingCoverProjection (r : ℝ) :
@@ -65,7 +65,7 @@ public theorem orderFourFillingCoverSource_simplyConnected
     SimplyConnectedSpace (ComplexDiscBall r × ComplexTwoSpace) :=
   orderThreeFillingCoverSource_simplyConnected hr hr1
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex
 

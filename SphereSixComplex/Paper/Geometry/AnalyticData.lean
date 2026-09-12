@@ -25,14 +25,14 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 noncomputable section
 
 /-- The coherent analytic choices used by all four pieces of the completed family. -/
-public structure PaperAnalyticData where
+public structure AnalyticData where
   modular : NormalizedFuchsianModularParameter
   localPeriods : FuchsianPeriodLocalData modular
   cuspCoordinate : CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate modular localPeriods
 
 /-- Every analytic package in this development uses the explicitly constructed standard
 infinite `A₂` toric model. -/
-public abbrev PaperAnalyticData.toricModel (_A : PaperAnalyticData) :
+public abbrev AnalyticData.toricModel (_A : AnalyticData) :
     InfiniteA2Toric.Model :=
   InfiniteA2Toric.Construction.constructedModel
 
@@ -40,35 +40,35 @@ public abbrev PaperAnalyticData.toricModel (_A : PaperAnalyticData) :
 
 
 /-- A coherent choice of the analytic data supplied by concrete affine-descent certificates. -/
-@[expose] public noncomputable def paperAnalyticData
+@[expose] public noncomputable def AnalyticData.ofDescent
     (E : NormalizedFuchsianModularParameter)
     (F : ExactLiftedModularNegOneFrame E)
     (Amu : (FuchsianAffineDescent.muDescentData E F).AnalyticDescentData)
     (Abeta : FuchsianAffineDescent.BetaDescentData E F Amu) :
-    PaperAnalyticData := by
+    AnalyticData := by
   let D := Classical.choice (FuchsianAffineDescent.exists_fuchsianPeriodLocalData E F Amu Abeta)
   let N := Classical.choice
     (FuchsianCuspNormalization.exists_normalizedFuchsianCuspCoordinate E D)
   exact ⟨E, D, N⟩
 
 /-- A coherent production choice requiring only the exact modular parameter and modular frame. -/
-@[expose] public noncomputable def paperAnalyticDataOfFrame
+@[expose] public noncomputable def AnalyticData.ofFrame
     (E : NormalizedFuchsianModularParameter)
-    (F : ExactLiftedModularNegOneFrame E) : PaperAnalyticData :=
-  paperAnalyticData E F
+    (F : ExactLiftedModularNegOneFrame E) : AnalyticData :=
+  AnalyticData.ofDescent E F
     (FuchsianAffineDescent.muAnalyticDescentData E F)
     (FuchsianAffineDescent.betaAnalyticDescentData E F)
 
 /-- A coherent production choice of all analytic inputs. -/
-@[expose] public noncomputable def chosenPaperAnalyticData : PaperAnalyticData :=
+@[expose] public noncomputable def analyticData : AnalyticData :=
   let E := Classical.choice nonempty_normalizedFuchsianModularParameter
   let F := Classical.choice (nonempty_exactLiftedModularNegOneFrame E)
-  paperAnalyticDataOfFrame E F
+  AnalyticData.ofFrame E F
 
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The actual nondegenerate period family used by the construction. -/
 public abbrev periods :
@@ -94,7 +94,7 @@ public abbrev OrderFourTorus :=
 
 
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

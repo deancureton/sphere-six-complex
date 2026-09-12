@@ -25,23 +25,14 @@ namespace SphereSixComplex
 public abbrev IntegralCohomology.ExtOne (G : Type) [AddCommGroup G] : Type :=
   CategoryTheory.Abelian.Ext (ModuleCat.of ℤ G) (ModuleCat.of ℤ ℤ) 1
 
-/-- A full degreewise statement of the integral universal coefficient theorem for singular
-cohomology.  In degree zero it is the evaluation isomorphism.  In positive degrees it is the
-standard (noncanonically) split short exact sequence
-`0 → Ext¹(Hₙ₋₁(X), ℤ) → Hⁿ(X; ℤ) → Hom(Hₙ(X), ℤ) → 0`.
-
-The `Nonempty` wrapper records that the splitting is not natural. -/
-public structure IntegralCohomology.UniversalCoefficients where
-  zeroEquiv : ∀ (X : Type) [TopologicalSpace X],
-    IntegralSingularCohomology 0 X ≃+ (IntegralSingularHomology 0 X →+ ℤ)
-  nonempty_pos : ∀ (X : Type) [TopologicalSpace X] (n : ℕ), 0 < n →
-    Nonempty (IntegralSingularCohomology n X ≃+
-      (IntegralCohomology.ExtOne (IntegralSingularHomology (n - 1) X) ×
-        (IntegralSingularHomology n X →+ ℤ)))
-
-/-- The classical integral universal coefficient theorem for singular cohomology, in every
-degree and for every topological space. -/
-public axiom IntegralCohomology.universalCoefficients : IntegralCohomology.UniversalCoefficients
+/-- The additive form of the integral universal coefficient theorem, in every degree and for
+every topological space. The positive-degree isomorphism is not asserted to be natural. -/
+public axiom IntegralCohomology.universal_coefficients (X : Type) [TopologicalSpace X] :
+    Nonempty (IntegralSingularCohomology 0 X ≃+ (IntegralSingularHomology 0 X →+ ℤ)) ∧
+    ∀ n : ℕ, 0 < n →
+      Nonempty (IntegralSingularCohomology n X ≃+
+        (Abelian.Ext (ModuleCat.of ℤ (IntegralSingularHomology (n - 1) X))
+          (ModuleCat.of ℤ ℤ) 1 × (IntegralSingularHomology n X →+ ℤ)))
 
 public def addEquivProdOfSubsingleton {A B : Type} [AddCommGroup A] [AddCommGroup B]
     (hA : Subsingleton A) : (A × B) ≃+ B where
@@ -55,7 +46,7 @@ public def addEquivProdOfSubsingleton {A B : Type} [AddCommGroup A] [AddCommGrou
   map_add' _ _ := rfl
 
 /-- When the preceding homology group is free, the `Ext` term in the integral UCT vanishes and
-evaluation gives an additive equivalence with the integral dual of homology. -/
+there is an additive equivalence with the integral dual of homology. -/
 public noncomputable def integralSingularCohomologyEquivDualOfPreviousFree
     (X : Type) [TopologicalSpace X] (n : ℕ) (hn : 0 < n)
     (hFree : Module.Free ℤ (IntegralSingularHomology (n - 1) X)) :
@@ -68,7 +59,7 @@ public noncomputable def integralSingularCohomologyEquivDualOfPreviousFree
     have h := CategoryTheory.projective_iff_subsingleton_ext_one.mp
       (show Projective (ModuleCat.of ℤ (IntegralSingularHomology (n - 1) X)) from inferInstance)
     exact h (Y := ModuleCat.of ℤ ℤ)
-  exact Classical.choice (IntegralCohomology.universalCoefficients.nonempty_pos X n hn) |>.trans
+  exact Classical.choice ((IntegralCohomology.universal_coefficients X).2 n hn) |>.trans
     (addEquivProdOfSubsingleton hExt)
 
 end SphereSixComplex

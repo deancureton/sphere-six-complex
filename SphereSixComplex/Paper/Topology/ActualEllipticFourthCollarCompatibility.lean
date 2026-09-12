@@ -5,24 +5,24 @@ public import SphereSixComplex.Paper.Topology.ActualEllipticVaryingFourthTransla
 @[expose] public section
 noncomputable section
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus TorusFamily AnalyticTorusFamily GlobalTorusFamily
 open EllipticVaryingFamilyQuotient EllipticLinearCollarGlobalDescent
 open EllipticPuncturedCollarGaugeHomeomorph
 
-public def centralFourthTranslation (A : PaperAnalyticData) :
+public def centralFourthTranslation (A : AnalyticData) :
     C(UnitAddCircle × A.CentralFamily, A.CentralFamily) :=
   invariantPeriodCircleTranslation A.periods ![0,0,0,1] rhoLambda_fourthBasis
 
-public theorem regularFamilyInclusion_fourthTranslation (A : PaperAnalyticData) (t : ℝ)
+public theorem regularFamilyInclusion_fourthTranslation (A : AnalyticData) (t : ℝ)
     (q : RegularTotalSpace A.periods) :
     regularFamilyInclusion A.periods (regularPeriodTranslation A.periods ![0,0,0,1] (t,q)) =
       fourthPeriodFamilyTranslation A.periods t (regularFamilyInclusion A.periods q) := by
   induction q using Quotient.inductionOn with
   | _ p => rfl
 
-public def orderThreeFourthCollarSource (A : PaperAnalyticData) (t : ℝ)
+public def orderThreeFourthCollarSource (A : AnalyticData) (t : ℝ)
     (q : (orderThreeAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction A.starSeparation.orderThree.radius).carrier) :
     (orderThreeAffinePuncturedCarrier A.periods
@@ -33,7 +33,7 @@ public def orderThreeFourthCollarSource (A : PaperAnalyticData) (t : ℝ)
       familyTotalSpaceBase_familyTranslationMap]
     exact q.property⟩
 
-public def orderFourFourthCollarSource (A : PaperAnalyticData) (t : ℝ)
+public def orderFourFourthCollarSource (A : AnalyticData) (t : ℝ)
     (q : (orderFourAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction A.starSeparation.orderFour.radius).carrier) :
     (orderFourAffinePuncturedCarrier A.periods
@@ -44,7 +44,7 @@ public def orderFourFourthCollarSource (A : PaperAnalyticData) (t : ℝ)
       familyTotalSpaceBase_familyTranslationMap]
     exact q.property⟩
 
-public theorem orderThreeFourthCollarSource_central (A : PaperAnalyticData) (t : ℝ)
+public theorem orderThreeFourthCollarSource_central (A : AnalyticData) (t : ℝ)
     (q : (orderThreeAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction A.starSeparation.orderThree.radius).carrier) :
     A.centralFourthTranslation ((t : UnitAddCircle), A.starToCentral 1 (Quotient.mk _ q)) =
@@ -60,7 +60,7 @@ public theorem orderThreeFourthCollarSource_central (A : PaperAnalyticData) (t :
     regularFamilyInclusion_orderThreeCollarToRegular]
   exact (orderThreePrincipalGauge_fourthTranslation A.periods t q.1).symm
 
-public theorem orderFourFourthCollarSource_central (A : PaperAnalyticData) (t : ℝ)
+public theorem orderFourFourthCollarSource_central (A : AnalyticData) (t : ℝ)
     (q : (orderFourAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction A.starSeparation.orderFour.radius).carrier) :
     A.centralFourthTranslation ((t : UnitAddCircle), A.starToCentral 2 (Quotient.mk _ q)) =
@@ -76,7 +76,7 @@ public theorem orderFourFourthCollarSource_central (A : PaperAnalyticData) (t : 
     regularFamilyInclusion_orderFourCollarToRegular]
   exact (orderFourPrincipalGauge_fourthTranslation A.periods t q.1).symm
 
-public theorem orderThreeFourthCollarSource_filling (A : PaperAnalyticData) (t : ℝ)
+public theorem orderThreeFourthCollarSource_filling (A : AnalyticData) (t : ℝ)
     (q : (orderThreeAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction A.starSeparation.orderThree.radius).carrier) :
     A.actualOrderThreeFourthTranslation ((t : UnitAddCircle), A.starToFilling 1 (Quotient.mk _ q)) =
@@ -85,7 +85,7 @@ public theorem orderThreeFourthCollarSource_filling (A : PaperAnalyticData) (t :
   rw [A.actualOrderThreeFourthTranslation_mk]
   rfl
 
-public theorem orderFourFourthCollarSource_filling (A : PaperAnalyticData) (t : ℝ)
+public theorem orderFourFourthCollarSource_filling (A : AnalyticData) (t : ℝ)
     (q : (orderFourAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction A.starSeparation.orderFour.radius).carrier) :
     A.actualOrderFourFourthTranslation ((t : UnitAddCircle), A.starToFilling 2 (Quotient.mk _ q)) =
@@ -94,4 +94,4 @@ public theorem orderFourFourthCollarSource_filling (A : PaperAnalyticData) (t : 
   rw [A.actualOrderFourFourthTranslation_mk]
   rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

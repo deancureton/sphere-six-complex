@@ -25,12 +25,12 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 
-open _root_.SphereSixComplex.Geometry.PaperAnalyticData
+open _root_.SphereSixComplex.Geometry.AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The affine strip lift normalized by the common peripheral marking. -/
 public noncomputable def affineNamedStripLift : A.AffineStripLift :=
@@ -105,4 +105,4 @@ public noncomputable def affineCentralBandHomotopyEquiv
   AffineCentralBandProductTrivialization.bandHomotopyEquiv A
     (A.affineCentralBandMarkedProductHomeomorph S)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

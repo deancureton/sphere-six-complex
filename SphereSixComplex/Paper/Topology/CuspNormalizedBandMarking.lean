@@ -5,14 +5,14 @@ public import SphereSixComplex.Paper.Topology.IntegerPeriodCircle
 @[expose] public section
 noncomputable section
 open AlgebraicTopology CategoryTheory TopologicalSpace
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology GlobalTorusFamily TriangleGroup
 open SphereSixComplex.StandardTorusHomology SphereSixComplex.Periods
 open ComplexTorus EllipticFamilySpecialization EllipticRealPeriodProductTrivialization
 open EllipticTwoDiscHomologyCoordinates
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 
-public theorem regularMovingToFixed_period_smul (A : PaperAnalyticData)
+public theorem regularMovingToFixed_period_smul (A : AnalyticData)
     (b : RegularBase (U := A.paperTriangleUniformization)) (n : IntegerPeriods) (t : ℝ) :
     A.regularMovingToFixed b (t • periodVector (regularParameterMap A.periods b).1 n) =
       t • periodVector A.duplicatedSectionSevenBandParameter n := by
@@ -26,7 +26,7 @@ public theorem regularMovingToFixed_period_smul (A : PaperAnalyticData)
   rw [realEquiv_symm_periodVector, map_smul, FullRank.map_integer]
   rfl
 
-public theorem normalizedMarkedPeriodCircle_central (A : PaperAnalyticData)
+public theorem normalizedMarkedPeriodCircle_central (A : AnalyticData)
     (n : IntegerPeriods) (z : StdTorus 1) :
     A.stripLiftPoint A.affineNamedStripLift affineStripMidpoint
       (integerPeriodCircle A.duplicatedSectionSevenBandParameter
@@ -47,7 +47,7 @@ public theorem normalizedMarkedPeriodCircle_central (A : PaperAnalyticData)
   rw [regularPeriodCircle_real]
   rfl
 
-public def normalizedMarkedPeriodBandCircle {A : PaperAnalyticData}
+public def normalizedMarkedPeriodBandCircle {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) (n : IntegerPeriods) :
     C(StdTorus 1, (Opens.toTopCat (TopCat.of A.ellipticInterior)).obj
       (orderThreeOpen R.twoDiscCover ⊓ orderFourOpen R.twoDiscCover)) where
@@ -61,7 +61,7 @@ public def normalizedMarkedPeriodBandCircle {A : PaperAnalyticData}
       A.affineCentralSeparation).symm.continuous.comp
         (continuous_const.prodMk (integerPeriodCircle _ _ _).continuous))
 
-public theorem normalizedMarkedPeriodBandCircle_coordinate {A : PaperAnalyticData}
+public theorem normalizedMarkedPeriodBandCircle_coordinate {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) (n : IntegerPeriods) :
     R.twoDiscCover.bandHomotopyEquiv.toFun.comp (normalizedMarkedPeriodBandCircle R n) =
       integerPeriodCircle A.duplicatedSectionSevenBandParameter
@@ -77,7 +77,7 @@ public theorem normalizedMarkedPeriodBandCircle_coordinate {A : PaperAnalyticDat
   erw [Homeomorph.apply_symm_apply]
   rfl
 
-public theorem normalizedMarkedPeriodBandCircle_interior {A : PaperAnalyticData}
+public theorem normalizedMarkedPeriodBandCircle_interior {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) (n : IntegerPeriods) (z : StdTorus 1) :
     (normalizedMarkedPeriodBandCircle R n z).1 =
       A.centralToEllipticInterior
@@ -93,7 +93,7 @@ public theorem normalizedMarkedPeriodBandCircle_interior {A : PaperAnalyticData}
   rw [Homeomorph.symm_apply_apply] at h'
   exact h'
 
-public theorem normalizedMarkedPeriodBandCircle_bandOne {A : PaperAnalyticData}
+public theorem normalizedMarkedPeriodBandCircle_bandOne {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) (n : IntegerPeriods) :
     EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
       (integralSingularHomologyMap 1 (normalizedMarkedPeriodBandCircle R n)
@@ -117,7 +117,7 @@ public theorem normalizedMarkedPeriodBandCircle_bandOne {A : PaperAnalyticData}
     normalizedMarkedPeriodBandCircle_coordinate]
   exact integerPeriodCircle_homology _ _ n
 
-public theorem normalizedThirdOverlapCircle_eq_marked {A : PaperAnalyticData}
+public theorem normalizedThirdOverlapCircle_eq_marked {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) (g : Delta) :
     normalizedThirdOverlapCircle R (regularSourceEquiv g A.affineNormalizedMidpoint)
       ((A.regularCoordinate_sourceEquiv g _).trans A.affineNormalizedMidpoint_projects) =
@@ -132,7 +132,7 @@ public theorem normalizedThirdOverlapCircle_eq_marked {A : PaperAnalyticData}
     (DFunLike.congr_fun (regularPeriodCircleFamily_deck A.periods (Pi.single 2 1)
       g A.affineNormalizedMidpoint) (z 0))
 
-public theorem normalizedThirdOverlapCircle_midpoint_eq_marked {A : PaperAnalyticData}
+public theorem normalizedThirdOverlapCircle_midpoint_eq_marked {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     normalizedThirdOverlapCircle R A.affineNormalizedMidpoint
       A.affineNormalizedMidpoint_projects =
@@ -142,7 +142,7 @@ public theorem normalizedThirdOverlapCircle_midpoint_eq_marked {A : PaperAnalyti
   rw [normalizedMarkedPeriodBandCircle_interior]
   rfl
 
-public theorem normalizedThirdOverlapCircle_difference_bandOne {A : PaperAnalyticData}
+public theorem normalizedThirdOverlapCircle_difference_bandOne {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
       (integralSingularHomologyMap 1
@@ -175,7 +175,7 @@ public theorem normalizedCuspProductClass_wang :
       normalizedCuspProductClass = standardCircleHomologyGenerator :=
   canonicalProductWangBoundary_positiveGenerator_core
 
-public theorem normalizedThirdCylinder_primitive_boundary {A : PaperAnalyticData}
+public theorem normalizedThirdCylinder_primitive_boundary {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
       (ConcreteCategory.hom ((BinaryOpenCover.openCoverHomologyComparisonOfCover
@@ -187,7 +187,7 @@ public theorem normalizedThirdCylinder_primitive_boundary {A : PaperAnalyticData
   rw [normalizedThirdMeridianCylinder_boundary, normalizedCuspProductClass_wang]
   exact normalizedThirdOverlapCircle_difference_bandOne R
 
-public theorem cuspChosenThirdSweep_interior_class (A : PaperAnalyticData) :
+public theorem cuspChosenThirdSweep_interior_class (A : AnalyticData) :
     integralSingularHomologyMap 2
       (A.centralToEllipticInterior.comp A.cuspChosenThirdSweepCentral)
       positiveCircleProductGenerator =
@@ -213,7 +213,7 @@ public theorem cuspChosenThirdSweep_interior_class (A : PaperAnalyticData) :
   rw [he] at h
   exact h
 
-public theorem cuspChosenThirdSweep_primitive_boundary {A : PaperAnalyticData}
+public theorem cuspChosenThirdSweep_primitive_boundary {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
       (ConcreteCategory.hom ((BinaryOpenCover.openCoverHomologyComparisonOfCover
@@ -226,7 +226,7 @@ public theorem cuspChosenThirdSweep_primitive_boundary {A : PaperAnalyticData}
 
 open EllipticTwoDiscCoverData
 
-public theorem cuspPulledBackBoundaryHom_eq_interiorBoundary {A : PaperAnalyticData}
+public theorem cuspPulledBackBoundaryHom_eq_interiorBoundary {A : AnalyticData}
     (D : A.EllipticTwoDiscCoverData)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     D.cuspPulledBackBoundaryHom x =
@@ -256,7 +256,7 @@ public theorem cuspPulledBackBoundaryHom_eq_interiorBoundary {A : PaperAnalyticD
   rw [hm]
   rfl
 
-public theorem cuspToEllipticInteriorMap_eq_central {A : PaperAnalyticData}
+public theorem cuspToEllipticInteriorMap_eq_central {A : AnalyticData}
     (D : A.EllipticTwoDiscCoverData)
     (q : A.openEmbeddingStarData.collarSource 0) :
     D.cuspToEllipticInteriorMap q = A.centralToEllipticInterior (A.starToCentral 0 q) := by
@@ -271,7 +271,7 @@ public theorem cuspToEllipticInteriorMap_eq_central {A : PaperAnalyticData}
   rw [Homeomorph.symm_apply_apply] at h'
   exact congrArg Subtype.val h'
 
-public theorem cuspChosenThirdSweep_pulledBack_primitive {A : PaperAnalyticData}
+public theorem cuspChosenThirdSweep_pulledBack_primitive {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
       (R.twoDiscCover.cuspPulledBackBoundaryHom
@@ -285,7 +285,7 @@ public theorem cuspChosenThirdSweep_pulledBack_primitive {A : PaperAnalyticData}
   rw [hc]
   exact cuspChosenThirdSweep_primitive_boundary R
 
-public theorem cuspRawFour_pulled_back_primitive {A : PaperAnalyticData}
+public theorem cuspRawFour_pulled_back_primitive {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
       (R.twoDiscCover.cuspPulledBackBoundaryHom
@@ -295,7 +295,7 @@ public theorem cuspRawFour_pulled_back_primitive {A : PaperAnalyticData}
     integralSingularHomologyMap_eq_of_homotopy 2 A.cuspThirdSweep_homotopic_chosen.some]
   exact cuspChosenThirdSweep_pulledBack_primitive R
 
-public theorem cuspRawFour_pulled_back_scalar_one {A : PaperAnalyticData}
+public theorem cuspRawFour_pulled_back_scalar_one {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     R.twoDiscCover.cuspPulledBackBoundaryCoordinateHom R.homologyAlignment
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) = 1 := by
@@ -306,5 +306,5 @@ public theorem cuspRawFour_pulled_back_scalar_one {A : PaperAnalyticData}
   rw [cuspRawFour_pulled_back_primitive]
   rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end

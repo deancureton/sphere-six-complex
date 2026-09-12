@@ -62,11 +62,11 @@ public theorem isHomotopyEquivalenceInclusion_of_leftToUnion
 
 end SphereSixComplex
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.OpenUnionHomotopy
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The regular central region on the order-three side of the affine split. -/
 public abbrev affineOrderThreeCentralRegion :
@@ -78,6 +78,6 @@ public abbrev affineOrderFourCentralRegion :
     Set A.ellipticInterior :=
   centralHeightUpperRegion A.ellipticCentralHeight (1 / 3 : ℝ)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

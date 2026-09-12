@@ -16,29 +16,29 @@ modules; the marked band homotopies follow from normalized radial collar bounds.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 /-- The two band maps induced by the proved affine overlap
 equivalences are homotopic to the finite-cover projections marked by the unique affine-strip
 lift normalized by the common peripheral marking. -/
-public theorem affineRegularLiftMarkedBandHomotopies (A : PaperAnalyticData) :
+public theorem affineRegularLiftMarkedBandHomotopies (A : AnalyticData) :
     A.AffineOverlapBandCompatibility :=
   A.actualMarkedBandHomotopies
 
 
 /-- Collar shrinks give the overlap equivalences, and normalized radial bounds give the
 marked band homotopies. Together they supply the full affine completion. -/
-public theorem affineOverlapCompletionInput (A : PaperAnalyticData) :
+public theorem affineOverlapCompletionInput (A : AnalyticData) :
     A.AffineOverlapCompletionInput :=
   (affineRegularLiftMarkedBandHomotopies A).toOverlapCompletionInput
 
 /-- Exact drop-in replacement for the former broad radial-completion existence assumption. -/
 public theorem affineRadialCompletionInput_nonempty
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     Nonempty A.AffineRadialCompletionInput :=
   ⟨(affineOverlapCompletionInput A).toRadialCompletion⟩
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

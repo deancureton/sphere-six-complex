@@ -98,14 +98,14 @@ public theorem actualCuspFillingProjection_isQuotientCoveringMap
 
 end Geometry.CuspPuncturedCollarBridge
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The actual cusp collar source is canonically the central--cusp overlap in the glued star. -/
 public noncomputable def cuspCollarToStarOverlapHomeomorph :
@@ -212,7 +212,7 @@ public theorem cuspCoverSquare_commutes
     rfl⟩
 
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 namespace Topology
 

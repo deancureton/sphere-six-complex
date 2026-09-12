@@ -41,7 +41,7 @@ public theorem rhoLambda_epsilon'_eq_of_commute_g₂ (g : Delta) (h : Commute g 
 
 end SphereSixComplex.TriangleGroup
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.CyclicAngularFundamentalDomain
@@ -54,7 +54,7 @@ open SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 open SphereSixComplex.TriangleGroup
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Matching the first-power meridian determines the transported twist even when the entering
 sheet is only known up to the finite elliptic stabilizer. -/
@@ -92,7 +92,7 @@ public theorem orderFour_enteringSheet_inverse_transports_epsilon'
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

@@ -42,11 +42,11 @@ public theorem circleMappingTorus_pathConnected
     (Quotient (finiteBouquetMappingTorusSetoid (fun _ : Unit ↦ e)))
   infer_instance
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open AnalyticTorusFamily EllipticFamilySpecialization
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The actual order-three collar source is path-connected. -/
 public theorem starOrderThreeCollarSource_pathConnected :
@@ -203,7 +203,7 @@ public noncomputable def actualVanKampenFourPieceCover :
     exact S.fillingPiece_inter_fillingPiece (i := 1) (j := 2) (by decide)
 
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex
 

@@ -54,11 +54,11 @@ public theorem addMonoidHom_ext_of_equiv_pi_single_one
       _ = g (e.symm (z • (Pi.single i 1 : Fin n → ℤ))) := by rw [map_zsmul, map_zsmul]
       _ = g (e.symm (Pi.single i z)) := by rw [hz]
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open EllipticTwoDiscHomologyCoordinates
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 
 namespace EllipticInteriorMarkedCycleData
@@ -132,6 +132,6 @@ public theorem coordinateAfterAddEquiv_apply
 end EllipticInteriorMarkedCycleData
 
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

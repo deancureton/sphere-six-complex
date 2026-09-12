@@ -5,7 +5,7 @@ import all SphereSixComplex.Paper.TriangleGroup.Representation
 @[expose] public section
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology SphereSixComplex.TriangleGroup
 open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.Geometry.ComplexTorus
@@ -17,7 +17,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem orderFourCollarInverseRepresentative_forwardMeridian
     (q : OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace)) :
@@ -323,4 +323,4 @@ public theorem orderThreeBoundaryMeridian_outerLabel :
   apply hp.fundamentalGroupToMulOpposite_apply_eq_Iff.mpr
   exact (congrArg Subtype.val hm).symm
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

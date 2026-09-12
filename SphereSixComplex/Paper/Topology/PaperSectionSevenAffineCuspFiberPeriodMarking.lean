@@ -42,7 +42,7 @@ private theorem orderThreeCoverSourceDegreeOne_symm
   exact congrArg (orderThreeTorusHomologyBasis F).degreeOne h
 
 private noncomputable def actualCuspFiberToPeriodTorusHomologyOne
-    (A : Geometry.PaperAnalyticData) :
+    (A : Geometry.AnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     IntegralSingularHomology 1 G.Fiber →+
@@ -52,24 +52,24 @@ private noncomputable def actualCuspFiberToPeriodTorusHomologyOne
   exact integralSingularHomologyMap 1 G.fiberHomeomorph
 
 private theorem canonicalCuspFiberToBandTorusHomologyOne_eq_comp
-    {A : Geometry.PaperAnalyticData}
+    {A : Geometry.AnalyticData}
     (D : A.EllipticTwoDiscCoverData) :
     D.canonicalCuspFiberToBandTorusHomologyOne =
       (integralSingularHomologyMap 1
-        (Geometry.PaperAnalyticData.fullRankAdditiveTorusHomeomorph
+        (Geometry.AnalyticData.fullRankAdditiveTorusHomeomorph
           A.actualCuspRadialClutchingData.fiberParameter D.bandParameter
           A.actualCuspRadialClutchingData.fiberFullRank D.bandFullRank)).comp
         (actualCuspFiberToPeriodTorusHomologyOne A) := by
   let G := A.actualCuspRadialClutchingData
   let _ := G.fiberTopology
-  let e := Geometry.PaperAnalyticData.fullRankAdditiveTorusHomeomorph
+  let e := Geometry.AnalyticData.fullRankAdditiveTorusHomeomorph
     G.fiberParameter D.bandParameter G.fiberFullRank D.bandFullRank
   exact integralSingularHomologyMap_comp 1
     ⟨G.fiberHomeomorph, G.fiberHomeomorph.continuous⟩ ⟨e, e.continuous⟩
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 private theorem affineTwoDiscCover_degreeOneBasis
     (R : A.AffineRadialCompletionInput)
@@ -123,6 +123,6 @@ public theorem AffineRadialCompletionInput.canonicalCuspFiberOrderThreePeriodMar
       exact affineTwoDiscCover_degreeOneBasis R _
     _ = G.monodromyCoordinates.degreeOne x := hNatural.trans (hCusp x)
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

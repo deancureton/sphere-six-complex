@@ -6,15 +6,15 @@ public import SphereSixComplex.Paper.Topology.CuspEllipticHomologyFullIterate
 @[expose] public section
 noncomputable section
 open AlgebraicTopology
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology CircleProductIdentityMappingTorus Hurewicz.Chains
 
-public def ellipticFourthHomologySweep (A : PaperAnalyticData) :
+public def ellipticFourthHomologySweep (A : AnalyticData) :
     IntegralSingularHomology 1 A.ellipticInterior →+
       IntegralSingularHomology 2 A.ellipticInterior :=
   (integralSingularHomologyMap 2 A.ellipticFourthTranslation).comp (normalizedCircleCross 1)
 
-public theorem ellipticFourthHomologySweep_fullIterate (A : PaperAnalyticData) :
+public theorem ellipticFourthHomologySweep_fullIterate (A : AnalyticData) :
     (12 : ℤ) • A.ellipticFourthHomologySweep
       (-integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
         (hurewiczFunction A.cuspOverlapBase A.cuspAffineBridgeMeridian)) =
@@ -26,4 +26,4 @@ public theorem ellipticFourthHomologySweep_fullIterate (A : PaperAnalyticData) :
   simpa only [map_zsmul] using congrArg A.ellipticFourthHomologySweep
     A.cuspOverlap_homology_fullIterate
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

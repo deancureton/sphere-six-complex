@@ -39,12 +39,12 @@ public theorem integralHomologyEulerCharacteristicSix_homotopyEquiv
     (integralSingularHomologyEquivOfHomotopyEquiv 5 e).toIntLinearEquiv.finrank_eq,
     (integralSingularHomologyEquivOfHomotopyEquiv 6 e).toIntLinearEquiv.finrank_eq]
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 open Topology.PaperEllipticFillingRadialRetraction
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Proposition 7.2 transports the Euler calculation of the cusp central fibre to the actual
 cusp filling. -/
@@ -114,6 +114,6 @@ public theorem localEulerExpression_eq_two_of_modelCalculations
   rw [hCentral, hFillZero, hFillOne, hFillTwo, hCollar 0, hCollar 1, hCollar 2]
   norm_num
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

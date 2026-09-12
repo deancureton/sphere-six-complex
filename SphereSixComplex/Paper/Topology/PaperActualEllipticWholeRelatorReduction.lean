@@ -16,7 +16,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 
@@ -29,7 +29,7 @@ private theorem fundamentalGroupElementOfBaseEq_pow_mul_inv
   subst y
   rfl
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The expected order-three affine relator at the central-family basepoint. -/
 public noncomputable def orderThreeCentralExpectedRelator :
@@ -430,7 +430,7 @@ public theorem ellipticFour_relator_mem_normalClosure_of_relator_eq
     (A.ellipticFourOverlapToCore A.ellipticFourCanonicalRelator)
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

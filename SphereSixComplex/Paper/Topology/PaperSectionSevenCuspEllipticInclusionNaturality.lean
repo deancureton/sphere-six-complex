@@ -16,12 +16,12 @@ noncomputable section
 
 open AlgebraicTopology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open EllipticTwoDiscHomologyCoordinates
 open EllipticInteriorMarkedCycleData
 
-variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
+variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
 
 namespace EllipticTwoDiscCoverData
 
@@ -56,4 +56,4 @@ public theorem ellipticInteriorDegreeOneCoordinateHom_cuspToEllipticInteriorMap
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

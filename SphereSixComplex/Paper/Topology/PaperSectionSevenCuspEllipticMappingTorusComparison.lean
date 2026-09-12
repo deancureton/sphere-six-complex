@@ -22,13 +22,13 @@ open AlgebraicTopology
 open CategoryTheory
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open EllipticInteriorMarkedCycleData
 
-variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
+variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
 
 namespace EllipticTwoDiscCoverData
 
@@ -78,7 +78,7 @@ public theorem cuspToEllipticInteriorMap_homology_mappingTorusModel (k : ℕ)
 
 /-- Raw degree-one cusp coordinates are the geometric Wang coordinates after radial
 normalization. -/
-public theorem actualCuspRawHomologyOneEquiv_apply_mappingTorus (A : PaperAnalyticData)
+public theorem actualCuspRawHomologyOneEquiv_apply_mappingTorus (A : AnalyticData)
     (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
     A.cuspRawHomologyOneEquiv x =
       let G := A.actualCuspRadialClutchingData
@@ -89,7 +89,7 @@ public theorem actualCuspRawHomologyOneEquiv_apply_mappingTorus (A : PaperAnalyt
 
 /-- Raw degree-two cusp coordinates are the geometric Wang coordinates after radial
 normalization. -/
-public theorem actualCuspRawHomologyTwoEquiv_apply_mappingTorus (A : PaperAnalyticData)
+public theorem actualCuspRawHomologyTwoEquiv_apply_mappingTorus (A : AnalyticData)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     A.cuspRawHomologyTwoEquiv x =
       let G := A.actualCuspRadialClutchingData
@@ -103,6 +103,6 @@ public theorem actualCuspRawHomologyTwoEquiv_apply_mappingTorus (A : PaperAnalyt
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

@@ -32,26 +32,25 @@ public theorem constructedLocalPositivePart_contractible {r : ℝ}
   obtain ⟨c⟩ := LocallyCollared.nonempty_collar B (constructedPositiveCentralFiber_locallyCollared r)
   exact c.contractibleSpace hB
 
-public def constructedPolarHoneycombResidualData
+public def constructedPolarHoneycombConstruction
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    ConstructedPolarHoneycombResidualData W :=
-  constructedPolarHoneycombResidualData_of_contractible W
+    NormalizedPolarHoneycombConstructionData N constructedModel W.localWitness.radius :=
+  constructedPolarHoneycombConstructionData_of_contractible W
     (constructedLocalPositivePart_contractible W.localWitness.radius_pos W.localWitness.radius_lt_one)
 
 public instance constructedHasCuspPhaseSpreading
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) : HasCuspPhaseSpreading W := by
-  let T := constructedPolarHoneycombResidualData W
-  let Q := T.toTopologicalData.toConstructionData
+  let Q := constructedPolarHoneycombConstruction W
   let P := Q.toPolarHoneycombData
   have H : PolarPhaseRadialCompatibility N constructedModel W.localWitness.radius P :=
     ⟨fun lambda i ↦ norm_normalizedCuspPositiveTwist N lambda i⟩
   have G : PolarPhaseGeometricCore constructedModel W.localWitness.radius P :=
     polarPhaseGeometricCore_of_invariantModulus_only Q
-      T.toTopologicalData.toConstructionData_invariantModulus
+      (constructedLocalModulus_compactPhase W.localWitness.radius)
   exact ⟨⟨⟨P, FrozenLocalCuspPhaseSpreadingData.ofPolarPhaseData
     (compactPhaseOrbit_prod_isQuotientMap constructedModel W.localWitness.radius P)
     H.toDeckLift G⟩⟩⟩

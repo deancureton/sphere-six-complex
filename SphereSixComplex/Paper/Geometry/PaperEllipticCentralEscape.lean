@@ -86,17 +86,17 @@ open EllipticLocalCoordinates EllipticHolomorphicLogCover
 open EllipticLocalTrivialization
 open EllipticLinearCollarGlobalDescent
 open EllipticPuncturedCollarGaugeHomeomorph EquivariantQuotientHomeomorph
-open PaperAnalyticData
+open AnalyticData
 
 /-- The canonical projection from the regular torus family to the paper's central quotient. -/
-@[expose] public noncomputable def PaperAnalyticData.centralQuotientProjection
-    (P : PaperAnalyticData) : RegularTotalSpace P.periods → P.CentralFamily := by
+@[expose] public noncomputable def AnalyticData.centralQuotientProjection
+    (P : AnalyticData) : RegularTotalSpace P.periods → P.CentralFamily := by
   let _ := regularFamilyDeckAction P.periods
   exact quotientProjection
 
 /-- The central quotient projection is a local homeomorphism. -/
-public theorem PaperAnalyticData.centralQuotientProjection_isLocalHomeomorph
-    (P : PaperAnalyticData) : IsLocalHomeomorph P.centralQuotientProjection := by
+public theorem AnalyticData.centralQuotientProjection_isLocalHomeomorph
+    (P : AnalyticData) : IsLocalHomeomorph P.centralQuotientProjection := by
   let hproper : SourceActionProperlyDiscontinuous :=
     sourceActionProperlyDiscontinuous_of_eq
       P.modular.modularParameter.toTriangleUniformization_sourceAction
@@ -132,15 +132,15 @@ public theorem PaperAnalyticData.centralQuotientProjection_isLocalHomeomorph
   rw [centralQuotientProjection.eq_def]
   exact quotientProjection_isLocalHomeomorph
 
-public theorem PaperAnalyticData.centralQuotientProjection_surjective
-    (P : PaperAnalyticData) : Function.Surjective P.centralQuotientProjection := by
+public theorem AnalyticData.centralQuotientProjection_surjective
+    (P : AnalyticData) : Function.Surjective P.centralQuotientProjection := by
   rw [centralQuotientProjection.eq_def]
   exact Quotient.mk_surjective
 
 /-- Every compact subset of the central quotient is covered by a compact set of regular-family
 representatives. -/
-public theorem PaperAnalyticData.centralCompact_has_compactRepresentatives
-    (P : PaperAnalyticData) (K : Set P.CentralFamily) (hK : IsCompact K) :
+public theorem AnalyticData.centralCompact_has_compactRepresentatives
+    (P : AnalyticData) (K : Set P.CentralFamily) (hK : IsCompact K) :
     ∃ L : Set (RegularTotalSpace P.periods),
       IsCompact L ∧ K ⊆ P.centralQuotientProjection '' L := by
   let _ := P.starCentralCharts
@@ -153,8 +153,8 @@ public theorem PaperAnalyticData.centralCompact_has_compactRepresentatives
     P.centralQuotientProjection_isLocalHomeomorph
     P.centralQuotientProjection_surjective hK
 
-public theorem PaperAnalyticData.orderThreeStarToCentral_mk
-    (P : PaperAnalyticData)
+public theorem AnalyticData.orderThreeStarToCentral_mk
+    (P : AnalyticData)
     (q : (orderThreeAffinePuncturedCarrier P.periods
       P.modular.modularParameter.toTriangleUniformization_sourceAction
       P.starSeparation.orderThree.radius).carrier) :
@@ -173,8 +173,8 @@ public theorem PaperAnalyticData.orderThreeStarToCentral_mk
     centralQuotientProjection.eq_def]
   rfl
 
-public theorem PaperAnalyticData.orderFourStarToCentral_mk
-    (P : PaperAnalyticData)
+public theorem AnalyticData.orderFourStarToCentral_mk
+    (P : AnalyticData)
     (q : (orderFourAffinePuncturedCarrier P.periods
       P.modular.modularParameter.toTriangleUniformization_sourceAction
       P.starSeparation.orderFour.radius).carrier) :
@@ -193,8 +193,8 @@ public theorem PaperAnalyticData.orderFourStarToCentral_mk
     centralQuotientProjection.eq_def]
   rfl
 
-public theorem PaperAnalyticData.orderThreeStarCollarRadius_mk
-    (P : PaperAnalyticData)
+public theorem AnalyticData.orderThreeStarCollarRadius_mk
+    (P : AnalyticData)
     (q : (orderThreeAffinePuncturedCarrier P.periods
       P.modular.modularParameter.toTriangleUniformization_sourceAction
       P.starSeparation.orderThree.radius).carrier) :
@@ -206,8 +206,8 @@ public theorem PaperAnalyticData.orderThreeStarCollarRadius_mk
   rw [P.orderThreePuncturedCollarToFilling_mk]
   rfl
 
-public theorem PaperAnalyticData.orderFourStarCollarRadius_mk
-    (P : PaperAnalyticData)
+public theorem AnalyticData.orderFourStarCollarRadius_mk
+    (P : AnalyticData)
     (q : (orderFourAffinePuncturedCarrier P.periods
       P.modular.modularParameter.toTriangleUniformization_sourceAction
       P.starSeparation.orderFour.radius).carrier) :
@@ -221,8 +221,8 @@ public theorem PaperAnalyticData.orderFourStarCollarRadius_mk
 
 /-- A compact set of representatives for a central compact set gives a uniform positive
 order-three Cayley radius for every representative lying in the selected collar. -/
-public theorem PaperAnalyticData.orderThreeCentralOrbitRadius_lowerBound
-    (P : PaperAnalyticData) (r : ℝ) (hr : r < 1)
+public theorem AnalyticData.orderThreeCentralOrbitRadius_lowerBound
+    (P : AnalyticData) (r : ℝ) (hr : r < 1)
     (K : Set P.CentralFamily) (L : Set (RegularTotalSpace P.periods))
     (hL : IsCompact L)
     (hcover : K ⊆ P.centralQuotientProjection '' L) :
@@ -312,8 +312,8 @@ public theorem PaperAnalyticData.orderThreeCentralOrbitRadius_lowerBound
 
 /-- A compact set of representatives for a central compact set gives a uniform positive
 order-four Cayley radius for every representative lying in the selected collar. -/
-public theorem PaperAnalyticData.orderFourCentralOrbitRadius_lowerBound
-    (P : PaperAnalyticData) (r : ℝ) (hr : r < 1)
+public theorem AnalyticData.orderFourCentralOrbitRadius_lowerBound
+    (P : AnalyticData) (r : ℝ) (hr : r < 1)
     (K : Set P.CentralFamily) (L : Set (RegularTotalSpace P.periods))
     (hL : IsCompact L)
     (hcover : K ⊆ P.centralQuotientProjection '' L) :
@@ -403,8 +403,8 @@ public theorem PaperAnalyticData.orderFourCentralOrbitRadius_lowerBound
 
 /-- Compact subsets of the central piece stay a positive distance from the missing order-three
 elliptic fibre along the actual affine collar. -/
-public theorem PaperAnalyticData.orderThreeCentralPositiveLowerTrap
-    (P : PaperAnalyticData) :
+public theorem AnalyticData.orderThreeCentralPositiveLowerTrap
+    (P : AnalyticData) :
     ∀ K : Set P.CentralFamily, IsCompact K →
       ∃ a : ℝ, 0 < a ∧ ∀ s : P.StarCollarSource (1 : Fin 3),
         P.starToCentral (1 : Fin 3) s ∈ K →
@@ -454,8 +454,8 @@ public theorem PaperAnalyticData.orderThreeCentralPositiveLowerTrap
 
 /-- Compact subsets of the central piece stay a positive distance from the missing order-four
 elliptic fibre along the actual affine collar. -/
-public theorem PaperAnalyticData.orderFourCentralPositiveLowerTrap
-    (P : PaperAnalyticData) :
+public theorem AnalyticData.orderFourCentralPositiveLowerTrap
+    (P : AnalyticData) :
     ∀ K : Set P.CentralFamily, IsCompact K →
       ∃ a : ℝ, 0 < a ∧ ∀ s : P.StarCollarSource (2 : Fin 3),
         P.starToCentral (2 : Fin 3) s ∈ K →
@@ -503,14 +503,14 @@ public theorem PaperAnalyticData.orderFourCentralPositiveLowerTrap
         _ = P.starCollarRadius (2 : Fin 3) (Quotient.mk _ q) :=
           (P.orderFourStarCollarRadius_mk q).symm
 
-public theorem PaperAnalyticData.orderThreeCollarPairMap_isProper
-    (P : PaperAnalyticData) :
+public theorem AnalyticData.orderThreeCollarPairMap_isProper
+    (P : AnalyticData) :
     IsProperMap (P.openEmbeddingStarData.collarPairMap (1 : Fin 3)) :=
   P.orderThreeCollarPairMap_isProper_of_centralLowerTrap
     P.orderThreeCentralPositiveLowerTrap
 
-public theorem PaperAnalyticData.orderFourCollarPairMap_isProper
-    (P : PaperAnalyticData) :
+public theorem AnalyticData.orderFourCollarPairMap_isProper
+    (P : AnalyticData) :
     IsProperMap (P.openEmbeddingStarData.collarPairMap (2 : Fin 3)) :=
   P.orderFourCollarPairMap_isProper_of_centralLowerTrap
     P.orderFourCentralPositiveLowerTrap

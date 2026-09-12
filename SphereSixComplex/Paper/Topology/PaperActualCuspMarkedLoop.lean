@@ -19,13 +19,13 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
 open CuspPeriodExpansion CuspPuncturedCollarBridge
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The straight angular path `s \mapsto s - t` in the actual additive cusp cover. -/
 public def cuspAngularLiftPoint (t : unitInterval) :
@@ -201,6 +201,6 @@ theorem cuspAngularProjectedLoop_class_eq_ofDeck :
         (Path.Homotopic.Quotient.cast_heq _ _))
   simpa only [MulOpposite.unop_op] using congrArg Subtype.val hmono.symm
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

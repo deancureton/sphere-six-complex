@@ -10,7 +10,7 @@ noncomputable section
 open AlgebraicTopology Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
@@ -19,7 +19,7 @@ open SphereSixComplex.StandardCircleHomologyLiftDegree
 open CuspPuncturedCollarBridge
 open CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public noncomputable def cuspAngularPuncturedLoop :
     Path A.cuspLocalBoundaryBase A.cuspLocalBoundaryBase := by
@@ -120,6 +120,6 @@ public theorem cuspMappingTorusMeridianHomologyClass_eq_cuspAngularPuncturedLoop
   rw [A.cuspBoundaryMeridianHomologyClass_eq_cuspAngularPuncturedLoop]
   rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

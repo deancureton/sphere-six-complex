@@ -8,7 +8,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.AnalyticTorusFamily
@@ -25,7 +25,7 @@ open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 private theorem pullbackMulActionHomeomorph_apply
     {G E E' : Type*} [Group G] [TopologicalSpace E] [TopologicalSpace E']
@@ -409,4 +409,4 @@ public noncomputable def ellipticFourFillingExtensionAtBase :
     A.ellipticFourRadialFillingLift_equivariant g
       A.ellipticFourBoundaryBase
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

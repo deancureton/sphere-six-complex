@@ -6,24 +6,24 @@ public import SphereSixComplex.Paper.Topology.CuspCoordinateCircleTransport
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open GlobalTorusFamily CuspPuncturedCollarBridge CuspRadialClutchingConstruction
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus TorusFamily CuspPeriodExpansion
 open EllipticTwoDiscCoverData
 
-public def cuspChosenAnchor (A : PaperAnalyticData) :
+public def cuspChosenAnchor (A : AnalyticData) :
     OpenRadialInterval A.starCuspWitness.localWitness.radius × ℝ :=
   (⟨‖cuspQ A.cuspBoundaryCoverBase.1.2‖,
     norm_cuspQ_pos _, A.cuspBoundaryCoverBase.2⟩, A.cuspBoundaryCoverBase.1.2.re)
 
-public def cuspChosenThirdSweep (A : PaperAnalyticData) :
+public def cuspChosenThirdSweep (A : AnalyticData) :
     C(UnitAddCircle × StdTorus 1, A.openEmbeddingStarData.collarSource 0) :=
   A.cuspFixedCircleSweepAnchors (cuspThirdFixedCircle (cuspBasePoint A.cuspCoordinate
     (markedCuspParameter A.starCuspWitness))) A.cuspChosenAnchor
 
-public theorem cuspThirdSweep_homotopic_chosen (A : PaperAnalyticData) :
+public theorem cuspThirdSweep_homotopic_chosen (A : AnalyticData) :
     (cuspThirdSweep A).Homotopic A.cuspChosenThirdSweep :=
   A.cuspFixedCircleSweep_homotopic_anchor _ _
 
@@ -35,7 +35,7 @@ private theorem cuspParameterOfPolar_norm_cuspQ_add (s : ℂ) (r : ℝ) :
       ring
     _ = _ := by rw [cuspParameterOfPolar_norm_cuspQ]
 
-public def cuspChosenPositiveCover (A : PaperAnalyticData) :
+public def cuspChosenPositiveCover (A : AnalyticData) :
     C(ℝ, additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) := by
   refine ⟨fun r ↦ ⟨(0, A.cuspBoundaryCoverBase.1.2 + r), ?_⟩, ?_⟩
   · change ‖cuspQ (A.cuspBoundaryCoverBase.1.2 + r)‖ < _
@@ -45,14 +45,14 @@ public def cuspChosenPositiveCover (A : PaperAnalyticData) :
     simpa using h
   · exact (continuous_const.prodMk (continuous_const.add Complex.continuous_ofReal)).subtype_mk _
 
-public def cuspChosenPositiveRegularBase (A : PaperAnalyticData) :
+public def cuspChosenPositiveRegularBase (A : AnalyticData) :
     C(ℝ, RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
   ⟨fun r ↦ (additiveCuspBundleHomeomorph A.starCuspWitness (A.cuspChosenPositiveCover r)).1.1,
     continuous_fst.comp (continuous_subtype_val.comp
       ((additiveCuspBundleHomeomorph A.starCuspWitness).continuous.comp
         A.cuspChosenPositiveCover.continuous))⟩
 
-public theorem cuspChosenThirdSweep_central_real (A : PaperAnalyticData)
+public theorem cuspChosenThirdSweep_central_real (A : AnalyticData)
     (r : ℝ) (t : UnitAddCircle) :
     A.starToCentral 0 (A.cuspChosenThirdSweep ((r : UnitAddCircle), fun _ ↦ t)) =
       regularPeriodCircleInGlobal A.periods (Pi.single 2 1)
@@ -68,7 +68,7 @@ public theorem cuspChosenThirdSweep_central_real (A : PaperAnalyticData)
   apply Subtype.ext
   exact congrArg A.cuspCoordinate.lift hs
 
-public theorem cuspChosenPositiveRegularBase_zero (A : PaperAnalyticData) :
+public theorem cuspChosenPositiveRegularBase_zero (A : AnalyticData) :
     A.cuspChosenPositiveRegularBase 0 = regularTotalSpaceBase A.periods
       A.cuspRegularRepresentative := by
   apply Subtype.ext
@@ -76,7 +76,7 @@ public theorem cuspChosenPositiveRegularBase_zero (A : PaperAnalyticData) :
     A.cuspCoordinate.lift (A.cuspBoundaryCoverBase.1.2 - ((0 : unitInterval) : ℝ))
   simp
 
-public theorem cuspChosenPositiveRegularBase_projects (A : PaperAnalyticData)
+public theorem cuspChosenPositiveRegularBase_projects (A : AnalyticData)
     (t : unitInterval) :
     A.regularCoordinate (A.cuspChosenPositiveRegularBase t) =
       A.cuspAngularCoordinateLoop.symm t := by
@@ -95,6 +95,6 @@ public theorem cuspChosenPositiveRegularBase_projects (A : PaperAnalyticData)
       (A.cuspChosenPositiveCover t))]
   exact (A.modular.sourceCoordinate.coordinate_invariant g₀ _).symm
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end
 end

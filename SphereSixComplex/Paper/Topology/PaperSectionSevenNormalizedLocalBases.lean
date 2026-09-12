@@ -16,9 +16,9 @@ coming from an explicit swept-cycle section.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
+variable {A : AnalyticData} {D : A.EllipticTwoDiscCoverData}
 
 /-- The radial cusp model, corrected two-disc coordinates, and a swept-cycle section supply the
 four local bases with a geometrically normalized elliptic degree-two coordinate. -/
@@ -33,5 +33,5 @@ public noncomputable def normalizedCollarInteriorHomologyBases
   cuspCollarTwo := R.homologyTwoEquiv
   ellipticInteriorTwo := B.normalizedEllipticInteriorHomologyTwoEquiv S
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 

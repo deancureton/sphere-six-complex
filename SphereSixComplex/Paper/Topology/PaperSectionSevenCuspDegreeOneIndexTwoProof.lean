@@ -18,12 +18,12 @@ noncomputable section
 
 open AlgebraicTopology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open EllipticInteriorMarkedCycleData
 open EllipticTwoDiscCoverData
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 namespace EstablishedSectionSevenCuspTopology
 
@@ -89,6 +89,6 @@ public theorem actualCuspDegreeOneIndexTwo_iff_fullIterateRelation
 
 end EstablishedSectionSevenCuspTopology
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

@@ -23,19 +23,19 @@ open AlgebraicTopology
 
 namespace SphereSixComplex
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open EllipticTwoDiscHomologyCoordinates
 open EllipticInteriorMarkedCycleData
 open SphereSixComplex.CircleMappingTorusHomologyBases
 
-variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
+variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
 
 namespace EllipticTwoDiscCoverData
 
 /-- The actual cusp Wang connecting homomorphism before taking monodromy-invariant
 coordinates. -/
-public noncomputable def actualCuspWangBoundaryHom (A : PaperAnalyticData) :
+public noncomputable def actualCuspWangBoundaryHom (A : AnalyticData) :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) →+
       let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
@@ -59,6 +59,6 @@ public noncomputable def ellipticBandFourthCoordinateHom
 
 end EllipticTwoDiscCoverData
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

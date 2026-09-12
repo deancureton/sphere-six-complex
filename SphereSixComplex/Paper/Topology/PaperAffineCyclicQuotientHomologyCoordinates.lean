@@ -60,42 +60,16 @@ public def affineCyclicCentralFiberCoverSourceHomologyBasis
   (EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).homeomorph
     (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)
 
-/-- Functoriality clause for a degree-one finite-cover presentation.
-
-The existing affine cyclic quotient theorem supplies the quotient basis, but its opaque API does
-not expose how that basis acts on the covering projection.  This structure records exactly that
-pointwise naturality statement. -/
-public structure DegreeOneCoverProjectionRealization
-    {E X : Type} [TopologicalSpace E] [TopologicalSpace X]
-    (projection : C(E, X)) (sourceBasis : IntegralSingularHomology 1 E ≃+ Lattice)
-    (quotientBasis : IntegralSingularHomology 1 X ≃+ IntSquared)
-    (coordinates : Lattice →+ IntSquared) : Prop where
-  projection_coordinates : ∀ x : Lattice,
-    quotientBasis
-        (integralSingularHomologyMap 1 projection (sourceBasis.symm x)) =
-      coordinates x
-
 variable {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U)
-
-/-- The exact naturality obligation for the actual order-three finite cover. -/
-public abbrev OrderThreeCentralFiberHOneNaturality :=
-  DegreeOneCoverProjectionRealization
-    (RadialEllipticActionData.centralFiberCoverProjection (orderThreeRadialActionData F))
-    (orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne
-    (orderThreeReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
-    orderOneLatticeProjectionCoordinates
-
-/-- The exact naturality obligation for the actual order-four finite cover. -/
-public abbrev OrderFourCentralFiberHOneNaturality :=
-  DegreeOneCoverProjectionRealization
-    (RadialEllipticActionData.centralFiberCoverProjection (orderFourRadialActionData F))
-    (orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne
-    (orderFourReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
-    orderTwoLatticeProjectionCoordinates
 
 /-- The actual order-three projection has coordinates `(3 gamma, psiOne)`. -/
 public theorem orderThree_coverProjection_degreeOne_coordinates
-    (N : OrderThreeCentralFiberHOneNaturality F) (x : Lattice) :
+    (N : (∀ x : Lattice,
+    (orderThreeReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection (orderThreeRadialActionData F))
+        ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderOneLatticeProjectionCoordinates x)) (x : Lattice) :
     orderThreeReducedCentralFiberHOneEquivIntSquared F
         (orderThreeReducedCentralFiberCoverHomologyDegreeOne F x) =
       ![3 * gamma x, psiOne x] := by
@@ -104,11 +78,16 @@ public theorem orderThree_coverProjection_degreeOne_coordinates
         (RadialEllipticActionData.centralFiberCoverProjection
           (orderThreeRadialActionData F))
         ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) = _
-  exact N.projection_coordinates x
+  exact N x
 
 /-- The actual order-four projection has coordinates `(4 gamma, psiTwo)`. -/
 public theorem orderFour_coverProjection_degreeOne_coordinates
-    (N : OrderFourCentralFiberHOneNaturality F) (x : Lattice) :
+    (N : (∀ x : Lattice,
+    (orderFourReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection (orderFourRadialActionData F))
+        ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderTwoLatticeProjectionCoordinates x)) (x : Lattice) :
     orderFourReducedCentralFiberHOneEquivIntSquared F
         (orderFourReducedCentralFiberCoverHomologyDegreeOne F x) =
       ![4 * gamma x, psiTwo x] := by
@@ -117,13 +96,23 @@ public theorem orderFour_coverProjection_degreeOne_coordinates
         (RadialEllipticActionData.centralFiberCoverProjection
           (orderFourRadialActionData F))
         ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) = _
-  exact N.projection_coordinates x
+  exact N x
 
 /-- The four finite-cover comparison inputs needed by the elliptic two-disc
 Mayer--Vietoris calculation. -/
 public structure EllipticFiniteCoverHomologyRealization where
-  orderThreeOne : OrderThreeCentralFiberHOneNaturality F
-  orderFourOne : OrderFourCentralFiberHOneNaturality F
+  orderThreeOne : (∀ x : Lattice,
+    (orderThreeReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection (orderThreeRadialActionData F))
+        ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderOneLatticeProjectionCoordinates x)
+  orderFourOne : (∀ x : Lattice,
+    (orderFourReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection (orderFourRadialActionData F))
+        ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderTwoLatticeProjectionCoordinates x)
   orderThreeTwo : OrderThreeReducedCentralFiberDegreeTwoRealization F
   orderFourTwo : OrderFourReducedCentralFiberDegreeTwoRealization F
 

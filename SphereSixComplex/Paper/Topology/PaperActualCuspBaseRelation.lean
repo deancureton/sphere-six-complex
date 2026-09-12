@@ -78,12 +78,12 @@ public theorem puncturedExteriorRadialExpansionTwice_standardBasepoint :
 
 end SphereSixComplex
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-! ## A coherent logarithmic whisker to the actual exterior basepoint -/
 
@@ -463,6 +463,6 @@ public theorem cuspCommonCoordinateLoop_class_eq_finiteProduct :
       TwicePuncturedComplex.oneMeridianClass⁻¹
   exact mul_inv_rev _ _
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

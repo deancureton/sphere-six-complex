@@ -4,9 +4,9 @@ public import SphereSixComplex.Paper.Topology.CuspEllipticInteriorRelators
 @[expose] public section
 noncomputable section
 open AlgebraicTopology
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology Hurewicz.Chains
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public def cuspOverlapToEllipticInterior :
     C((A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
@@ -51,5 +51,5 @@ public theorem cuspOverlap_homology_fullIterate :
   erw [natCast_zsmul]
   exact h
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.ToricPhaseSpreading
+public import SphereSixComplex.Prerequisites.Topology.ToricPhaseSpreading
 public import SphereSixComplex.Paper.Topology.HasCuspPhaseSpreading
 
 /-!

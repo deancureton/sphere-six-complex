@@ -6,12 +6,12 @@ public import SphereSixComplex.Paper.Topology.PaperRegularFiberTransport
 @[expose] public section
 noncomputable section
 open AlgebraicTopology
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology Hurewicz.Chains
 open SphereSixComplex.StandardCircleHomologyLiftDegree SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus EllipticFamilySpecialization GlobalTorusFamily
 open AnalyticTorusFamily TorusFamily
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 private def torusTranslate (a : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
     C(AdditiveTorus A.duplicatedSectionSevenBandParameter,
@@ -200,5 +200,5 @@ public theorem cuspDegreeOneFullIterateRelation_proved
         (Pi.single (2 : Fin 3) 1))) = 1
   omega
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end

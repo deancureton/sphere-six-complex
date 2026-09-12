@@ -232,9 +232,9 @@ def intProdEquivFinTwo : (ℤ × ℤ) ≃ₗ[ℤ] (Fin 2 → ℤ) where
   left_inv z := by rcases z with ⟨x, y⟩; rfl
   right_inv f := by funext i; fin_cases i <;> rfl
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 /-- Exact coordinate input for the two-disc Mayer--Vietoris calculation.  It contains bases only
 on the overlap and the two sides, not on their union. -/
@@ -378,6 +378,6 @@ public theorem presentationTwo_boundary :
 
 end EllipticTwoDiscHomologyCoordinates
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

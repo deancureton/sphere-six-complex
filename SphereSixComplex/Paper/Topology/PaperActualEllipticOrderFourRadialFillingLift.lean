@@ -16,7 +16,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
@@ -25,7 +25,7 @@ open SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 open SphereSixComplex.CyclicAngularFundamentalDomain
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Inclusion of the actual order-four overlap into its filling piece is the original star
 collar-to-filling map in the canonical source and target coordinates. -/
@@ -274,4 +274,4 @@ public theorem ellipticFourRadialFillingLift_commutes
   rw [A.orderFourFillingProductMap_actualEllipticRadialFillingLift q]
   rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

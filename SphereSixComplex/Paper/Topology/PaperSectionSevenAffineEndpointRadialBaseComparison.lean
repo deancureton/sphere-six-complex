@@ -17,7 +17,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open GlobalTorusFamily
 open EllipticLinearCollarGlobalDescent EllipticPuncturedCollarGaugeHomeomorph
@@ -26,7 +26,7 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 /-- The named strip lift, regarded as a point of the order-three half-plane preimage. -/
 public def affineOrderThreeHalfPlaneBaseLift
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(affineVerticalStrip, A.OrderThreeAffineHalfPlaneBaseLift) :=
   ⟨fun z ↦ ⟨A.affineNamedStripLift.lift z, by
       change (A.regularCoordinate (A.affineNamedStripLift.lift z)).1.re < 2 / 3
@@ -36,7 +36,7 @@ public def affineOrderThreeHalfPlaneBaseLift
 
 /-- The named strip lift, regarded as a point of the order-four half-plane preimage. -/
 public def affineOrderFourHalfPlaneBaseLift
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(affineVerticalStrip, A.OrderFourAffineHalfPlaneBaseLift) :=
   ⟨fun z ↦ ⟨A.affineNamedStripLift.lift z, by
       change 1 / 3 < (A.regularCoordinate
@@ -49,7 +49,7 @@ public def affineOrderFourHalfPlaneBaseLift
 
 /-- The order-three inverse radial lift over the named strip. -/
 public noncomputable def affineOrderThreeRadialBaseLift
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(affineVerticalStrip,
       RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
   let r := A.affineOrderThreeMarkedDiscRadius
@@ -66,7 +66,7 @@ public noncomputable def affineOrderThreeRadialBaseLift
 
 /-- The order-four inverse radial lift over the named strip. -/
 public noncomputable def affineOrderFourRadialBaseLift
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(affineVerticalStrip,
       RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
   let r := A.affineOrderFourMarkedDiscRadius
@@ -97,6 +97,6 @@ public noncomputable def affineOrderFourRadialBaseLift
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

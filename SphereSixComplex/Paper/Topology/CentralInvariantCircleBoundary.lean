@@ -28,13 +28,13 @@ public theorem pathCircleMap_mem_range {X : Type} [TopologicalSpace X]
 
 end SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology
 open CircleProductIdentityMappingTorus PositiveCircleCross StandardTorusHomology
 open EllipticTwoDiscCoverData
 open EllipticTwoDiscHomologyCoordinates
 open EllipticInteriorMarkedCycleData
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 public noncomputable def centralFourthPeriodCircleToUnion
     (D : A.EllipticTwoDiscCoverData) :
@@ -221,6 +221,6 @@ public theorem centralFourthPeriodCircle_boundary_of_projection_zero
   rw [h]
   exact centralFourthPeriodCircle_normalizedCross_boundary R _
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end
 end

@@ -12,7 +12,7 @@ three corresponding end inequalities holds.
 
 open Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open Set
 
@@ -62,4 +62,4 @@ public theorem not_mem_puncturedAffineThresholdCore
     ‖(z : ℂ)‖ < delta0 ∨ ‖(z : ℂ) - 1‖ < delta1 ∨ R < ‖(z : ℂ)‖ :=
   not_mem_puncturedAffineThresholdCore_iff.mp hz
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

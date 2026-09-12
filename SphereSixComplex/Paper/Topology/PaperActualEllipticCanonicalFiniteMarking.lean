@@ -8,7 +8,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.AnalyticTorusFamily
@@ -18,7 +18,7 @@ open SphereSixComplex.LatticeData
 open SphereSixComplex.Topology
 open SphereSixComplex.CyclicAngularFundamentalDomain
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The canonical chosen order-three filling cover produced by the explicit radial action and
 lift. -/
@@ -205,4 +205,4 @@ public theorem ellipticFourCanonicalChosenCover_meridian_eq_ofDeck :
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

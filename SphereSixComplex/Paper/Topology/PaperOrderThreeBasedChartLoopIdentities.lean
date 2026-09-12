@@ -18,7 +18,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.CyclicAngularFundamentalDomain
@@ -30,7 +30,7 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.GlobalTorusFamily
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The straight path in the explicit radial cover from its selected basepoint to a deck
 translate.  The radial coordinate is fixed and the affine cover coordinates follow the segment
@@ -119,7 +119,7 @@ public theorem ellipticThreeBoundaryDeckStraightLoop_class_eq_ofDeck
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

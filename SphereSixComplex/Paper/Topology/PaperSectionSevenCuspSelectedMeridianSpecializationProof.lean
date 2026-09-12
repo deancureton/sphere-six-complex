@@ -17,7 +17,7 @@ noncomputable section
 
 open AlgebraicTopology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.CircleMappingTorusHomologyBases
@@ -27,7 +27,7 @@ open CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
 
 /-- The selected positive Wang-section generator lies in the cusp-filling kernel. -/
 public theorem rawDegreeOneTotalSpecialization_selectedPositiveMeridianClass
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     rawDegreeOneTotalSpecialization G (cuspSelectedPositiveMeridianClass A) = 0 := by
@@ -61,6 +61,6 @@ public theorem rawDegreeOneTotalSpecialization_selectedPositiveMeridianClass
   ext i
   fin_cases i <;> rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

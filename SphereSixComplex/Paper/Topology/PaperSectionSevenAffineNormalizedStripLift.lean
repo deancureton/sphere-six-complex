@@ -34,13 +34,13 @@ public theorem quotientCover_fundamentalGroupToMulOpposite_naturality_at
 
 end SphereSixComplex
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex SphereSixComplex.Topology SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-public noncomputable def affinePeripheralMidpointTotal (A : PaperAnalyticData) :
+public noncomputable def affinePeripheralMidpointTotal (A : AnalyticData) :
     (regularFamilyQuotientMap A.periods) ⁻¹'
       {A.centralZeroSection A.markedPuncturedBasepoint} := by
   let _ := regularFamilyDeckAction A.periods
@@ -52,7 +52,7 @@ public noncomputable def affinePeripheralMidpointTotal (A : PaperAnalyticData) :
     (Path.Homotopic.Quotient.mk A.cuspMarkedCentralWhisker).symm
     ⟨A.cuspRegularRepresentative, A.cuspRegularRepresentative_projects⟩
 
-public theorem affinePeripheralMidpointTotal_transport (A : PaperAnalyticData) :
+public theorem affinePeripheralMidpointTotal_transport (A : AnalyticData) :
     letI := regularFamilyDeckAction A.periods
     let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
@@ -76,7 +76,7 @@ public theorem affinePeripheralMidpointTotal_transport (A : PaperAnalyticData) :
   simp only [Path.Homotopic.Quotient.symm_trans, hp.isCoveringMap.monodromy_refl]
   rfl
 
-public noncomputable def affineNormalizedMidpointTotal (A : PaperAnalyticData) :
+public noncomputable def affineNormalizedMidpointTotal (A : AnalyticData) :
     (regularFamilyQuotientMap A.periods) ⁻¹'
       {A.centralZeroSection A.markedPuncturedBasepoint} := by
   let _ := regularFamilyDeckAction A.periods
@@ -87,7 +87,7 @@ public noncomputable def affineNormalizedMidpointTotal (A : PaperAnalyticData) :
   exact hp.toPermFiber _ (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
     A.affinePeripheralMidpointTotal
 
-public theorem affineNormalizedMidpointTotal_label (A : PaperAnalyticData)
+public theorem affineNormalizedMidpointTotal_label (A : AnalyticData)
     (γ : FundamentalGroup A.CentralFamily (A.centralZeroSection A.markedPuncturedBasepoint)) :
     letI := regularFamilyDeckAction A.periods
     let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
@@ -114,7 +114,7 @@ public theorem affineNormalizedMidpointTotal_label (A : PaperAnalyticData)
   rw [← ht]
   rfl
 
-public theorem affineNormalizedMidpointTotal_zero_label (A : PaperAnalyticData) :
+public theorem affineNormalizedMidpointTotal_zero_label (A : AnalyticData) :
     letI := regularFamilyDeckAction A.periods
     let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
@@ -133,7 +133,7 @@ public theorem affineNormalizedMidpointTotal_zero_label (A : PaperAnalyticData) 
   rw [A.geometricCentralClockwiseOneDeck_eq_cuspConjugate]
   group
 
-public theorem affineNormalizedMidpointTotal_one_label (A : PaperAnalyticData) :
+public theorem affineNormalizedMidpointTotal_one_label (A : AnalyticData) :
     letI := regularFamilyDeckAction A.periods
     let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
@@ -152,12 +152,12 @@ public theorem affineNormalizedMidpointTotal_one_label (A : PaperAnalyticData) :
   rw [A.geometricCentralClockwiseTwoDeck_eq_cuspConjugate]
   group
 
-public noncomputable def affineNormalizedMidpoint (A : PaperAnalyticData) :
+public noncomputable def affineNormalizedMidpoint (A : AnalyticData) :
     RegularBase (U := A.modular.modularParameter.toTriangleUniformization) :=
   regularSourceEquiv (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
     (regularTotalSpaceBase A.periods A.affinePeripheralMidpointTotal.val)
 
-public theorem affineNormalizedMidpointTotal_base (A : PaperAnalyticData) :
+public theorem affineNormalizedMidpointTotal_base (A : AnalyticData) :
     regularTotalSpaceBase A.periods A.affineNormalizedMidpointTotal.val =
       A.affineNormalizedMidpoint := by
   change regularTotalSpaceBase A.periods
@@ -166,7 +166,7 @@ public theorem affineNormalizedMidpointTotal_base (A : PaperAnalyticData) :
       A.affinePeripheralMidpointTotal.val) = _
   exact regularTotalSpaceBase_familyDeckMap A.periods _ _
 
-public theorem exists_affineNormalizedCuspPath (A : PaperAnalyticData) :
+public theorem exists_affineNormalizedCuspPath (A : AnalyticData) :
     ∃ L : Path A.affineNormalizedMidpoint
       (regularSourceEquiv (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
         (regularTotalSpaceBase A.periods A.cuspRegularRepresentative)),
@@ -197,19 +197,19 @@ public theorem exists_affineNormalizedCuspPath (A : PaperAnalyticData) :
   rw [← A.centralFamilyCoordinate_centralQuotientProjection]
   exact congrArg A.centralFamilyCoordinate (congrArg (fun p : Path _ _ ↦ p t) hQ)
 
-public noncomputable def affineNormalizedCuspPath (A : PaperAnalyticData) :
+public noncomputable def affineNormalizedCuspPath (A : AnalyticData) :
     Path A.affineNormalizedMidpoint
       (regularSourceEquiv (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
         (regularTotalSpaceBase A.periods A.cuspRegularRepresentative)) :=
   A.exists_affineNormalizedCuspPath.choose
 
-public theorem affineNormalizedCuspPath_projects (A : PaperAnalyticData)
+public theorem affineNormalizedCuspPath_projects (A : AnalyticData)
     (t : unitInterval) :
     A.regularCoordinate (A.affineNormalizedCuspPath t) =
       A.centralFamilyCoordinate (A.cuspMarkedCentralWhisker t) :=
   A.exists_affineNormalizedCuspPath.choose_spec t
 
-public theorem affineNormalizedMidpoint_projects (A : PaperAnalyticData) :
+public theorem affineNormalizedMidpoint_projects (A : AnalyticData) :
     A.regularCoordinate A.affineNormalizedMidpoint =
       twicePuncturedComplexBasepoint := by
   unfold affineNormalizedMidpoint
@@ -225,19 +225,19 @@ public theorem affineNormalizedMidpoint_projects (A : PaperAnalyticData) :
   rw [A.centralFamilyCoordinate_zeroSection]
   simp [markedPuncturedBasepoint]
 
-public theorem affineMarkedCentralCoordinate_base (A : PaperAnalyticData) :
+public theorem affineMarkedCentralCoordinate_base (A : AnalyticData) :
     A.centralFamilyCoordinate (A.centralZeroSection A.markedPuncturedBasepoint) =
       twicePuncturedComplexBasepoint := by
   rw [A.centralFamilyCoordinate_zeroSection]
   simp [markedPuncturedBasepoint]
 
-public noncomputable def affineNormalizedBaseDeckHom (A : PaperAnalyticData) :
+public noncomputable def affineNormalizedBaseDeckHom (A : AnalyticData) :
     FundamentalGroup regularCoordinateBase twicePuncturedComplexBasepoint →* Deltaᵐᵒᵖ := by
   let _ := A.regularBaseDeckAction
   exact A.regularCoordinate_isQuotientCoveringMap.fundamentalGroupToMulOpposite
     ⟨A.affineNormalizedMidpoint, A.affineNormalizedMidpoint_projects⟩
 
-public theorem affineNormalizedBaseDeckHom_coordinate (A : PaperAnalyticData)
+public theorem affineNormalizedBaseDeckHom_coordinate (A : AnalyticData)
     (γ : FundamentalGroup A.CentralFamily (A.centralZeroSection A.markedPuncturedBasepoint)) :
     letI := regularFamilyDeckAction A.periods
     let hp := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
@@ -285,7 +285,7 @@ public theorem affineNormalizedBaseDeckHom_coordinate (A : PaperAnalyticData)
       affineNormalizedMidpointTotal_base] using hc
   exact h.trans hc'.symm
 
-public theorem affineNormalizedBaseDeckHom_zero (A : PaperAnalyticData) :
+public theorem affineNormalizedBaseDeckHom_zero (A : AnalyticData) :
     (A.affineNormalizedBaseDeckHom
       (Path.Homotopic.Quotient.mk twicePuncturedClockwiseZeroMeridian)).unop = g₁ := by
   have h := A.affineNormalizedBaseDeckHom_coordinate A.markedZeroCentralMeridianClass
@@ -309,7 +309,7 @@ public theorem affineNormalizedBaseDeckHom_zero (A : PaperAnalyticData) :
   rw [hm] at h
   exact (congrArg MulOpposite.unop h.symm).trans A.affineNormalizedMidpointTotal_zero_label
 
-public theorem affineNormalizedBaseDeckHom_one (A : PaperAnalyticData) :
+public theorem affineNormalizedBaseDeckHom_one (A : AnalyticData) :
     (A.affineNormalizedBaseDeckHom
       (Path.Homotopic.Quotient.mk twicePuncturedClockwiseOneMeridian)).unop = g₂ := by
   have h := A.affineNormalizedBaseDeckHom_coordinate A.markedOneCentralMeridianClass
@@ -333,7 +333,7 @@ public theorem affineNormalizedBaseDeckHom_one (A : PaperAnalyticData) :
   rw [hm] at h
   exact (congrArg MulOpposite.unop h.symm).trans A.affineNormalizedMidpointTotal_one_label
 
-public theorem exists_sectionSevenAffineNormalizedLoopLift (A : PaperAnalyticData)
+public theorem exists_sectionSevenAffineNormalizedLoopLift (A : AnalyticData)
     (γ : Path twicePuncturedComplexBasepoint twicePuncturedComplexBasepoint) (g : Delta)
     (hg : (A.affineNormalizedBaseDeckHom (Path.Homotopic.Quotient.mk γ)).unop = g) :
     ∃ L : Path A.affineNormalizedMidpoint
@@ -359,56 +359,56 @@ public theorem exists_sectionSevenAffineNormalizedLoopLift (A : PaperAnalyticDat
     (p := p) hp.isCoveringMap γ e e' hm
   exact ⟨L, fun t ↦ congrArg (fun p : Path _ _ ↦ p t) hL⟩
 
-public noncomputable def affineNormalizedZeroLift (A : PaperAnalyticData) :
+public noncomputable def affineNormalizedZeroLift (A : AnalyticData) :
     Path A.affineNormalizedMidpoint
       (regularSourceEquiv g₁ A.affineNormalizedMidpoint) :=
   (A.exists_sectionSevenAffineNormalizedLoopLift twicePuncturedClockwiseZeroMeridian g₁
     A.affineNormalizedBaseDeckHom_zero).choose
 
-public theorem affineNormalizedZeroLift_projects (A : PaperAnalyticData)
+public theorem affineNormalizedZeroLift_projects (A : AnalyticData)
     (t : unitInterval) :
     A.regularCoordinate (A.affineNormalizedZeroLift t) =
       twicePuncturedClockwiseZeroMeridian t :=
   (A.exists_sectionSevenAffineNormalizedLoopLift twicePuncturedClockwiseZeroMeridian g₁
     A.affineNormalizedBaseDeckHom_zero).choose_spec t
 
-public noncomputable def affineNormalizedOneLift (A : PaperAnalyticData) :
+public noncomputable def affineNormalizedOneLift (A : AnalyticData) :
     Path A.affineNormalizedMidpoint
       (regularSourceEquiv g₂ A.affineNormalizedMidpoint) :=
   (A.exists_sectionSevenAffineNormalizedLoopLift twicePuncturedClockwiseOneMeridian g₂
     A.affineNormalizedBaseDeckHom_one).choose
 
-public theorem affineNormalizedOneLift_projects (A : PaperAnalyticData)
+public theorem affineNormalizedOneLift_projects (A : AnalyticData)
     (t : unitInterval) :
     A.regularCoordinate (A.affineNormalizedOneLift t) =
       twicePuncturedClockwiseOneMeridian t :=
   (A.exists_sectionSevenAffineNormalizedLoopLift twicePuncturedClockwiseOneMeridian g₂
     A.affineNormalizedBaseDeckHom_one).choose_spec t
 
-public noncomputable def affineNormalizedStripContinuousLift (A : PaperAnalyticData) :
+public noncomputable def affineNormalizedStripContinuousLift (A : AnalyticData) :
     C(affineVerticalStrip,
       RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
   (A.existsUnique_sectionSevenAffineStripContinuousLift
     affineStripMidpoint A.affineNormalizedMidpoint
     A.affineNormalizedMidpoint_projects).choose
 
-public theorem affineNormalizedStripContinuousLift_midpoint (A : PaperAnalyticData) :
+public theorem affineNormalizedStripContinuousLift_midpoint (A : AnalyticData) :
     A.affineNormalizedStripContinuousLift affineStripMidpoint =
       A.affineNormalizedMidpoint :=
   (A.existsUnique_sectionSevenAffineStripContinuousLift
     affineStripMidpoint A.affineNormalizedMidpoint
     A.affineNormalizedMidpoint_projects).choose_spec.1.1
 
-public theorem affineNormalizedStripContinuousLift_coordinate (A : PaperAnalyticData) :
+public theorem affineNormalizedStripContinuousLift_coordinate (A : AnalyticData) :
     A.regularCoordinate ∘ A.affineNormalizedStripContinuousLift = stripInclusion :=
   (A.existsUnique_sectionSevenAffineStripContinuousLift
     affineStripMidpoint A.affineNormalizedMidpoint
     A.affineNormalizedMidpoint_projects).choose_spec.1.2
 
-public noncomputable def affineNormalizedStripLift (A : PaperAnalyticData) :
+public noncomputable def affineNormalizedStripLift (A : AnalyticData) :
     A.AffineStripLift where
   lift := A.affineNormalizedStripContinuousLift
   lift_coordinate z := congrArg Subtype.val
     (congrFun A.affineNormalizedStripContinuousLift_coordinate z)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

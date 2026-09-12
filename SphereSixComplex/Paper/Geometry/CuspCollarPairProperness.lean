@@ -543,7 +543,7 @@ end
 
 end SphereSixComplex.Geometry.CuspCollarPairProperness
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open Set SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex Geometry
@@ -552,7 +552,7 @@ open CuspCollarPairProperness
 
 noncomputable section
 
-variable (P : PaperAnalyticData)
+variable (P : AnalyticData)
 
 /-- Compact middle bands in the cusp collar of the concrete star. -/
 public theorem cuspStarCollarRadiusBand_isCompact
@@ -615,4 +615,4 @@ public theorem cuspCollarPairMap_isProper :
 
 end
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

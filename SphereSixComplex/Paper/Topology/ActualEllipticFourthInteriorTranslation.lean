@@ -6,27 +6,27 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenEllipticBaseCoord
 noncomputable section
 open Set Topology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-public def fourthTranslationCentralInclusion (A : PaperAnalyticData) :
+public def fourthTranslationCentralInclusion (A : AnalyticData) :
     C(A.CentralFamily, A.ellipticInterior) :=
   ⟨fun q ↦ (A.ellipticCentralImageHomeomorph.symm q).1,
     continuous_subtype_val.comp A.ellipticCentralImageHomeomorph.symm.continuous⟩
 
-public def fourthTranslationThreeChart (A : PaperAnalyticData) :
+public def fourthTranslationThreeChart (A : AnalyticData) :
     A.orderThreeFillingImage ≃ₜ A.openEmbeddingStarData.filling 1 :=
   A.orderThreeFillingImageToPiece.trans A.orderThreePieceHomeomorph.symm
 
-public def fourthTranslationFourChart (A : PaperAnalyticData) :
+public def fourthTranslationFourChart (A : AnalyticData) :
     A.orderFourFillingImage ≃ₜ A.openEmbeddingStarData.filling 2 :=
   A.orderFourFillingImageToPiece.trans A.orderFourPieceHomeomorph.symm
 
-public def fourthTranslationThreeInclusion (A : PaperAnalyticData) :
+public def fourthTranslationThreeInclusion (A : AnalyticData) :
     C(A.openEmbeddingStarData.filling 1, A.ellipticInterior) :=
   ⟨fun q ↦ (A.fourthTranslationThreeChart.symm q).1,
     continuous_subtype_val.comp A.fourthTranslationThreeChart.symm.continuous⟩
 
-public def fourthTranslationFourInclusion (A : PaperAnalyticData) :
+public def fourthTranslationFourInclusion (A : AnalyticData) :
     C(A.openEmbeddingStarData.filling 2, A.ellipticInterior) :=
   ⟨fun q ↦ (A.fourthTranslationFourChart.symm q).1,
     continuous_subtype_val.comp A.fourthTranslationFourChart.symm.continuous⟩
@@ -34,7 +34,7 @@ public def fourthTranslationFourInclusion (A : PaperAnalyticData) :
 
 
 
-public theorem fourthTranslationThree_glue (A : PaperAnalyticData)
+public theorem fourthTranslationThree_glue (A : AnalyticData)
     (q : A.openEmbeddingStarData.collarSource 1) :
     A.fourthTranslationCentralInclusion (A.starToCentral 1 q) =
       A.fourthTranslationThreeInclusion (A.starToFilling 1 q) := by
@@ -50,7 +50,7 @@ public theorem fourthTranslationThree_glue (A : PaperAnalyticData)
 
   exact h
 
-public theorem fourthTranslationFour_glue (A : PaperAnalyticData)
+public theorem fourthTranslationFour_glue (A : AnalyticData)
     (q : A.openEmbeddingStarData.collarSource 2) :
     A.fourthTranslationCentralInclusion (A.starToCentral 2 q) =
       A.fourthTranslationFourInclusion (A.starToFilling 2 q) := by
@@ -66,7 +66,7 @@ public theorem fourthTranslationFour_glue (A : PaperAnalyticData)
 
   exact h
 
-public theorem fourthTranslationThree_collar (A : PaperAnalyticData) (z : UnitAddCircle)
+public theorem fourthTranslationThree_collar (A : AnalyticData) (z : UnitAddCircle)
     (q : A.openEmbeddingStarData.collarSource 1) :
     A.fourthTranslationCentralInclusion (A.centralFourthTranslation (z,A.starToCentral 1 q)) =
       A.fourthTranslationThreeInclusion (A.actualOrderThreeFourthTranslation (z,A.starToFilling 1 q)) := by
@@ -76,7 +76,7 @@ public theorem fourthTranslationThree_collar (A : PaperAnalyticData) (z : UnitAd
     rw [A.orderThreeFourthCollarSource_central, A.orderThreeFourthCollarSource_filling]
     exact A.fourthTranslationThree_glue _
 
-public theorem fourthTranslationFour_collar (A : PaperAnalyticData) (z : UnitAddCircle)
+public theorem fourthTranslationFour_collar (A : AnalyticData) (z : UnitAddCircle)
     (q : A.openEmbeddingStarData.collarSource 2) :
     A.fourthTranslationCentralInclusion (A.centralFourthTranslation (z,A.starToCentral 2 q)) =
       A.fourthTranslationFourInclusion (A.actualOrderFourFourthTranslation (z,A.starToFilling 2 q)) := by
@@ -86,19 +86,19 @@ public theorem fourthTranslationFour_collar (A : PaperAnalyticData) (z : UnitAdd
     rw [A.orderFourFourthCollarSource_central, A.orderFourFourthCollarSource_filling]
     exact A.fourthTranslationFour_glue _
 
-public theorem fourthTranslationCentralInclusion_injective (A : PaperAnalyticData) :
+public theorem fourthTranslationCentralInclusion_injective (A : AnalyticData) :
     Function.Injective A.fourthTranslationCentralInclusion :=
   Subtype.val_injective.comp A.ellipticCentralImageHomeomorph.symm.injective
 
-public theorem fourthTranslationThreeInclusion_injective (A : PaperAnalyticData) :
+public theorem fourthTranslationThreeInclusion_injective (A : AnalyticData) :
     Function.Injective A.fourthTranslationThreeInclusion :=
   Subtype.val_injective.comp A.fourthTranslationThreeChart.symm.injective
 
-public theorem fourthTranslationFourInclusion_injective (A : PaperAnalyticData) :
+public theorem fourthTranslationFourInclusion_injective (A : AnalyticData) :
     Function.Injective A.fourthTranslationFourInclusion :=
   Subtype.val_injective.comp A.fourthTranslationFourChart.symm.injective
 
-public theorem fourthTranslationThree_overlap (A : PaperAnalyticData) (z : UnitAddCircle)
+public theorem fourthTranslationThree_overlap (A : AnalyticData) (z : UnitAddCircle)
     (x : A.ellipticInterior) (h0 : x ∈ A.ellipticCentralImage)
     (h1 : x ∈ A.orderThreeFillingImage) :
     A.fourthTranslationCentralInclusion (A.centralFourthTranslation
@@ -122,7 +122,7 @@ public theorem fourthTranslationThree_overlap (A : PaperAnalyticData) (z : UnitA
   rw [he0,he1]
   exact A.fourthTranslationThree_collar z q
 
-public theorem fourthTranslationFour_overlap (A : PaperAnalyticData) (z : UnitAddCircle)
+public theorem fourthTranslationFour_overlap (A : AnalyticData) (z : UnitAddCircle)
     (x : A.ellipticInterior) (h0 : x ∈ A.ellipticCentralImage)
     (h1 : x ∈ A.orderFourFillingImage) :
     A.fourthTranslationCentralInclusion (A.centralFourthTranslation
@@ -146,13 +146,13 @@ public theorem fourthTranslationFour_overlap (A : PaperAnalyticData) (z : UnitAd
   rw [he0,he1]
   exact A.fourthTranslationFour_collar z q
 
-public def fourthTranslationPatchSet (A : PaperAnalyticData) :
+public def fourthTranslationPatchSet (A : AnalyticData) :
     Fin 3 → Set (UnitAddCircle × A.ellipticInterior) :=
   ![Prod.snd ⁻¹' A.ellipticCentralImage,
     Prod.snd ⁻¹' A.orderThreeFillingImage,
     Prod.snd ⁻¹' A.orderFourFillingImage]
 
-public def fourthTranslationPatch (A : PaperAnalyticData) :
+public def fourthTranslationPatch (A : AnalyticData) :
     (i : Fin 3) → C(A.fourthTranslationPatchSet i, A.ellipticInterior) := by
   refine Fin.cases ?_ (Fin.cases ?_ (Fin.cases ?_ (fun i ↦ Fin.elim0 i)))
   · exact A.fourthTranslationCentralInclusion.comp (A.centralFourthTranslation.comp
@@ -171,7 +171,7 @@ public def fourthTranslationPatch (A : PaperAnalyticData) :
           (A.fourthTranslationFourChart.continuous.comp
             ((continuous_snd.comp continuous_subtype_val).subtype_mk _))⟩)
 
-public theorem fourthTranslation_fillings_disjoint (A : PaperAnalyticData)
+public theorem fourthTranslation_fillings_disjoint (A : AnalyticData)
     (x : A.ellipticInterior)
     (h1 : x ∈ A.orderThreeFillingImage)
     (h2 : x ∈ A.orderFourFillingImage) : False := by
@@ -182,7 +182,7 @@ public theorem fourthTranslation_fillings_disjoint (A : PaperAnalyticData)
   rw [A.openEmbeddingStarData.fillingPiece_inter_fillingPiece (by decide)] at h
   exact h
 
-public theorem fourthTranslationPatch_compatible (A : PaperAnalyticData)
+public theorem fourthTranslationPatch_compatible (A : AnalyticData)
     (i j : Fin 3) (x : UnitAddCircle × A.ellipticInterior)
     (hi : x ∈ A.fourthTranslationPatchSet i)
     (hj : x ∈ A.fourthTranslationPatchSet j) :
@@ -198,14 +198,14 @@ public theorem fourthTranslationPatch_compatible (A : PaperAnalyticData)
   · exact (A.fourthTranslation_fillings_disjoint x.2 hj hi).elim
   · rfl
 
-public theorem fourthTranslationPatchSet_isOpen (A : PaperAnalyticData) (i : Fin 3) :
+public theorem fourthTranslationPatchSet_isOpen (A : AnalyticData) (i : Fin 3) :
     IsOpen (A.fourthTranslationPatchSet i) := by
   fin_cases i
   · exact A.ellipticCentralImage_isOpen.preimage continuous_snd
   · exact A.orderThreeFillingImage_isOpen.preimage continuous_snd
   · exact A.orderFourFillingImage_isOpen.preimage continuous_snd
 
-public theorem fourthTranslationPatchSet_nhds (A : PaperAnalyticData)
+public theorem fourthTranslationPatchSet_nhds (A : AnalyticData)
     (x : UnitAddCircle × A.ellipticInterior) :
     ∃ i, A.fourthTranslationPatchSet i ∈ nhds x := by
   have hx : x.2 ∈ A.ellipticCentralImage ∪
@@ -217,12 +217,12 @@ public theorem fourthTranslationPatchSet_nhds (A : PaperAnalyticData)
   · exact ⟨1,(A.fourthTranslationPatchSet_isOpen 1).mem_nhds h⟩
   · exact ⟨2,(A.fourthTranslationPatchSet_isOpen 2).mem_nhds h⟩
 
-public def ellipticFourthTranslation (A : PaperAnalyticData) :
+public def ellipticFourthTranslation (A : AnalyticData) :
     C(UnitAddCircle × A.ellipticInterior, A.ellipticInterior) :=
   ContinuousMap.liftCover (A.fourthTranslationPatchSet) (A.fourthTranslationPatch)
     (A.fourthTranslationPatch_compatible) (A.fourthTranslationPatchSet_nhds)
 
-public theorem ellipticFourthTranslation_central (A : PaperAnalyticData)
+public theorem ellipticFourthTranslation_central (A : AnalyticData)
     (z : UnitAddCircle) (q : A.CentralFamily) :
     A.ellipticFourthTranslation (z,A.fourthTranslationCentralInclusion q) =
       A.fourthTranslationCentralInclusion (A.centralFourthTranslation (z,q)) := by
@@ -238,4 +238,4 @@ public theorem ellipticFourthTranslation_central (A : PaperAnalyticData)
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

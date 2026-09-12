@@ -19,7 +19,7 @@ open Set Metric Topology
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 
@@ -116,7 +116,7 @@ public theorem exists_exp_re_eq_norm_of_log_turn
     exact Real.cos_int_mul_two_pi k
   rw [hcos, mul_one]
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The actual marked cusp meridian reaches the middle height of the affine strip. -/
 public theorem exists_cuspAngularCoordinateLoop_re_eq_half :
@@ -155,4 +155,4 @@ public noncomputable def affineActualCuspCrossingTime : unitInterval :=
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

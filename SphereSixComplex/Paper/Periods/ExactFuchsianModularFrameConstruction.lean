@@ -188,45 +188,35 @@ private lemma liftedEisensteinSix_analyticOrderAt_two :
   change analyticOrderAt F6 fuchsianTwoFixedPoint = (2 : ℕ∞)
   exact horder
 
-/-- The sole global analytic input: a holomorphic square root of the pulled-back `E₆`. -/
-structure BareEisensteinSixSqrt where
-  root : UpperHalfPlane → ℂ
-  root_holomorphic : MDiff root
-  root_sq : ∀ z, root z ^ 2 = liftedEisensteinSix E z
-
-/-- A bare root together with the generator signs which will be proved below, rather than assumed
-by the final constructor. -/
-structure GenuineEisensteinSixSqrt extends BareEisensteinSixSqrt E where
+/-- A holomorphic square root with its two elliptic automorphy laws. -/
+structure EquivariantEisensteinSixRoot extends ExactFuchsianEisensteinSixRoot E where
   root_one : ∀ z, root (fuchsianSourceAction g₁ • z) =
     -(E.modularParameter.tau z : ℂ) ^ 3 * root z
   root_two : ∀ z, root (fuchsianSourceAction g₂ • z) =
     (E.modularParameter.tau z : ℂ) ^ 3 * root z
 
-variable (S : GenuineEisensteinSixSqrt E)
+variable (S : EquivariantEisensteinSixRoot E)
 
 private lemma sqrt_zero_iff (z : UpperHalfPlane) :
     S.root z = 0 ↔ E.sourceCoordinate.coordinate z = 1 := by
   rw [← liftedEisensteinSix_zero_iff E z, ← S.root_sq z]
   simp
 
-def genuineModularFrame (z : UpperHalfPlane) : ℂ :=
-  liftedEisensteinFour E z ^ 2 * S.root z / liftedModularDiscriminant E z
-
-private lemma genuineModularFrame_holomorphic : MDiff (genuineModularFrame E S) := by
+private lemma modularNegOneFrame_holomorphic : MDiff (modularNegOneFrame E S.root) := by
   exact (((ModularFormClass.holo ModularForm.E₄).comp
       E.modularParameter.tau_holomorphic).pow 2).mul S.root_holomorphic |>.div
     (discriminant_mdifferentiable.comp E.modularParameter.tau_holomorphic)
       (fun z ↦ ModularForm.discriminant_ne_zero _)
 
-private lemma genuineModularFrame_zero_iff (z : UpperHalfPlane) :
-    genuineModularFrame E S z = 0 ↔
+private lemma modularNegOneFrame_zero_iff (z : UpperHalfPlane) :
+    modularNegOneFrame E S.root z = 0 ↔
       (∃ g : Delta, fuchsianSourceAction g • fuchsianOneFixedPoint = z) ∨
         ∃ g : Delta, fuchsianSourceAction g • fuchsianTwoFixedPoint = z := by
   have hΔ : liftedModularDiscriminant E z ≠ 0 := ModularForm.discriminant_ne_zero _
-  have hzero : genuineModularFrame E S z = 0 ↔
+  have hzero : modularNegOneFrame E S.root z = 0 ↔
       E.sourceCoordinate.coordinate z = 0 ∨
         E.sourceCoordinate.coordinate z = 1 := by
-    simp [genuineModularFrame, hΔ, liftedEisensteinFour_zero_iff E z,
+    simp [modularNegOneFrame, hΔ, liftedEisensteinFour_zero_iff E z,
       sqrt_zero_iff E S z]
   rw [hzero]
   constructor
@@ -277,9 +267,9 @@ private lemma sqrt_analyticOrderAt_two :
   change analyticOrderAt R fuchsianTwoFixedPoint = (1 : ℕ∞)
   exact horder
 
-private lemma genuineModularFrame_analyticOrderAt_one :
+private lemma modularNegOneFrame_analyticOrderAt_one :
     analyticOrderAt
-        (genuineModularFrame E S ∘ UpperHalfPlane.ofComplex)
+        (modularNegOneFrame E S.root ∘ UpperHalfPlane.ofComplex)
         fuchsianOneFixedPoint = (2 : ℕ∞) := by
   let F4 : ℂ → ℂ := liftedEisensteinFour E ∘ UpperHalfPlane.ofComplex
   let R : ℂ → ℂ := S.root ∘ UpperHalfPlane.ofComplex
@@ -297,10 +287,10 @@ private lemma genuineModularFrame_analyticOrderAt_one :
   have hΔinvOrder : analyticOrderAt (fun w ↦ (Δ w)⁻¹)
       fuchsianOneFixedPoint = 0 :=
     hΔinv.analyticOrderAt_eq_zero.mpr (inv_ne_zero hΔne)
-  have heq : genuineModularFrame E S ∘ UpperHalfPlane.ofComplex =
+  have heq : modularNegOneFrame E S.root ∘ UpperHalfPlane.ofComplex =
       (F4 ^ 2 * R) * fun w ↦ (Δ w)⁻¹ := by
     funext w
-    simp [genuineModularFrame, F4, R, Δ, div_eq_mul_inv]
+    simp [modularNegOneFrame, F4, R, Δ, div_eq_mul_inv]
   rw [analyticOrderAt_congr (Filter.Eventually.of_forall (congrFun heq)),
     analyticOrderAt_mul ((hF4.pow 2).mul hR) hΔinv,
     analyticOrderAt_mul (hF4.pow 2) hR, analyticOrderAt_pow hF4,
@@ -311,9 +301,9 @@ private lemma genuineModularFrame_analyticOrderAt_one :
     hΔinvOrder]
   norm_num
 
-private lemma genuineModularFrame_analyticOrderAt_two :
+private lemma modularNegOneFrame_analyticOrderAt_two :
     analyticOrderAt
-        (genuineModularFrame E S ∘ UpperHalfPlane.ofComplex)
+        (modularNegOneFrame E S.root ∘ UpperHalfPlane.ofComplex)
         fuchsianTwoFixedPoint = (1 : ℕ∞) := by
   let F4 : ℂ → ℂ := liftedEisensteinFour E ∘ UpperHalfPlane.ofComplex
   let R : ℂ → ℂ := S.root ∘ UpperHalfPlane.ofComplex
@@ -340,10 +330,10 @@ private lemma genuineModularFrame_analyticOrderAt_two :
   have hΔinvOrder : analyticOrderAt (fun w ↦ (Δ w)⁻¹)
       fuchsianTwoFixedPoint = 0 :=
     hΔinv.analyticOrderAt_eq_zero.mpr (inv_ne_zero hΔne)
-  have heq : genuineModularFrame E S ∘ UpperHalfPlane.ofComplex =
+  have heq : modularNegOneFrame E S.root ∘ UpperHalfPlane.ofComplex =
       (F4 ^ 2 * R) * fun w ↦ (Δ w)⁻¹ := by
     funext w
-    simp [genuineModularFrame, F4, R, Δ, div_eq_mul_inv]
+    simp [modularNegOneFrame, F4, R, Δ, div_eq_mul_inv]
   rw [analyticOrderAt_congr (Filter.Eventually.of_forall (congrFun heq)),
     analyticOrderAt_mul ((hF4.pow 2).mul hR) hΔinv,
     analyticOrderAt_mul (hF4.pow 2) hR, analyticOrderAt_pow hF4,
@@ -353,25 +343,25 @@ private lemma genuineModularFrame_analyticOrderAt_two :
     hΔinvOrder]
   norm_num
 
-noncomputable def genuineModularFrame_branch_one :
-    HasExactHolomorphicBranchAt (genuineModularFrame E S)
+noncomputable def modularNegOneFrame_branch_one :
+    HasExactHolomorphicBranchAt (modularNegOneFrame E S.root)
       fuchsianOneFixedPoint 0 2 := by
   apply hasExactHolomorphicBranchAt_of_analyticOrderAt
-    (genuineModularFrame_holomorphic E S) (by
-      simp [genuineModularFrame, liftedEisensteinFour_zero_iff E,
+    (modularNegOneFrame_holomorphic E S) (by
+      simp [modularNegOneFrame, liftedEisensteinFour_zero_iff E,
         E.sourceCoordinate.coordinate_at_one]) (by norm_num)
   simpa only [sub_zero, Function.comp_def, Nat.cast_ofNat] using
-    genuineModularFrame_analyticOrderAt_one E S
+    modularNegOneFrame_analyticOrderAt_one E S
 
-noncomputable def genuineModularFrame_branch_two :
-    HasExactHolomorphicBranchAt (genuineModularFrame E S)
+noncomputable def modularNegOneFrame_branch_two :
+    HasExactHolomorphicBranchAt (modularNegOneFrame E S.root)
       fuchsianTwoFixedPoint 0 1 := by
   apply hasExactHolomorphicBranchAt_of_analyticOrderAt
-    (genuineModularFrame_holomorphic E S) (by
-      simp [genuineModularFrame, sqrt_zero_iff E S,
+    (modularNegOneFrame_holomorphic E S) (by
+      simp [modularNegOneFrame, sqrt_zero_iff E S,
         E.sourceCoordinate.coordinate_at_two]) (by norm_num)
   simpa only [sub_zero, Function.comp_def, Nat.cast_one] using
-    genuineModularFrame_analyticOrderAt_two E S
+    modularNegOneFrame_analyticOrderAt_two E S
 
 private lemma liftedEisensteinFour_one (z : UpperHalfPlane) :
     liftedEisensteinFour E (fuchsianSourceAction g₁ • z) =
@@ -499,33 +489,33 @@ private lemma liftedModularDiscriminant_two (z : UpperHalfPlane) :
   rw [hdenom] at hΔ
   simpa [modularToReal] using hΔ
 
-private lemma genuineModularFrame_one (z : UpperHalfPlane) :
-    genuineModularFrame E S (fuchsianSourceAction g₁ • z) =
-      -genuineModularFrame E S z / E.modularParameter.tau z := by
-  rw [genuineModularFrame, liftedEisensteinFour_one E,
+private lemma modularNegOneFrame_one (z : UpperHalfPlane) :
+    modularNegOneFrame E S.root (fuchsianSourceAction g₁ • z) =
+      -modularNegOneFrame E S.root z / E.modularParameter.tau z := by
+  rw [modularNegOneFrame, liftedEisensteinFour_one E,
     S.root_one, liftedModularDiscriminant_one E]
   have htau : (E.modularParameter.tau z : ℂ) ≠ 0 :=
     (E.modularParameter.tau z).ne_zero
   field_simp [htau]
-  simp [genuineModularFrame, div_eq_mul_inv]
+  simp [modularNegOneFrame, div_eq_mul_inv]
 
-private lemma genuineModularFrame_two (z : UpperHalfPlane) :
-    genuineModularFrame E S (fuchsianSourceAction g₂ • z) =
-      genuineModularFrame E S z / E.modularParameter.tau z := by
-  rw [genuineModularFrame, liftedEisensteinFour_two E,
+private lemma modularNegOneFrame_two (z : UpperHalfPlane) :
+    modularNegOneFrame E S.root (fuchsianSourceAction g₂ • z) =
+      modularNegOneFrame E S.root z / E.modularParameter.tau z := by
+  rw [modularNegOneFrame, liftedEisensteinFour_two E,
     S.root_two, liftedModularDiscriminant_two E]
   have htau : (E.modularParameter.tau z : ℂ) ≠ 0 :=
     (E.modularParameter.tau z).ne_zero
   field_simp [htau]
-  simp [genuineModularFrame, div_eq_mul_inv]
+  simp [modularNegOneFrame, div_eq_mul_inv]
 
-lemma BareEisensteinSixSqrt.root_zero_iff (R : BareEisensteinSixSqrt E)
+lemma ExactFuchsianEisensteinSixRoot.root_zero_iff (R : ExactFuchsianEisensteinSixRoot E)
     (z : UpperHalfPlane) :
     R.root z = 0 ↔ E.sourceCoordinate.coordinate z = 1 := by
   rw [← liftedEisensteinSix_zero_iff E z, ← R.root_sq z]
   simp
 
-lemma BareEisensteinSixSqrt.root_analyticOrderAt_two (R : BareEisensteinSixSqrt E) :
+lemma ExactFuchsianEisensteinSixRoot.root_analyticOrderAt_two (R : ExactFuchsianEisensteinSixRoot E) :
     analyticOrderAt (R.root ∘ UpperHalfPlane.ofComplex)
       fuchsianTwoFixedPoint = (1 : ℕ∞) := by
   let r : ℂ → ℂ := R.root ∘ UpperHalfPlane.ofComplex
@@ -545,7 +535,7 @@ lemma BareEisensteinSixSqrt.root_analyticOrderAt_two (R : BareEisensteinSixSqrt 
   apply (ENat.mul_right_strictMono (a := (2 : ℕ∞)) (by norm_num) (by simp)).injective
   simpa using hord
 
-lemma BareEisensteinSixSqrt.root_one (R : BareEisensteinSixSqrt E) (z : UpperHalfPlane) :
+lemma ExactFuchsianEisensteinSixRoot.root_one (R : ExactFuchsianEisensteinSixRoot E) (z : UpperHalfPlane) :
     R.root (fuchsianSourceAction g₁ • z) =
       -(E.modularParameter.tau z : ℂ) ^ 3 * R.root z := by
   let a : UpperHalfPlane → ℂ := fun w ↦ R.root (fuchsianSourceAction g₁ • w)
@@ -604,7 +594,7 @@ lemma BareEisensteinSixSqrt.root_one (R : BareEisensteinSixSqrt E) (z : UpperHal
     exfalso
     exact hrootne ((mul_eq_zero.mp hzero).resolve_left (by norm_num))
 
-lemma BareEisensteinSixSqrt.root_two (R : BareEisensteinSixSqrt E) (z : UpperHalfPlane) :
+lemma ExactFuchsianEisensteinSixRoot.root_two (R : ExactFuchsianEisensteinSixRoot E) (z : UpperHalfPlane) :
     R.root (fuchsianSourceAction g₂ • z) =
       (E.modularParameter.tau z : ℂ) ^ 3 * R.root z := by
   let a : UpperHalfPlane → ℂ := fun w ↦ R.root (fuchsianSourceAction g₂ • w)
@@ -757,14 +747,14 @@ lemma BareEisensteinSixSqrt.root_two (R : BareEisensteinSixSqrt E) (z : UpperHal
 
 /-- The generator signs of a holomorphic square root are forced by its square identity and the
 normalizations at the two elliptic fixed points. -/
-def BareEisensteinSixSqrt.toGenuine (R : BareEisensteinSixSqrt E) :
-    GenuineEisensteinSixSqrt E where
-  toBareEisensteinSixSqrt := R
+def ExactFuchsianEisensteinSixRoot.toEquivariant (R : ExactFuchsianEisensteinSixRoot E) :
+    EquivariantEisensteinSixRoot E where
+  toExactFuchsianEisensteinSixRoot := R
   root_one := R.root_one E
   root_two := R.root_two E
 
 /-- The two forced elliptic signs cancel along the parabolic product. -/
-lemma GenuineEisensteinSixSqrt.root_product (S : GenuineEisensteinSixSqrt E)
+lemma EquivariantEisensteinSixRoot.root_product (S : EquivariantEisensteinSixRoot E)
     (z : UpperHalfPlane) :
     S.root (fuchsianSourceAction (g₁ * g₂) • z) = S.root z := by
   have htau :
@@ -777,26 +767,18 @@ lemma GenuineEisensteinSixSqrt.root_product (S : GenuineEisensteinSixSqrt E)
   field_simp [(E.modularParameter.tau z).ne_zero]
 
 /-- The forced elliptic signs imply invariance under the inverse parabolic generator. -/
-lemma GenuineEisensteinSixSqrt.root_cusp (S : GenuineEisensteinSixSqrt E)
+lemma EquivariantEisensteinSixRoot.root_cusp (S : EquivariantEisensteinSixRoot E)
     (z : UpperHalfPlane) :
     S.root (fuchsianSourceAction g₀ • z) = S.root z := by
   have h := S.root_product E (fuchsianSourceAction g₀ • z)
   rw [← mul_smul, ← map_mul, g₁_mul_g₂_mul_g₀, map_one, one_smul] at h
   exact h.symm
 
-/-- Forget the implementation of the production global root, retaining exactly the data used by
-the sign and frame construction. -/
-def ExactFuchsianEisensteinSixRoot.toBare
-    (R : ExactFuchsianEisensteinSixRoot E) : BareEisensteinSixSqrt E where
-  root := R.root
-  root_holomorphic := R.root_holomorphic
-  root_sq := R.root_sq
-
-/-- A bare holomorphic square root determines the complete exact lifted modular frame. -/
-theorem exists_exactLiftedModularNegOneFrame_of_bareRoot
-    (R : BareEisensteinSixSqrt E) :
+/-- A holomorphic square root determines the complete lifted modular frame. -/
+theorem exists_exactLiftedModularNegOneFrame_of_root
+    (R : ExactFuchsianEisensteinSixRoot E) :
     Nonempty (ExactLiftedModularNegOneFrame E) := by
-  let S : GenuineEisensteinSixSqrt E := R.toGenuine E
+  let S : EquivariantEisensteinSixRoot E := R.toEquivariant E
   obtain ⟨C⟩ := exists_exactFuchsianCuspFrameGerm E S.root
     S.root_holomorphic (by
       intro z
@@ -805,14 +787,12 @@ theorem exists_exactLiftedModularNegOneFrame_of_bareRoot
     sqrtEisensteinSix := S.root
     sqrtEisensteinSix_holomorphic := S.root_holomorphic
     sqrtEisensteinSix_sq := S.root_sq
-    frame := genuineModularFrame E S
-    frame_eq := fun _ ↦ rfl
-    frame_holomorphic := genuineModularFrame_holomorphic E S
-    frame_branch_one := genuineModularFrame_branch_one E S
-    frame_branch_two := genuineModularFrame_branch_two E S
-    frame_zero_iff := genuineModularFrame_zero_iff E S
-    frame_one := genuineModularFrame_one E S
-    frame_two := genuineModularFrame_two E S
+    frame_holomorphic := modularNegOneFrame_holomorphic E S
+    frame_branch_one := modularNegOneFrame_branch_one E S
+    frame_branch_two := modularNegOneFrame_branch_two E S
+    frame_zero_iff := modularNegOneFrame_zero_iff E S
+    frame_one := modularNegOneFrame_one E S
+    frame_two := modularNegOneFrame_two E S
     cuspUnit := C.cuspUnit
     cuspRadius := C.cuspRadius
     cuspRadius_pos := C.cuspRadius_pos
@@ -821,7 +801,7 @@ theorem exists_exactLiftedModularNegOneFrame_of_bareRoot
     inverse_coordinate_eventually_mem_closedBall :=
       C.inverse_coordinate_eventually_mem_closedBall
     cusp_factorization_eventually := ?_ }⟩
-  simpa only [genuineModularFrame, liftedEisensteinFour,
+  simpa only [modularNegOneFrame, liftedEisensteinFour,
     liftedModularDiscriminant] using C.cusp_factorization_eventually
 
 /-- The established uniformization carries a fully genuine exact lifted modular frame. -/
@@ -829,6 +809,6 @@ public theorem nonempty_exactLiftedModularNegOneFrame
     (E : NormalizedFuchsianModularParameter) :
     Nonempty (ExactLiftedModularNegOneFrame E) := by
   obtain ⟨R⟩ := exists_exactFuchsianEisensteinSixRoot E
-  exact exists_exactLiftedModularNegOneFrame_of_bareRoot E R.toBare
+  exact exists_exactLiftedModularNegOneFrame_of_root E R
 
 end SphereSixComplex.Periods

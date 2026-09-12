@@ -49,7 +49,7 @@ Transport the complex atlas of the constructed threefold along the diffeomorphis
 {uses "smooth-recognition"}[smooth recognition].
 :::
 
-:::definition "classical-trust-boundary" (parent := "main_construction") (lean := "SphereSixComplex.Hurewicz.exists_map, SphereSixComplex.CWType.homological_whitehead, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.PoincareDuality.nonempty_addEquiv, SphereSixComplex.IntegralCohomology.universalCoefficients, SphereSixComplex.SmoothManifold.finiteCWModel, SphereSixComplex.CellularHomology.integralComparison, SphereSixComplex.CWPair.whitehead, SphereSixComplex.LocallyCollared.nonempty_collar, SphereSixComplex.ManifoldWithCorners.relativeCWComplex")
+:::definition "classical-trust-boundary" (parent := "main_construction") (lean := "SphereSixComplex.Hurewicz.exists_map, SphereSixComplex.CWType.homological_whitehead, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.PoincareDuality.nonempty_addEquiv, SphereSixComplex.IntegralCohomology.universal_coefficients, SphereSixComplex.SmoothManifold.finiteCWModel, SphereSixComplex.CellularHomology.integralComparison, SphereSixComplex.CWPair.whitehead, SphereSixComplex.LocallyCollared.nonempty_collar, SphereSixComplex.ManifoldWithCorners.relativeCWComplex")
 The final theorem depends on Lean's three standard logical axioms and ten general classical
 results: higher Hurewicz, homological Whitehead, smooth Poincaré in dimension six, integral
 Poincaré duality, universal coefficients, finite CW models of compact smooth manifolds,

@@ -153,17 +153,17 @@ end
 @[expose] public section
 noncomputable section
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open GlobalTorusFamily TriangleGroup SphereSixComplex.Topology
 
-public noncomputable def centralFourthPeriodCircle (A : PaperAnalyticData) :
+public noncomputable def centralFourthPeriodCircle (A : AnalyticData) :
     C(UnitAddCircle × TwicePuncturedComplex, A.CentralFamily) :=
   (invariantPeriodCircle A.periods ![0, 0, 0, 1] rhoLambda_fourthBasis).comp
     ⟨fun p ↦ (p.1, A.puncturedBaseHomeomorphTwicePuncturedComplex.symm p.2),
       continuous_fst.prodMk
         (A.puncturedBaseHomeomorphTwicePuncturedComplex.symm.continuous.comp continuous_snd)⟩
 
-public theorem centralFourthPeriodCircle_coordinate (A : PaperAnalyticData)
+public theorem centralFourthPeriodCircle_coordinate (A : AnalyticData)
     (t : UnitAddCircle) (b : TwicePuncturedComplex) :
     A.centralFamilyCoordinate (A.centralFourthPeriodCircle (t, b)) = b := by
   have hc : ∀ q : A.CentralFamily,
@@ -181,6 +181,6 @@ public theorem centralFourthPeriodCircle_coordinate (A : PaperAnalyticData)
         (t, A.puncturedBaseHomeomorphTwicePuncturedComplex.symm b))) = b
   rw [invariantPeriodCircle_baseProjection, Homeomorph.apply_symm_apply]
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end
 end

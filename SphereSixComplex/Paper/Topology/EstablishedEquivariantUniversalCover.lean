@@ -184,7 +184,7 @@ public theorem secondFreeMonodromy_paperPuncturedGlobalFamilyFreeMonodromy :
 /-- The geometric translations and marked meridians as affine core data at the actual cusp
 basepoint. -/
 public noncomputable def paperPuncturedGlobalFamilyAffineCorePiOneData
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     AffineTorusCorePiOneData
       (FundamentalGroup A.CentralFamily A.cuspCentralBase)
       Lattice (firstFreeMonodromy paperPuncturedGlobalFamilyFreeMonodromy)
@@ -204,7 +204,7 @@ public noncomputable def paperPuncturedGlobalFamilyAffineCorePiOneData
 
 
 private theorem regularFamilyTranslationAtZero_injective
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     Function.Injective
       (regularFamilyTranslationAtZero A.periods A.markedRegularBaseLift) := by
   let hproper : SourceActionProperlyDiscontinuous :=
@@ -221,7 +221,7 @@ private theorem regularFamilyTranslationAtZero_injective
   exact congrArg (fun z ↦ z.unop.coeff) hdeck
 
 private theorem centralTranslationAtZero_injective
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     Function.Injective
       (centralTranslationAtZero A.periods A.markedRegularBaseLift) := by
   let hproper : SourceActionProperlyDiscontinuous :=
@@ -237,7 +237,7 @@ private theorem centralTranslationAtZero_injective
   exact congrArg Additive.toMul hab
 
 private theorem markedCentralTranslation_injective
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     Function.Injective A.markedCentralTranslation := by
   intro a b hab
   apply centralTranslationAtZero_injective A
@@ -246,7 +246,7 @@ private theorem markedCentralTranslation_injective
   exact congrArg Additive.toMul hab
 
 private theorem geometricCentralTranslation_injective
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     Function.Injective A.geometricCentralTranslation := by
   intro a b hab
   apply markedCentralTranslation_injective A
@@ -255,7 +255,7 @@ private theorem geometricCentralTranslation_injective
   exact congrArg Additive.toMul hab
 
 private theorem actualCuspCentralTranslation_injective
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     Function.Injective A.cuspCentralTranslation := by
   obtain ⟨g, hg⟩ := A.exists_geometricCentralTranslationReindexing
   intro a b hab
@@ -266,7 +266,7 @@ private theorem actualCuspCentralTranslation_injective
   simpa using congrArg Additive.toMul hab
 
 public theorem correctedActualCuspCentralTranslation_injective
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     Function.Injective A.correctedActualCuspCentralTranslation := by
   intro a b hab
   apply (rhoLambda
@@ -277,7 +277,7 @@ public theorem correctedActualCuspCentralTranslation_injective
 /-- Projection of the marked central-family fundamental group to the exactly normalized
 twice-punctured affine base. -/
 public noncomputable def markedCentralBaseProjection
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     FundamentalGroup A.CentralFamily
         (A.centralZeroSection A.markedPuncturedBasepoint) →*
       FundamentalGroup TwicePuncturedComplex twicePuncturedComplexBasepoint :=
@@ -286,17 +286,17 @@ public noncomputable def markedCentralBaseProjection
       change A.centralFamilyCoordinate
         (A.centralZeroSection A.markedPuncturedBasepoint) = _
       rw [A.centralFamilyCoordinate_zeroSection]
-      simp [PaperAnalyticData.markedPuncturedBasepoint])
+      simp [AnalyticData.markedPuncturedBasepoint])
 
 public theorem markedCentralBaseProjection_zero
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     markedCentralBaseProjection A A.markedZeroCentralMeridianClass =
       TwicePuncturedComplex.zeroMeridianClass := by
   rw [A.markedZeroCentralMeridianClass_eq_pathLoopClass]
   unfold markedCentralBaseProjection
   rw [FundamentalGroup.mapOfEq_apply]
-  unfold PaperAnalyticData.markedZeroCentralMeridian
-    PaperAnalyticData.markedZeroBaseMeridian
+  unfold AnalyticData.markedZeroCentralMeridian
+    AnalyticData.markedZeroBaseMeridian
     TwicePuncturedComplex.zeroMeridianClass
   rw [← Path.Homotopic.Quotient.mk_map]
   apply congrArg Path.Homotopic.Quotient.mk
@@ -312,14 +312,14 @@ public theorem markedCentralBaseProjection_zero
   exact A.puncturedBaseHomeomorphTwicePuncturedComplex.apply_symm_apply _
 
 public theorem markedCentralBaseProjection_one
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     markedCentralBaseProjection A A.markedOneCentralMeridianClass =
       TwicePuncturedComplex.oneMeridianClass := by
   rw [A.markedOneCentralMeridianClass_eq_pathLoopClass]
   unfold markedCentralBaseProjection
   rw [FundamentalGroup.mapOfEq_apply]
-  unfold PaperAnalyticData.markedOneCentralMeridian
-    PaperAnalyticData.markedOneBaseMeridian
+  unfold AnalyticData.markedOneCentralMeridian
+    AnalyticData.markedOneBaseMeridian
     TwicePuncturedComplex.oneMeridianClass
   rw [← Path.Homotopic.Quotient.mk_map]
   apply congrArg Path.Homotopic.Quotient.mk
@@ -335,7 +335,7 @@ public theorem markedCentralBaseProjection_one
   exact A.puncturedBaseHomeomorphTwicePuncturedComplex.apply_symm_apply _
 
 private theorem centralFamilyCoordinate_periodLoop
-    (A : PaperAnalyticData) (a : Lattice) (t : unitInterval) :
+    (A : AnalyticData) (a : Lattice) (t : unitInterval) :
     A.centralFamilyCoordinate
       (regularFamilyQuotientMap A.periods
         (regularFamilyPeriodLoop A.periods
@@ -353,13 +353,13 @@ private theorem centralFamilyCoordinate_periodLoop
   exact A.markedRegularBaseLift_coordinate
 
 public theorem markedCentralBaseProjection_translation
-    (A : PaperAnalyticData) (a : Lattice) :
+    (A : AnalyticData) (a : Lattice) :
     markedCentralBaseProjection A
         (Additive.toMul (A.markedCentralTranslation a)) = 1 := by
-  unfold PaperAnalyticData.markedCentralTranslation
+  unfold AnalyticData.markedCentralTranslation
   simp only [AddMonoidHom.comp_apply, MonoidHom.coe_toAdditive,
     Function.comp_apply, toMul_ofMul]
-  unfold PaperAnalyticData.markedCentralBaseEquiv
+  unfold AnalyticData.markedCentralBaseEquiv
   change markedCentralBaseProjection A
       (SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq _
         (Additive.toMul (centralTranslationAtZero A.periods
@@ -384,7 +384,7 @@ public theorem markedCentralBaseProjection_translation
 
 /-- The actual central-family projection to the free group on the two marked base meridians. -/
 public noncomputable def paperPuncturedGlobalFamilyBaseProjection
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     FundamentalGroup A.CentralFamily A.cuspCentralBase →*
       TwoMeridianDeckGroup :=
   (TwicePuncturedComplex.markedMeridianMulEquiv
@@ -393,11 +393,11 @@ public noncomputable def paperPuncturedGlobalFamilyBaseProjection
       A.markedCentralToActualCuspEquiv.symm.toMonoidHom)
 
 public theorem paperPuncturedGlobalFamilyBaseProjection_rhoOne
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     paperPuncturedGlobalFamilyBaseProjection A A.geometricCentralRhoOne =
       firstMeridian⁻¹ := by
   unfold paperPuncturedGlobalFamilyBaseProjection
-    PaperAnalyticData.geometricCentralRhoOne
+    AnalyticData.geometricCentralRhoOne
   simp only [MonoidHom.comp_apply]
   change (TwicePuncturedComplex.markedMeridianMulEquiv
       TwicePuncturedComplex.markedMeridianHom_injective).symm
@@ -413,11 +413,11 @@ public theorem paperPuncturedGlobalFamilyBaseProjection_rhoOne
       TwicePuncturedComplex.markedMeridianHom_first.symm
 
 public theorem paperPuncturedGlobalFamilyBaseProjection_rhoTwo
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     paperPuncturedGlobalFamilyBaseProjection A A.geometricCentralRhoTwo =
       secondMeridian⁻¹ := by
   unfold paperPuncturedGlobalFamilyBaseProjection
-    PaperAnalyticData.geometricCentralRhoTwo
+    AnalyticData.geometricCentralRhoTwo
   simp only [MonoidHom.comp_apply]
   change (TwicePuncturedComplex.markedMeridianMulEquiv
       TwicePuncturedComplex.markedMeridianHom_injective).symm
@@ -433,7 +433,7 @@ public theorem paperPuncturedGlobalFamilyBaseProjection_rhoTwo
       TwicePuncturedComplex.markedMeridianHom_second.symm
 
 public theorem paperPuncturedGlobalFamilyBaseProjection_translation
-    (A : PaperAnalyticData) (a : Lattice) :
+    (A : AnalyticData) (a : Lattice) :
     paperPuncturedGlobalFamilyBaseProjection A
         (Additive.toMul (A.correctedActualCuspCentralTranslation a)) = 1 := by
   have hm : Additive.toMul (A.correctedActualCuspCentralTranslation a) ∈
@@ -444,7 +444,7 @@ public theorem paperPuncturedGlobalFamilyBaseProjection_translation
   obtain ⟨b, hb⟩ := hm
   rw [← hb]
   unfold paperPuncturedGlobalFamilyBaseProjection
-    PaperAnalyticData.geometricCentralTranslation
+    AnalyticData.geometricCentralTranslation
   simp only [MonoidHom.comp_apply, AddMonoidHom.comp_apply,
     MonoidHom.coe_toAdditive, Function.comp_apply, toMul_ofMul]
   change (TwicePuncturedComplex.markedMeridianMulEquiv
@@ -482,7 +482,7 @@ public theorem freeMeridianInversion_injective :
 /-- The canonical affine presentation map determined by the geometric period loops and the two
 marked meridians. -/
 public noncomputable def paperPuncturedGlobalFamilyAffinePresentation
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     FreeTwoMeridianAffineDeck Lattice paperPuncturedGlobalFamilyFreeMonodromy →*
       FundamentalGroup A.CentralFamily A.cuspCentralBase :=
   AffineTorusCorePiOneData.freeAffinePresentationHom
@@ -490,7 +490,7 @@ public noncomputable def paperPuncturedGlobalFamilyAffinePresentation
     (paperPuncturedGlobalFamilyAffineCorePiOneData A)
 
 public theorem paperPuncturedGlobalFamilyBaseProjection_freeMeridianHom
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     (paperPuncturedGlobalFamilyBaseProjection A).comp
       (AffineTorusCorePiOneData.freeMeridianHom
         paperPuncturedGlobalFamilyFreeMonodromy
@@ -506,7 +506,7 @@ public theorem paperPuncturedGlobalFamilyBaseProjection_freeMeridianHom
       secondMeridian, paperPuncturedGlobalFamilyBaseProjection_rhoTwo]
 
 public theorem paperPuncturedGlobalFamilyBaseProjection_presentation
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (d : FreeTwoMeridianAffineDeck Lattice
       paperPuncturedGlobalFamilyFreeMonodromy) :
     paperPuncturedGlobalFamilyBaseProjection A
@@ -532,7 +532,7 @@ public theorem paperPuncturedGlobalFamilyBaseProjection_presentation
 ordinary base projection, while its lattice component is faithful by the two explicit quotient
 coverings. -/
 public theorem paperPuncturedGlobalFamilyAffinePresentation_injective
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     Function.Injective (paperPuncturedGlobalFamilyAffinePresentation A) := by
   intro d e hde
   have hright : d.right = e.right := by
@@ -569,7 +569,7 @@ public theorem paperPuncturedGlobalFamilyAffinePresentation_injective
 /-- The paper's punctured-family affine fundamental-group classification, derived from the
 canonical presentation and its proved injectivity. -/
 public noncomputable def establishedPuncturedGlobalFamilyAffineFundamentalGroup
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     PuncturedGlobalFamilyAffineFundamentalGroup A.periods where
   base := A.cuspCentralBase
   identification := MulEquiv.ofBijective (paperPuncturedGlobalFamilyAffinePresentation A)
@@ -585,7 +585,7 @@ Tau Ceti's based-path universal cover, which is simply connected and whose funda
 action is a quotient covering map.  The conclusion supplies only the universal cover and its
 affine deck action. -/
 public noncomputable def establishedPuncturedGlobalFamilyEquivariantUniversalCover
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     ChosenEquivariantAffineUniversalCover IntegerPeriods Delta A.CentralFamily
       (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy :=
   letI := fuchsianPuncturedGlobalFamily_locallyPathConnected A.modular.modularParameter A.periods

@@ -69,7 +69,7 @@ public theorem constructedA2ClosedPhaseCellMap_isProperMap
     (constructedA2CellSquareProjection_surjective W.localWitness.radius_pos 0).compactSpace
       (constructedA2CellSquareProjection_continuous W.localWitness.radius_pos 0)
   let _ : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
   exact (constructedA2ClosedPhaseCellMap_continuous W).isProperMap

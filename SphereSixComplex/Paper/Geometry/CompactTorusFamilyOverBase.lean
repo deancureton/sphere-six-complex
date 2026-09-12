@@ -25,7 +25,7 @@ variable {U : TriangleUniformization} (F : PeriodFunctions U)
   projection (parameterMap F)
     (p.1, (fullRankDomain (parameterMap F p.1)).realEquiv p.2)
 
-public theorem familyBaseCubeParam_continuous :
+public theorem continuous_familyBaseCubeParam :
     Continuous (familyBaseCubeParam F) := by
   unfold familyBaseCubeParam
   rw [projection.eq_def, quotientProjection.eq_def]
@@ -65,18 +65,18 @@ public theorem familyOverBaseSet_eq_image_unitCube (K : Set UpperHalfPlane) :
     exact hp.1
 
 /-- The entire quotient torus family over a compact base set is compact. -/
-public theorem familyOverBaseSet_isCompact (K : Set UpperHalfPlane) (hK : IsCompact K) :
+public theorem isCompact_familyOverBaseSet (K : Set UpperHalfPlane) (hK : IsCompact K) :
     IsCompact (familyOverBaseSet F K) := by
   rw [familyOverBaseSet_eq_image_unitCube F K]
-  exact (hK.prod isCompact_Icc).image (familyBaseCubeParam_continuous F)
+  exact (hK.prod isCompact_Icc).image (continuous_familyBaseCubeParam F)
 
 /-- The base projection of the varying compact-torus family is proper. -/
-public theorem familyTotalSpaceBase_isProperMap :
+public theorem isProperMap_familyTotalSpaceBase :
     IsProperMap (familyTotalSpaceBase F) := by
   rw [isProperMap_iff_isCompact_preimage]
   refine ⟨continuous_quot_lift (familyTotalSpaceBase_respects F) continuous_fst, ?_⟩
   intro K hK
-  simpa [familyOverBaseSet] using familyOverBaseSet_isCompact F K hK
+  simpa [familyOverBaseSet] using isCompact_familyOverBaseSet F K hK
 
 end
 

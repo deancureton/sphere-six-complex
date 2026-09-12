@@ -116,9 +116,9 @@ public theorem puncturedLocalCuspQuotient_pathConnected
 
 end Geometry.CuspPuncturedCollarBridge
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The central source of the analytic star is path-connected. -/
 public theorem starCentral_pathConnected : PathConnectedSpace A.CentralFamily := by
@@ -364,6 +364,6 @@ public theorem cuspAttachment_differenceMap_zero_coordinates
       sectionSevenMayerVietorisFinalZeroHom] using congrArg Prod.snd hnormal
 
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

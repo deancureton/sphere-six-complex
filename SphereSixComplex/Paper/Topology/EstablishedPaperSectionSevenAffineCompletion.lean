@@ -16,21 +16,21 @@ models have been constructed.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 namespace EstablishedSectionSevenAffineTopology
 
 /-- Equivariant radial extension across the two actual affine filling collars, including its
 compatibility with the canonical maps on their common band. -/
-public theorem radialCompletionInput (A : PaperAnalyticData) :
+public theorem radialCompletionInput (A : AnalyticData) :
     Nonempty A.AffineRadialCompletionInput :=
-  _root_.SphereSixComplex.Geometry.PaperAnalyticData.affineRadialCompletionInput_nonempty A
+  _root_.SphereSixComplex.Geometry.AnalyticData.affineRadialCompletionInput_nonempty A
 
 end EstablishedSectionSevenAffineTopology
 
 /-- The coherent radial completion selected for the paper's actual affine height split. -/
-public theorem affineRadialCompletionInput (A : PaperAnalyticData) :
+public theorem affineRadialCompletionInput (A : AnalyticData) :
     A.AffineRadialCompletionInput :=
   Classical.choice (EstablishedSectionSevenAffineTopology.radialCompletionInput A)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

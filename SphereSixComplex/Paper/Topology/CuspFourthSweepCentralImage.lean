@@ -8,13 +8,13 @@ public import SphereSixComplex.Paper.Topology.CentralInvariantCircleBoundary
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open GlobalTorusFamily CuspPuncturedCollarBridge CuspRadialClutchingConstruction
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus TorusFamily CuspPeriodExpansion
 
-public theorem centralFourthPeriodCircle_regular (A : PaperAnalyticData)
+public theorem centralFourthPeriodCircle_regular (A : AnalyticData)
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) (t : ℝ) :
     A.centralFourthPeriodCircle ((t : UnitAddCircle),
       A.puncturedBaseHomeomorphTwicePuncturedComplex (Quotient.mk _ b)) =
@@ -26,7 +26,7 @@ public theorem centralFourthPeriodCircle_regular (A : PaperAnalyticData)
   rw [Homeomorph.symm_apply_apply, invariantPeriodCircle_real]
   rfl
 
-public theorem centralFourthPeriodCircle_cusp (A : PaperAnalyticData)
+public theorem centralFourthPeriodCircle_cusp (A : AnalyticData)
     (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius) (t : ℝ) :
     A.centralFourthPeriodCircle ((t : UnitAddCircle),
       A.centralFamilyCoordinate
@@ -41,7 +41,7 @@ public theorem centralFourthPeriodCircle_cusp (A : PaperAnalyticData)
     rfl
 
 open EllipticTwoDiscCoverData
-public theorem cuspFullFiberSlice_fourthCircle_real (A : PaperAnalyticData)
+public theorem cuspFullFiberSlice_fourthCircle_real (A : AnalyticData)
     (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius) (t : ℝ) :
     actualCuspFullFiberSlice (A := A) s hs
       (cuspFourthCircle (cuspBasePoint A.cuspCoordinate
@@ -62,7 +62,7 @@ public theorem cuspFullFiberSlice_fourthCircle_real (A : PaperAnalyticData)
   rw [← h]
   exact actualCuspFullFiberSlice_additiveTorusProjection s hs _
 
-public theorem cuspFullFiberSlice_fourthCircle_central (A : PaperAnalyticData)
+public theorem cuspFullFiberSlice_fourthCircle_central (A : AnalyticData)
     (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius) (t : ℝ) :
     A.starToCentral 0
       (actualCuspFullFiberSlice (A := A) s hs
@@ -78,12 +78,12 @@ public theorem cuspFullFiberSlice_fourthCircle_central (A : PaperAnalyticData)
 open SphereSixComplex.Topology.FixedTopologicalCircleWangBoundary
 open SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 open SphereSixComplex.CyclicAngularFundamentalDomain
-public def cuspFourthSweep (A : PaperAnalyticData) :
+public def cuspFourthSweep (A : AnalyticData) :
     C(UnitAddCircle × StdTorus 1, A.openEmbeddingStarData.collarSource 0) :=
   cuspFixedCircleSweep A (cuspFourthFixedCircle (cuspBasePoint A.cuspCoordinate
     (markedCuspParameter A.starCuspWitness)))
 
-public theorem cuspFourthSweep_real (A : PaperAnalyticData) (r : ℝ)
+public theorem cuspFourthSweep_real (A : AnalyticData) (r : ℝ)
     (z : StdTorus 1) :
     cuspFourthSweep A ((r : UnitAddCircle), z) =
       actualCuspFullFiberSlice (A := A)
@@ -95,7 +95,7 @@ public theorem cuspFourthSweep_real (A : PaperAnalyticData) (r : ℝ)
           (markedCuspParameter A.starCuspWitness)) z) :=
   cuspFixedCircleSweep_real A _ r z
 
-public theorem cuspFourthSweep_central (A : PaperAnalyticData)
+public theorem cuspFourthSweep_central (A : AnalyticData)
     (u : UnitAddCircle) (z : StdTorus 1) :
     A.starToCentral 0 (cuspFourthSweep A (u, z)) =
       A.centralFourthPeriodCircle (z 0,
@@ -117,7 +117,7 @@ public theorem cuspFourthSweep_central (A : PaperAnalyticData)
     (cuspFourthCircle _ 0)) = _ at hzero
   rw [hzero, centralFourthPeriodCircle_coordinate]
 
-public def cuspFourthSweepFactor (A : PaperAnalyticData) :
+public def cuspFourthSweepFactor (A : AnalyticData) :
     C(UnitAddCircle × StdTorus 1, UnitAddCircle × TwicePuncturedComplex) where
   toFun p := (p.2 0,
     A.centralFamilyCoordinate (A.starToCentral 0 (cuspFourthSweep A (p.1, 0))))
@@ -127,7 +127,7 @@ public def cuspFourthSweepFactor (A : PaperAnalyticData) :
         (continuous_fst.prodMk continuous_const))))
 
 
-public def cuspToEllipticUnionMap {A : PaperAnalyticData}
+public def cuspToEllipticUnionMap {A : AnalyticData}
     (D : A.EllipticTwoDiscCoverData) :
     C(A.openEmbeddingStarData.collarSource 0,
       (D.orderThreeSide ∪ D.orderFourSide : Set A.ellipticInterior)) := by
@@ -135,7 +135,7 @@ public def cuspToEllipticUnionMap {A : PaperAnalyticData}
   · rw [D.sides_cover]; trivial
   · exact D.cuspToEllipticInteriorMap.hom.continuous.subtype_mk _
 
-public theorem cuspToEllipticUnionMap_central {A : PaperAnalyticData}
+public theorem cuspToEllipticUnionMap_central {A : AnalyticData}
     (D : A.EllipticTwoDiscCoverData)
     (q : A.openEmbeddingStarData.collarSource 0) :
     A.ellipticCentralImageHomeomorph
@@ -146,7 +146,7 @@ public theorem cuspToEllipticUnionMap_central {A : PaperAnalyticData}
   rw [A.centralToSectionSevenEulerPiece_centralImage]
   exact (A.centralToSectionSevenEulerPiece_starToCentral 0 q).symm
 
-public theorem cuspFourthSweep_factor {A : PaperAnalyticData}
+public theorem cuspFourthSweep_factor {A : AnalyticData}
     (D : A.EllipticTwoDiscCoverData) :
     (cuspToEllipticUnionMap D).comp (cuspFourthSweep A) =
       (centralFourthPeriodCircleToUnion D).comp (cuspFourthSweepFactor A) := by
@@ -159,7 +159,7 @@ public theorem cuspFourthSweep_factor {A : PaperAnalyticData}
   exact congrArg (fun x : A.ellipticCentralImage ↦ x.1) h'
 
 
-public theorem cuspFourthSweepFactor_projection_zero (A : PaperAnalyticData)
+public theorem cuspFourthSweepFactor_projection_zero (A : AnalyticData)
     (x : IntegralSingularHomology 2 (UnitAddCircle × StdTorus 1)) :
     integralSingularHomologyMap 2 productFiberProjection
       (integralSingularHomologyMap 2 (cuspFourthSweepFactor A) x) = 0 := by
@@ -182,7 +182,7 @@ public theorem cuspFourthSweepFactor_projection_zero (A : PaperAnalyticData)
   rw [integralSingularHomologyMap_comp_wang, h, ← integralSingularHomologyMap_comp_wang]
   rw [Subsingleton.elim (integralSingularHomologyMap 2 f x) 0, map_zero]
 
-public theorem cuspFourthSweep_union_boundary {A : PaperAnalyticData}
+public theorem cuspFourthSweep_union_boundary {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (UnitAddCircle × StdTorus 1)) :
     EllipticTwoDiscHomologyCoordinates.canonicalBoundary R.twoDiscCover 1
@@ -201,7 +201,7 @@ private theorem homologyHomeomorphMap_apply {X Y : Type}
     (x : IntegralSingularHomology k X) :
     integralSingularHomologyEquiv k e x = integralSingularHomologyMap k (e : C(X, Y)) x := rfl
 
-public theorem cuspToEllipticUnionMap_homology {A : PaperAnalyticData}
+public theorem cuspToEllipticUnionMap_homology {A : AnalyticData}
     (D : A.EllipticTwoDiscCoverData)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     integralSingularHomologyMap 2 (cuspToEllipticUnionMap D) x =
@@ -216,7 +216,7 @@ public theorem cuspToEllipticUnionMap_homology {A : PaperAnalyticData}
   exact (integralSingularHomologyEquiv 2 e).injective
     (hm.trans (D.cuspToEllipticInteriorMap_homology 2 x))
 
-public theorem cuspFourthSweep_pulled_back_boundary {A : PaperAnalyticData}
+public theorem cuspFourthSweep_pulled_back_boundary {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (UnitAddCircle × StdTorus 1)) :
     R.twoDiscCover.cuspPulledBackBoundaryHom
@@ -226,14 +226,14 @@ public theorem cuspFourthSweep_pulled_back_boundary {A : PaperAnalyticData}
     ← cuspToEllipticUnionMap_homology]
   exact cuspFourthSweep_union_boundary R x
 
-public theorem cuspFourthSweep_to_mapping_torus (A : PaperAnalyticData) :
+public theorem cuspFourthSweep_to_mapping_torus (A : AnalyticData) :
     A.actualCuspRadialClutchingData.totalHomotopyEquiv.toFun.comp (cuspFourthSweep A) =
       fixedLoopMappingTorusMap (cuspFiberClutching _)
         (cuspFourthFixedCircle (cuspBasePoint A.cuspCoordinate
           (markedCuspParameter A.starCuspWitness))) :=
   cuspFixedCircleSweep_to_mapping_torus A _
 
-public theorem cuspFourthSweep_wang (A : PaperAnalyticData) :
+public theorem cuspFourthSweep_wang (A : AnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     G.monodromyCoordinates.degreeOne
@@ -248,7 +248,7 @@ public theorem cuspFourthSweep_wang (A : PaperAnalyticData) :
   exact CuspRadialClutchingConstruction.cuspFourthSweep_wang _
 
 
-public theorem cuspRawFive_pulled_back_boundary_zero {A : PaperAnalyticData}
+public theorem cuspRawFive_pulled_back_boundary_zero {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     R.twoDiscCover.cuspPulledBackBoundaryHom
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 0 := by
@@ -272,6 +272,6 @@ public theorem cuspRawFive_pulled_back_boundary_zero {A : PaperAnalyticData}
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end
 end

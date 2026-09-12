@@ -25,9 +25,9 @@ open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The fixed affine split used by the remaining Section 7 argument. -/
 public noncomputable def actualAffineHeightSplit :
@@ -39,7 +39,7 @@ public abbrev AffineRadialCompletionInput :=
   A.actualAffineHeightSplit.RadialHomotopyData
     (A.affineCentralBandHomotopyEquiv A.affineCentralSeparation)
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 /-- The concrete two-disc cover determined by the completed affine radial geometry. -/
 public noncomputable def AffineRadialCompletionInput.twoDiscCover
@@ -54,4 +54,4 @@ public theorem AffineRadialCompletionInput.homologyAlignment
   R.bandHomologyAlignment
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

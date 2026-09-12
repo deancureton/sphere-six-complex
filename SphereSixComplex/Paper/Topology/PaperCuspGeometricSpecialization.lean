@@ -14,9 +14,9 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 namespace Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
-open Geometry.PaperAnalyticData
+open Geometry.AnalyticData
 
-public theorem actualFiberSpecializationTwo_bijective (A : PaperAnalyticData) :
+public theorem actualFiberSpecializationTwo_bijective (A : AnalyticData) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
     let _ := G.fiberTopology
     Function.Bijective (G.specializationHomologyTwoMap.comp
@@ -24,7 +24,7 @@ public theorem actualFiberSpecializationTwo_bijective (A : PaperAnalyticData) :
   have h := A.cuspFiberSpecializationTwoBijective CellularHomology.integralComparison
   rwa [A.actualCuspRadialClutchingData_eq] at h
 
-public noncomputable def cuspFillingTwoCoordinateChange (A : PaperAnalyticData) :
+public noncomputable def cuspFillingTwoCoordinateChange (A : AnalyticData) :
     (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ) := by
   let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
   let _ := G.fiberTopology
@@ -33,7 +33,7 @@ public noncomputable def cuspFillingTwoCoordinateChange (A : PaperAnalyticData) 
       (actualFiberSpecializationTwo_bijective A)).symm.trans
         G.degreeTwoCoinvariantsEquiv).toAddEquiv
 
-public noncomputable def cuspFillingTwoReadout (A : PaperAnalyticData) :
+public noncomputable def cuspFillingTwoReadout (A : AnalyticData) :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.filling 0) ≃+ (Fin 4 → ℤ) :=
   (A.cuspFillingHomologyTwoEquiv A.cuspCentralFiberRetractionData).trans
     (cuspFillingTwoCoordinateChange A)
@@ -41,7 +41,7 @@ public noncomputable def cuspFillingTwoReadout (A : PaperAnalyticData) :
 
 
 public theorem establishedFiniteFiberDegreeOneSpecializationMatrix
-    (A : PaperAnalyticData) (j i : Fin 2) :
+    (A : AnalyticData) (j i : Fin 2) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
     let _ := G.fiberTopology
     G.specializationHomologyOneMap
@@ -96,7 +96,7 @@ private theorem addMonoidHom_ext_of_equiv_pi_single_one
       _ = g (e.symm (z • (Pi.single i 1 : Fin n → ℤ))) := by rw [map_zsmul, map_zsmul]
       _ = g (e.symm (Pi.single i z)) := by rw [hz]
 
-private theorem specializationHomologyOneMap_comp_coinvariants (A : PaperAnalyticData) :
+private theorem specializationHomologyOneMap_comp_coinvariants (A : AnalyticData) :
     let G :=
       SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
         A.starCuspWitness
@@ -122,7 +122,7 @@ private theorem specializationHomologyOneMap_comp_coinvariants (A : PaperAnalyti
   intro x
   exact DFunLike.congr_fun hhom x
 
-private theorem specializationHomologyOneMap_eq_projection (A : PaperAnalyticData) :
+private theorem specializationHomologyOneMap_eq_projection (A : AnalyticData) :
     let G :=
       SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
         A.starCuspWitness
@@ -159,7 +159,7 @@ private theorem specializationHomologyOneMap_eq_projection (A : PaperAnalyticDat
   dsimp only [c, f, P, S]
   rfl
 
-private theorem specializationHomologyTwoMap_eq_projection (A : PaperAnalyticData) :
+private theorem specializationHomologyTwoMap_eq_projection (A : AnalyticData) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
     let _ := G.fiberTopology
     (cuspFillingTwoCoordinateChange A).toAddMonoidHom.comp
@@ -175,7 +175,7 @@ private theorem specializationHomologyTwoMap_eq_projection (A : PaperAnalyticDat
     (actualFiberSpecializationTwo_bijective A) x i).symm
 
 /-- Cellular-to-singular naturality for the explicit periodic `A₂` cellular basis. -/
-public theorem finiteBasisNaturality (A : PaperAnalyticData) :
+public theorem finiteBasisNaturality (A : AnalyticData) :
     FiniteBasisNaturality A (cuspFillingTwoCoordinateChange A) := by
   let G :=
     SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData
@@ -195,7 +195,7 @@ public theorem finiteBasisNaturality (A : PaperAnalyticData) :
       degreeOneFiberProjection (G.geometricWangSections.circleMappingTorusHOneAddEquiv (e x)) at h
     rw [e.symm_apply_apply] at h
     simpa [G, e, ActualCuspRadialClutchingData.geometricHomologyOneEquiv,
-      Geometry.PaperAnalyticData.cuspCentralFiberRetractionData_eq_radial] using h
+      Geometry.AnalyticData.cuspCentralFiberRetractionData_eq_radial] using h
   · apply AddMonoidHom.ext
     intro x
     let _ := G.fiberTopology
@@ -210,7 +210,7 @@ public theorem finiteBasisNaturality (A : PaperAnalyticData) :
       degreeTwoFiberProjection (G.geometricWangSections.circleMappingTorusHTwoAddEquiv (e x)) at h
     rw [e.symm_apply_apply] at h
     simpa [G, e, ActualCuspRadialClutchingData.geometricHomologyTwoEquiv,
-      Geometry.PaperAnalyticData.cuspCentralFiberRetractionData_eq_radial] using h
+      Geometry.AnalyticData.cuspCentralFiberRetractionData_eq_radial] using h
 
 
 /-- Cellular-to-singular naturality for the paper's selected periodic `A₂` cusp marking in
@@ -225,7 +225,7 @@ exactly the two coordinates pinned here.  The refutation is
 `not_standardA2CuspSpecializationDegreeOneStatement`,
 kept as a permanent regression test in `PaperCuspGeometricSpecializationProof`. -/
 public theorem degreeOne
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
     actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
         A.cuspCentralFiberRetractionData
@@ -237,7 +237,7 @@ public theorem degreeOne
   exact DFunLike.congr_fun (finiteBasisNaturality A).degreeOne x
 
 public theorem degreeTwo
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     cuspFillingTwoReadout A
         (integralSingularHomologyMap 2
@@ -249,12 +249,12 @@ public theorem degreeTwo
 
 end Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 open SphereSixComplex.CircleMappingTorusHomologyBases
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public noncomputable def actualCuspFillingHomologyTwoEquiv :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.filling 0) ≃+ (Fin 4 → ℤ) :=
@@ -324,6 +324,6 @@ public theorem cuspFillingInclusionCoordinates
       (cuspSectionSevenTwoCoordinateChange_specialization
         (A.cuspRawHomologyTwoEquiv x))
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

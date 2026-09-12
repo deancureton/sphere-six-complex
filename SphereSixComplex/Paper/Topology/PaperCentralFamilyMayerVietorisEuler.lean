@@ -31,12 +31,12 @@ private theorem subsingleton_homology_of_homotopyEquiv
   let eH := integralSingularHomologyEquivOfHomotopyEquiv k e
   exact ⟨fun x y ↦ eH.injective (@Subsingleton.elim _ hY _ _)⟩
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The order-three affine half-plane region has the homotopy type of the actual order-three
 collar. -/
@@ -199,7 +199,7 @@ public theorem centralHomologyEulerModel :
   integralHomologyFiniteSix := A.centralFamily_integralHomologyFiniteSix
   euler_eq_zero := A.centralFamily_euler_eq_zero
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex
 

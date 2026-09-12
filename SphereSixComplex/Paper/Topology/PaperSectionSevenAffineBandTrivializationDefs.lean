@@ -22,7 +22,7 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 /-- The affine vertical strip underlying the genuine Section 7 central band. -/
 public def affineVerticalStrip : Set ℂ :=
@@ -44,7 +44,7 @@ public theorem affineVerticalStrip_contractibleSpace :
   affineVerticalStrip_convex.contractibleSpace
     affineVerticalStrip_nonempty
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 /-- Recover the unique point of the central image represented by a point of a height band. -/
 public def CentralHeightSplit.bandToCentralImage
@@ -75,4 +75,4 @@ public noncomputable def homotopyEquivFiberOfTrivialBundle
       (ContinuousMap.HomotopyEquiv.refl F)).trans
         (Homeomorph.uniqueProd Unit F).toHomotopyEquiv)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

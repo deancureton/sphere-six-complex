@@ -50,7 +50,7 @@ public import SphereSixComplex.Paper.Geometry.FuchsianRegularTorusFamily
 public import SphereSixComplex.Paper.Geometry.GlobalDeckSmoothness
 public import SphereSixComplex.Paper.Geometry.GlobalTorusFamily
 public import SphereSixComplex.Paper.Geometry.GlobalTorusFiberFundamentalGroup
-public import SphereSixComplex.Paper.Geometry.PaperAnalyticData
+public import SphereSixComplex.Paper.Geometry.AnalyticData
 public import SphereSixComplex.Paper.Geometry.PaperAnalyticFillingPieces
 public import SphereSixComplex.Paper.Geometry.PaperBiholomorphicStar
 public import SphereSixComplex.Paper.Geometry.PaperCentralCompactCore
@@ -604,7 +604,7 @@ public import SphereSixComplex.Paper.Topology.StandardInfiniteA2PositiveRetracti
 public import SphereSixComplex.Paper.Topology.ToricCellAtlasIncidenceTransport
 public import SphereSixComplex.Paper.Topology.ToricCellAtlasRechart
 public import SphereSixComplex.Paper.Topology.ToricCellularCoordinateIncidence
-public import SphereSixComplex.Paper.Topology.ToricPhaseSpreading
+public import SphereSixComplex.Prerequisites.Topology.ToricPhaseSpreading
 public import SphereSixComplex.Paper.Topology.TwistObstruction
 public import SphereSixComplex.Paper.TriangleGroup.FuchsianArithmeticTermination
 public import SphereSixComplex.Paper.TriangleGroup.FuchsianProperFreeness

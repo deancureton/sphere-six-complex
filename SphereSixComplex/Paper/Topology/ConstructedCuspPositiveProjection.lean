@@ -15,7 +15,7 @@ variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E
 public def constructedCuspPolarData
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     PolarHoneycombData constructedModel W.localWitness.radius :=
-  (constructedPolarHoneycombResidualData W).toTopologicalData.toConstructionData.toPolarHoneycombData
+  (constructedPolarHoneycombConstruction W).toPolarHoneycombData
 
 public def constructedCuspPolarDeckLift
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
@@ -30,8 +30,8 @@ public theorem constructedCuspPolar_modulus_phase
       (compactPhaseOrbit constructedModel W.localWitness.radius
         (constructedCuspPolarData W).positivePart (k, p)) = p := by
   exact compactPhaseOrbit_modulus
-    (constructedPolarHoneycombResidualData W).toTopologicalData.toConstructionData
-    (constructedPolarHoneycombResidualData W).toTopologicalData.toConstructionData_invariantModulus k p
+    (constructedPolarHoneycombConstruction W)
+    (constructedLocalModulus_compactPhase W.localWitness.radius) k p
 
 public def constructedCuspPositiveProjection
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :

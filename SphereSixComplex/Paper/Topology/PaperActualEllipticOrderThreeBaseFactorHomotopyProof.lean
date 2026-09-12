@@ -10,7 +10,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Periods
@@ -27,7 +27,7 @@ open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- A chosen vector lift of the fixed torus coordinate carried by the local base factor. -/
 public noncomputable def orderThreeLocalOffsetBaseVector : ComplexTwoSpace :=
@@ -274,7 +274,7 @@ public theorem orderThreeLocalOffsetBaseCentralPath_homotopy_globalZeroSectionTr
   · exact hlocalTrace
   · exact hrebaseTrace
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

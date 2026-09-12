@@ -23,9 +23,9 @@ open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 
 /-- A nested subspace is canonically homeomorphic to the same set in the original ambient
@@ -130,4 +130,4 @@ public noncomputable def duplicatedSectionSevenBandToOrderFourCoverSource :
       (orderFourRadialActionData A.periods)).symm
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

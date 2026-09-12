@@ -17,13 +17,13 @@ noncomputable section
 open AlgebraicTopology CategoryTheory Set TopologicalSpace
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 namespace EllipticTwoDiscCoverData
 
@@ -220,7 +220,7 @@ public theorem canonicalCuspFiberBandTopologicalCompatibility
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

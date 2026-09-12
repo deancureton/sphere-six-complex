@@ -16,14 +16,14 @@ open scoped ContDiff Manifold
 
 namespace SphereSixComplex.Geometry
 
-open CuspAnalyticFillingCollar CuspAnalyticFillingCollar.PaperAnalyticData
+open CuspAnalyticFillingCollar CuspAnalyticFillingCollar.AnalyticData
 open CuspPuncturedCollarBridge
 
 noncomputable section
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The cusp, order-three, and order-four analytic collar identifications. -/
 @[expose] public noncomputable def starCollarPartialDiffeomorph :
@@ -111,7 +111,7 @@ public noncomputable def openEmbeddingStarBiholomorphicData :
 public noncomputable def biholomorphicFourPieceStarData :=
   A.openEmbeddingStarBiholomorphicData.toBiholomorphicFourPieceStarData
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

@@ -19,9 +19,9 @@ noncomputable section
 
 open AlgebraicTopology Set
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Concatenate one and two integral coordinates. -/
 public def finOneProdFinTwoAddEquiv :
@@ -121,7 +121,7 @@ public structure CuspAttachmentHomologyBases where
 
 namespace CuspAttachmentHomologyBases
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 /-- Combine the two degree-one side bases in the order interior, cusp filling. -/
 public def finalOneTarget (B : A.CuspAttachmentHomologyBases) :
@@ -209,7 +209,7 @@ public structure CuspAttachmentInclusionCoordinates
 
 namespace CuspAttachmentInclusionCoordinates
 
-variable {A : PaperAnalyticData} {B : A.CuspAttachmentHomologyBases}
+variable {A : AnalyticData} {B : A.CuspAttachmentHomologyBases}
 
 /-- The four unsigned inclusion computations imply the signed degree-one square. -/
 public theorem finalOne_comm (C : A.CuspAttachmentInclusionCoordinates B) (x) :
@@ -313,4 +313,4 @@ public noncomputable def positiveDegreeHomologyAssemblyOfLocalBases
     A.PositiveDegreeHomologyAssembly :=
   C.toPositiveDegreeHomologyAssembly
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

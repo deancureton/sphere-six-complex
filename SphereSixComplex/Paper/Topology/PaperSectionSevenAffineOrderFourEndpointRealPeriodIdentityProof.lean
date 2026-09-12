@@ -17,7 +17,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
@@ -40,7 +40,7 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 /-- The named marked-band point lifted to the order-four affine half-plane carrier. -/
 public noncomputable def affineOrderFourNamedHalfPlaneLiftPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.orderFourAffineHalfPlaneLiftCarrier.carrier :=
   let z := A.affineBandStripCoordinate x
   let t := A.affineBandFiberCoordinateOfLift
@@ -56,7 +56,7 @@ public noncomputable def affineOrderFourNamedHalfPlaneLiftPoint
 /-- The corresponding point of the order-four affine disc carrier selected by the radial
 inverse. -/
 public noncomputable def affineOrderFourNamedDiscLiftPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     (A.orderFourAffineDiscLiftCarrier
       A.affineOrderFourMarkedDiscRadius).carrier :=
   let r := A.affineOrderFourMarkedDiscRadius
@@ -69,7 +69,7 @@ public noncomputable def affineOrderFourNamedDiscLiftPoint
 /-- The named half-plane lift represents exactly the actual marked-band point in the central
 family. -/
 public theorem affineOrderFourNamedHalfPlaneLiftPoint_toCentralFamily
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.orderFourAffineHalfPlaneLiftQuotientToCentralFamily
         (Quotient.mk _ (A.affineOrderFourNamedHalfPlaneLiftPoint x)) =
       A.affineCentralBandToCentralFamily
@@ -94,7 +94,7 @@ public theorem affineOrderFourNamedHalfPlaneLiftPoint_toCentralFamily
 /-- In the fixed order-four torus, the named half-plane lift has the marked band coordinate
 transported from the common period basis. -/
 public theorem orderFourRealPeriod_namedHalfPlaneLiftPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     (orderFourRealPeriodProductHomeomorph A.periods
       (regularFamilyInclusion A.periods
         (A.affineOrderFourNamedHalfPlaneLiftPoint x).1)).2 =
@@ -132,7 +132,7 @@ public theorem orderFourRealPeriod_namedHalfPlaneLiftPoint
 
 /-- The named disc lift lies over the explicitly constructed order-four radial base. -/
 public theorem regularTotalSpaceBase_namedDiscLiftPoint
-    {A : PaperAnalyticData}
+    {A : AnalyticData}
     (x : A.affineMarkedBand) :
     regularTotalSpaceBase A.periods
         (A.affineOrderFourNamedDiscLiftPoint x).1 =
@@ -151,7 +151,7 @@ public theorem regularTotalSpaceBase_namedDiscLiftPoint
 
 /-- Affine radial transport preserves the named order-four real-period coordinate. -/
 public theorem orderFourRealPeriod_namedDiscLiftPoint
-    {A : PaperAnalyticData}
+    {A : AnalyticData}
     (x : A.affineMarkedBand) :
     (orderFourRealPeriodProductHomeomorph A.periods
       (regularFamilyInclusion A.periods
@@ -171,7 +171,7 @@ public theorem orderFourRealPeriod_namedDiscLiftPoint
 /-- The central-region quotient coordinate of a marked band point is represented by its named
 half-plane lift. -/
 public theorem affineOrderFourCentralRegionQuotient_band
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.affineOrderFourCentralRegionQuotientHomeomorph
         (A.affineBandToOrderFourCentralRegion x) =
       Quotient.mk _ (A.affineOrderFourNamedHalfPlaneLiftPoint x) := by
@@ -198,7 +198,7 @@ public theorem affineOrderFourCentralRegionQuotient_band
 
 /-- The unembedded order-four affine-disc endpoint used inside the overlap endpoint. -/
 public noncomputable def affineOrderFourDiscRegionEndpoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.affineOrderFourDiscRegion
       A.affineOrderFourMarkedDiscRadius :=
   let r := A.affineOrderFourMarkedDiscRadius
@@ -211,7 +211,7 @@ public noncomputable def affineOrderFourDiscRegionEndpoint
 /-- The affine-disc quotient coordinate of the endpoint is represented by the selected named
 disc lift. -/
 public theorem affineOrderFourDiscRegionQuotient_endpoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.affineOrderFourDiscRegionQuotientHomeomorph
         A.affineOrderFourMarkedDiscRadius
         (A.affineOrderFourDiscRegionEndpoint x) =
@@ -232,31 +232,23 @@ public theorem affineOrderFourDiscRegionQuotient_endpoint
 /-- The overlap endpoint and the unembedded disc-region endpoint have the same underlying
 elliptic-interior point. -/
 public theorem affineOrderFourDiscOverlapEndpoint_val
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     (A.affineOrderFourDiscOverlapEndpoint x).1 =
       (A.affineOrderFourDiscRegionEndpoint x).1 :=
   rfl
 
 /-- Undo the principal gauge on the named radial disc representative. -/
 public noncomputable def affineOrderFourNamedCollarTotalPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     TotalSpace (parameterMap A.periods) :=
   (orderFourPrincipalGaugeEquiv A.periods).symm
     (regularFamilyInclusion A.periods
       (A.affineOrderFourNamedDiscLiftPoint x).1)
 
-/-- The genuinely geometric residue: the inverse-gauged named radial representative lies in the
-selected order-four collar. -/
-public structure AffineOrderFourNamedRadialCollarCompatibility
-    (A : PaperAnalyticData) : Prop where
-  collar_mem : ∀ x : A.affineMarkedBand,
-    A.affineOrderFourNamedCollarTotalPoint x ∈
-      orderFourPuncturedFamilyCollar A.periods A.starSeparation.orderFour.radius
-
 /-- The collar radius of the inverse-gauged named representative is the Cayley radius of its
 explicit radial base lift. -/
 public theorem orderFourFamilyRadius_namedCollarTotalPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     orderFourFamilyRadius A.periods
         (A.affineOrderFourNamedCollarTotalPoint x) =
       ‖(orderFourCayleyHomeomorph
@@ -271,7 +263,7 @@ public theorem orderFourFamilyRadius_namedCollarTotalPoint
 /-- The named radial representative cannot hit the puncture, because its base belongs to the
 regular source and the order-four Cayley centre lies over the excluded coordinate `1`. -/
 public theorem orderFourFamilyRadius_namedCollarTotalPoint_pos
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     0 < orderFourFamilyRadius A.periods
       (A.affineOrderFourNamedCollarTotalPoint x) := by
   rw [A.orderFourFamilyRadius_namedCollarTotalPoint x]
@@ -296,8 +288,10 @@ public theorem orderFourFamilyRadius_namedCollarTotalPoint_pos
 chosen radial lift, rather than merely some regular-deck translate of it, lies inside the selected
 order-four Cayley radius. -/
 public theorem affineOrderFourNamedRadialCollarCompatibility_iff
-    (A : PaperAnalyticData) :
-    A.AffineOrderFourNamedRadialCollarCompatibility ↔
+    (A : AnalyticData) :
+    (∀ x : A.affineMarkedBand,
+    A.affineOrderFourNamedCollarTotalPoint x ∈
+      orderFourPuncturedFamilyCollar A.periods A.starSeparation.orderFour.radius) ↔
       ∀ x : A.affineMarkedBand,
         ‖(orderFourCayleyHomeomorph
           (A.affineOrderFourRadialBaseLift
@@ -305,7 +299,7 @@ public theorem affineOrderFourNamedRadialCollarCompatibility_iff
           A.starSeparation.orderFour.radius := by
   constructor
   · intro C x
-    have hx := C.collar_mem x
+    have hx := C x
     change 0 < orderFourFamilyRadius A.periods
         (A.affineOrderFourNamedCollarTotalPoint x) ∧
       orderFourFamilyRadius A.periods
@@ -313,8 +307,7 @@ public theorem affineOrderFourNamedRadialCollarCompatibility_iff
           A.starSeparation.orderFour.radius at hx
     rw [A.orderFourFamilyRadius_namedCollarTotalPoint x] at hx
     exact hx.2
-  · intro h
-    refine ⟨fun x ↦ ?_⟩
+  · intro h x
     change 0 < orderFourFamilyRadius A.periods
         (A.affineOrderFourNamedCollarTotalPoint x) ∧
       orderFourFamilyRadius A.periods
@@ -326,18 +319,22 @@ public theorem affineOrderFourNamedRadialCollarCompatibility_iff
 
 /-- The named collar representative as a point of the affine collar carrier. -/
 public noncomputable def affineOrderFourNamedCollarLiftPoint
-    (A : PaperAnalyticData)
-    (C : A.AffineOrderFourNamedRadialCollarCompatibility)
+    (A : AnalyticData)
+    (C : (∀ x : A.affineMarkedBand,
+    A.affineOrderFourNamedCollarTotalPoint x ∈
+      orderFourPuncturedFamilyCollar A.periods A.starSeparation.orderFour.radius))
     (x : A.affineMarkedBand) :
     (orderFourAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
       A.starSeparation.orderFour.radius).carrier :=
-  ⟨A.affineOrderFourNamedCollarTotalPoint x, C.collar_mem x⟩
+  ⟨A.affineOrderFourNamedCollarTotalPoint x, C x⟩
 
 /-- Gauging the named collar representative recovers the named radial disc representative. -/
 public theorem orderFourPrincipalGauge_namedCollarLiftPoint
-    (A : PaperAnalyticData)
-    (C : A.AffineOrderFourNamedRadialCollarCompatibility)
+    (A : AnalyticData)
+    (C : (∀ x : A.affineMarkedBand,
+    A.affineOrderFourNamedCollarTotalPoint x ∈
+      orderFourPuncturedFamilyCollar A.periods A.starSeparation.orderFour.radius))
     (x : A.affineMarkedBand) :
     (orderFourPuncturedCollarGaugeEquiv A.periods
       A.starSeparation.orderFour.radius
@@ -353,8 +350,10 @@ public theorem orderFourPrincipalGauge_namedCollarLiftPoint
 /-- The linear collar's regular representative of the named point is exactly the named radial
 disc representative. -/
 public theorem orderFourCollarToRegular_namedCollarLiftPoint
-    (A : PaperAnalyticData)
-    (C : A.AffineOrderFourNamedRadialCollarCompatibility)
+    (A : AnalyticData)
+    (C : (∀ x : A.affineMarkedBand,
+    A.affineOrderFourNamedCollarTotalPoint x ∈
+      orderFourPuncturedFamilyCollar A.periods A.starSeparation.orderFour.radius))
     (x : A.affineMarkedBand) :
     orderFourCollarToRegular A.periods
         (sourceActionProperlyDiscontinuous_of_eq
@@ -371,7 +370,7 @@ public theorem orderFourCollarToRegular_namedCollarLiftPoint
 /-- The named radial disc representative maps to the actual affine-disc endpoint in the central
 family. -/
 public theorem centralQuotientProjection_namedDiscLiftPoint
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     A.centralQuotientProjection
         (A.affineOrderFourNamedDiscLiftPoint x).1 =
       A.ellipticCentralImageHomeomorph
@@ -389,8 +388,10 @@ public theorem centralQuotientProjection_namedDiscLiftPoint
 /-- The selected star-collar image of the named collar representative is the actual radial
 disc endpoint. -/
 public theorem starToCentral_namedCollarLiftPoint
-    (A : PaperAnalyticData)
-    (C : A.AffineOrderFourNamedRadialCollarCompatibility)
+    (A : AnalyticData)
+    (C : (∀ x : A.affineMarkedBand,
+    A.affineOrderFourNamedCollarTotalPoint x ∈
+      orderFourPuncturedFamilyCollar A.periods A.starSeparation.orderFour.radius))
     (x : A.affineMarkedBand) :
     A.starToCentral 2
         (Quotient.mk _ (A.affineOrderFourNamedCollarLiftPoint C x)) =
@@ -407,8 +408,10 @@ public theorem starToCentral_namedCollarLiftPoint
 /-- Consequently the concrete overlap collar coordinate is the orbit class of the named collar
 representative. -/
 public theorem orderFourOverlapCollarHomeomorph_endpoint_eq_named
-    (A : PaperAnalyticData)
-    (C : A.AffineOrderFourNamedRadialCollarCompatibility)
+    (A : AnalyticData)
+    (C : (∀ x : A.affineMarkedBand,
+    A.affineOrderFourNamedCollarTotalPoint x ∈
+      orderFourPuncturedFamilyCollar A.periods A.starSeparation.orderFour.radius))
     (x : A.affineMarkedBand) :
     A.orderFourOverlapCollarHomeomorph
         (A.affineOrderFourDiscOverlapEndpoint x) =
@@ -423,10 +426,31 @@ public theorem orderFourOverlapCollarHomeomorph_endpoint_eq_named
 /-- The single collar-membership fact implies the full representative-independent endpoint
 real-period identity. -/
 public theorem affineOrderFourEndpointRealPeriodIdentity
-    (A : PaperAnalyticData)
-    (C : A.AffineOrderFourNamedRadialCollarCompatibility) :
-    A.AffineOrderFourEndpointRealPeriodIdentity := by
-  refine ⟨?_⟩
+    (A : AnalyticData)
+    (C : (∀ x : A.affineMarkedBand,
+    A.affineOrderFourNamedCollarTotalPoint x ∈
+      orderFourPuncturedFamilyCollar A.periods A.starSeparation.orderFour.radius)) :
+    ∀ (x : A.affineMarkedBand)
+      (q : (orderFourAffinePuncturedCarrier A.periods
+        A.modular.modularParameter.toTriangleUniformization_sourceAction
+        A.starSeparation.orderFour.radius).carrier),
+    A.orderFourOverlapCollarHomeomorph
+        (A.affineOrderFourDiscOverlapEndpoint x) = Quotient.mk _ q →
+      RadialEllipticActionData.centralFiberCoverProjection
+          (orderFourRadialActionData A.periods)
+          ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
+            (orderFourRadialActionData A.periods)).symm
+              (orderFourRealPeriodProductHomeomorph A.periods q.1).2) =
+        RadialEllipticActionData.centralFiberCoverProjection
+          (orderFourRadialActionData A.periods)
+          ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph
+            (orderFourRadialActionData A.periods)).symm
+              (-A.orderFourPrincipalRealPeriodGauge
+                  (A.affineOrderFourRadialBaseLift
+                    (A.affineBandStripCoordinate x)).1 +
+                A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph
+                  (A.affineBandFiberCoordinateOfLift
+                    A.affineNamedStripLift x))) := by
   intro x q hq
   let q₀ := A.affineOrderFourNamedCollarLiftPoint C x
   have hquot : (Quotient.mk _ q : A.StarCollarSource (2 : Fin 3)) =
@@ -452,6 +476,6 @@ public theorem affineOrderFourEndpointRealPeriodIdentity
     regularTotalSpaceBase_namedDiscLiftPoint x,
     orderFourRealPeriod_namedDiscLiftPoint x]
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

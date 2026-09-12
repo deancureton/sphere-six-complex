@@ -17,12 +17,12 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 
 /-- The chosen cusp translation, transported to the prescribed overlap base point. -/
@@ -199,6 +199,6 @@ public theorem cuspAffineBridge_toric_killed (a : Lattice)
       exact fundamentalGroupElementOfBaseEq_one _
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

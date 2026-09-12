@@ -24,9 +24,9 @@ open CuspFilling CuspLocalPhaseAction InfiniteA2Toric
 
 noncomputable section
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The regular central family quotient is Hausdorff. -/
 public theorem centralFamily_t2 : T2Space A.CentralFamily := by
@@ -138,7 +138,7 @@ public theorem starFilling_t2 (i : Fin 3) : T2Space (A.StarFilling i) := by
   · exact A.orderFourFilling_t2 A.starSeparation.orderFour.radius
 
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

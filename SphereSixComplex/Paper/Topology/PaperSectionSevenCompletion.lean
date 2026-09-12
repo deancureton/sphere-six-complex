@@ -14,9 +14,9 @@ The fundamental group and homology computations concern the same geometric glued
 @[expose] public section
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-variable (P : PaperAnalyticData)
+variable (P : AnalyticData)
 
 /-- The selected filling twists kill the fundamental group of the actual glued star. -/
 public theorem star_simplyConnectedSpace :
@@ -41,4 +41,4 @@ public theorem star_nonempty_homologyEquiv_sixSphere :
     (EstablishedSectionSevenCuspTopology.correctedPositiveDegreeAssembly R)
     P.stageTopDegreeVanishing
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

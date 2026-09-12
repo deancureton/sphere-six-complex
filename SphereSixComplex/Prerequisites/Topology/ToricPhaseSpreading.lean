@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.ActualCuspCentralFiberRetraction
+public import SphereSixComplex.Prerequisites.Topology.EquivariantStrongDeformationRetraction
 
 /-!
 # Spreading a deformation retraction across phase orbits

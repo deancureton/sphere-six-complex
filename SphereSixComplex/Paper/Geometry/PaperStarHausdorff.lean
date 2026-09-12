@@ -17,9 +17,9 @@ namespace SphereSixComplex.Geometry
 
 noncomputable section
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Cusp properness, together with the proved elliptic cases, closes all three collar pairs. -/
 public theorem closedCollarPairData_of_cuspProper
@@ -54,7 +54,7 @@ public theorem starGluedT2 :
       (GluedSpace A.openEmbeddingStarData.toFourPieceStarGluingData.glueData) :=
   A.gluedT2_of_cuspProper A.cuspCollarPairMap_isProper
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

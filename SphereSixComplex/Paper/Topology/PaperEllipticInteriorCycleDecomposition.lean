@@ -17,11 +17,11 @@ noncomputable section
 
 open AlgebraicTopology Set
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open EllipticTwoDiscHomologyCoordinates
 
-variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
+variable {A : AnalyticData} {D : A.EllipticTwoDiscCoverData}
 
 /-- The elliptic-interior degree-one coordinate in the raw cusp Wang basis. -/
 public def cuspEllipticDegreeOneRawCoordinate (x : Fin 3 → ℤ) : ℤ :=
@@ -51,4 +51,4 @@ public theorem cuspAttachmentBoundaryOne_actualCusp_zero
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

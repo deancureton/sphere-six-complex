@@ -41,13 +41,13 @@ private theorem orderThreeCoverSourceDegreeTwo_symm_aux
     (integralSingularHomologyEquiv 2 e).apply_symm_apply z
   exact congrArg (orderThreeTorusHomologyBasis F).degreeTwo h
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra
 open EllipticTwoDiscHomologyCoordinates
 
-variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
+variable {A : AnalyticData} {D : A.EllipticTwoDiscCoverData}
 
 private theorem affineTwoDiscCover_degreeTwoBasis_aux
     (R : A.AffineRadialCompletionInput)
@@ -403,7 +403,7 @@ public theorem affineActualCuspDegreeTwoFiberBasis_scalarValues
 
 end EllipticTwoDiscCoverData
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex
 

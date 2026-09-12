@@ -17,7 +17,8 @@ It contains no theorem statement or proof and does not import `Challenge` or `So
 
 /- BEGIN GENERATED AXIOM CATALOG
 This block is generated from scripts/allowed-axioms.txt by Lean's pretty-printer.
-It is the single human-review surface for every permitted constant and its exact type.
+It displays every permitted constant and its type, including existential binder types.
+Read the definitions of the mathematical objects alongside these signatures.
 Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 
 # Constants in the current final-theorem trust closure.
@@ -32,12 +33,23 @@ axiom Quot.sound.{u} : ∀ {α : Sort u} {r : α → α → Prop} {a b : α}, r 
 axiom Classical.choice.{u} : {α : Sort u} → Nonempty α → α
 
 # Retained classical recognition blackboxes.
-axiom SphereSixComplex.Hurewicz.exists_map : ∃ H, SphereSixComplex.Hurewicz.IsIsoInRange H
+axiom SphereSixComplex.Hurewicz.exists_map : ∃ (H : SphereSixComplex.Hurewicz.Map),
+  ∀ (n : ℕ) (hn : 2 ≤ n) (X : Type) [inst : TopologicalSpace X] [PathConnectedSpace X] (x : X),
+    (∀ (k : ℕ), 0 < k → k < n → Subsingleton (HomotopyGroup.Pi k X x)) → Function.Bijective ⇑(H.hom n X x)
 axiom SphereSixComplex.CWType.homological_whitehead : ∀ (X Y : Type) [inst : TopologicalSpace X]
   [inst_1 : TopologicalSpace Y] [SimplyConnectedSpace X] [SimplyConnectedSpace Y],
   SphereSixComplex.HasCWType X →
-    SphereSixComplex.HasCWType Y → ∀ (f : C(X, Y)), SphereSixComplex.IsIntegralHomologyEquivalence f → ∃ e, e.toFun = f
-axiom SphereSixComplex.SmoothSixSphere.poincare : SphereSixComplex.SmoothSixSphere.Poincare
+    SphereSixComplex.HasCWType Y →
+      ∀ (f : C(X, Y)),
+        SphereSixComplex.IsIntegralHomologyEquivalence f → ∃ (e : ContinuousMap.HomotopyEquiv X Y), e.toFun = f
+axiom SphereSixComplex.SmoothSixSphere.poincare : ∀ (M : Type) [inst : TopologicalSpace M]
+  [inst_1 : ChartedSpace SphereSixComplex.RealModel M]
+  [IsManifold (modelWithCornersSelf ℝ SphereSixComplex.RealModel) (↑⊤) M] [T2Space M] [SecondCountableTopology M]
+  [CompactSpace M],
+  Nonempty (ContinuousMap.HomotopyEquiv M SphereSixComplex.SixSphere) →
+    Nonempty
+      (Diffeomorph (modelWithCornersSelf ℝ SphereSixComplex.RealModel)
+        (modelWithCornersSelf ℝ SphereSixComplex.RealModel) M SphereSixComplex.SixSphere ↑⊤)
 
 # Cellular comparison is normalized on skeletal cycles; disk orientations through degree two are proved.
 axiom SphereSixComplex.PoincareDuality.nonempty_addEquiv : ∀ (d : ℕ) (E X : Type) [inst : NormedAddCommGroup E]
@@ -49,7 +61,15 @@ axiom SphereSixComplex.PoincareDuality.nonempty_addEquiv : ∀ (d : ℕ) (E X : 
         ∀ (k : Fin (d + 1)),
           Nonempty
             (SphereSixComplex.IntegralSingularCohomology (↑k) X ≃+ SphereSixComplex.IntegralSingularHomology (d - ↑k) X)
-axiom SphereSixComplex.IntegralCohomology.universalCoefficients : SphereSixComplex.IntegralCohomology.UniversalCoefficients
+axiom SphereSixComplex.IntegralCohomology.universal_coefficients : ∀ (X : Type) [inst : TopologicalSpace X],
+  Nonempty (SphereSixComplex.IntegralSingularCohomology 0 X ≃+ (SphereSixComplex.IntegralSingularHomology 0 X →+ ℤ)) ∧
+    ∀ (n : ℕ),
+      0 < n →
+        Nonempty
+          (SphereSixComplex.IntegralSingularCohomology n X ≃+
+            CategoryTheory.Abelian.Ext (ModuleCat.of ℤ (SphereSixComplex.IntegralSingularHomology (n - 1) X))
+                (ModuleCat.of ℤ ℤ) 1 ×
+              (SphereSixComplex.IntegralSingularHomology n X →+ ℤ))
 axiom SphereSixComplex.SmoothManifold.finiteCWModel : (E X : Type) →
   [inst : NormedAddCommGroup E] →
     [inst_1 : NormedSpace ℝ E] →

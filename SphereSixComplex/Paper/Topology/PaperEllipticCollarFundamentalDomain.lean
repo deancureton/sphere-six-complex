@@ -273,9 +273,9 @@ public noncomputable def orderFourPuncturedCollarProductQuotientHomeomorph
   restrictedOrbitQuotientHomeomorph
     (orderFourPuncturedProductEquivariantHomeomorph F hsource r hr hr1)
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Correct radial-mapping-torus model of the actual order-three open collar. -/
 public noncomputable def orderThreeCollarRadialMappingTorusHomeomorph :
@@ -311,7 +311,7 @@ public noncomputable def orderFourCollarRadialMappingTorusHomeomorph :
       (EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
         CyclicAngularFundamentalDomain.orderFourMultiplier_eq_standardMultiplier)
 
-end PaperAnalyticData
+end AnalyticData
 
 end Geometry
 

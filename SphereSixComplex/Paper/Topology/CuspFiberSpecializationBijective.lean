@@ -7,12 +7,12 @@ public import SphereSixComplex.Paper.Topology.CuspMixedTorusIntegralColumns
 
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open CuspPuncturedCollarBridge CuspRadialClutchingConstruction
 open InfiniteA2Toric
 open CircleMappingTorusHomologyBases
 
-theorem cuspFiberSpecializationTwoBijective_of_columns (A : PaperAnalyticData)
+theorem cuspFiberSpecializationTwoBijective_of_columns (A : AnalyticData)
     (e : IntegralSingularHomology 2 (ActualLocalCuspFilling A.starCuspWitness) ≃+ (Fin 4 → ℤ))
     (a b c : ℤˣ)
     (hc : ∀ j : Fin 3, e (A.cuspFiberSpecializationColumn j.succ) =
@@ -48,7 +48,7 @@ theorem cuspFiberSpecializationTwoBijective_of_columns (A : PaperAnalyticData)
   rw [AddEquiv.symm_apply_apply, ← A.cuspFiniteFiberTorusToFilling_homology j]
   exact hr j
 
-theorem cuspFiberSpecializationTwoBijective (A : PaperAnalyticData)
+theorem cuspFiberSpecializationTwoBijective (A : AnalyticData)
     (T : CellularHomology.IntegralComparison) : (let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       Function.Bijective (G.specializationHomologyTwoMap.comp
@@ -70,4 +70,4 @@ theorem cuspFiberSpecializationTwoBijective (A : PaperAnalyticData)
   · exact h2.trans (signedMixedThreeColumnEquiv_two a b c).symm
   · exact h3.trans (signedMixedThreeColumnEquiv_three a b c).symm
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

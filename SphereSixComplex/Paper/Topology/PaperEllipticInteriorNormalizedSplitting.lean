@@ -18,9 +18,9 @@ noncomputable section
 
 open AlgebraicTopology Set
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-variable {A : PaperAnalyticData} {D : A.EllipticTwoDiscCoverData}
+variable {A : AnalyticData} {D : A.EllipticTwoDiscCoverData}
   (B : A.EllipticTwoDiscHomologyCoordinates D)
 
 namespace EllipticTwoDiscHomologyCoordinates
@@ -233,4 +233,4 @@ public theorem normalizedUnionHomologyTwoEquiv_add
 
 end EllipticTwoDiscHomologyCoordinates
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

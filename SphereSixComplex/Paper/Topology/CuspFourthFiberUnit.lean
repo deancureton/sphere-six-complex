@@ -6,11 +6,11 @@ public import SphereSixComplex.Paper.Topology.CuspCorrectedEllipticSplitting
 @[expose] public section
 noncomputable section
 open AlgebraicTopology
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology EllipticTwoDiscHomologyCoordinates
 open EllipticInteriorMarkedCycleData
 
-public theorem cuspEllipticFiberCoordinate_rawFive (A : PaperAnalyticData)
+public theorem cuspEllipticFiberCoordinate_rawFive (A : AnalyticData)
     (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover))) :
     A.cuspEllipticFiberCoordinate R S
@@ -28,4 +28,4 @@ public theorem cuspEllipticFiberCoordinate_rawFive (A : PaperAnalyticData)
     (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) = -12 at h
   omega
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

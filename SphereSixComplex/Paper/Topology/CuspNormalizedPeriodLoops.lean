@@ -4,18 +4,18 @@ public import SphereSixComplex.Prerequisites.Topology.CircleSweepWhiskerHomotopy
 
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology GlobalTorusFamily TriangleGroup
 open SphereSixComplex.Periods
 open SphereSixComplex.StandardTorusHomology
 
-public def regularThirdCircleFamily (A : PaperAnalyticData) :
+public def regularThirdCircleFamily (A : AnalyticData) :
     C(RegularBase (U := A.paperTriangleUniformization), C(StdTorus 1, A.CentralFamily)) :=
   ((regularPeriodCircleInGlobal A.periods (Pi.single 2 1)).comp
     ⟨fun p : RegularBase (U := A.paperTriangleUniformization) × StdTorus 1 =>
       (p.2 0, p.1), (continuous_apply 0 |>.comp continuous_snd).prodMk continuous_fst⟩).curry
 
-public theorem regularThirdCircleFamily_gZero (A : PaperAnalyticData) (k : ℤ)
+public theorem regularThirdCircleFamily_gZero (A : AnalyticData) (k : ℤ)
     (b : RegularBase (U := A.paperTriangleUniformization)) :
     A.regularThirdCircleFamily (regularSourceEquiv (g₀ ^ k) b) =
       A.regularThirdCircleFamily b := by
@@ -25,7 +25,7 @@ public theorem regularThirdCircleFamily_gZero (A : PaperAnalyticData) (k : ℤ)
   rw [← zpow_neg, rhoLambda_thirdBasis_gZero_zpow] at h
   exact h
 
-public def normalizedThirdPeriodLoop (A : PaperAnalyticData)
+public def normalizedThirdPeriodLoop (A : AnalyticData)
     (p : Path A.affineNormalizedMidpoint
       (regularSourceEquiv g₀⁻¹ A.affineNormalizedMidpoint)) :
     Path (A.regularThirdCircleFamily A.affineNormalizedMidpoint)
@@ -34,13 +34,13 @@ public def normalizedThirdPeriodLoop (A : PaperAnalyticData)
     (by simpa using (A.regularThirdCircleFamily_gZero (-1)
       A.affineNormalizedMidpoint).symm)
 
-public theorem normalizedThirdPeriodLoop_homotopic (A : PaperAnalyticData) :
+public theorem normalizedThirdPeriodLoop_homotopic (A : AnalyticData) :
     (A.normalizedThirdPeriodLoop A.normalizedWhiskeredCuspRegularPath).Homotopic
       (A.normalizedThirdPeriodLoop A.normalizedMeridianPairRegularPath) :=
   (A.normalizedWhiskeredCuspRegularPath_homotopic_meridianPair.map
     A.regularThirdCircleFamily).pathCast _ _
 
-public theorem regularThirdCircleFamily_peripheral (A : PaperAnalyticData) (k : ℤ)
+public theorem regularThirdCircleFamily_peripheral (A : AnalyticData) (k : ℤ)
     (b : RegularBase (U := A.paperTriangleUniformization)) :
     A.regularThirdCircleFamily (regularSourceEquiv ((g₁ * g₂) ^ k) b) =
       A.regularThirdCircleFamily b := by
@@ -50,7 +50,7 @@ public theorem regularThirdCircleFamily_peripheral (A : PaperAnalyticData) (k : 
   rw [← zpow_neg, rhoLambda_thirdBasis_peripheral_zpow] at h
   exact h
 
-public theorem regularThirdCircleFamily_normalizedCuspEndpoint (A : PaperAnalyticData) :
+public theorem regularThirdCircleFamily_normalizedCuspEndpoint (A : AnalyticData) :
     A.regularThirdCircleFamily
       (regularSourceEquiv (((g₁ * g₂) ^ A.geometricCentralCuspConjugatorExponent)⁻¹)
         (regularTotalSpaceBase A.periods A.cuspRegularRepresentative)) =
@@ -59,13 +59,13 @@ public theorem regularThirdCircleFamily_normalizedCuspEndpoint (A : PaperAnalyti
   rw [← A.cuspChosenPositiveRegularBase_zero]
   rfl
 
-public def normalizedThirdCircleWhisker (A : PaperAnalyticData) :
+public def normalizedThirdCircleWhisker (A : AnalyticData) :
     Path (A.regularThirdCircleFamily A.affineNormalizedMidpoint)
       (A.cuspChosenThirdPeriodFamily 0) :=
   (A.affineNormalizedCuspPath.map A.regularThirdCircleFamily.continuous).cast rfl
     A.regularThirdCircleFamily_normalizedCuspEndpoint.symm
 
-public theorem regularThirdCircleFamily_positivePath (A : PaperAnalyticData) (t : unitInterval) :
+public theorem regularThirdCircleFamily_positivePath (A : AnalyticData) (t : unitInterval) :
     A.regularThirdCircleFamily (A.normalizedCuspPositiveRegularPath t) =
       A.cuspChosenThirdPeriodFamily t := by
   change A.regularThirdCircleFamily
@@ -74,7 +74,7 @@ public theorem regularThirdCircleFamily_positivePath (A : PaperAnalyticData) (t 
   rw [← zpow_neg, A.regularThirdCircleFamily_peripheral]
   rfl
 
-public theorem normalizedThirdPeriodLoop_eq_whisker (A : PaperAnalyticData) :
+public theorem normalizedThirdPeriodLoop_eq_whisker (A : AnalyticData) :
     A.normalizedThirdPeriodLoop A.normalizedWhiskeredCuspRegularPath =
       A.normalizedThirdCircleWhisker.trans
         (A.cuspChosenThirdPeriodLoop.trans A.normalizedThirdCircleWhisker.symm) := by
@@ -89,7 +89,7 @@ public theorem normalizedThirdPeriodLoop_eq_whisker (A : PaperAnalyticData) :
   · simpa using A.regularThirdCircleFamily_gZero (-1)
       (A.affineNormalizedCuspPath (unitInterval.symm _))
 
-public def cuspChosenThirdSweep_homotopy_normalizedMeridians (A : PaperAnalyticData) :
+public def cuspChosenThirdSweep_homotopy_normalizedMeridians (A : AnalyticData) :
     (A.cuspChosenThirdSweepCentral.comp
       ((CircleProductIdentityMappingTorus.circleProductIdentityMappingTorusHomeomorph
         (X := StdTorus 1)).symm :
@@ -102,5 +102,5 @@ public def cuspChosenThirdSweep_homotopy_normalizedMeridians (A : PaperAnalyticD
   rw [← A.normalizedThirdPeriodLoop_eq_whisker]
   exact identityMappingTorusMapOfLoop_homotopy A.normalizedThirdPeriodLoop_homotopic.some
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end

@@ -5,7 +5,7 @@ public import SphereSixComplex.Paper.Topology.CuspFixedCircleSweep
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open GlobalTorusFamily CuspPuncturedCollarBridge CuspRadialClutchingConstruction
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -15,7 +15,7 @@ open SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 open SphereSixComplex.CyclicAngularFundamentalDomain
 open EllipticTwoDiscCoverData
 
-public def cuspFixedCircleSweepAnchors (A : PaperAnalyticData)
+public def cuspFixedCircleSweepAnchors (A : AnalyticData)
     (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness)))) :
     C(OpenRadialInterval A.starCuspWitness.localWitness.radius × ℝ,
@@ -26,7 +26,7 @@ public def cuspFixedCircleSweepAnchors (A : PaperAnalyticData)
   exact ((⟨G.totalHomeomorph.symm, G.totalHomeomorph.symm.continuous⟩ : C(_, _)).comp
     ⟨fun p ↦ (p.1.1, f (p.2.1 + (p.1.2 : UnitAddCircle), p.2.2)), by fun_prop⟩).curry
 
-public def cuspFixedCircleSweepAnchorHomotopy (A : PaperAnalyticData)
+public def cuspFixedCircleSweepAnchorHomotopy (A : AnalyticData)
     (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness))))
     {a b : OpenRadialInterval A.starCuspWitness.localWitness.radius × ℝ} (p : Path a b) :
@@ -39,7 +39,7 @@ public def cuspFixedCircleSweepAnchorHomotopy (A : PaperAnalyticData)
   map_zero_left z := by rw [p.source]
   map_one_left z := by rw [p.target]
 
-public theorem cuspFixedCircleSweep_homotopic_anchor (A : PaperAnalyticData)
+public theorem cuspFixedCircleSweep_homotopic_anchor (A : AnalyticData)
     (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness))))
     (b : OpenRadialInterval A.starCuspWitness.localWitness.radius × ℝ) :
@@ -64,7 +64,7 @@ public theorem cuspFixedCircleSweep_homotopic_anchor (A : PaperAnalyticData)
   rw [← he]
   exact ⟨A.cuspFixedCircleSweepAnchorHomotopy c p⟩
 
-public theorem cuspFixedCircleSweepAnchors_real (A : PaperAnalyticData)
+public theorem cuspFixedCircleSweepAnchors_real (A : AnalyticData)
     (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness))))
     (b : OpenRadialInterval A.starCuspWitness.localWitness.radius × ℝ)
@@ -92,6 +92,6 @@ public theorem cuspFixedCircleSweepAnchors_real (A : PaperAnalyticData)
     rw [h, fixedLoopRealMappingTorusMap_mk]
     rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end
 end

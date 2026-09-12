@@ -6,7 +6,7 @@ public import SphereSixComplex.Paper.Topology.CuspTranslationHomologyComparison
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus GlobalTorusFamily EllipticFamilySpecialization
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
@@ -15,7 +15,7 @@ open PositiveCircleCross CircleProductIdentityMappingTorus
 public def fourthFirstCoordinateTorus : C(StdTorus 2, StdTorus 4) :=
   ⟨fun z ↦ ![z 1, 0, 0, z 0], by fun_prop⟩
 
-public theorem fourthFirstCoordinateTorus_real (A : PaperAnalyticData) (t s : ℝ) :
+public theorem fourthFirstCoordinateTorus_real (A : AnalyticData) (t s : ℝ) :
     (additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
       A.duplicatedSectionSevenBandFullRank).symm
       (fourthFirstCoordinateTorus ![(t : UnitAddCircle), (s : UnitAddCircle)]) =
@@ -29,13 +29,13 @@ public theorem fourthFirstCoordinateTorus_real (A : PaperAnalyticData) (t s : �
   simp only [periodCoordMap, map_add, map_smul, realEquiv_symm_periodVector]
   fin_cases i <;> simp [fourthFirstCoordinateTorus, integerToReal]
 
-public def normalizedFourthFirstTorus (A : PaperAnalyticData) :
+public def normalizedFourthFirstTorus (A : AnalyticData) :
     C(StdTorus 2, A.CentralFamily) :=
   (A.regularFixedFiberMap A.affineNormalizedMidpoint).comp
     (((additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
       A.duplicatedSectionSevenBandFullRank).symm : C(_, _)).comp fourthFirstCoordinateTorus)
 
-public theorem normalizedFourthFirstTorus_real (A : PaperAnalyticData) (t s : ℝ) :
+public theorem normalizedFourthFirstTorus_real (A : AnalyticData) (t s : ℝ) :
     A.normalizedFourthFirstTorus ![(t : UnitAddCircle), (s : UnitAddCircle)] =
     A.centralFourthTranslation ((t : UnitAddCircle),
       regularPeriodCircleInGlobal A.periods (Pi.single 0 1)
@@ -68,7 +68,7 @@ public theorem normalizedFourthFirstTorus_real (A : PaperAnalyticData) (t s : �
     (A.regularMovingToFixed_period_smul _ _ t)
     (A.regularMovingToFixed_period_smul _ _ s)).symm
 
-public theorem ellipticFourthSweep_markedCircle_map (A : PaperAnalyticData)
+public theorem ellipticFourthSweep_markedCircle_map (A : AnalyticData)
     (R : A.AffineRadialCompletionInput) :
     A.ellipticFourthTranslation.comp
       (circleProductMap (R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap.comp
@@ -92,7 +92,7 @@ public theorem ellipticFourthSweep_markedCircle_map (A : PaperAnalyticData)
   apply congrArg A.fourthTranslationCentralInclusion
   exact (A.normalizedFourthFirstTorus_real t s).symm
 
-public theorem ellipticFourthSweep_markedCircle (A : PaperAnalyticData)
+public theorem ellipticFourthSweep_markedCircle (A : AnalyticData)
     (R : A.AffineRadialCompletionInput) :
     A.ellipticFourthHomologySweep
       (integralSingularHomologyMap 1 R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap
@@ -133,7 +133,7 @@ public theorem fourthFirstCoordinateTorus_homology :
     (standardFourTorusCoordinateTwoTorusHomologyClass 2) = _
   rw [standardFourTorusCoordinateTwoTorusHom_coordinateHomologyClass]
 
-public def normalizedFourthFirstBandTorus {A : PaperAnalyticData}
+public def normalizedFourthFirstBandTorus {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     C(StdTorus 2, (R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide : Set _)) where
   toFun z := A.actualAffineHeightSplit.sidesIntersectionHomeomorph.symm
@@ -148,7 +148,7 @@ public def normalizedFourthFirstBandTorus {A : PaperAnalyticData}
       (continuous_const.prodMk ((additiveTorusStdHomeomorph _ _).symm.continuous.comp
         fourthFirstCoordinateTorus.continuous)))
 
-public theorem normalizedFourthFirstBandTorus_interior {A : PaperAnalyticData}
+public theorem normalizedFourthFirstBandTorus_interior {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap.comp
       (normalizedFourthFirstBandTorus R) =
@@ -166,7 +166,7 @@ public theorem normalizedFourthFirstBandTorus_interior {A : PaperAnalyticData}
   rw [Homeomorph.symm_apply_apply] at h'
   exact h'
 
-private theorem bandTwo_fixedCoordinates {A : PaperAnalyticData}
+private theorem bandTwo_fixedCoordinates {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide : Set _)) :
     EllipticBandHomologyAlignment.bandTwo (D := R.twoDiscCover) x =
@@ -190,7 +190,7 @@ private theorem additiveTorusTwo_apply (p : Parameters) (h : FullRank p)
     additiveTorusHomologyDegreeTwo p h x = stdTorusFourHomologyTwo
       (integralSingularHomologyMap 2 (additiveTorusStdHomeomorph p h : C(_, _)) x) := rfl
 
-public theorem normalizedFourthFirstBandTorus_bandTwo {A : PaperAnalyticData}
+public theorem normalizedFourthFirstBandTorus_bandTwo {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     EllipticBandHomologyAlignment.bandTwo
       (D := R.twoDiscCover)
@@ -217,7 +217,7 @@ public theorem normalizedFourthFirstBandTorus_bandTwo {A : PaperAnalyticData}
   erw [hc]
   exact fourthFirstCoordinateTorus_homology
 
-public theorem ellipticFourthSweep_translation_fiberCoordinate (A : PaperAnalyticData)
+public theorem ellipticFourthSweep_translation_fiberCoordinate (A : AnalyticData)
     (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting
       (EllipticTwoDiscHomologyCoordinates.presentationTwo (D := R.twoDiscCover))) :
@@ -250,4 +250,4 @@ public theorem ellipticFourthSweep_translation_fiberCoordinate (A : PaperAnalyti
   norm_num [Pi.single_apply]
   decide
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

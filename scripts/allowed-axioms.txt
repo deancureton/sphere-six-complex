@@ -16,7 +16,7 @@ SphereSixComplex.SmoothSixSphere.poincare
 
 # Cellular comparison is normalized on skeletal cycles; disk orientations through degree two are proved.
 SphereSixComplex.PoincareDuality.nonempty_addEquiv
-SphereSixComplex.IntegralCohomology.universalCoefficients
+SphereSixComplex.IntegralCohomology.universal_coefficients
 SphereSixComplex.SmoothManifold.finiteCWModel
 SphereSixComplex.CellularHomology.integralComparison
 

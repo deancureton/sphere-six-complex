@@ -36,14 +36,14 @@ public theorem orderThreeCayleyHomeomorph_norm_eq_of_fix_fuchsianOne
   obtain ⟨a, rfl⟩ := (fuchsianOneFixed_iff_mem_range_inl g).mp hfix
   exact orderThreeCayleyHomeomorph_norm_inl a z
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 
 /-- If a deck translate and the named order-three radial lift both enter the selected collar,
 collar separation forces that deck element into the order-three elliptic stabilizer. -/
 public theorem fixes_fuchsianOne_of_named_and_deck_cayley_lt
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
+    (A : AnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hdeck : ‖(orderThreeCayleyHomeomorph
       (fuchsianSourceAction g •
         (A.affineOrderThreeRadialBaseLift
@@ -71,7 +71,7 @@ public theorem fixes_fuchsianOne_of_named_and_deck_cayley_lt
 /-- For a deck element already carrying the named order-three lift into the collar, fixing the
 elliptic centre is equivalent to the named lift itself satisfying the collar bound. -/
 public theorem fixes_fuchsianOne_iff_namedOrderThreeRadialBase_cayley_lt
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
+    (A : AnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hdeck : ‖(orderThreeCayleyHomeomorph
       (fuchsianSourceAction g •
         (A.affineOrderThreeRadialBaseLift
@@ -91,7 +91,7 @@ public theorem fixes_fuchsianOne_iff_namedOrderThreeRadialBase_cayley_lt
 /-- Pointwise, existence of an extracted order-three deck element in the elliptic stabilizer is
 exactly the named-sheet Cayley bound. -/
 public theorem exists_orderThree_stabilizingDeck_iff_namedCayley_lt
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     (∃ g : Delta,
       ‖(orderThreeCayleyHomeomorph
         (fuchsianSourceAction g •
@@ -115,7 +115,7 @@ public theorem exists_orderThree_stabilizingDeck_iff_namedCayley_lt
 /-- The analogous order-four stabilizing-deck condition, written without an auxiliary
 predicate, is exactly the order-four named Cayley bound. -/
 public theorem exists_orderFour_stabilizingDeck_iff_namedCayley_lt
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     (∃ g : Delta,
       ‖(orderFourCayleyHomeomorph
         (fuchsianSourceAction g •
@@ -140,7 +140,7 @@ public theorem exists_orderFour_stabilizingDeck_iff_namedCayley_lt
 /-- The paired stabilizing-deck hypothesis is precisely equivalent to the pair of named-sheet
 Cayley bounds. -/
 public theorem affineNamedSheetStabilizingDecks_iff_cayleyBounds
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     ((∀ x : A.affineMarkedBand, ∃ g : Delta,
         ‖(orderThreeCayleyHomeomorph
           (fuchsianSourceAction g •
@@ -176,7 +176,7 @@ public theorem affineNamedSheetStabilizingDecks_iff_cayleyBounds
 /-- The sharply minimal stabilizing-deck hypothesis supplies both explicit endpoint formulas
 and hence the complete marked affine-band compatibility. -/
 public theorem markedBandHomotopies_of_affineNamedSheetStabilizingDecks
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (h₃ : ∀ x : A.affineMarkedBand, ∃ g : Delta,
       ‖(orderThreeCayleyHomeomorph
         (fuchsianSourceAction g •
@@ -193,7 +193,10 @@ public theorem markedBandHomotopies_of_affineNamedSheetStabilizingDecks
         fuchsianSourceAction g • fuchsianTwoFixedPoint = fuchsianTwoFixedPoint) :
     A.AffineOverlapBandCompatibility := by
   have hbounds := (A.affineNamedSheetStabilizingDecks_iff_cayleyBounds).mp ⟨h₃, h₄⟩
-  let C₄ : A.AffineOrderFourNamedRadialCollarCompatibility :=
+  let C₄ : (∀ x : A.affineMarkedBand,
+    A.affineOrderFourNamedCollarTotalPoint x ∈
+      EllipticVaryingFamilyQuotient.orderFourPuncturedFamilyCollar
+        A.periods A.starSeparation.orderFour.radius) :=
     (A.affineOrderFourNamedRadialCollarCompatibility_iff).mpr hbounds.2
   apply markedBandHomotopies_of_pinnedLiftEndpointGaugeFormulas
     A A.affineNamedStripLift
@@ -206,7 +209,7 @@ public theorem markedBandHomotopies_of_affineNamedSheetStabilizingDecks
   · exact A.affineOrderFourEndpointGauge_formula
       (A.affineOrderFourEndpointRealPeriodIdentity C₄)
 
-end PaperAnalyticData
+end AnalyticData
 
 end SphereSixComplex.Geometry
 

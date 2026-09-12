@@ -28,9 +28,9 @@ private theorem puncturedDiscPoint_norm (r : ℝ) (hr : 0 < r) (hr1 : r < 1) :
     ‖(puncturedDiscPoint r hr hr1 : ℂ)‖ = r / 2 := by
   rw [puncturedDiscPoint, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (half_pos hr)]
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- A positive order-three punctured collar contains a point of Cayley radius `r / 2`. -/
 public theorem orderThreeAffinePuncturedCarrier_nonempty
@@ -95,7 +95,7 @@ public theorem fourPieceStarGluingData_nonemptyCentralCollar :
       (A.openEmbeddingStarData.toFourPieceStarGluingData.centralCollar i) :=
   A.openEmbeddingStarData_centralCollar_nonempty
 
-end PaperAnalyticData
+end AnalyticData
 
 
 

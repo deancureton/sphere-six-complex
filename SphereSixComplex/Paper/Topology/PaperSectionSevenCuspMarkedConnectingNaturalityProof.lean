@@ -17,7 +17,7 @@ noncomputable section
 
 open AlgebraicTopology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open EllipticInteriorMarkedCycleData
 open SphereSixComplex.CircleMappingTorusHomologyBases
@@ -27,7 +27,7 @@ namespace EllipticTwoDiscCoverData
 
 /-- The pulled-back marked boundary vanishes on the four non-invariant raw basis vectors. -/
 public theorem cuspPulledBackMarkedBoundary_rawBasis_castAdd_eq_zero
-    {A : PaperAnalyticData} (R : A.AffineRadialCompletionInput)
+    {A : AnalyticData} (R : A.AffineRadialCompletionInput)
     (i : Fin 4) :
     (R.twoDiscCover.ellipticBandFourthCoordinateHom R.homologyAlignment)
         (R.twoDiscCover.cuspPulledBackBoundaryHom
@@ -45,7 +45,7 @@ public theorem cuspPulledBackMarkedBoundary_rawBasis_castAdd_eq_zero
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

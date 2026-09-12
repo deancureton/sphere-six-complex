@@ -59,9 +59,9 @@ public theorem integralSingularHomologyEquiv_conjugates_commutative_square
       (integralSingularHomologyMap k f)) y
   rw [← integralSingularHomologyMap_comp, ← integralSingularHomologyMap_comp, hcomm]
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Pointwise, the final right inclusion is the original cusp collar embedding, transported
 through the canonical source and target homeomorphisms. -/
@@ -127,7 +127,7 @@ public structure CuspFillingInclusionCoordinates
 
 namespace CuspFillingInclusionCoordinates
 
-variable {A : PaperAnalyticData} {B : A.CollarInteriorHomologyBases}
+variable {A : AnalyticData} {B : A.CollarInteriorHomologyBases}
 
 /-- Transport the actual degree-one cusp calculation to the final Mayer--Vietoris overlap. -/
 public theorem finalCuspOne (C : A.CuspFillingInclusionCoordinates B) (x) :
@@ -214,6 +214,6 @@ public theorem toFinalInclusionCoordinates
 
 end CuspFillingInclusionCoordinates
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

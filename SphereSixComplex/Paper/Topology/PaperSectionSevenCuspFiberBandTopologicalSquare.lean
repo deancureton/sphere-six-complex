@@ -18,14 +18,14 @@ noncomputable section
 open AlgebraicTopology CategoryTheory Set
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
+variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
 
 namespace EllipticTwoDiscCoverData
 
 /-- Include the mapping-torus fibre into the actual punctured cusp collar. -/
-public noncomputable def actualCuspMappingTorusFiberToCollarMap (A : PaperAnalyticData) :
+public noncomputable def actualCuspMappingTorusFiberToCollarMap (A : AnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(G.Fiber, A.openEmbeddingStarData.collarSource 0) := by
@@ -58,7 +58,7 @@ public noncomputable def canonicalCuspFiberToEllipticInteriorMap
 
 /-- The fibre over the lower overlap collar in the explicit vertex--edge cover of the actual
 cusp mapping torus. -/
-public noncomputable def actualCuspMappingTorusLowOverlapFiberMap (A : PaperAnalyticData) :
+public noncomputable def actualCuspMappingTorusLowOverlapFiberMap (A : AnalyticData) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
     C(G.Fiber, (vertexPiece (fun _ : Unit ↦ G.clutching) ∩
@@ -142,4 +142,4 @@ public theorem canonicalCuspFiberBand_homology_naturality
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

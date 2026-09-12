@@ -127,7 +127,7 @@ public theorem constructedCentralPhaseTwoCell_isEmbedding
     Topology.IsEmbedding ((Metric.ball (0 : Fin 2 → ℝ) 1).domRestrict
       (constructedCentralPhaseTwoCell W i)) := by
   let _ : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
   apply isEmbedding_restrict_of_compact_boundary_separation

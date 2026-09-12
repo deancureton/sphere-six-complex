@@ -12,12 +12,12 @@ open scoped ContinuousMap
 
 
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The local offset-period factor of the punctured product splitting. -/
 public noncomputable def orderThreeLocalOffsetFiberCentralPath :
@@ -118,7 +118,7 @@ public theorem ellipticThree_exists_relatorHomotopy_of_factorHomotopies
   change H (s, 0) = H (s, 1)
   exact Hfiber.hcompLoop_trace Hbase hjoin htrace s
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

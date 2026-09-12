@@ -15,13 +15,13 @@ classified affine relator, up to change of basepoint in the central family.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Topology
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 
 
@@ -84,7 +84,7 @@ public theorem ellipticFour_exists_relator_eq_of_regularLoop_eq
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

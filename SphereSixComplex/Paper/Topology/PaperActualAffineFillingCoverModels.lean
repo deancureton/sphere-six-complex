@@ -23,19 +23,18 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The established analytic choices give a complete van Kampen witness for their actual star. -/
 public theorem actualStarHasVanKampenData :
     Topology.HasVanKampenData A.VanKampenSpace 0 1 (-1) :=
-  A.ellipticRelatorMembership_nonempty.elim fun R ↦
-    R.hasVanKampenData
+  A.ellipticRelatorMembership.hasVanKampenData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

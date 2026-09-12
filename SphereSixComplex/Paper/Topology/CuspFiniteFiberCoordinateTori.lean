@@ -5,7 +5,7 @@ public import SphereSixComplex.Paper.Topology.CuspFiniteFiberSpecializationGeome
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus TorusFamily GlobalTorusFamily EllipticFamilySpecialization
 open CuspPuncturedCollarBridge CuspRadialClutchingConstruction CuspPeriodExpansion
@@ -18,13 +18,13 @@ public theorem cuspFiniteFiberPairIndex_representative (j : Fin 4) :
   ext i
   fin_cases j <;> fin_cases i <;> rfl
 
-public def cuspFiniteFiberCoordinateTorus (A : PaperAnalyticData) (j : Fin 4) :
+public def cuspFiniteFiberCoordinateTorus (A : AnalyticData) (j : Fin 4) :
     C(StdTorus 2, AdditiveTorus (cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness)).1) :=
   ((additiveTorusStdHomeomorph _ (fullRankDomain (cuspBasePoint A.cuspCoordinate (markedCuspParameter A.starCuspWitness)))).symm : C(_, _)).comp
     (standardFourTorusCoordinateTwoTorus (cuspFiniteFiberPairIndex j))
 
-public theorem cuspFiniteFiberCoordinateTorus_generator (A : PaperAnalyticData) (j : Fin 4) :
+public theorem cuspFiniteFiberCoordinateTorus_generator (A : AnalyticData) (j : Fin 4) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
     let _ := G.fiberTopology
     integralSingularHomologyMap 2 (A.cuspFiniteFiberCoordinateTorus j)
@@ -48,7 +48,7 @@ public theorem cuspFiniteFiberCoordinateTorus_generator (A : PaperAnalyticData) 
   rw [he]
   exact standardFourTorusCoordinateTwoTorusHom_coordinateHomologyClass _
 
-public theorem cuspFiniteFiberCoordinateTorus_real (A : PaperAnalyticData) (j : Fin 4)
+public theorem cuspFiniteFiberCoordinateTorus_real (A : AnalyticData) (j : Fin 4)
     (t s : ℝ) :
     A.cuspFiniteFiberCoordinateTorus j ![(t : UnitAddCircle),(s : UnitAddCircle)] =
       additiveTorusProjection (cuspBasePoint A.cuspCoordinate
@@ -69,13 +69,13 @@ public theorem cuspFiniteFiberCoordinateTorus_real (A : PaperAnalyticData) (j : 
     simp [standardFourTorusCoordinateTwoTorus, cuspFiniteFiberPairIndex,
       standardPeriodPairFirst, standardPeriodPairSecond, integerToReal]
 
-public def cuspFiniteFiberTorusToFilling (A : PaperAnalyticData) (j : Fin 4) :
+public def cuspFiniteFiberTorusToFilling (A : AnalyticData) (j : Fin 4) :
     C(StdTorus 2,ActualLocalCuspFilling A.starCuspWitness) := by
   let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
   let _ := G.fiberTopology
   exact G.markedFiberToCuspFilling.comp (A.cuspFiniteFiberCoordinateTorus j)
 
-public theorem cuspFiniteFiberTorusToFilling_homology (A : PaperAnalyticData) (j : Fin 4) :
+public theorem cuspFiniteFiberTorusToFilling_homology (A : AnalyticData) (j : Fin 4) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
     let _ := G.fiberTopology
     integralSingularHomologyMap 2 (A.cuspFiniteFiberTorusToFilling j)
@@ -89,7 +89,7 @@ public theorem cuspFiniteFiberTorusToFilling_homology (A : PaperAnalyticData) (j
   exact congrArg (integralSingularHomologyMap 2 G.markedFiberToCuspFilling)
     (A.cuspFiniteFiberCoordinateTorus_generator j)
 
-public theorem cuspFiniteFiberTorusToFilling_real (A : PaperAnalyticData) (j : Fin 4)
+public theorem cuspFiniteFiberTorusToFilling_real (A : AnalyticData) (j : Fin 4)
     (t s : ℝ) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
     A.cuspFiniteFiberTorusToFilling j ![(t : UnitAddCircle),(s : UnitAddCircle)] =
@@ -106,4 +106,4 @@ public theorem cuspFiniteFiberTorusToFilling_real (A : PaperAnalyticData) (j : F
   apply G.markedFiberToCuspFilling_eq_actualCuspCollarPeriodPoint
   exact A.cuspFiniteFiberCoordinateTorus_real j t s
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

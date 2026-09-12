@@ -34,16 +34,16 @@ public theorem cuspCorrectedSectionSevenTwoCoordinateChange_specialization (x : 
     simp [cuspCorrectedSectionSevenTwoCoordinateChange, sectionSevenMayerVietorisFinalTwoHom,
       sectionSevenMayerVietorisFinalTwoMatrix, Matrix.mulVec, dotProduct, Fin.sum_univ_succ]
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 open SphereSixComplex.Topology
 open EllipticTwoDiscHomologyCoordinates
 open CuspPuncturedCollarBridge
 
-public def cuspCorrectedHomologyTwoEquiv (A : PaperAnalyticData) :
+public def cuspCorrectedHomologyTwoEquiv (A : AnalyticData) :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 6 → ℤ) :=
   A.cuspRawHomologyTwoEquiv.trans cuspCorrectedSectionSevenTwoCoordinateChange
 
-public def correctedCuspLocalBases {A : PaperAnalyticData}
+public def correctedCuspLocalBases {A : AnalyticData}
     (B : A.CollarInteriorHomologyBases) : A.CollarInteriorHomologyBases where
   cuspCollarOne := A.cuspSectionSevenHomologyOneEquiv
   ellipticInteriorOne := B.ellipticInteriorOne
@@ -51,7 +51,7 @@ public def correctedCuspLocalBases {A : PaperAnalyticData}
   cuspFillingTwo := (A.withActualGeometricCuspBases B).cuspFillingTwo
   ellipticInteriorTwo := B.ellipticInteriorTwo
 
-public theorem correctedCuspFillingInclusionCoordinates (A : PaperAnalyticData)
+public theorem correctedCuspFillingInclusionCoordinates (A : AnalyticData)
     (B : A.CollarInteriorHomologyBases) :
     A.CuspFillingInclusionCoordinates (correctedCuspLocalBases B) where
   degreeOne x := (A.cuspFillingInclusionCoordinates B).degreeOne x
@@ -64,14 +64,14 @@ public theorem correctedCuspFillingInclusionCoordinates (A : PaperAnalyticData)
       (cuspCorrectedSectionSevenTwoCoordinateChange_specialization
         (A.cuspRawHomologyTwoEquiv x))
 
-public def correctedNormalizedLocalBases {A : PaperAnalyticData}
+public def correctedNormalizedLocalBases {A : AnalyticData}
     {D : A.EllipticTwoDiscCoverData}
     (B : A.EllipticTwoDiscHomologyCoordinates D)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D))) :
     A.CollarInteriorHomologyBases :=
   correctedCuspLocalBases (A.actualNormalizedLocalBases B S)
 
-public theorem correctedFinalInteriorOne {A : PaperAnalyticData}
+public theorem correctedFinalInteriorOne {A : AnalyticData}
     {D : A.EllipticTwoDiscCoverData}
     (B : A.EllipticTwoDiscHomologyCoordinates D)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
@@ -105,7 +105,7 @@ public theorem correctedFinalInteriorOne {A : PaperAnalyticData}
       fin_cases i
       rfl
 
-public theorem correctedFinalInteriorTwo {A : PaperAnalyticData}
+public theorem correctedFinalInteriorTwo {A : AnalyticData}
     {D : A.EllipticTwoDiscCoverData}
     (B : A.EllipticTwoDiscHomologyCoordinates D)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
@@ -145,7 +145,7 @@ public theorem correctedFinalInteriorTwo {A : PaperAnalyticData}
       funext i
       fin_cases i <;> rfl
 
-public def correctedPositiveDegreeHomologyAssembly {A : PaperAnalyticData}
+public def correctedPositiveDegreeHomologyAssembly {A : AnalyticData}
     {D : A.EllipticTwoDiscCoverData}
     (B : A.EllipticTwoDiscHomologyCoordinates D)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := D)))
@@ -164,6 +164,6 @@ public def correctedPositiveDegreeHomologyAssembly {A : PaperAnalyticData}
     ((A.correctedCuspFillingInclusionCoordinates (A.actualNormalizedLocalBases B S)).toFinalInclusionCoordinates
       (correctedFinalInteriorOne B S hOne) (correctedFinalInteriorTwo B S hFiber hBoundary))
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 end SphereSixComplex
 end

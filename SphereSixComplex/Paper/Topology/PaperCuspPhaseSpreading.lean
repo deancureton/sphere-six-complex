@@ -14,13 +14,13 @@ which Lemma 7.5 transports to the actual cusp action.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The jointly selected positive-part and phase-spreading package for the paper cusp. -/
 public noncomputable def cuspPhaseSpreadingPackage :
@@ -35,4 +35,4 @@ public noncomputable def cuspCentralFiberRetractionData :
   actualLocalCuspCentralFiberRetractionData A.starCuspWitness
     A.cuspPhaseSpreadingPackage.1 A.cuspPhaseSpreadingPackage.2
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

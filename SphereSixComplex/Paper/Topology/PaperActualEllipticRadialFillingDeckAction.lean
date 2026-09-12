@@ -9,7 +9,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.AnalyticTorusFamily
@@ -23,7 +23,7 @@ open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Reassociation of a disc-ball product as a radial product ball. -/
 public def complexDiscBallProductRadialHomeomorph
@@ -365,4 +365,4 @@ public theorem ellipticFourFillingProjection_isQuotientCoveringMap :
   rw [heq] at h
   exact h
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

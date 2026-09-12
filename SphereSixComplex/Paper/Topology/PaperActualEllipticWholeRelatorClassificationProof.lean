@@ -12,7 +12,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
@@ -23,7 +23,7 @@ open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.Geometry.GlobalTorusFamily
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The nonzero Cayley coordinate at the order-three filling-relation basepoint. -/
 public noncomputable def orderThreeFillingRelationCayleyBaseValue : ℂ :=
@@ -107,7 +107,7 @@ public theorem orderFourFillingRelationCayleyLoop_apply (t : unitInterval) :
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

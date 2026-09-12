@@ -46,9 +46,9 @@ public theorem actualLocalCuspFilling_secondCountable
     ⟨fun gamma ↦ (hdeck gamma).continuous⟩
   exact ContinuousConstSMul.secondCountableTopology
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Each of the three concrete filling pieces is second countable. -/
 public theorem starFilling_secondCountable (i : Fin 3) :
@@ -65,7 +65,7 @@ public theorem starPiece_secondCountable (i : Option (Fin 3)) :
   | none => exact A.centralFamily_secondCountable
   | some i => exact A.starFilling_secondCountable i
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

@@ -28,7 +28,7 @@ open SphereSixComplex.StandardTorusHomology
 open CuspPeriodExpansion CuspPuncturedCollarBridge CuspStraighteningRetraction
 open CuspRadialClutchingConstruction
 
-def constructedFirstTorusPositiveHomotopyEquiv (A : PaperAnalyticData) :
+def constructedFirstTorusPositiveHomotopyEquiv (A : AnalyticData) :
     ContinuousMap.HomotopyEquiv (StdTorus 2) (ConstructedA2PositiveQuotient A.starCuspWitness) :=
   ((intervalProductSliceEquiv
     (⟨‖cuspQ (markedCuspParameter A.starCuspWitness)‖,
@@ -38,19 +38,19 @@ def constructedFirstTorusPositiveHomotopyEquiv (A : PaperAnalyticData) :
     (constructedPositiveInteriorTorusHomeomorph A.starCuspWitness).symm.toHomotopyEquiv).trans
     (constructedPositiveQuotientInteriorHomotopyEquiv A.starCuspWitness).symm
 
-theorem constructedFirstTorusPositiveHomotopyEquiv_toFun (A : PaperAnalyticData) :
+theorem constructedFirstTorusPositiveHomotopyEquiv_toFun (A : AnalyticData) :
     (constructedFirstTorusPositiveHomotopyEquiv A).toFun =
       (constructedCuspPositiveProjection A.starCuspWitness).comp
         (A.cuspFiniteFiberTorusToFilling 0) := by
   ext1 z
   exact (constructedCuspPositiveProjection_firstTorus A z).symm
 
-def constructedFirstTorusPositiveHomologyEquiv (A : PaperAnalyticData) :
+def constructedFirstTorusPositiveHomologyEquiv (A : AnalyticData) :
     IntegralSingularHomology 2 (StdTorus 2) ≃+
       IntegralSingularHomology 2 (ConstructedA2PositiveQuotient A.starCuspWitness) :=
   integralSingularHomologyEquivOfHomotopyEquiv 2 (constructedFirstTorusPositiveHomotopyEquiv A)
 
-theorem constructedFirstTorusPositiveHomologyEquiv_apply (A : PaperAnalyticData)
+theorem constructedFirstTorusPositiveHomologyEquiv_apply (A : AnalyticData)
     (x : IntegralSingularHomology 2 (StdTorus 2)) :
     constructedFirstTorusPositiveHomologyEquiv A x =
       integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness)
@@ -60,14 +60,14 @@ theorem constructedFirstTorusPositiveHomologyEquiv_apply (A : PaperAnalyticData)
   erw [← integralSingularHomologyMap_comp_wang]
   rfl
 
-def constructedPositiveHomologyTwoReadout (A : PaperAnalyticData) :
+def constructedPositiveHomologyTwoReadout (A : AnalyticData) :
     IntegralSingularHomology 2 (ConstructedA2PositiveQuotient A.starCuspWitness) →+ ℤ where
   toFun x := (stdTorusHomologyTwo 2 ((constructedFirstTorusPositiveHomologyEquiv A).symm x))
     standardTwoTorusDegreeTwoIndex
   map_zero' := by simp
   map_add' x y := by simp
 
-theorem constructedPositiveHomologyTwoReadout_firstTorus (A : PaperAnalyticData) :
+theorem constructedPositiveHomologyTwoReadout_firstTorus (A : AnalyticData) :
     constructedPositiveHomologyTwoReadout A
       (integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness)
         (integralSingularHomologyMap 2 (A.cuspFiniteFiberTorusToFilling 0)
@@ -80,7 +80,7 @@ theorem constructedPositiveHomologyTwoReadout_firstTorus (A : PaperAnalyticData)
   simp [standardTwoTorusHomologyGenerator]
 
 
-def constructedCuspHomologyTwoPositiveReadout (A : PaperAnalyticData) :
+def constructedCuspHomologyTwoPositiveReadout (A : AnalyticData) :
     IntegralSingularHomology 2 (CuspPuncturedCollarBridge.ActualLocalCuspFilling A.starCuspWitness) →+ ℤ :=
   (constructedPositiveHomologyTwoReadout A).comp
     (integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness))

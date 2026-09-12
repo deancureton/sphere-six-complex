@@ -5,22 +5,22 @@ public import SphereSixComplex.Paper.Topology.PaperEllipticFillingRealPeriodRadi
 @[expose] public section
 noncomputable section
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 open EllipticVaryingFamilyQuotient EllipticRealPeriodProductTrivialization
 
-public def orderThreeFourthFillingHomeomorph (A : PaperAnalyticData) :
+public def orderThreeFourthFillingHomeomorph (A : AnalyticData) :
     A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius ≃ₜ
       (orderThreeRadialActionData A.periods).FillingQuotient :=
   (orderThreeSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification.quotientHomeomorph
 
-public def orderFourFourthFillingHomeomorph (A : PaperAnalyticData) :
+public def orderFourFourthFillingHomeomorph (A : AnalyticData) :
     A.OrderFourVaryingFilling A.starSeparation.orderFour.radius ≃ₜ
       (orderFourRadialActionData A.periods).FillingQuotient :=
   (orderFourSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification.quotientHomeomorph
 
-public def actualOrderThreeFourthTranslation (A : PaperAnalyticData) :
+public def actualOrderThreeFourthTranslation (A : AnalyticData) :
     C(UnitAddCircle × A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius,
       A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius) :=
   (A.orderThreeFourthFillingHomeomorph.symm : C(_, _)).comp
@@ -28,7 +28,7 @@ public def actualOrderThreeFourthTranslation (A : PaperAnalyticData) :
       ⟨fun z ↦ (z.1,A.orderThreeFourthFillingHomeomorph z.2),
         continuous_fst.prodMk (A.orderThreeFourthFillingHomeomorph.continuous.comp continuous_snd)⟩)
 
-public def actualOrderFourFourthTranslation (A : PaperAnalyticData) :
+public def actualOrderFourFourthTranslation (A : AnalyticData) :
     C(UnitAddCircle × A.OrderFourVaryingFilling A.starSeparation.orderFour.radius,
       A.OrderFourVaryingFilling A.starSeparation.orderFour.radius) :=
   (A.orderFourFourthFillingHomeomorph.symm : C(_, _)).comp
@@ -36,7 +36,7 @@ public def actualOrderFourFourthTranslation (A : PaperAnalyticData) :
       ⟨fun z ↦ (z.1,A.orderFourFourthFillingHomeomorph z.2),
         continuous_fst.prodMk (A.orderFourFourthFillingHomeomorph.continuous.comp continuous_snd)⟩)
 
-public def orderThreeFourthTranslationSource (A : PaperAnalyticData) (t : ℝ)
+public def orderThreeFourthTranslationSource (A : AnalyticData) (t : ℝ)
     (q : A.orderThreeFillingOpen A.starSeparation.orderThree.radius) :
     A.orderThreeFillingOpen A.starSeparation.orderThree.radius :=
   ⟨fourthPeriodFamilyTranslation A.periods t q.1, by
@@ -45,7 +45,7 @@ public def orderThreeFourthTranslationSource (A : PaperAnalyticData) (t : ℝ)
       familyTotalSpaceBase_familyTranslationMap]
     exact q.property⟩
 
-public def orderFourFourthTranslationSource (A : PaperAnalyticData) (t : ℝ)
+public def orderFourFourthTranslationSource (A : AnalyticData) (t : ℝ)
     (q : A.orderFourFillingOpen A.starSeparation.orderFour.radius) :
     A.orderFourFillingOpen A.starSeparation.orderFour.radius :=
   ⟨fourthPeriodFamilyTranslation A.periods t q.1, by
@@ -54,7 +54,7 @@ public def orderFourFourthTranslationSource (A : PaperAnalyticData) (t : ℝ)
       familyTotalSpaceBase_familyTranslationMap]
     exact q.property⟩
 
-public theorem orderThreeFourthTranslationSource_chart (A : PaperAnalyticData) (t : ℝ)
+public theorem orderThreeFourthTranslationSource_chart (A : AnalyticData) (t : ℝ)
     (q : A.orderThreeFillingOpen A.starSeparation.orderThree.radius) :
     (orderThreeSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification.toHomeomorph
       (A.orderThreeFourthTranslationSource t q) =
@@ -74,7 +74,7 @@ public theorem orderThreeFourthTranslationSource_chart (A : PaperAnalyticData) (
       fourthPeriodFamilyTranslation, familyTotalSpaceBase_familyTranslationMap]
   · exact orderThreeRealPeriodProductHomeomorph_fourthTranslation A.periods t q.1
 
-public theorem orderFourFourthTranslationSource_chart (A : PaperAnalyticData) (t : ℝ)
+public theorem orderFourFourthTranslationSource_chart (A : AnalyticData) (t : ℝ)
     (q : A.orderFourFillingOpen A.starSeparation.orderFour.radius) :
     (orderFourSelectedAffineRadialCompatibility A).toVaryingFillingProductIdentification.toHomeomorph
       (A.orderFourFourthTranslationSource t q) =
@@ -94,7 +94,7 @@ public theorem orderFourFourthTranslationSource_chart (A : PaperAnalyticData) (t
       fourthPeriodFamilyTranslation, familyTotalSpaceBase_familyTranslationMap]
   · exact orderFourRealPeriodProductHomeomorph_fourthTranslation A.periods t q.1
 
-public theorem actualOrderThreeFourthTranslation_mk (A : PaperAnalyticData) (t : ℝ)
+public theorem actualOrderThreeFourthTranslation_mk (A : AnalyticData) (t : ℝ)
     (q : A.orderThreeFillingOpen A.starSeparation.orderThree.radius) :
     A.actualOrderThreeFourthTranslation ((t : UnitAddCircle), Quotient.mk _ q) =
       Quotient.mk _ (A.orderThreeFourthTranslationSource t q) := by
@@ -112,7 +112,7 @@ public theorem actualOrderThreeFourthTranslation_mk (A : PaperAnalyticData) (t :
     A.orderThreeFourthTranslationSource_chart]
   rfl
 
-public theorem actualOrderFourFourthTranslation_mk (A : PaperAnalyticData) (t : ℝ)
+public theorem actualOrderFourFourthTranslation_mk (A : AnalyticData) (t : ℝ)
     (q : A.orderFourFillingOpen A.starSeparation.orderFour.radius) :
     A.actualOrderFourFourthTranslation ((t : UnitAddCircle), Quotient.mk _ q) =
       Quotient.mk _ (A.orderFourFourthTranslationSource t q) := by
@@ -130,4 +130,4 @@ public theorem actualOrderFourFourthTranslation_mk (A : PaperAnalyticData) (t : 
     A.orderFourFourthTranslationSource_chart]
   rfl
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

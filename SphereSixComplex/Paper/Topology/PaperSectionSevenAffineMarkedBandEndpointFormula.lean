@@ -19,14 +19,14 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 open SphereSixComplex.Geometry.GlobalTorusFamily
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 
 
@@ -38,7 +38,7 @@ variable {A : PaperAnalyticData}
 whole order-three central half-plane region.  Unlike selecting a witness from the proposition
 `discRegionInclusion_isHomotopyEquivalence`, its inverse retains the real-period formula. -/
 public noncomputable def orderThreeAffineDiscCentralHomotopyEquiv
-    (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 2 / 3) :
+    (A : AnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 2 / 3) :
     ↥(A.affineOrderThreeDiscRegion r) ≃ₕ
       ↥A.affineOrderThreeCentralRegion :=
   (A.affineOrderThreeDiscRegionQuotientHomeomorph r).toHomotopyEquiv |>.trans
@@ -50,7 +50,7 @@ public noncomputable def orderThreeAffineDiscCentralHomotopyEquiv
 
 /-- The forward map of the explicit order-three equivalence is the literal region inclusion. -/
 public theorem orderThreeAffineDiscCentralHomotopyEquiv_toFun
-    (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 2 / 3) :
+    (A : AnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 2 / 3) :
     (A.orderThreeAffineDiscCentralHomotopyEquiv hr0 hr).toFun =
       regionInclusion (A.discRegion_subset_centralRegion hr) := by
   apply ContinuousMap.ext
@@ -74,7 +74,7 @@ public theorem orderThreeAffineDiscCentralHomotopyEquiv_toFun
 region to the inclusion of a smaller affine disc, without forgetting its period-coordinate
 formula. -/
 public theorem orderThreeAffineDiscCentral_inverse_deformation
-    (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 2 / 3) :
+    (A : AnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 2 / 3) :
     (ContinuousMap.id ↥A.affineOrderThreeCentralRegion).Homotopic
       ((regionInclusion (A.discRegion_subset_centralRegion hr)).comp
         (A.orderThreeAffineDiscCentralHomotopyEquiv hr0 hr).invFun) := by
@@ -83,13 +83,13 @@ public theorem orderThreeAffineDiscCentral_inverse_deformation
 
 /-- A named explicit order-four affine radial equivalence. -/
 public noncomputable def orderFourAffineRadialEquivChoice
-    (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :=
+    (A : AnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :=
   familyEquivOfBaseEquiv (A.orderFourAffineDiscLiftCarrier_subset_halfPlane hr)
     (fun _ ↦ Iff.rfl) (fun _ ↦ Iff.rfl)
     (A.orderFourBaseRadialEquiv (half_pos hr0) (half_lt_self hr0) hr) (fun _ ↦ rfl)
 
 public theorem orderFourAffineRadialEquivChoice_toFun
-    (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
+    (A : AnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
     ((A.orderFourAffineRadialEquivChoice hr0 hr).toFun :
       (A.orderFourAffineDiscLiftCarrier r).carrier →
         A.orderFourAffineHalfPlaneLiftCarrier.carrier) =
@@ -99,7 +99,7 @@ public theorem orderFourAffineRadialEquivChoice_toFun
 /-- The selected order-four radial inverse is the flat transport used in the explicit
 `familyEquivOfBaseEquiv` construction. -/
 public theorem orderFourAffineRadialEquivChoice_invFun
-    (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3)
+    (A : AnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3)
     (y : A.orderFourAffineHalfPlaneLiftCarrier.carrier) :
     ((A.orderFourAffineRadialEquivChoice hr0 hr).invFun y).1 =
       A.regularFlatTransport
@@ -112,7 +112,7 @@ public theorem orderFourAffineRadialEquivChoice_invFun
 /-- The explicit order-four affine radial equivalence between a disc region and the whole
 order-four central half-plane region. -/
 public noncomputable def orderFourAffineDiscCentralHomotopyEquiv
-    (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
+    (A : AnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
     ↥(A.affineOrderFourDiscRegion r) ≃ₕ
       ↥A.affineOrderFourCentralRegion :=
   (A.affineOrderFourDiscRegionQuotientHomeomorph r).toHomotopyEquiv |>.trans
@@ -123,7 +123,7 @@ public noncomputable def orderFourAffineDiscCentralHomotopyEquiv
 
 /-- The forward map of the explicit order-four equivalence is the literal region inclusion. -/
 public theorem orderFourAffineDiscCentralHomotopyEquiv_toFun
-    (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
+    (A : AnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
     (A.orderFourAffineDiscCentralHomotopyEquiv hr0 hr).toFun =
       regionInclusion (A.orderFourDiscRegion_subset_centralRegion hr) := by
   apply ContinuousMap.ext
@@ -159,7 +159,7 @@ public theorem orderFourAffineDiscCentralHomotopyEquiv_toFun
 /-- The explicit order-four affine radial inverse deforms the identity central region to the
 inclusion of a smaller affine disc. -/
 public theorem orderFourAffineDiscCentral_inverse_deformation
-    (A : PaperAnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
+    (A : AnalyticData) {r : ℝ} (hr0 : 0 < r) (hr : r ≤ 1 - 1 / 3) :
     (ContinuousMap.id ↥A.affineOrderFourCentralRegion).Homotopic
       ((regionInclusion (A.orderFourDiscRegion_subset_centralRegion hr)).comp
         (A.orderFourAffineDiscCentralHomotopyEquiv hr0 hr).invFun) := by
@@ -167,7 +167,7 @@ public theorem orderFourAffineDiscCentral_inverse_deformation
   exact (A.orderFourAffineDiscCentralHomotopyEquiv hr0 hr).right_inv.symm
 
 /-- The common affine band. -/
-public abbrev affineMarkedBand (A : PaperAnalyticData) :=
+public abbrev affineMarkedBand (A : AnalyticData) :=
   (A.actualAffineHeightSplit.allocation.orderThreeSide ∩
     A.actualAffineHeightSplit.allocation.orderFourSide :
       Set A.ellipticInterior)
@@ -175,7 +175,7 @@ public abbrev affineMarkedBand (A : PaperAnalyticData) :=
 /-- Reading an order-three central overlap point in the actual filling chart returns its exact
 star-collar filling representative. -/
 public theorem orderThreeFillingImageToPiece_symm_overlap
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (u : ↥(A.orderThreeFillingImage ∩
       A.affineOrderThreeCentralRegion)) :
     A.orderThreePieceHomeomorph.symm
@@ -230,7 +230,7 @@ public theorem orderThreeFillingImageToPiece_symm_overlap
 
 /-- The corresponding exact order-four filling representative. -/
 public theorem orderFourFillingImageToPiece_symm_overlap
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (u : ↥(A.orderFourFillingImage ∩
       A.affineOrderFourCentralRegion)) :
     A.orderFourPieceHomeomorph.symm
@@ -284,7 +284,7 @@ public theorem orderFourFillingImageToPiece_symm_overlap
     _ = (A.orderFourPieceHomeomorph (S.toFilling 2 q)).1 := hcoe.symm
 
 /-- The common band included in the order-three affine central region. -/
-public def affineBandToOrderThreeCentralRegion (A : PaperAnalyticData) :
+public def affineBandToOrderThreeCentralRegion (A : AnalyticData) :
     C(A.affineMarkedBand, ↥A.affineOrderThreeCentralRegion) where
   toFun x := ⟨x.1, by
     change x.1 ∈ centralHeightLowerRegion A.ellipticCentralHeight (2 / 3 : ℝ)
@@ -294,7 +294,7 @@ public def affineBandToOrderThreeCentralRegion (A : PaperAnalyticData) :
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
 /-- The common band included in the order-four affine central region. -/
-public def affineBandToOrderFourCentralRegion (A : PaperAnalyticData) :
+public def affineBandToOrderFourCentralRegion (A : AnalyticData) :
     C(A.affineMarkedBand, ↥A.affineOrderFourCentralRegion) where
   toFun x := ⟨x.1, by
     change x.1 ∈ centralHeightUpperRegion A.ellipticCentralHeight (1 / 3 : ℝ)
@@ -304,10 +304,10 @@ public def affineBandToOrderFourCentralRegion (A : PaperAnalyticData) :
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
 /-- A fixed small affine disc contained in the actual order-three star overlap. -/
-public noncomputable def affineOrderThreeMarkedDiscRadius (A : PaperAnalyticData) : ℝ :=
+public noncomputable def affineOrderThreeMarkedDiscRadius (A : AnalyticData) : ℝ :=
   A.exists_small_discRegion_subset_orderThreeOverlap.choose
 
-public theorem affineOrderThreeMarkedDiscRadius_spec (A : PaperAnalyticData) :
+public theorem affineOrderThreeMarkedDiscRadius_spec (A : AnalyticData) :
     0 < A.affineOrderThreeMarkedDiscRadius ∧
       A.affineOrderThreeMarkedDiscRadius ≤ 1 / 3 ∧
       A.affineOrderThreeDiscRegion
@@ -319,10 +319,10 @@ public theorem affineOrderThreeMarkedDiscRadius_spec (A : PaperAnalyticData) :
     exact ⟨h.1, h.2.1, h.2.2.1⟩
 
 /-- A fixed small affine disc contained in the actual order-four star overlap. -/
-public noncomputable def affineOrderFourMarkedDiscRadius (A : PaperAnalyticData) : ℝ :=
+public noncomputable def affineOrderFourMarkedDiscRadius (A : AnalyticData) : ℝ :=
   A.exists_small_discRegion_subset_orderFourOverlap.choose
 
-public theorem affineOrderFourMarkedDiscRadius_spec (A : PaperAnalyticData) :
+public theorem affineOrderFourMarkedDiscRadius_spec (A : AnalyticData) :
     0 < A.affineOrderFourMarkedDiscRadius ∧
       A.affineOrderFourMarkedDiscRadius ≤ 1 / 3 ∧
       A.affineOrderFourDiscRegion
@@ -333,7 +333,7 @@ public theorem affineOrderFourMarkedDiscRadius_spec (A : PaperAnalyticData) :
     have h := A.exists_small_discRegion_subset_orderFourOverlap.choose_spec
     exact ⟨h.1, h.2.1, h.2.2.1⟩
 
-public theorem affineOrderThreeMarkedDiscRadius_cayley (A : PaperAnalyticData)
+public theorem affineOrderThreeMarkedDiscRadius_cayley (A : AnalyticData)
     (z : UpperHalfPlane)
     (hz : ‖A.modular.sourceCoordinate.coordinate z‖ < A.affineOrderThreeMarkedDiscRadius) :
     ∃ k : SphereSixComplex.TriangleGroup.Delta,
@@ -342,7 +342,7 @@ public theorem affineOrderThreeMarkedDiscRadius_cayley (A : PaperAnalyticData)
         A.starSeparation.orderThree.radius / 2 :=
   A.exists_small_discRegion_subset_orderThreeOverlap.choose_spec.2.2.2 z hz
 
-public theorem affineOrderFourMarkedDiscRadius_cayley (A : PaperAnalyticData)
+public theorem affineOrderFourMarkedDiscRadius_cayley (A : AnalyticData)
     (z : UpperHalfPlane)
     (hz : ‖A.modular.sourceCoordinate.coordinate z - 1‖ < A.affineOrderFourMarkedDiscRadius) :
     ∃ k : SphereSixComplex.TriangleGroup.Delta,
@@ -354,7 +354,7 @@ public theorem affineOrderFourMarkedDiscRadius_cayley (A : PaperAnalyticData)
 /-- The explicit order-three affine radial inverse, restricted to the common band and then read
 as a point of the actual filling image through the proved small-disc inclusion. -/
 public noncomputable def affineOrderThreeDiscFillingEndpoint
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(A.affineMarkedBand, ↥A.orderThreeFillingImage) :=
   let r := A.affineOrderThreeMarkedDiscRadius
   let hr0 := (A.affineOrderThreeMarkedDiscRadius_spec).1
@@ -370,7 +370,7 @@ public noncomputable def affineOrderThreeDiscFillingEndpoint
 
 /-- The analogous explicit order-four disc endpoint in the actual filling image. -/
 public noncomputable def affineOrderFourDiscFillingEndpoint
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(A.affineMarkedBand, ↥A.orderFourFillingImage) :=
   let r := A.affineOrderFourMarkedDiscRadius
   let hr0 := (A.affineOrderFourMarkedDiscRadius_spec).1
@@ -386,7 +386,7 @@ public noncomputable def affineOrderFourDiscFillingEndpoint
 
 /-- The order-three disc endpoint retaining membership in both the filling and central regions. -/
 public noncomputable def affineOrderThreeDiscOverlapEndpoint
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(A.affineMarkedBand,
       ↥(A.orderThreeFillingImage ∩
         A.affineOrderThreeCentralRegion)) :=
@@ -405,7 +405,7 @@ public noncomputable def affineOrderThreeDiscOverlapEndpoint
 
 /-- The order-four endpoint retaining both overlap memberships. -/
 public noncomputable def affineOrderFourDiscOverlapEndpoint
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C(A.affineMarkedBand,
       ↥(A.orderFourFillingImage ∩
         A.affineOrderFourCentralRegion)) :=
@@ -426,7 +426,7 @@ public noncomputable def affineOrderFourDiscOverlapEndpoint
 
 /-- The explicit endpoint read in the selected order-three varying filling, with all gluing
 homeomorphisms removed. -/
-public noncomputable def affineOrderThreeStarEndpoint (A : PaperAnalyticData) :
+public noncomputable def affineOrderThreeStarEndpoint (A : AnalyticData) :
     C(A.affineMarkedBand,
       A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius) :=
   (⟨fun u ↦ A.starToFilling 1 (A.orderThreeOverlapCollarHomeomorph u),
@@ -438,7 +438,7 @@ public noncomputable def affineOrderThreeStarEndpoint (A : PaperAnalyticData) :
     A.affineOrderThreeDiscOverlapEndpoint
 
 /-- The corresponding order-four selected-filling endpoint. -/
-public noncomputable def affineOrderFourStarEndpoint (A : PaperAnalyticData) :
+public noncomputable def affineOrderFourStarEndpoint (A : AnalyticData) :
     C(A.affineMarkedBand,
       A.OrderFourVaryingFilling A.starSeparation.orderFour.radius) :=
   (⟨fun u ↦ A.starToFilling 2 (A.orderFourOverlapCollarHomeomorph u),
@@ -453,28 +453,28 @@ public noncomputable def affineOrderFourStarEndpoint (A : PaperAnalyticData) :
 
 
 /-- Include the order-three central region in its affine side. -/
-public def affineOrderThreeCentralRegionToSide (A : PaperAnalyticData) :
+public def affineOrderThreeCentralRegionToSide (A : AnalyticData) :
     C(↥A.affineOrderThreeCentralRegion,
       A.actualAffineHeightSplit.allocation.orderThreeSide) where
   toFun x := ⟨x.1, Or.inr x.2⟩
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
 /-- Include the order-four central region in its affine side. -/
-public def affineOrderFourCentralRegionToSide (A : PaperAnalyticData) :
+public def affineOrderFourCentralRegionToSide (A : AnalyticData) :
     C(↥A.affineOrderFourCentralRegion,
       A.actualAffineHeightSplit.allocation.orderFourSide) where
   toFun x := ⟨x.1, Or.inr x.2⟩
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
 /-- Include the order-three filling image in its affine side. -/
-public def affineOrderThreeFillingImageToSide (A : PaperAnalyticData) :
+public def affineOrderThreeFillingImageToSide (A : AnalyticData) :
     C(↥A.orderThreeFillingImage,
       A.actualAffineHeightSplit.allocation.orderThreeSide) where
   toFun x := ⟨x.1, Or.inl x.2⟩
   continuous_toFun := continuous_subtype_val.subtype_mk _
 
 /-- Include the order-four filling image in its affine side. -/
-public def affineOrderFourFillingImageToSide (A : PaperAnalyticData) :
+public def affineOrderFourFillingImageToSide (A : AnalyticData) :
     C(↥A.orderFourFillingImage,
       A.actualAffineHeightSplit.allocation.orderFourSide) where
   toFun x := ⟨x.1, Or.inl x.2⟩
@@ -483,7 +483,7 @@ public def affineOrderFourFillingImageToSide (A : PaperAnalyticData) :
 /-- The explicit affine radial inverse deforms the common-band inclusion to the selected small
 disc endpoint, viewed in the order-three filling image. -/
 public theorem orderThreeBandInclusion_homotopic_discFillingEndpoint
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     (IntegralMayerVietoris.interToLeft
       A.actualAffineHeightSplit.allocation.orderThreeSide
       A.actualAffineHeightSplit.allocation.orderFourSide).Homotopic
@@ -522,7 +522,7 @@ public theorem orderThreeBandInclusion_homotopic_discFillingEndpoint
 /-- The order-four affine radial inverse gives the analogous deformation into its small disc
 endpoint in the filling image. -/
 public theorem orderFourBandInclusion_homotopic_discFillingEndpoint
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     (IntegralMayerVietoris.interToRight
       A.actualAffineHeightSplit.allocation.orderThreeSide
       A.actualAffineHeightSplit.allocation.orderFourSide).Homotopic
@@ -566,7 +566,7 @@ public theorem orderFourBandInclusion_homotopic_discFillingEndpoint
 explicit fixed central point back through the selected varying-filling and open-image
 homeomorphisms. -/
 public theorem affineOrderThreeSideInverse_markedProjection
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     (affineOrderThreeSideToReducedFiberHomotopyEquiv A).invFun.comp
         (affineBandOrderThreeMarkedProjection A) =
       (orderThreeOverlapIsHomotopyEquivalence_inclusion
@@ -582,7 +582,7 @@ public theorem affineOrderThreeSideInverse_markedProjection
 
 /-- The corresponding unfolded order-four endpoint. -/
 public theorem affineOrderFourSideInverse_markedProjection
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     (affineOrderFourSideToReducedFiberHomotopyEquiv A).invFun.comp
         (affineBandOrderFourMarkedProjection A) =
       (orderFourOverlapIsHomotopyEquivalence_inclusion
@@ -599,6 +599,6 @@ public theorem affineOrderFourSideInverse_markedProjection
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

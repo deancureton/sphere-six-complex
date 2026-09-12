@@ -17,7 +17,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.AnalyticTorusFamily
@@ -30,7 +30,7 @@ open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Adding one full angular period does not change the radial angular cover. -/
 public theorem angularCover_fullTurn {T : Type} [TopologicalSpace T]
@@ -314,4 +314,4 @@ public theorem ellipticFourFillingRelation_boundary_smul
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

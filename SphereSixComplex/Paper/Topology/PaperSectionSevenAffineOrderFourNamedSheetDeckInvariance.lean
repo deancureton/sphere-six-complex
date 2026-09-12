@@ -37,12 +37,12 @@ public theorem orderFourCayleyHomeomorph_norm_eq_of_fix_fuchsianTwo
 
 
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
 /-- If the deck element carrying the named radial lift into the selected collar belongs to the
 order-four elliptic stabilizer, the named lift itself lies in that collar. -/
 public theorem namedOrderFourRadialBase_cayley_lt_of_deck_fixes_fuchsianTwo
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
+    (A : AnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hsmall : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
         (A.affineOrderFourRadialBaseLift
@@ -57,7 +57,7 @@ public theorem namedOrderFourRadialBase_cayley_lt_of_deck_fixes_fuchsianTwo
   exact orderFourCayleyHomeomorph_norm_eq_of_fix_fuchsianTwo g _ hfix
 
 
-end PaperAnalyticData
+end AnalyticData
 
 end SphereSixComplex.Geometry
 

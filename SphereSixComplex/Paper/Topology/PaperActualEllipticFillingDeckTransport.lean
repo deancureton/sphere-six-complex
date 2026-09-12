@@ -9,7 +9,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.AnalyticTorusFamily
@@ -22,7 +22,7 @@ open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
 open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 @[simp]
 public theorem orderThreeCentralFiberPresentationData_affine_eq :
@@ -347,4 +347,4 @@ public theorem ellipticFourToCanonicalFillingDeckEquiv_fillingDeckMap
     A.ellipticFourToCentralBoundaryDeckEquiv
     A.ellipticFourFillingKernel_map_eq_central g
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

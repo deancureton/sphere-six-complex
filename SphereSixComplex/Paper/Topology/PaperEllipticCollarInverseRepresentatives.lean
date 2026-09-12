@@ -10,7 +10,7 @@ public import SphereSixComplex.Paper.Topology.PaperActualEllipticStraightLoopGeo
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.CyclicAngularFundamentalDomain
@@ -22,7 +22,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public noncomputable def orderThreeCollarInverseRepresentative
     (q : OpenRadialInterval A.starSeparation.orderThree.radius ×
@@ -334,7 +334,7 @@ public theorem ellipticFourBoundaryDeckStraightCentralLoop_apply_explicit
         (A.orderFourCollarRadialMappingTorusHomeomorph_symm_apply_liftProjection q)
     _ = _ := A.orderFourStarToCentral_mk (A.orderFourCollarInverseRepresentative q)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

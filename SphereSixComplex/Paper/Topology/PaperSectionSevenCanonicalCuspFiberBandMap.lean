@@ -22,7 +22,7 @@ noncomputable section
 open AlgebraicTopology Set
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
@@ -30,7 +30,7 @@ open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 
 /-- The chosen radial clutching coordinates carry their defining period marking. -/
-public theorem cuspFiberPeriodMarkingCompatibility (A : PaperAnalyticData) :
+public theorem cuspFiberPeriodMarkingCompatibility (A : AnalyticData) :
     (let G := A.actualCuspRadialClutchingData
        let _ := G.fiberTopology
        ∀ x : IntegralSingularHomology 1 G.Fiber,
@@ -40,7 +40,7 @@ public theorem cuspFiberPeriodMarkingCompatibility (A : PaperAnalyticData) :
            G.monodromyCoordinates.degreeOne x) :=
   A.actualCuspRadialClutchingData.fiberMarkingCompatibility
 
-variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
+variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
 
 namespace EllipticTwoDiscCoverData
 
@@ -154,4 +154,4 @@ public theorem canonicalCuspFiberBandPeriodMarking_of_orderThree
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

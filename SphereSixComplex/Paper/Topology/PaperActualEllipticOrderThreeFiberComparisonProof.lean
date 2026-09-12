@@ -36,7 +36,7 @@ public theorem rhoLambda_epsilon_eq_of_commute_g₁ (g : Delta) (h : Commute g g
 
 end SphereSixComplex.TriangleGroup
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData
@@ -49,7 +49,7 @@ open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.TriangleGroup
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The first-power meridian determines the corrected twist label without choosing a unique
 sheet inside the finite elliptic stabilizer. -/
@@ -97,7 +97,7 @@ public theorem orderThree_enteringSheet_inverse_transports_epsilon
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

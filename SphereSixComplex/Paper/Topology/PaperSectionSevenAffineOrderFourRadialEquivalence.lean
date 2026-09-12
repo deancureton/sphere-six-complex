@@ -18,7 +18,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Periods
@@ -30,7 +30,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.EllipticFixedPointCriterion
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The fibre vector with the same real period coordinates, read off at a new base point. -/
 public noncomputable def regularFlatVector
@@ -378,6 +378,6 @@ public theorem exists_orderFourAffineRadialEquiv
     (fun _ ↦ Iff.rfl) (fun _ ↦ Iff.rfl)
     (A.orderFourBaseRadialEquiv (half_pos hr0) (half_lt_self hr0) hr) (fun _ ↦ rfl), rfl⟩
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

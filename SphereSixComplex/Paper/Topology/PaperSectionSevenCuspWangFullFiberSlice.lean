@@ -20,7 +20,7 @@ open scoped ContinuousMap
 open SphereSixComplex
 open SphereSixComplex.CyclicAngularFundamentalDomain
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.ComplexTorus
@@ -28,7 +28,7 @@ open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 
-variable {A : PaperAnalyticData} (D : A.EllipticTwoDiscCoverData)
+variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
 
 namespace EllipticTwoDiscCoverData
 
@@ -258,12 +258,12 @@ public noncomputable def actualCuspFullFiberIntersectionSlice
 
 
 /-- A selected middle-height crossing of the actual angular cusp loop. -/
-public noncomputable def actualCuspFullFiberCrossingTime (A : PaperAnalyticData) :
+public noncomputable def actualCuspFullFiberCrossingTime (A : AnalyticData) :
     unitInterval :=
   Classical.choose A.exists_cuspAngularCoordinateLoop_re_eq_half
 
 /-- The selected full-fibre crossing lies at affine height `1/2`. -/
-public theorem actualCuspFullFiberCrossingTime_spec (A : PaperAnalyticData) :
+public theorem actualCuspFullFiberCrossingTime_spec (A : AnalyticData) :
     ((A.cuspAngularCoordinateLoop
       (actualCuspFullFiberCrossingTime A)).1).re = 1 / 2 :=
   Classical.choose_spec A.exists_cuspAngularCoordinateLoop_re_eq_half
@@ -287,6 +287,6 @@ public noncomputable def actualCuspWangFiberToCuspCoverIntersectionMap
 
 end EllipticTwoDiscCoverData
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

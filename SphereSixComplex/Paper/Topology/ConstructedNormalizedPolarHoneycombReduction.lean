@@ -784,105 +784,37 @@ public theorem constructedLocalModulus_compactPhase (r : ℝ) (k : CompactTorus)
   exact carrierModulus_compactTorusAction k
     (show Carrier from (p : localCarrier constructedModel r).1)
 
-/-- The remaining topological residue after the explicit carrier construction. -/
-public structure ConstructedPolarHoneycombTopologicalData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ) where
-  honeycomb : (Fin 2 → ℝ) ≃ₜ
-    {q : constructedLocalPositivePart r |
-      constructedModel.t (q : localCarrier constructedModel r) = 0}
-  quotientCovering :
-    letI := normalizedPositiveDeckAction N constructedModel
-      (constructedLocalPositivePart r) (constructedPositiveDeck_mem N r)
-    IsQuotientCoveringMap
-      (PolarHoneycombData.orbitProjection (constructedLocalPositivePart r))
-      (Multiplicative ParameterLattice)
-  positive_contractible : ContractibleSpace (constructedLocalPositivePart r)
-  quotient_relativeCW :
-    letI := normalizedPositiveDeckAction N constructedModel
-      (constructedLocalPositivePart r) (constructedPositiveDeck_mem N r)
-    Topology.RelCWComplex
-      (Set.univ : Set (PolarHoneycombData.OrbitQuotient
-        (constructedLocalPositivePart r)))
-      (PolarHoneycombData.orbitCore
-        {q : constructedLocalPositivePart r |
-          constructedModel.t (q : localCarrier constructedModel r) = 0})
-  quotient_t2 :
-    letI := normalizedPositiveDeckAction N constructedModel
-      (constructedLocalPositivePart r) (constructedPositiveDeck_mem N r)
-    T2Space (PolarHoneycombData.OrbitQuotient (constructedLocalPositivePart r))
-
-/-- At the quantitative cusp radius, only the honeycomb, its ambient contractibility, and the
-relative CW structure remain: covering and Hausdorffness are consequences of the explicit
-positive deck action. -/
-public structure ConstructedPolarHoneycombResidualData
+/-- Assemble the fixed positive toric model from its honeycomb homeomorphism,
+contractibility, and relative CW structure. -/
+public def constructedPolarHoneycombConstructionData
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) where
-  honeycomb : (Fin 2 → ℝ) ≃ₜ
-    {q : constructedLocalPositivePart W.localWitness.radius |
-      constructedModel.t
-        (q : localCarrier constructedModel W.localWitness.radius) = 0}
-  positive_contractible :
-    ContractibleSpace (constructedLocalPositivePart W.localWitness.radius)
-  quotient_relativeCW :
-    letI := normalizedPositiveDeckAction N constructedModel
-      (constructedLocalPositivePart W.localWitness.radius)
-      (constructedPositiveDeck_mem N W.localWitness.radius)
-    Topology.RelCWComplex
-      (Set.univ : Set (PolarHoneycombData.OrbitQuotient
-        (constructedLocalPositivePart W.localWitness.radius)))
-      (PolarHoneycombData.orbitCore
-        {q : constructedLocalPositivePart W.localWitness.radius |
-          constructedModel.t
-            (q : localCarrier constructedModel W.localWitness.radius) = 0})
-
-namespace ConstructedPolarHoneycombResidualData
-
-/-- Add the proved positive-deck covering and Hausdorff fields. -/
-public def toTopologicalData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D}
-    {W : ActualPuncturedCuspCollarWitness N constructedModel}
-    (T : ConstructedPolarHoneycombResidualData W) :
-    ConstructedPolarHoneycombTopologicalData N W.localWitness.radius where
-  honeycomb := T.honeycomb
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (honeycomb : (Fin 2 → ℝ) ≃ₜ
+      {q : constructedLocalPositivePart W.localWitness.radius |
+        constructedModel.t (q : localCarrier constructedModel W.localWitness.radius) = 0})
+    (hcontractible : ContractibleSpace (constructedLocalPositivePart W.localWitness.radius))
+    (hCW :
+      letI := normalizedPositiveDeckAction N constructedModel
+        (constructedLocalPositivePart W.localWitness.radius) (constructedPositiveDeck_mem N W.localWitness.radius)
+      Topology.RelCWComplex
+        (Set.univ : Set (PolarHoneycombData.OrbitQuotient
+          (constructedLocalPositivePart W.localWitness.radius)))
+        (PolarHoneycombData.orbitCore
+          {q : constructedLocalPositivePart W.localWitness.radius |
+            constructedModel.t
+              (q : localCarrier constructedModel W.localWitness.radius) = 0})) :
+    NormalizedPolarHoneycombConstructionData N constructedModel W.localWitness.radius where
+  positivePart := constructedLocalPositivePart W.localWitness.radius
+  modulus := constructedLocalModulusRetraction W.localWitness.radius
+  modulus_fixed := constructedLocalModulusRetraction_fixed W.localWitness.radius
+  modulus_t := constructedLocalModulusRetraction_t W.localWitness.radius
+  polar_surjective := constructedLocalModulusRetraction_polar_surjective W.localWitness.radius
+  honeycomb := honeycomb
+  positiveDeck_mem := constructedPositiveDeck_mem N W.localWitness.radius
   quotientCovering := constructedPositiveDeck_quotientCovering W
-  positive_contractible := T.positive_contractible
-  quotient_relativeCW := T.quotient_relativeCW
+  positive_contractible := hcontractible
+  quotient_relativeCW := hCW
   quotient_t2 := constructedPositiveDeck_quotient_t2 W
-
-end ConstructedPolarHoneycombResidualData
-
-namespace ConstructedPolarHoneycombTopologicalData
-
-/-- Add the proved polar and deck fields to the remaining topological residue. -/
-public def toConstructionData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {r : ℝ}
-    (T : ConstructedPolarHoneycombTopologicalData N r) :
-    NormalizedPolarHoneycombConstructionData N constructedModel r where
-  positivePart := constructedLocalPositivePart r
-  modulus := constructedLocalModulusRetraction r
-  modulus_fixed := constructedLocalModulusRetraction_fixed r
-  modulus_t := constructedLocalModulusRetraction_t r
-  polar_surjective := constructedLocalModulusRetraction_polar_surjective r
-  honeycomb := T.honeycomb
-  positiveDeck_mem := constructedPositiveDeck_mem N r
-  quotientCovering := T.quotientCovering
-  positive_contractible := T.positive_contractible
-  quotient_relativeCW := T.quotient_relativeCW
-  quotient_t2 := T.quotient_t2
-
-/-- Its modulus has the compact-phase invariance needed by the phase-spreading reduction. -/
-public theorem toConstructionData_invariantModulus
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {r : ℝ}
-    (T : ConstructedPolarHoneycombTopologicalData N r) :
-    CompactPhaseInvariantModulus T.toConstructionData := by
-  exact constructedLocalModulus_compactPhase r
-
-
-end ConstructedPolarHoneycombTopologicalData
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

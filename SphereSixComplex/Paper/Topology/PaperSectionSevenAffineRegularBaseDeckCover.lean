@@ -15,13 +15,13 @@ applies directly to radial homotopies in the twice-punctured affine coordinate l
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
 open SphereSixComplex.Geometry.GlobalTorusFamily
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The affine coordinate on the regular base is the exact full-deck covering, transported
 through the regular-base preimage homeomorphism. -/
@@ -64,4 +64,4 @@ public theorem regularCoordinate_deck_invariant (g : Delta)
       A.modular.sourceCoordinate.coordinate z.1
   exact A.modular.sourceCoordinate.coordinate_invariant g z.1
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

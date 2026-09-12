@@ -5,12 +5,12 @@ public import SphereSixComplex.Paper.Topology.MarkedMeridianCircleCylinders
 @[expose] public section
 noncomputable section
 open AlgebraicTopology CategoryTheory TopologicalSpace
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology GlobalTorusFamily TriangleGroup
 open SphereSixComplex.StandardTorusHomology
 open EllipticTwoDiscHomologyCoordinates
 
-public def normalizedThirdOverlapCircle {A : PaperAnalyticData}
+public def normalizedThirdOverlapCircle {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (b : RegularBase (U := A.paperTriangleUniformization))
     (hb : A.regularCoordinate b = twicePuncturedComplexBasepoint) :
@@ -29,7 +29,7 @@ public def normalizedThirdOverlapCircle {A : PaperAnalyticData}
   · exact ((A.regularPeriodCircleToInterior (Pi.single 2 1)).continuous.comp
       ((continuous_apply 0).prodMk continuous_const)).subtype_mk _
 
-public def normalizedThirdZeroCirclePath (A : PaperAnalyticData) :
+public def normalizedThirdZeroCirclePath (A : AnalyticData) :
     Path (A.centralToEllipticInterior.comp
       (A.regularThirdCircleFamily A.affineNormalizedMidpoint))
       (A.centralToEllipticInterior.comp
@@ -37,7 +37,7 @@ public def normalizedThirdZeroCirclePath (A : PaperAnalyticData) :
   (A.affineNormalizedZeroLift.map A.regularThirdCircleFamily.continuous).map
     (ContinuousMap.continuous_postcomp A.centralToEllipticInterior)
 
-public def normalizedThirdOneCirclePath (A : PaperAnalyticData) :
+public def normalizedThirdOneCirclePath (A : AnalyticData) :
     Path (A.centralToEllipticInterior.comp
       (A.regularThirdCircleFamily (regularSourceEquiv g₁ A.affineNormalizedMidpoint)))
       (A.centralToEllipticInterior.comp
@@ -58,7 +58,7 @@ public def normalizedThirdOneCirclePath (A : PaperAnalyticData) :
   rw [he]
   simpa using (A.regularThirdCircleFamily_gZero (-1) A.affineNormalizedMidpoint).symm
 
-public theorem normalizedThirdZeroCirclePath_mem_three {A : PaperAnalyticData}
+public theorem normalizedThirdZeroCirclePath_mem_three {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) (t : unitInterval) (z : StdTorus 1) :
     A.normalizedThirdZeroCirclePath t z ∈ R.twoDiscCover.orderThreeSide := by
   apply regularPeriodCircleToInterior_mem_three R
@@ -66,7 +66,7 @@ public theorem normalizedThirdZeroCirclePath_mem_three {A : PaperAnalyticData}
   rw [A.affineNormalizedZeroLift_projects]
   exact twicePuncturedClockwiseZeroPoint_mem_left t
 
-public theorem normalizedThirdOneCirclePath_mem_four {A : PaperAnalyticData}
+public theorem normalizedThirdOneCirclePath_mem_four {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) (t : unitInterval) (z : StdTorus 1) :
     A.normalizedThirdOneCirclePath t z ∈ R.twoDiscCover.orderFourSide := by
   apply regularPeriodCircleToInterior_mem_four R
@@ -75,7 +75,7 @@ public theorem normalizedThirdOneCirclePath_mem_four {A : PaperAnalyticData}
   rw [A.regularCoordinate_sourceEquiv, A.affineNormalizedOneLift_projects]
   exact twicePuncturedClockwiseOnePoint_mem_right t
 
-public theorem normalizedThirdMeridianCylinder_boundary {A : PaperAnalyticData}
+public theorem normalizedThirdMeridianCylinder_boundary {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (CircleMappingTorus (Homeomorph.refl (StdTorus 1)))) :
     ConcreteCategory.hom ((BinaryOpenCover.openCoverHomologyComparisonOfCover
@@ -100,7 +100,7 @@ public theorem normalizedThirdMeridianCylinder_boundary {A : PaperAnalyticData}
     A.normalizedThirdZeroCirclePath A.normalizedThirdOneCirclePath
     (normalizedThirdZeroCirclePath_mem_three R) (normalizedThirdOneCirclePath_mem_four R) 1 x
 
-public theorem normalizedThirdMeridianCircleLoop_eq (A : PaperAnalyticData) :
+public theorem normalizedThirdMeridianCircleLoop_eq (A : AnalyticData) :
     A.normalizedThirdZeroCirclePath.trans A.normalizedThirdOneCirclePath =
       (A.normalizedThirdPeriodLoop A.normalizedMeridianPairRegularPath).map
         (ContinuousMap.continuous_postcomp A.centralToEllipticInterior) := by
@@ -121,7 +121,7 @@ public theorem identityMappingTorusMapOfLoop_postcomp
   induction z using Quotient.inductionOn with
   | _ z => rfl
 
-public theorem cuspChosenThirdSweep_interior_homology (A : PaperAnalyticData) :
+public theorem cuspChosenThirdSweep_interior_homology (A : AnalyticData) :
     integralSingularHomologyMap 2
       (A.centralToEllipticInterior.comp
         (A.cuspChosenThirdSweepCentral.comp
@@ -136,5 +136,5 @@ public theorem cuspChosenThirdSweep_interior_homology (A : PaperAnalyticData) :
     ((ContinuousMap.Homotopy.refl A.centralToEllipticInterior).comp
       A.cuspChosenThirdSweep_homotopy_normalizedMeridians)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end

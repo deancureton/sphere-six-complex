@@ -64,14 +64,14 @@ public theorem liftedNegOneInfinityFrame_one (z : UpperHalfPlane) :
     liftedNegOneInfinityFrame E F (fuchsianSourceAction g₁ • z) =
       -liftedNegOneInfinityFrame E F z / E.modularParameter.tau z := by
   rw [liftedNegOneInfinityFrame, liftedNegOneInfinityFrame,
-    E.sourceCoordinate.coordinate_invariant, F.frame_one]
+    E.sourceCoordinate.coordinate_invariant, ExactLiftedModularNegOneFrame.frame, F.frame_one]
   ring
 
 public theorem liftedNegOneInfinityFrame_two (z : UpperHalfPlane) :
     liftedNegOneInfinityFrame E F (fuchsianSourceAction g₂ • z) =
       liftedNegOneInfinityFrame E F z / E.modularParameter.tau z := by
   rw [liftedNegOneInfinityFrame, liftedNegOneInfinityFrame,
-    E.sourceCoordinate.coordinate_invariant, F.frame_two]
+    E.sourceCoordinate.coordinate_invariant, ExactLiftedModularNegOneFrame.frame, F.frame_two]
   ring
 
 /-- The two finite-generator laws imply invariance of the infinity frame under the positive cusp
@@ -187,7 +187,7 @@ public theorem _root_.SphereSixComplex.Periods.ExactLiftedModularNegOneFrame.inf
       ‖liftedNegOneInfinityFrame E F z‖ ≤ max B 0 := by
     filter_upwards [F.inverse_coordinate_eventually_mem_closedBall,
       F.cusp_factorization_eventually] with z hzmem hzfactor
-    rw [liftedNegOneInfinityFrame, hzfactor]
+    rw [liftedNegOneInfinityFrame, ExactLiftedModularNegOneFrame.frame, hzfactor]
     exact (hBound ⟨_, hzmem, rfl⟩).trans (le_max_left B 0)
   apply boundedOn_cusp_of_eventually_bounded
     (liftedNegOneInfinityFrame E F)
@@ -417,11 +417,13 @@ general orbifold affine-torsor descent theorem. -/
     liftedNegOneInfinityFrame_holomorphicAt E F hz
   frameZero_one := by
     intro z
+    simp only [ExactLiftedModularNegOneFrame.frame]
     rw [F.frame_one]
     simp only [muLinearOne]
     ring
   frameZero_two := by
     intro z
+    simp only [ExactLiftedModularNegOneFrame.frame]
     rw [F.frame_two]
     simp only [muLinearTwo]
     ring
@@ -445,7 +447,7 @@ general orbifold affine-torsor descent theorem. -/
     unit_holomorphic := F.frame_branch_one.unit_holomorphic
     unit_ne_zero := F.frame_branch_one.unit_ne_zero
     factorization := by
-      simpa using F.frame_branch_one.factorization }
+      simpa [ExactLiftedModularNegOneFrame.frame] using F.frame_branch_one.factorization }
   frameZero_branch_two := {
     uniformizer := F.frame_branch_two.uniformizer
     uniformizer_center := F.frame_branch_two.uniformizer_center
@@ -454,10 +456,10 @@ general orbifold affine-torsor descent theorem. -/
     unit_holomorphic := F.frame_branch_two.unit_holomorphic
     unit_ne_zero := F.frame_branch_two.unit_ne_zero
     factorization := by
-      simpa using F.frame_branch_two.factorization }
+      simpa [ExactLiftedModularNegOneFrame.frame] using F.frame_branch_two.factorization }
   frameZero_zero_iff := by
     intro z
-    simpa using F.frame_zero_iff z
+    simpa [ExactLiftedModularNegOneFrame.frame] using F.frame_zero_iff z
   frameTransition := fun q ↦ q⁻¹
   frameTransition_holomorphic := by
     intro q hq

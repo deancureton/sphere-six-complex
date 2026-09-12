@@ -18,13 +18,13 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open GlobalTorusFamily TorusFamily
 open EquivariantQuotientHomeomorph
 open SphereSixComplex.OpenUnionHomotopy
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The order-four lifted disc quotient mapped into the actual central family. -/
 public noncomputable def orderFourAffineDiscLiftQuotientToCentralFamily (r : ℝ) :
@@ -93,6 +93,6 @@ public theorem orderFourAffineHalfPlaneLiftQuotientToCentralFamily_centralRegion
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

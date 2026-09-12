@@ -21,9 +21,9 @@ open CuspFillingRadialCompactness
 
 noncomputable section
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (P : PaperAnalyticData)
+variable (P : AnalyticData)
 
 /-- The two exact end-control obligations provide compact-cover data for the concrete star. -/
 public noncomputable def compactCoverData_of_endControl
@@ -49,7 +49,7 @@ public theorem starGluedCompact :
 
 
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

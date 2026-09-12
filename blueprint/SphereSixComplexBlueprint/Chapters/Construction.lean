@@ -339,10 +339,10 @@ $`C_3` and $`C_4` factors, closing both collar separations without an external a
 Use {uses "torus-family"}[the torus family] and the invariant twist vectors fixed by $`A_1` and $`A_2`.
 :::
 
-:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.exists_simplyConnected_complexThreefold, SphereSixComplex.CompactComplexStar, SphereSixComplex.Geometry.PaperAnalyticData.compactComplexStar") (priority := "high")
+:::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere, SphereSixComplex.CompactComplexStar, SphereSixComplex.Geometry.AnalyticData.compactComplexStar") (priority := "high")
 The global family and the three fillings glue to a compact connected complex threefold $`X`.
 The analytic package, the actual star's van Kampen data, and the positive-degree homology assembly
-are constructed in Lean and combined by `exists_simplyConnected_complexThreefold`. No construction-specific axiom or
+are constructed in Lean and combined by `exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere`. No construction-specific axiom or
 unfinished proof is required by this theorem.
 :::
 
@@ -369,14 +369,14 @@ second-countable glued space defines a compact connected complex threefold. Smoo
 underlying real atlas follows by restriction of scalars.
 :::
 
-:::theorem "paper-threefold-assembly" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.compactComplexStar, SphereSixComplex.CompactComplexStar.toComplexThreefold, SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_simplyConnected_complexThreefold")
+:::theorem "paper-threefold-assembly" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.Geometry.AnalyticData.compactComplexStar, SphereSixComplex.CompactComplexStar.toComplexThreefold, SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere")
 If that gluing carries the concrete van Kampen generators with no extra relations and the
 four-piece Mayer--Vietoris comparison, the glued threefold is simply connected and has
 degreewise integral homology isomorphic to that of the six-sphere. The recognition theorem
 takes these properties directly and concludes existence of a diffeomorphism.
 :::
 
-:::theorem "fundamental-group" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.star_simplyConnectedSpace") (priority := "high")
+:::theorem "fundamental-group" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.AnalyticData.star_simplyConnectedSpace") (priority := "high")
 For the twists $`(\ell_0,\ell_1,\ell_2)=(0,1,-1)`, the fundamental group of $`X` is trivial.
 :::
 
@@ -417,7 +417,7 @@ the surjection onto $`\pi_1(X)` reduces the van Kampen contract to collar surjec
 star filling relations. Both geometric statements are proved for the constructed star.
 :::
 
-:::theorem "integral-homology" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.star_nonempty_homologyEquiv_sixSphere") (priority := "high")
+:::theorem "integral-homology" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere") (priority := "high")
 The integral homology of $`X` is the integral homology of $`S^6`.
 :::
 
@@ -441,14 +441,14 @@ The actual inclusion maps and their coordinate comparisons are computed separate
 The two integral relation maps in Lemma 7.13 have images equal to the kernels of their respective coordinate classifiers. These identities give the required exact integral presentations.
 :::
 
-:::definition "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.PaperAnalyticData.PositiveDegreeHomologyAssembly, SphereSixComplex.Geometry.PaperAnalyticData.PositiveDegreeHomologyAssembly.toSectionSevenMayerVietorisHomologyAssembly")
+:::definition "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.AnalyticData.PositiveDegreeHomologyAssembly, SphereSixComplex.Geometry.AnalyticData.PositiveDegreeHomologyAssembly.toSectionSevenMayerVietorisHomologyAssembly")
 For the actual four-piece star, degree zero is proved canonically. The constructed
 `PositiveDegreeHomologyAssembly` records the positive-degree cusp-attachment identifications and
 compatibility squares. Its fields describe the actual maps; none assumes the completed star's
 homology.
 :::
 
-:::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.CellularHomology.normalizedModel, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCWDecomposition, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellularIncidence, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.PaperAnalyticData.cuspFillingHomologyTwoEquiv")
+:::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.CellularHomology.normalizedModel, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCWDecomposition, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellularIncidence, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyTwoEquiv")
 The cusp filling has homology $`\mathbb Z^2,\mathbb Z^4,\mathbb Z^2,\mathbb Z` in degrees one
 through four. The standard $`A_2` CW decomposition and its incidence formula are proved. The
 retained general cellular-to-singular comparison transfers this cellular calculation to singular
@@ -465,7 +465,7 @@ Together these give `ellipticFiniteCoverHomologyRealization` for the two covers,
 actual pullback calculation. No specialized finite-cover realization axiom is retained.
 :::
 
-:::theorem "section-seven-top-degree-vanishing" (parent := "integral-homology") (lean := "SphereSixComplex.subsingleton_integralSingularHomology_of_isEmpty_cell, SphereSixComplex.FourTorusHomologicalModel.subsingleton_homology_five, SphereSixComplex.FourTorusHomologicalModel.subsingleton_homology_six, SphereSixComplex.subsingleton_homology_succ_finiteBouquetMappingTorus, SphereSixComplex.contractibleSpace_openInterval, SphereSixComplex.subsingleton_homology_prod_of_contractible, SphereSixComplex.subsingleton_homology_seven_union, SphereSixComplex.OpenEmbeddingStarData.sectionSevenStageTopDegreeVanishing_of_localFinite, SphereSixComplex.subsingleton_homology_six_of_radialMappingTorus, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_actualCuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_orderThreeCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_orderFourCollar, SphereSixComplex.Geometry.PaperAnalyticData.subsingleton_homology_six_collarSource_of_cusp, SphereSixComplex.Geometry.PaperAnalyticData.stageTopDegreeVanishing_of_actualCuspCollar, SphereSixComplex.Geometry.PaperAnalyticData.stageTopDegreeVanishing")
+:::theorem "section-seven-top-degree-vanishing" (parent := "integral-homology") (lean := "SphereSixComplex.subsingleton_integralSingularHomology_of_isEmpty_cell, SphereSixComplex.FourTorusHomologicalModel.subsingleton_homology_five, SphereSixComplex.FourTorusHomologicalModel.subsingleton_homology_six, SphereSixComplex.subsingleton_homology_succ_finiteBouquetMappingTorus, SphereSixComplex.contractibleSpace_openInterval, SphereSixComplex.subsingleton_homology_prod_of_contractible, SphereSixComplex.subsingleton_homology_seven_union, SphereSixComplex.OpenEmbeddingStarData.sectionSevenStageTopDegreeVanishing_of_localFinite, SphereSixComplex.subsingleton_homology_six_of_radialMappingTorus, SphereSixComplex.Geometry.AnalyticData.subsingleton_homology_six_actualCuspCollar, SphereSixComplex.Geometry.AnalyticData.subsingleton_homology_six_orderThreeCollar, SphereSixComplex.Geometry.AnalyticData.subsingleton_homology_six_orderFourCollar, SphereSixComplex.Geometry.AnalyticData.subsingleton_homology_six_collarSource_of_cusp, SphereSixComplex.Geometry.AnalyticData.stageTopDegreeVanishing_of_actualCuspCollar, SphereSixComplex.Geometry.AnalyticData.stageTopDegreeVanishing")
 The Mayer--Vietoris comparison of the four pieces needs the three intermediate unions to have no
 seventh homology, which follows from the four pieces having none and the three collar sources
 having no sixth. `stageTopDegreeVanishing` supplies that obligation for the
@@ -491,7 +491,7 @@ standard four-torus cell model, elliptic angular fundamental domains, and cusp r
 model, including its fibre identification, are proved in the development.
 :::
 
-:::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere") (priority := "high")
+:::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_complexThreefold_nonempty_diffeomorph_sixSphere") (priority := "high")
 The underlying standard smooth manifold of $`X` is diffeomorphic to $`S^6`.
 :::
 

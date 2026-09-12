@@ -55,12 +55,12 @@ public theorem euler_eq_two (M : CuspToricCellModel X) :
 
 end CuspToricCellModel
 
-namespace Geometry.PaperAnalyticData
+namespace Geometry.AnalyticData
 
 open CuspPuncturedCollarBridge
 open Topology.PaperEllipticFillingRadialRetraction
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The exact homological information required from the regular central family. -/
 public structure CentralHomologyEulerModel
@@ -122,6 +122,6 @@ public theorem sectionSevenLocalEulerExpression_eq_two (M : LocalEulerModels A) 
 
 end LocalEulerModels
 
-end Geometry.PaperAnalyticData
+end Geometry.AnalyticData
 
 end SphereSixComplex

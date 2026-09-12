@@ -37,19 +37,19 @@ public theorem normalizedCircleSweep_projection_zero
 
 end SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open CuspPuncturedCollarBridge CuspStraighteningRetraction
 open InfiniteA2Toric CircleProductIdentityMappingTorus
 open StandardCircleHomologyLiftDegree
 
-local instance (A : PaperAnalyticData) :
+local instance (A : AnalyticData) :
     T2Space (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness) := by
   let _ := actualLocalCuspFilling_t2 A.starCuspWitness
   exact (actualLocalCuspCentralOrbitMap_isEmbedding A.starCuspWitness).t2Space
 
 public theorem cuspCellularGraphSweep_positiveProjection_zero
-    (A : PaperAnalyticData) (i : Fin 2) (j k : Fin 3) :
+    (A : AnalyticData) (i : Fin 2) (j k : Fin 3) :
     let _ := (constructedCuspPolarData A.starCuspWitness).positiveDeckAction
     integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness)
       (A.cuspFillingPhaseSweep i
@@ -83,7 +83,7 @@ public theorem cuspCellularGraphSweep_positiveProjection_zero
   exact constructedCuspPositiveProjection_central_action A.starCuspWitness _ _
 
 public theorem cuspMixedTorus_positiveProjection_zero
-    (A : PaperAnalyticData) (j : Fin 3) :
+    (A : AnalyticData) (j : Fin 3) :
     let _ := (constructedCuspPolarData A.starCuspWitness).positiveDeckAction
     integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness)
       (integralSingularHomologyMap 2
@@ -96,4 +96,4 @@ public theorem cuspMixedTorus_positiveProjection_zero
     cuspCellularGraphSweep_positiveProjection_zero]
   simp
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

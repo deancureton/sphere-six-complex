@@ -19,13 +19,13 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap ContDiff Manifold
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open BiholomorphicStarGluing
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The space obtained by gluing the four analytic pieces is locally compact. -/
 public theorem starUnion_locallyCompact :
@@ -84,10 +84,10 @@ public theorem ellipticInteriorOpenSubspace_normal
   let _ : T2Space A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := A.starGluedT2
   infer_instance
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 /-- The fixed order-three covering projection on the affine band. -/
-public noncomputable def affineBandOrderThreeCoverMap (A : PaperAnalyticData) :
+public noncomputable def affineBandOrderThreeCoverMap (A : AnalyticData) :
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
@@ -102,7 +102,7 @@ public noncomputable def affineBandOrderThreeCoverMap (A : PaperAnalyticData) :
 
 
 /-- The fixed order-four covering projection on the affine band. -/
-public noncomputable def affineBandOrderFourCoverMap (A : PaperAnalyticData) :
+public noncomputable def affineBandOrderFourCoverMap (A : AnalyticData) :
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
@@ -116,6 +116,6 @@ public noncomputable def affineBandOrderFourCoverMap (A : PaperAnalyticData) :
             A.affineCentralSeparation)).toFun
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

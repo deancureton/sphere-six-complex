@@ -6,10 +6,10 @@ public import SphereSixComplex.Paper.Topology.PaperEllipticSynchronizedPeriodTra
 noncomputable section
 open Set Topology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.LatticeData
 open PaperVanKampenFourPieceCover
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem actualCore_subset_ellipticInterior :
     A.actualVanKampenFourPieceCover.core ⊆
@@ -93,7 +93,7 @@ public theorem ellipticInterior_orderThree_fullIterate :
     apply Subgroup.normalClosure_le_normal
     rw [Set.singleton_subset_iff]
     exact A.actualThreeRelator_ellipticInterior_killed
-  have h := hn (Classical.choice A.ellipticRelatorMembership_proved).orderThree
+  have h := hn A.ellipticRelatorMembership.orderThree
   rw [MonoidHom.mem_ker, map_mul, map_pow, map_inv] at h
   exact mul_inv_eq_one.mp h
 
@@ -107,7 +107,7 @@ public theorem ellipticInterior_orderFour_fullIterate :
     apply Subgroup.normalClosure_le_normal
     rw [Set.singleton_subset_iff]
     exact A.actualFourRelator_ellipticInterior_killed
-  have h := hn (Classical.choice A.ellipticRelatorMembership_proved).orderFour
+  have h := hn A.ellipticRelatorMembership.orderFour
   rw [MonoidHom.mem_ker, map_mul, map_pow, map_inv] at h
   exact mul_inv_eq_one.mp h
 
@@ -150,5 +150,5 @@ public theorem ellipticInterior_cuspMeridian_twelfth_abelian
   simp only [inv_one, mul_one]
   exact A.ellipticInterior_peripheral_twelfth_abelian f
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end

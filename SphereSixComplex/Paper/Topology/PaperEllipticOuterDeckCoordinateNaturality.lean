@@ -4,12 +4,12 @@ public import SphereSixComplex.Paper.Topology.PaperGeometricCentralCore
 
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem regularCoordinate_isQuotientCoveringMap :
     letI := A.regularBaseDeckAction
@@ -83,4 +83,4 @@ public theorem regularFamilyOuterDeck_eq_of_coordinate_class_eq_at
   cases he
   exact A.regularFamilyOuterDeck_eq_of_coordinate_class_eq e a b h
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

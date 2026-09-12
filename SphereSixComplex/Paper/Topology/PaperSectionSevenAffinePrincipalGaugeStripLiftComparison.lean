@@ -15,14 +15,14 @@ named lift used by the marked band trivialization.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open GlobalTorusFamily
 
 
 /-- Midpoint normalization determines the marked strip lift. -/
 public theorem AffineStripLift.eq_named_of_apply_midpoint
-    {A : PaperAnalyticData} (L : A.AffineStripLift)
+    {A : AnalyticData} (L : A.AffineStripLift)
     (hL : L.lift affineStripMidpoint = A.affineNormalizedMidpoint) :
     L.lift = A.affineNamedStripLift.lift := by
   let U := A.existsUnique_sectionSevenAffineStripContinuousLift
@@ -33,6 +33,6 @@ public theorem AffineStripLift.eq_named_of_apply_midpoint
   · exact ⟨A.affineNamedStripLift_apply_midpoint,
       A.affineNamedStripLift.lift_comp_coordinate⟩
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

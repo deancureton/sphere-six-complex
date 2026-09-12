@@ -152,9 +152,9 @@ public theorem orderFourCayleyHomeomorph_norm_inr
     rw [norm_mul, norm_mul, norm_mul, norm_orderFourMultiplier]
     simp
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (P : PaperAnalyticData)
+variable (P : AnalyticData)
 
 public theorem coordinate_image_cayleyBall_isOpen
     (cayley : UpperHalfPlane → ℂ) (hcayley : Continuous cayley)
@@ -726,7 +726,7 @@ public theorem starOuterRadius_pos (i : Fin 3) :
     exact (Set.disjoint_left.mp hdisjoint ⟨w, rfl⟩ ⟨z, heq.symm⟩).elim
 
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

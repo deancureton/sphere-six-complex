@@ -20,7 +20,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.TriangleGroup
@@ -33,7 +33,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.EllipticFixedPointCriterion
 open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Rebuild a vector-cover point over a new base point through the canonical real period
 coordinates. -/
@@ -365,4 +365,4 @@ public theorem exists_orderThreeAffineRadialEquiv (hr0 : 0 < r) (hr : r ≤ 2 / 
 
 end OrderThree
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

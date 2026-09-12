@@ -39,11 +39,11 @@ public noncomputable def establishedStandardA2ToricCentralFiberCellAtlas
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     let _ : T2Space (ActualLocalCuspFilling W) :=
-      SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+      SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
     let _ : T2Space (R.quotientCentralFiber W) := inferInstance
     StandardA2ToricCentralFiberCellAtlas (R.quotientCentralFiber W) := by
   let _ : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (R.quotientCentralFiber W) := inferInstance
   exact (establishedStandardA2ToricCentralOrbitCellAtlas W).transport
     (actualLocalCuspCentralOrbitCoreHomeomorph W R)
@@ -55,12 +55,12 @@ public theorem establishedStandardA2ToricCentralFiberHigherIncidenceResidual
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     let _ : T2Space (ActualLocalCuspFilling W) :=
-      SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+      SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
     let _ : T2Space (R.quotientCentralFiber W) := inferInstance
     StandardA2ToricCentralFiberHigherIncidenceResidual
       (establishedStandardA2ToricCentralFiberCellAtlas W R) := by
   let _ : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (R.quotientCentralFiber W) := inferInstance
   let W₀ := Classical.choice
     (SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
@@ -69,7 +69,7 @@ public theorem establishedStandardA2ToricCentralFiberHigherIncidenceResidual
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
   let _ : T2Space (ActualLocalCuspFilling W₁) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W₁
+    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W₁
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W₁) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W₁).t2Space
   let C := constructedCentralCellAtlas W₁
@@ -102,12 +102,12 @@ public theorem establishedStandardA2ToricCentralFiberIndependentIncidenceResidua
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     let _ : T2Space (ActualLocalCuspFilling W) :=
-      SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+      SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
     let _ : T2Space (R.quotientCentralFiber W) := inferInstance
     StandardA2ToricCentralFiberIndependentIncidenceResidual
       (establishedStandardA2ToricCentralFiberCellAtlas W R) := by
   let _ : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (R.quotientCentralFiber W) := inferInstance
   let H := establishedStandardA2ToricCentralFiberHigherIncidenceResidual W R
   let W₀ := Classical.choice
@@ -117,7 +117,7 @@ public theorem establishedStandardA2ToricCentralFiberIndependentIncidenceResidua
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
   let _ : T2Space (ActualLocalCuspFilling W₁) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W₁
+    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W₁
   let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W₁) :=
     (actualLocalCuspCentralOrbitMap_isEmbedding W₁).t2Space
   let C := constructedCentralCellAtlas W₁
@@ -151,12 +151,12 @@ public theorem establishedStandardA2ToricCentralFiberIncidenceResidual
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     let _ : T2Space (ActualLocalCuspFilling W) :=
-      SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+      SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
     let _ : T2Space (R.quotientCentralFiber W) := inferInstance
     StandardA2ToricCentralFiberIncidenceResidual
       (establishedStandardA2ToricCentralFiberCellAtlas W R) := by
   let _ : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   let _ : T2Space (R.quotientCentralFiber W) := inferInstance
   exact StandardA2ToricCentralFiberIncidenceResidual.ofIndependent
     (establishedStandardA2ToricCentralFiberIndependentIncidenceResidual W R)
@@ -170,7 +170,7 @@ public noncomputable def establishedStandardA2ToricCentralFiberFiniteCellularRea
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     StandardA2ToricCentralFiberFiniteCellularRealization (R.quotientCentralFiber W) := by
   letI : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   letI : T2Space (R.quotientCentralFiber W) := inferInstance
   exact StandardA2ToricCentralFiberFiniteCellularRealization.ofAtlasAndIncidence
     (establishedStandardA2ToricCentralFiberCellAtlas W R)
@@ -196,7 +196,7 @@ public noncomputable def establishedStandardA2ToricCentralFiberCWDecomposition
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     StandardA2ToricCentralFiberCWDecomposition (R.quotientCentralFiber W) := by
   letI : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.PaperAnalyticData.actualLocalCuspFilling_t2 W
+    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
   letI : T2Space (R.quotientCentralFiber W) := inferInstance
   exact (establishedStandardA2ToricCentralFiberCellAtlas W R).toCWDecomposition
 

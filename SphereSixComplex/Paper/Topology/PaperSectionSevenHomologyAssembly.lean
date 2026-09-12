@@ -16,9 +16,9 @@ noncomputable section
 
 open AlgebraicTopology CategoryTheory Set
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The final positive-degree cusp-attachment identifications that remain after the canonical
 `H₀` calculation.  No field describes the homology of the completed star.  The paper's earlier
@@ -79,4 +79,4 @@ public noncomputable def toSectionSevenMayerVietorisHomologyAssembly
 
 end PositiveDegreeHomologyAssembly
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

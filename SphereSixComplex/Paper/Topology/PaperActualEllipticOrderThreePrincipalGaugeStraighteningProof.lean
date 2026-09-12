@@ -8,14 +8,14 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology
 open SphereSixComplex.Geometry
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The straight vector-cover segment with the same period endpoint as the order-three
 principal gauge. -/
@@ -105,7 +105,7 @@ public theorem orderThreeFillingRelationPrincipalGaugeLoop_class_eq_straight :
     A.orderThreeFillingRelationPrincipalGaugeDeck
     A.orderThreePrincipalGaugeStraightLiftPath).symm
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

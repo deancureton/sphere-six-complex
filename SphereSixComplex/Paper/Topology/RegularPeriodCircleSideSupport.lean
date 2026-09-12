@@ -5,10 +5,10 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionR
 @[expose] public section
 noncomputable section
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology GlobalTorusFamily TriangleGroup ComplexTorus
 
-public def regularPeriodCircleToInterior (A : PaperAnalyticData) (n : IntegerPeriods) :
+public def regularPeriodCircleToInterior (A : AnalyticData) (n : IntegerPeriods) :
     C(UnitAddCircle × RegularBase (U := A.modular.modularParameter.toTriangleUniformization),
       A.ellipticInterior) :=
   ⟨fun p ↦ (A.ellipticCentralImageHomeomorph.symm
@@ -16,7 +16,7 @@ public def regularPeriodCircleToInterior (A : PaperAnalyticData) (n : IntegerPer
     continuous_subtype_val.comp (A.ellipticCentralImageHomeomorph.symm.continuous.comp
       (regularPeriodCircleInGlobal A.periods n).continuous)⟩
 
-public theorem regularPeriodCircleInGlobal_coordinate (A : PaperAnalyticData)
+public theorem regularPeriodCircleInGlobal_coordinate (A : AnalyticData)
     (n : IntegerPeriods) (t : UnitAddCircle)
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :
     A.centralFamilyCoordinate (regularPeriodCircleInGlobal A.periods n (t, b)) =
@@ -27,7 +27,7 @@ public theorem regularPeriodCircleInGlobal_coordinate (A : PaperAnalyticData)
   rw [regularPeriodCircle_real]
   rfl
 
-public theorem regularPeriodCircleToInterior_mem_three {A : PaperAnalyticData}
+public theorem regularPeriodCircleToInterior_mem_three {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) (n : IntegerPeriods) (t : UnitAddCircle)
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
     (hb : (A.puncturedBaseHomeomorphTwicePuncturedComplex (Quotient.mk _ b)).1.re < 2 / 3) :
@@ -40,7 +40,7 @@ public theorem regularPeriodCircleToInterior_mem_three {A : PaperAnalyticData}
   rw [Homeomorph.apply_symm_apply, regularPeriodCircleInGlobal_coordinate]
   exact hb
 
-public theorem regularPeriodCircleToInterior_mem_four {A : PaperAnalyticData}
+public theorem regularPeriodCircleToInterior_mem_four {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) (n : IntegerPeriods) (t : UnitAddCircle)
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
     (hb : 1 / 3 < (A.puncturedBaseHomeomorphTwicePuncturedComplex (Quotient.mk _ b)).1.re) :
@@ -53,6 +53,6 @@ public theorem regularPeriodCircleToInterior_mem_four {A : PaperAnalyticData}
   rw [Homeomorph.apply_symm_apply, regularPeriodCircleInGlobal_coordinate]
   exact hb
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end
 end

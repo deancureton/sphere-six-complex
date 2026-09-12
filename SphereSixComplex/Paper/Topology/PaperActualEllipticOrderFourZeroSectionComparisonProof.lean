@@ -10,7 +10,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
@@ -28,7 +28,7 @@ open SphereSixComplex.Geometry.EllipticFixedPointCriterion
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 private theorem orderFourCayleyChartRadialHomotopy_trace
     (c : ℝ) (hc : 0 < c) (hc1 : c < 1) (s : unitInterval) :
@@ -394,7 +394,7 @@ public theorem orderFourCentralBaseFactor_homotopy_globalZeroSectionQuadruple :
   · exact hlocalTrace
   · exact hrebaseTrace
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

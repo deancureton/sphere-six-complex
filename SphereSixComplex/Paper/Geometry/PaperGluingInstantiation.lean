@@ -18,9 +18,9 @@ namespace SphereSixComplex.Geometry
 
 noncomputable section
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (P : PaperAnalyticData)
+variable (P : AnalyticData)
 
 /-- The actual analytic four-piece star with its compact complex gluing geometry. -/
 @[expose] public noncomputable def compactComplexStar : CompactComplexStar where
@@ -32,7 +32,7 @@ variable (P : PaperAnalyticData)
   gluedT2 := P.starGluedT2
   gluedCompact := P.starGluedCompact
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

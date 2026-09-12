@@ -17,13 +17,13 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
 open CuspPuncturedCollarBridge
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The exact cusp-overlap chart into the actual central family. -/
 public noncomputable def cuspOverlapToCentral :
@@ -94,6 +94,6 @@ public theorem centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral
     _ = x.1 := congrArg Subtype.val
       (A.cuspCollarToStarOverlapHomeomorph.apply_symm_apply x)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

@@ -19,18 +19,18 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
-variable {A : PaperAnalyticData}
+variable {A : AnalyticData}
 
 
 
 
 /-- The named map from the actual affine band to its selected common torus coordinate. -/
-public noncomputable def affineBandFiberCoordinate (A : PaperAnalyticData) :
+public noncomputable def affineBandFiberCoordinate (A : AnalyticData) :
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
@@ -43,7 +43,7 @@ public noncomputable def affineBandFiberCoordinate (A : PaperAnalyticData) :
 /-- The order-three canonical marked projection, factored through the named band fibre
 coordinate and the actual finite quotient map. -/
 public noncomputable def affineBandOrderThreeMarkedProjection
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
@@ -57,7 +57,7 @@ public noncomputable def affineBandOrderThreeMarkedProjection
 /-- The order-four canonical marked projection, factored through the named band fibre
 coordinate and the actual finite quotient map. -/
 public noncomputable def affineBandOrderFourMarkedProjection
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     C((A.actualAffineHeightSplit.allocation.orderThreeSide ∩
         A.actualAffineHeightSplit.allocation.orderFourSide :
           Set A.ellipticInterior),
@@ -71,7 +71,7 @@ public noncomputable def affineBandOrderFourMarkedProjection
 /-- The named order-three marked projection is exactly the fixed cover map used by the radial
 completion. -/
 public theorem affineBandOrderThreeMarkedProjection_eq_coverMap
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     affineBandOrderThreeMarkedProjection A =
       affineBandOrderThreeCoverMap A := by
   rfl
@@ -79,12 +79,12 @@ public theorem affineBandOrderThreeMarkedProjection_eq_coverMap
 /-- The named order-four marked projection is exactly the fixed cover map used by the radial
 completion. -/
 public theorem affineBandOrderFourMarkedProjection_eq_coverMap
-    (A : PaperAnalyticData) :
+    (A : AnalyticData) :
     affineBandOrderFourMarkedProjection A =
       affineBandOrderFourCoverMap A := by
   rfl
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

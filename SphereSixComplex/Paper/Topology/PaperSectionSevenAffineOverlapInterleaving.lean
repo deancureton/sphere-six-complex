@@ -22,7 +22,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open GlobalTorusFamily TorusFamily
 open EquivariantQuotientHomeomorph
@@ -40,7 +40,7 @@ open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- A collar point sits inside the glued space exactly at its central-family image. -/
 public theorem centralToSectionSevenEulerPiece_starToCentral (i : Fin 3)
@@ -1512,7 +1512,7 @@ public theorem AffineOverlapBandCompatibility.toOverlapCompletionInput
   orderFourCompatibility := B.orderFour
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

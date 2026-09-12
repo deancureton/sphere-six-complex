@@ -7,7 +7,7 @@ import all SphereSixComplex.Paper.Periods.Matrix
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus GlobalTorusFamily
 open CuspPuncturedCollarBridge CuspRadialClutchingConstruction CuspPeriodExpansion
@@ -16,11 +16,11 @@ open PositiveCircleCross CircleProductIdentityMappingTorus
 
 
 
-public def cuspFillingPhaseSweep (A : PaperAnalyticData) (i : Fin 2) :
+public def cuspFillingPhaseSweep (A : AnalyticData) (i : Fin 2) :
     IntegralSingularHomology 1 (ActualLocalCuspFilling A.starCuspWitness) →+
       IntegralSingularHomology 2 (ActualLocalCuspFilling A.starCuspWitness) :=
   (integralSingularHomologyMap 2 (cuspFillingPeriodCircle A.starCuspWitness i)).comp
     (normalizedCircleCross 1)
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

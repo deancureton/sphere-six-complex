@@ -7,19 +7,19 @@ public import SphereSixComplex.Paper.Topology.CuspPeriodLoopDeckComparison
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus TorusFamily GlobalTorusFamily
 open CuspPuncturedCollarBridge CuspRadialClutchingConstruction CuspPeriodExpansion
 open StandardCircleHomologyLiftDegree EllipticFamilySpecialization
 
-public def cuspFiniteFiberCoordinateCircle (A : PaperAnalyticData) (j : Fin 2) :
+public def cuspFiniteFiberCoordinateCircle (A : AnalyticData) (j : Fin 2) :
     C(StdTorus 1, AdditiveTorus (cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness)).1) :=
   integerPeriodCircle _ (fullRankDomain (cuspBasePoint A.cuspCoordinate
     (markedCuspParameter A.starCuspWitness))) (Pi.single (Fin.castAdd 2 j) 1)
 
-public theorem cuspFiniteFiberCoordinateCircle_generator (A : PaperAnalyticData) (j : Fin 2) :
+public theorem cuspFiniteFiberCoordinateCircle_generator (A : AnalyticData) (j : Fin 2) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
     let _ := G.fiberTopology
     integralSingularHomologyMap 1 (A.cuspFiniteFiberCoordinateCircle j)
@@ -31,13 +31,13 @@ public theorem cuspFiniteFiberCoordinateCircle_generator (A : PaperAnalyticData)
     G.monodromyCoordinates.degreeOne.apply_symm_apply]
   exact integerPeriodCircle_homology _ _ _
 
-public def cuspFiniteFiberCircleToFilling (A : PaperAnalyticData) (j : Fin 2) :
+public def cuspFiniteFiberCircleToFilling (A : AnalyticData) (j : Fin 2) :
     C(StdTorus 1, ActualLocalCuspFilling A.starCuspWitness) := by
   let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
   let _ := G.fiberTopology
   exact G.markedFiberToCuspFilling.comp (A.cuspFiniteFiberCoordinateCircle j)
 
-public theorem cuspFiniteFiberCircleToFilling_homology (A : PaperAnalyticData) (j : Fin 2) :
+public theorem cuspFiniteFiberCircleToFilling_homology (A : AnalyticData) (j : Fin 2) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
     let _ := G.fiberTopology
     integralSingularHomologyMap 1 (A.cuspFiniteFiberCircleToFilling j)
@@ -51,7 +51,7 @@ public theorem cuspFiniteFiberCircleToFilling_homology (A : PaperAnalyticData) (
   exact congrArg (integralSingularHomologyMap 1 G.markedFiberToCuspFilling)
     (A.cuspFiniteFiberCoordinateCircle_generator j)
 
-public theorem cuspFiniteFiberCircleToFilling_real (A : PaperAnalyticData) (j : Fin 2)
+public theorem cuspFiniteFiberCircleToFilling_real (A : AnalyticData) (j : Fin 2)
     (t : ℝ) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
     A.cuspFiniteFiberCircleToFilling j (fun _ ↦ (t : UnitAddCircle)) =
@@ -64,12 +64,12 @@ public theorem cuspFiniteFiberCircleToFilling_real (A : PaperAnalyticData) (j : 
   apply G.markedFiberToCuspFilling_eq_actualCuspCollarPeriodPoint
   exact integerPeriodCircle_real _ _ _ t
 
-public theorem cuspMarkedParameter_halfPlane (A : PaperAnalyticData) :
+public theorem cuspMarkedParameter_halfPlane (A : AnalyticData) :
     markedCuspParameter A.starCuspWitness ∈ cuspHalfPlane A.cuspCoordinate.height :=
   mem_cuspHalfPlane_of_norm_cuspQ_lt A.starCuspWitness.localWitness.radius_le
     (markedCuspParameter_mem A.starCuspWitness)
 
-public theorem cuspFiniteFiberCircleToFilling_loop (A : PaperAnalyticData) (j : Fin 2) :
+public theorem cuspFiniteFiberCircleToFilling_loop (A : AnalyticData) (j : Fin 2) :
     let s := markedCuspParameter A.starCuspWitness
     let hs := A.cuspMarkedParameter_halfPlane
     let hsr : cuspQ s ∈ Metric.ball (0 : ℂ) A.starCuspWitness.localWitness.radius := by
@@ -106,7 +106,7 @@ public theorem cuspFiniteFiberCircleToFilling_loop (A : PaperAnalyticData) (j : 
   ext t
   exact h t
 
-public theorem cuspFiniteFiberGenerator_deckCoordinates (A : PaperAnalyticData) (j : Fin 2) :
+public theorem cuspFiniteFiberGenerator_deckCoordinates (A : AnalyticData) (j : Fin 2) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
     let _ := G.fiberTopology
     actualCuspDeckHomologyOneEquiv A.starCuspWitness
@@ -130,4 +130,4 @@ public theorem cuspFiniteFiberGenerator_deckCoordinates (A : PaperAnalyticData) 
   erw [← h]
   exact (abelianCoverHomologyEquiv hp e).symm_apply_apply _
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

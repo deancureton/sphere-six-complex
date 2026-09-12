@@ -8,7 +8,7 @@ import all SphereSixComplex.Paper.Periods.Matrix
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus GlobalTorusFamily
 open CuspPuncturedCollarBridge CuspRadialClutchingConstruction CuspPeriodExpansion
@@ -18,7 +18,7 @@ public def cuspMixedTorusIndex : Fin 3 → Fin 4 := ![1,2,3]
 public def cuspMixedTorusPeriod : Fin 3 → Fin 2 := ![0,1,0]
 public def cuspMixedTorusPhase : Fin 3 → Fin 2 := ![1,0,0]
 
-public theorem cuspMixedTorus_phasePoint (A : PaperAnalyticData) (j : Fin 3)
+public theorem cuspMixedTorus_phasePoint (A : AnalyticData) (j : Fin 3)
     (t s : UnitAddCircle) :
     cuspFillingPeriodCircle A.starCuspWitness (cuspMixedTorusPhase j)
       (s,A.cuspFiniteFiberCircleToFilling (cuspMixedTorusPeriod j) (fun _ ↦ t)) =
@@ -37,7 +37,7 @@ public theorem cuspMixedTorus_phasePoint (A : PaperAnalyticData) (j : Fin 3)
       cuspMixedTorusPhase, cuspMixedTorusIndex, cuspFiniteFiberPairIndex,
       standardPeriodPairSecond]
 
-public theorem cuspMixedTorus_phaseSweep (A : PaperAnalyticData) (j : Fin 3) :
+public theorem cuspMixedTorus_phaseSweep (A : AnalyticData) (j : Fin 3) :
     A.cuspFillingPhaseSweep (cuspMixedTorusPhase j)
       (integralSingularHomologyMap 1
         (A.cuspFiniteFiberCircleToFilling (cuspMixedTorusPeriod j))
@@ -70,12 +70,12 @@ public theorem cuspMixedTorus_phaseSweep (A : PaperAnalyticData) (j : Fin 3) :
   congr 2
   exact (integralSingularHomologyEquiv 2 circleProdStandardCircleHomeomorph).apply_symm_apply _
 
-local instance (A : PaperAnalyticData) :
+local instance (A : AnalyticData) :
     T2Space (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness) := by
   let _ := actualLocalCuspFilling_t2 A.starCuspWitness
   exact (actualLocalCuspCentralOrbitMap_isEmbedding A.starCuspWitness).t2Space
 
-public theorem cuspFiniteFiberCircleToFilling_cellular (A : PaperAnalyticData) (j : Fin 2) :
+public theorem cuspFiniteFiberCircleToFilling_cellular (A : AnalyticData) (j : Fin 2) :
     integralSingularHomologyMap 1 (A.cuspFiniteFiberCircleToFilling j)
       standardCircleHomologyGenerator =
       (-(Pi.single j 1 : Fin 2 → ℤ) 0 + (Pi.single j 1 : Fin 2 → ℤ) 1) •
@@ -85,7 +85,7 @@ public theorem cuspFiniteFiberCircleToFilling_cellular (A : PaperAnalyticData) (
   rw [cuspFiniteFiberCircleToFilling_loop]
   exact localCuspPeriodLoop_cellularHomology A.starCuspWitness _ _ _ _
 
-public theorem cuspMixedTorus_cellularSweeps (A : PaperAnalyticData) (j : Fin 3) :
+public theorem cuspMixedTorus_cellularSweeps (A : AnalyticData) (j : Fin 3) :
     integralSingularHomologyMap 2
       (A.cuspFiniteFiberTorusToFilling (cuspMixedTorusIndex j))
       standardTwoTorusHomologyGenerator =
@@ -104,7 +104,7 @@ public theorem cuspMixedTorus_cellularSweeps (A : PaperAnalyticData) (j : Fin 3)
       rw [cuspMixedTorus_phaseSweep, neg_neg]
     _ = _ := by rw [cuspFiniteFiberCircleToFilling_cellular, map_add, map_zsmul, map_zsmul]
 
-public theorem cuspMixedFourthTorus_cellularSweep (A : PaperAnalyticData) :
+public theorem cuspMixedFourthTorus_cellularSweep (A : AnalyticData) :
     integralSingularHomologyMap 2 (A.cuspFiniteFiberTorusToFilling 1)
       standardTwoTorusHomologyGenerator =
       A.cuspFillingPhaseSweep 1
@@ -112,7 +112,7 @@ public theorem cuspMixedFourthTorus_cellularSweep (A : PaperAnalyticData) :
   simpa [cuspMixedTorusIndex, cuspMixedTorusPeriod, cuspMixedTorusPhase] using
     A.cuspMixedTorus_cellularSweeps 0
 
-public theorem cuspMixedThirdSecondTorus_cellularSweeps (A : PaperAnalyticData) :
+public theorem cuspMixedThirdSecondTorus_cellularSweeps (A : AnalyticData) :
     integralSingularHomologyMap 2 (A.cuspFiniteFiberTorusToFilling 2)
       standardTwoTorusHomologyGenerator =
       -A.cuspFillingPhaseSweep 0
@@ -123,7 +123,7 @@ public theorem cuspMixedThirdSecondTorus_cellularSweeps (A : PaperAnalyticData) 
   simpa [cuspMixedTorusIndex, cuspMixedTorusPeriod, cuspMixedTorusPhase] using
     A.cuspMixedTorus_cellularSweeps 1
 
-public theorem cuspMixedThirdFirstTorus_cellularSweep (A : PaperAnalyticData) :
+public theorem cuspMixedThirdFirstTorus_cellularSweep (A : AnalyticData) :
     integralSingularHomologyMap 2 (A.cuspFiniteFiberTorusToFilling 3)
       standardTwoTorusHomologyGenerator =
       A.cuspFillingPhaseSweep 0
@@ -131,4 +131,4 @@ public theorem cuspMixedThirdFirstTorus_cellularSweep (A : PaperAnalyticData) :
   simpa [cuspMixedTorusIndex, cuspMixedTorusPeriod, cuspMixedTorusPhase] using
     A.cuspMixedTorus_cellularSweeps 2
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

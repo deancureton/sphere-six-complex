@@ -19,7 +19,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex ComplexTorus CuspPuncturedCollarBridge
 open InfiniteA2Toric CuspFilling CuspLocalPhaseAction
@@ -27,7 +27,7 @@ open CuspPeriodExpansion
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 private theorem fundamentalGroupHomOfBaseEq_map
     {B N : Type*} [TopologicalSpace B] [TopologicalSpace N]
@@ -251,6 +251,6 @@ public theorem cuspChosenAffineFillingCover_map_eq :
     A.cuspChosenAffineFillingCover_boundaryBase_eq
     A.cuspChosenAffineFillingCover_fillingBase_eq
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

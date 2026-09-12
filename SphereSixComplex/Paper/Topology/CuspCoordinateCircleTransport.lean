@@ -6,14 +6,14 @@ public import SphereSixComplex.Paper.Topology.RegularPeriodCircleTransport
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open GlobalTorusFamily CuspPuncturedCollarBridge CuspRadialClutchingConstruction
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus TorusFamily CuspPeriodExpansion
 open EllipticTwoDiscCoverData
 
-public theorem cuspFullFiberSlice_coordinateCircle_real (A : PaperAnalyticData)
+public theorem cuspFullFiberSlice_coordinateCircle_real (A : AnalyticData)
     (i : Fin 4) (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius) (t : ℝ) :
     actualCuspFullFiberSlice (A := A) s hs
       (cuspCoordinateCircle (cuspBasePoint A.cuspCoordinate
@@ -34,7 +34,7 @@ public theorem cuspFullFiberSlice_coordinateCircle_real (A : PaperAnalyticData)
   rw [← h]
   exact actualCuspFullFiberSlice_additiveTorusProjection s hs _
 
-public theorem cuspFullFiberSlice_coordinateCircle_central (A : PaperAnalyticData)
+public theorem cuspFullFiberSlice_coordinateCircle_central (A : AnalyticData)
     (i : Fin 4) (s : ℂ) (hs : ‖cuspQ s‖ < A.starCuspWitness.localWitness.radius)
     (t : UnitAddCircle) :
     A.starToCentral 0
@@ -61,6 +61,6 @@ public theorem cuspFullFiberSlice_coordinateCircle_central (A : PaperAnalyticDat
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 end
 end

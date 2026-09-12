@@ -17,13 +17,13 @@ noncomputable section
 
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open AnalyticTorusFamily EllipticFamilySpecialization
 open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
 open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The actual cusp collar as a circle mapping torus with four-torus fibre. -/
 public noncomputable def cuspCollarCircleMappingTorusModel :
@@ -122,7 +122,7 @@ public noncomputable def actualCollarCircleMappingTorusModel (i : Fin 3) :
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

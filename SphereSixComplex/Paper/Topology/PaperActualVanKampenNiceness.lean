@@ -25,9 +25,9 @@ noncomputable section
 
 open scoped ContDiff Manifold
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-variable (P : PaperAnalyticData)
+variable (P : AnalyticData)
 
 /-- The charted structure on the glued analytic star. -/
 @[instance_reducible]
@@ -80,7 +80,7 @@ public theorem vanKampen_semilocallySimplyConnected :
   exact ChartedSpace.semilocallySimplyConnectedSpace (H := ComplexModel)
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

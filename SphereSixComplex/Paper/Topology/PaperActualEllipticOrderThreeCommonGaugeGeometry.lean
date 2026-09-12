@@ -16,13 +16,13 @@ group.  It is independent of the connector used to transport the elliptic overla
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.Geometry.ComplexTorus
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The exact order-three overlap chart into the punctured central family. -/
 public noncomputable def ellipticThreeOverlapToCentral :
@@ -192,6 +192,6 @@ public noncomputable def orderThreeCentralBaseWhisker :
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

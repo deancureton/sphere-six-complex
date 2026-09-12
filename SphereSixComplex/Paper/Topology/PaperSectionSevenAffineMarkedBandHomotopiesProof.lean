@@ -17,7 +17,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
@@ -27,7 +27,7 @@ open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
 open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
 
 public theorem orderThreeSelectedFilling_toFun_starToFilling_mk
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (q : (orderThreeAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
       A.starSeparation.orderThree.radius).carrier) :
@@ -41,7 +41,7 @@ public theorem orderThreeSelectedFilling_toFun_starToFilling_mk
   rfl
 
 public theorem orderFourSelectedFilling_toFun_starToFilling_mk
-    (A : PaperAnalyticData)
+    (A : AnalyticData)
     (q : (orderFourAffinePuncturedCarrier A.periods
       A.modular.modularParameter.toTriangleUniformization_sourceAction
       A.starSeparation.orderFour.radius).carrier) :
@@ -57,6 +57,6 @@ public theorem orderFourSelectedFilling_toFun_starToFilling_mk
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

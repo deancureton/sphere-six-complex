@@ -8,13 +8,13 @@ open Lean Elab Command
 run_cmd do
   let env ← getEnv
   let mut worklist : Array Name :=
-    #[`SphereSixComplex.Geometry.PaperAnalyticData.star_nonempty_homologyEquiv_sixSphere,
-      `SphereSixComplex.Geometry.PaperAnalyticData.star_nonempty_homologyEquiv_sixSphere_of_positiveDegree,
-      `SphereSixComplex.Geometry.PaperAnalyticData.star_simplyConnectedSpace,
-      `SphereSixComplex.Geometry.PaperAnalyticData.compactComplexStar,
-      `SphereSixComplex.exists_simplyConnected_complexThreefold,
-      `SphereSixComplex.Geometry.PaperAnalyticData.stageTopDegreeVanishing,
-      `SphereSixComplex.Geometry.PaperAnalyticData.actualStarHasVanKampenData]
+    #[`SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere,
+      `SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere_of_positiveDegree,
+      `SphereSixComplex.Geometry.AnalyticData.star_simplyConnectedSpace,
+      `SphereSixComplex.Geometry.AnalyticData.compactComplexStar,
+      `SphereSixComplex.exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere,
+      `SphereSixComplex.Geometry.AnalyticData.stageTopDegreeVanishing,
+      `SphereSixComplex.Geometry.AnalyticData.actualStarHasVanKampenData]
   let mut checked : Std.HashSet Name := {}
   let mut axioms : Std.HashSet Name := {}
   while !worklist.isEmpty do

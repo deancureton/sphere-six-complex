@@ -16,12 +16,12 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Topology.PaperVanKampenFourPieceCover
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem ellipticThreeCanonicalChosenCover_fillingBase_eq :
     A.ellipticThreeCanonicalChosenCover.fillingBase =
@@ -146,7 +146,7 @@ public structure EllipticRelatorMembership
 
 namespace EllipticRelatorMembership
 
-variable {A : PaperAnalyticData} {N : A.CuspCentralNaturality}
+variable {A : AnalyticData} {N : A.CuspCentralNaturality}
 
 /-- Assemble the connector-invariant affine filling bridge for the actual four-piece star. -/
 public noncomputable def bridge
@@ -194,7 +194,7 @@ public theorem hasVanKampenData
 
 end EllipticRelatorMembership
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

@@ -22,9 +22,9 @@ open EquivariantQuotientHomeomorph
 
 noncomputable section
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public noncomputable abbrev starCuspWitness := A.actualPuncturedCuspWitness
 public noncomputable abbrev starSeparation := A.collarSeparationData
@@ -144,7 +144,7 @@ public theorem starToCentral_ranges_pairwise : Pairwise fun i j ↦
   toFilling_isOpenEmbedding := A.starToFilling_isOpenEmbedding
   centralRange_disjoint := A.starToCentral_ranges_pairwise
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

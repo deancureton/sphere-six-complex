@@ -763,9 +763,9 @@ private theorem additiveCuspCoverToFilling_range
         change Quotient.mk _ (e (Quotient.mk _ p)) = Quotient.mk _ u
         rw [hv]
 
-namespace PaperAnalyticData
+namespace AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem additiveCuspCoverToGlobal_isLocalDiffeomorph
     (W : ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel) :
@@ -809,7 +809,7 @@ public theorem additiveCuspCoverToGlobal_isLocalDiffeomorph
     (fuchsianPuncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph
       A.modular.modularParameter A.periods)
   let _ : IsManifold globalDeckTotalModel ∞ A.CentralFamily := by
-    simpa [PaperAnalyticData.centralFamilyProductCharts, regularSmoothnessOrder] using hcentral.1
+    simpa [AnalyticData.centralFamilyProductCharts, regularSmoothnessOrder] using hcentral.1
   let hb := additiveCuspBundleMap_isLocalDiffeomorph W
   let q₁ : RegularBase (U := A.modular.modularParameter.toTriangleUniformization) ×
       ComplexTwoSpace → RegularTotalSpace A.periods :=
@@ -826,7 +826,7 @@ public theorem additiveCuspCoverToGlobal_isLocalDiffeomorph
         globalDeckTotalModel ∞
         (q₂ ∘ q₁ ∘ fun x ↦ (additiveCuspBundleHomeomorph W x).1) p :=
       IsLocalDiffeomorphAt.comp globalDeckTotalModel A.CentralFamily h₁ (by
-        simpa [q₂, PaperAnalyticData.centralFamilyProductCharts, regularSmoothnessOrder] using
+        simpa [q₂, AnalyticData.centralFamilyProductCharts, regularSmoothnessOrder] using
           hcentral.2 (q₁ ((additiveCuspBundleHomeomorph W p).1)))
     convert h₂ using 1
     funext x
@@ -855,7 +855,7 @@ public theorem additiveCuspCoverToGlobal_isLocalDiffeomorph
     A.CentralFamily hp (d.isLocalDiffeomorph (additiveCuspCoverToGlobal W p))
   convert h using 1
   · change A.centralFamilyComplexCharts = cComplex
-    unfold PaperAnalyticData.centralFamilyComplexCharts globalDeckComplexCharts
+    unfold AnalyticData.centralFamilyComplexCharts globalDeckComplexCharts
     rfl
   · funext x
     rfl
@@ -925,7 +925,7 @@ public theorem actualPuncturedCuspCollarPartialDiffeomorph_apply
       (puncturedLocalCuspQuotientMap W q) = _
   exact actualPuncturedCuspCollarOpenPartialHomeomorph_apply W q
 
-end PaperAnalyticData
+end AnalyticData
 
 end
 

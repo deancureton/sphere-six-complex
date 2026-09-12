@@ -4,11 +4,11 @@ public import SphereSixComplex.Paper.Topology.PaperEllipticBoundaryMeridianEndpo
 
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem orderFourBaseComparisonTrace_enteringSheet
     (H : ContinuousMap.Homotopy A.orderFourCentralBaseFactor.toContinuousMap
@@ -140,4 +140,4 @@ public theorem orderThreeBaseComparisonTrace_enteringSheet
   rw [hi'] at hi
   simpa only [MulOpposite.unop_op, inv_inv, mul_assoc] using hi.symm
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

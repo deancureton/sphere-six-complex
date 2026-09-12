@@ -17,7 +17,7 @@ noncomputable section
 
 open Complex Filter Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Periods.SourceAutomaticBranch
@@ -32,7 +32,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- Evaluating the local chart function on the Cayley coordinate recovers the original
 normalized affine coordinate. -/
@@ -172,7 +172,7 @@ public theorem orderThreeFillingRelation_baseCoordinate_eq_chartFunction
         fuchsianOneFixedPoint)
       (A.orderThreeFillingRelationCayleyLoop_apply t)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

@@ -17,13 +17,13 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.Topology
 open SphereSixComplex.Geometry.ComplexTorus
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- A free homotopy from the explicit order-three regular loop to a representative of the
 expected affine relator supplies the required chart identity.  The connector is the reverse of
@@ -190,7 +190,7 @@ public theorem ellipticFourRegularLoopChartIdentity_of_freeHomotopy
     w.symm hover.symm A.orderFourCentralExpectedRelator).symm
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

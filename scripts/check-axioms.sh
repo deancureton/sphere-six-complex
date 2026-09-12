@@ -35,7 +35,7 @@ cd "$project_root"
 
 targets=(
   "SphereSixComplex.sphere_six_admits_complex_structure"
-  "SphereSixComplex.exists_complex_threefold_diffeomorphic_sixSphere"
+  "SphereSixComplex.exists_complexThreefold_nonempty_diffeomorph_sixSphere"
 )
 
 work="$(mktemp -d)"

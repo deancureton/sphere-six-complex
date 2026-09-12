@@ -16,7 +16,7 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
@@ -34,7 +34,7 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 translation.  This is the strongest sheet-sensitive conclusion available from the selected
 affine-disc inclusion. -/
 public theorem exists_regularDeck_namedOrderFourRadialBase_cayley_lt
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) :
+    (A : AnalyticData) (x : A.affineMarkedBand) :
     ∃ g : Delta,
       ‖(orderFourCayleyHomeomorph
         (fuchsianSourceAction g •
@@ -114,7 +114,7 @@ public theorem exists_regularDeck_namedOrderFourRadialBase_cayley_lt
 /-- The smallest equality needed to transfer the selected-collar bound from a deck translate to
 the named radial lift is equality of their order-four Cayley norms. -/
 public theorem namedOrderFourRadialBase_cayley_lt_of_deck_cayley_norm_eq
-    (A : PaperAnalyticData) (x : A.affineMarkedBand) (g : Delta)
+    (A : AnalyticData) (x : A.affineMarkedBand) (g : Delta)
     (hsmall : ‖(orderFourCayleyHomeomorph
       (fuchsianSourceAction g •
         (A.affineOrderFourRadialBaseLift
@@ -135,6 +135,6 @@ public theorem namedOrderFourRadialBase_cayley_lt_of_deck_cayley_norm_eq
   exact hsmall
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end

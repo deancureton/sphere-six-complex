@@ -267,7 +267,7 @@ theorem constructedPositiveInteriorTorusHomeomorph_firstTwoPeriods
       localCuspExponentialPoint_t]
 
 theorem constructedCuspPositiveProjection_firstTorus_real
-    (A : PaperAnalyticData) (a b : ℝ) :
+    (A : AnalyticData) (a b : ℝ) :
     constructedCuspPositiveProjection A.starCuspWitness
       (A.cuspFiniteFiberTorusToFilling 0 ![(a : UnitAddCircle), (b : UnitAddCircle)]) =
       ((constructedPositiveInteriorTorusHomeomorph A.starCuspWitness).symm
@@ -303,7 +303,7 @@ theorem constructedCuspPositiveProjection_firstTorus_real
     constructedPositiveInteriorTorusHomeomorph_firstTwoPeriods W s hs]
 
 theorem constructedCuspPositiveProjection_firstTorus
-    (A : PaperAnalyticData) (z : SphereSixComplex.StandardTorusHomology.StdTorus 2) :
+    (A : AnalyticData) (z : SphereSixComplex.StandardTorusHomology.StdTorus 2) :
     constructedCuspPositiveProjection A.starCuspWitness (A.cuspFiniteFiberTorusToFilling 0 z) =
       ((constructedPositiveInteriorTorusHomeomorph A.starCuspWitness).symm
         (z, ⟨‖cuspQ (CuspRadialClutchingConstruction.markedCuspParameter A.starCuspWitness)‖,

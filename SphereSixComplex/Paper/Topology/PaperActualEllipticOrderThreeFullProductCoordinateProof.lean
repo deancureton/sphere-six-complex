@@ -9,7 +9,7 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData
@@ -29,7 +29,7 @@ open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The actual three-turn Cayley circle, retaining its radius bound as a point of the unit
 disc. -/
@@ -131,15 +131,6 @@ public theorem orderThreeRegularLoop_cayleyGaugeProductCoordinate
         Quotient.mk _ A.ellipticThreeBoundaryBase.2.2
     exact congrArg Prod.snd hcoord
 
-public structure OrderThreePuncturedProductProperData : Type where
-  proper : SourceActionProperlyDiscontinuous
-    (U := A.modular.modularParameter.toTriangleUniformization)
-
-public def orderThreePuncturedProductProperData :
-    A.OrderThreePuncturedProductProperData where
-  proper := sourceActionProperlyDiscontinuous_of_eq
-    A.modular.modularParameter.toTriangleUniformization_sourceAction
-
 /-- The punctured Cayley collar in which the actual order-three filling loop lies. -/
 public abbrev OrderThreeCayleyPuncturedDisc :=
   {z : ComplexUnitDisc //
@@ -202,7 +193,8 @@ public noncomputable def orderThreePuncturedProductToRegularMap :
   let _ := A.ellipticThreeBoundaryAction
   exact
     { toFun := fun q => orderThreeCollarToRegular A.periods
-        A.orderThreePuncturedProductProperData.proper
+        (sourceActionProperlyDiscontinuous_of_eq
+          A.modular.modularParameter.toTriangleUniformization_sourceAction)
         A.starSeparation.orderThree.sourceData
         ((orderThreePuncturedProductHomeomorph A.periods
           A.modular.modularParameter.toTriangleUniformization_sourceAction
@@ -212,7 +204,8 @@ public noncomputable def orderThreePuncturedProductToRegularMap :
         let _ := A.totalSpaceCharts
         exact
           (orderThreeCollarToRegular_isOpenEmbedding A.periods
-            A.orderThreePuncturedProductProperData.proper
+            (sourceActionProperlyDiscontinuous_of_eq
+          A.modular.modularParameter.toTriangleUniformization_sourceAction)
             A.starSeparation.orderThree.sourceData).continuous.comp
               (orderThreePuncturedProductHomeomorph A.periods
                 A.modular.modularParameter.toTriangleUniformization_sourceAction
@@ -415,7 +408,7 @@ public theorem orderThreeProjectedRegularLoop_freeHomotopy_localFiberThenBase_tr
   rcases A.orderThreeProjectedRegularLoop_pathHomotopic_localFiberThenBase with ⟨H⟩
   exact ⟨pathHomotopyToFreeHomotopy H, pathHomotopyToFreeHomotopy_trace H⟩
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

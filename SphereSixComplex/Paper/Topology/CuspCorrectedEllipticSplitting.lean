@@ -6,11 +6,11 @@ public import SphereSixComplex.Paper.Topology.CuspFourthSweepFiberParity
 @[expose] public section
 noncomputable section
 open AlgebraicTopology
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 open EllipticTwoDiscCoverData EllipticTwoDiscHomologyCoordinates
 open EllipticInteriorMarkedCycleData
 
-public theorem cuspBoundaryCoordinate_rawFour {A : PaperAnalyticData}
+public theorem cuspBoundaryCoordinate_rawFour {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     R.homologyAlignment.actualHomologyCoordinates.degreeTwoInvariantEquiv
@@ -22,7 +22,7 @@ public theorem cuspBoundaryCoordinate_rawFour {A : PaperAnalyticData}
     at h
   exact h
 
-public theorem cuspRawFour_positiveBoundary {A : PaperAnalyticData}
+public theorem cuspRawFour_positiveBoundary {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     (presentationTwo (D := R.twoDiscCover)).totalToInvariants
       (cuspToEllipticUnionHomology R.twoDiscCover 2
@@ -33,7 +33,7 @@ public theorem cuspRawFour_positiveBoundary {A : PaperAnalyticData}
     AddEquiv.apply_symm_apply]
   simp
 
-public def correctedCuspDegreeTwoSplitting {A : PaperAnalyticData}
+public def correctedCuspDegreeTwoSplitting {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover)) :=
   R.homologyAlignment.actualHomologyCoordinates.degreeTwoSplittingOfGenerator
@@ -41,7 +41,7 @@ public def correctedCuspDegreeTwoSplitting {A : PaperAnalyticData}
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)))
     (cuspRawFour_positiveBoundary R)
 
-public theorem correctedCuspDegreeTwoSplitting_rawFour {A : PaperAnalyticData}
+public theorem correctedCuspDegreeTwoSplitting_rawFour {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
       (correctedCuspDegreeTwoSplitting R)
@@ -60,7 +60,7 @@ public theorem correctedCuspDegreeTwoSplitting_rawFour {A : PaperAnalyticData}
   rw [map_zero, zero_add, hs, LinearEquiv.apply_symm_apply] at h
   simpa only [map_zero] using h
 
-public theorem correctedCuspDegreeTwoSplitting_boundary {A : PaperAnalyticData}
+public theorem correctedCuspDegreeTwoSplitting_boundary {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
     R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
@@ -69,7 +69,7 @@ public theorem correctedCuspDegreeTwoSplitting_boundary {A : PaperAnalyticData}
       A.cuspRawHomologyTwoEquiv x 4 :=
   cuspBoundaryCoordinate_rawFour R x
 
-public theorem cuspEllipticFiberCoordinate_eq_union {A : PaperAnalyticData}
+public theorem cuspEllipticFiberCoordinate_eq_union {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (S : WangHomologyPresentation.NormalizedSplitting (presentationTwo (D := R.twoDiscCover)))
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
@@ -83,14 +83,14 @@ public theorem cuspEllipticFiberCoordinate_eq_union {A : PaperAnalyticData}
     (R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv S)
     (AddEquiv.symm_apply_apply _ _)) 0
 
-public theorem correctedCuspDegreeTwoSplitting_rawFour_fiber {A : PaperAnalyticData}
+public theorem correctedCuspDegreeTwoSplitting_rawFour_fiber {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) = 0 := by
   rw [cuspEllipticFiberCoordinate_eq_union, correctedCuspDegreeTwoSplitting_rawFour]
   rfl
 
-public theorem correctedCuspFiberCoordinate_of_rawFive {A : PaperAnalyticData}
+public theorem correctedCuspFiberCoordinate_of_rawFive {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (hfive : A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1) :
@@ -118,7 +118,7 @@ public theorem correctedCuspFiberCoordinate_of_rawFive {A : PaperAnalyticData}
     · rw [hfive]
       simp [coordinateAfterAddEquiv_apply]
 
-public theorem correctedCuspHomologyTwoCoordinates_of_rawFive {A : PaperAnalyticData}
+public theorem correctedCuspHomologyTwoCoordinates_of_rawFive {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (hfive : A.cuspEllipticFiberCoordinate R (correctedCuspDegreeTwoSplitting R)
       (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1)) = 1)
@@ -136,4 +136,4 @@ public theorem correctedCuspHomologyTwoCoordinates_of_rawFive {A : PaperAnalytic
     simpa [coordinateAfterAddEquiv_apply] using h
   · exact correctedCuspDegreeTwoSplitting_boundary R x
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData

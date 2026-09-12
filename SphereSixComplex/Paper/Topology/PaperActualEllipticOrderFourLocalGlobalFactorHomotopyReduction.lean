@@ -12,7 +12,7 @@ open scoped ContinuousMap
 
 
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData
@@ -20,7 +20,7 @@ open SphereSixComplex.Topology
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.ComplexTorus
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 public theorem ellipticFourCentralBase_eq_offsetGaugeRealization :
     letI := A.ellipticFourBoundaryAction
@@ -421,7 +421,7 @@ public theorem ellipticFour_relator_mem_normalClosure_of_periodTransport
   exact A.ellipticFour_relator_mem_normalClosure_of_factorHomotopies
     (A.ellipticFour_exists_factorHomotopies_of_periodTransport h)
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

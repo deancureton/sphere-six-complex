@@ -31,9 +31,9 @@ open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.PaperAnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData
 
-variable (A : PaperAnalyticData)
+variable (A : AnalyticData)
 
 /-- The affine vertical strip is open in the affine coordinate line. -/
 public theorem affineVerticalStrip_isOpen :
@@ -53,7 +53,7 @@ public theorem affineVerticalStrip_subset :
 
 /-- The affine coordinate on the regular base is the exact full-deck covering, transported
 through the regular-base preimage homeomorphism.  This repeats
-`PaperAnalyticData.regularCoordinate_isCoveringMap`, which lives in a module that may not be
+`AnalyticData.regularCoordinate_isCoveringMap`, which lives in a module that may not be
 imported here without a cycle. -/
 private theorem regularCoordinate_isCoveringMap' :
     IsCoveringMap A.regularCoordinate := by
@@ -593,7 +593,7 @@ public theorem stripLiftPoint_regularMovingToFixed (L : A.AffineStripLift)
 
 
 
-end SphereSixComplex.Geometry.PaperAnalyticData
+end SphereSixComplex.Geometry.AnalyticData
 
 end
 

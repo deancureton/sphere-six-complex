@@ -78,14 +78,14 @@ public theorem constructedA2PositiveQuotientRelativeCW
   constructedA2PositiveQuotientRelativeCW_of_cOneManifoldBoundary
     (constructedA2PositiveCOneManifoldBoundaryData W)
 
-public noncomputable def constructedPolarHoneycombResidualData_of_contractible
+public noncomputable def constructedPolarHoneycombConstructionData_of_contractible
     {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (h : ContractibleSpace (constructedLocalPositivePart W.localWitness.radius)) :
-    ConstructedPolarHoneycombResidualData W where
-  honeycomb := constructedA2CorrectedHoneycombHomeomorph W.localWitness.radius_pos
-  positive_contractible := h
-  quotient_relativeCW := (constructedA2PositiveQuotientRelativeCW W).some
+    NormalizedPolarHoneycombConstructionData N constructedModel W.localWitness.radius :=
+  constructedPolarHoneycombConstructionData W
+    (constructedA2CorrectedHoneycombHomeomorph W.localWitness.radius_pos) h
+    (constructedA2PositiveQuotientRelativeCW W).some
 
 end SphereSixComplex.Geometry.InfiniteA2Toric
