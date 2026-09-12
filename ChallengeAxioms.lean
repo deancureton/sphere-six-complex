@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenAffineRegularLiftCompletion
 public import SphereSixComplex.Paper.Topology.CuspAttachmentHomology
 public import SphereSixComplex.Prerequisites.Topology.HomologySphereRecognition
-public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCover
 
 /-!
 # Comparator trusted-axiom imports

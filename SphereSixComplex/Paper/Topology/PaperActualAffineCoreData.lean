@@ -1,14 +1,13 @@
 module
 
-public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCover
+public import SphereSixComplex.Paper.Topology.PaperGeometricCentralCore
 
 /-!
-# The affine fundamental-group data of the paper's central family
+# Geometric affine-core fundamental-group data
 
-The universal cover is retained for the filling-cover comparison.  The affine core marking itself
-is built from the literal cusp period loops and the two geometric finite meridians, whose common
-peripheral conjugator gives precisely the two integral monodromy matrices used by the final van
-Kampen calculation.
+The affine core is based at the actual cusp-overlap point. Its marking consists of literal cusp
+period loops and the geometric finite meridians, with their proved monodromy and generation
+relations. No auxiliary universal-cover choice is required.
 -/
 
 @[expose] public section
@@ -23,59 +22,24 @@ open SphereSixComplex.TriangleGroup
 
 variable (A : AnalyticData)
 
-/-- The chosen affine universal cover of the paper's punctured central family. -/
-public noncomputable def centralAffineUniversalCover :=
-  puncturedGlobalFamilyEquivariantUniversalCover A
-
-/-- A chosen point of the affine universal cover above the actual cusp-overlap base. -/
-public noncomputable def centralAffineUniversalCoverPoint :
-    A.centralAffineUniversalCover.Cover := by
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  let _ : SimplyConnectedSpace D.Cover := D.data.simplyConnected
-  exact Classical.choose (D.data.quotientCovering.surjective A.cuspCentralBase)
-
-@[simp]
-public theorem centralAffineUniversalCoverPoint_projects :
-    let D := A.centralAffineUniversalCover
-    letI := D.topology
-    letI := D.action
-    D.data.projection A.centralAffineUniversalCoverPoint = A.cuspCentralBase := by
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  exact Classical.choose_spec
-    (D.data.quotientCovering.surjective A.cuspCentralBase)
-
-/-- The induced base point in the actual central family. -/
-public noncomputable def centralAffineBase : A.CentralFamily := by
-  let D := A.centralAffineUniversalCover
-  let _ := D.topology
-  let _ := D.action
-  exact D.data.projection A.centralAffineUniversalCoverPoint
+/-- The affine core is based at the actual cusp-overlap point. -/
+public def centralAffineBase : A.CentralFamily := A.cuspCentralBase
 
 @[simp]
 public theorem centralAffineBase_eq_cuspCentralBase :
-    A.centralAffineBase = A.cuspCentralBase := by
-  exact A.centralAffineUniversalCoverPoint_projects
+    A.centralAffineBase = A.cuspCentralBase := rfl
 
-/-- Equality transport from the literal actual cusp base to the displayed affine base. -/
+/-- The two core markings use the same base point. -/
 public noncomputable def cuspToCentralAffineBaseEquiv :
     FundamentalGroup A.CentralFamily A.cuspCentralBase ≃*
       FundamentalGroup A.CentralFamily A.centralAffineBase :=
-  SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
-    A.centralAffineBase_eq_cuspCentralBase.symm
+  MulEquiv.refl _
 
-/-- The actual geometric affine-core presentation, transported across the definitional affine
-basepoint equality.  Its marking is therefore fixed by literal cusp loops rather than by an
-arbitrary labelling of the chosen universal cover. -/
+/-- The geometric core data at the common cusp base point. -/
 public noncomputable def centralAffineCorePiOneData :
     AffineTorusCorePiOneData (FundamentalGroup A.CentralFamily A.centralAffineBase)
       Lattice paperMonodromyOne paperMonodromyTwo :=
-  A.cuspGeometricCorePiOneData.mapSurjective
-    A.cuspToCentralAffineBaseEquiv.toMonoidHom
-    A.cuspToCentralAffineBaseEquiv.surjective
+  A.cuspGeometricCorePiOneData
 
 /-- The affine core's translation field is the corrected literal cusp marking transported to
 the displayed affine base. -/

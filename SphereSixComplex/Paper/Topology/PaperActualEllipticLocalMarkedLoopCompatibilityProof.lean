@@ -6,7 +6,7 @@ public import Mathlib.Algebra.Group.Equiv.Basic
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup
 public import Mathlib.Topology.Homotopy.Lifting
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticFillingDeckTransport
-public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCover
+
 public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeCommonGaugeGeometry
 public import SphereSixComplex.Prerequisites.Topology.EstablishedAffineVanKampen

@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Topology.CuspCorrectedBoundaryCoordinate
+public import SphereSixComplex.Paper.Topology.CuspNormalizedBandMarking
+public import SphereSixComplex.Paper.Topology.CuspFourthSweepCentralImage
 public import SphereSixComplex.Paper.Topology.CuspFourthSweepFiberParity
 
 @[expose] public section
@@ -10,18 +11,6 @@ namespace SphereSixComplex.Geometry.AnalyticData
 open EllipticTwoDiscCoverData EllipticTwoDiscHomologyCoordinates
 open EllipticInteriorMarkedCycleData
 
-public theorem cuspBoundaryCoordinate_rawFour {A : AnalyticData}
-    (R : A.AffineRadialCompletionInput)
-    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
-    R.homologyAlignment.actualHomologyCoordinates.degreeTwoInvariantEquiv
-      ((presentationTwo (D := R.twoDiscCover)).totalToInvariants
-        (cuspToEllipticUnionHomology R.twoDiscCover 2 x)) =
-      A.cuspRawHomologyTwoEquiv x 4 := by
-  have h := DFunLike.congr_fun (cuspPulledBackBoundaryCoordinateHom_eq_rawFour R) x
-  rw [R.twoDiscCover.cuspPulledBackBoundaryCoordinateHom_eq_cuspDegreeTwoBoundaryCoordinateHom]
-    at h
-  exact h
-
 public theorem cuspRawFour_positiveBoundary {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     (presentationTwo (D := R.twoDiscCover)).totalToInvariants
@@ -29,9 +18,12 @@ public theorem cuspRawFour_positiveBoundary {A : AnalyticData}
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) =
       R.homologyAlignment.actualHomologyCoordinates.degreeTwoInvariantEquiv.symm 1 := by
   apply R.homologyAlignment.actualHomologyCoordinates.degreeTwoInvariantEquiv.injective
-  rw [cuspBoundaryCoordinate_rawFour, LinearEquiv.apply_symm_apply,
-    AddEquiv.apply_symm_apply]
-  simp
+  rw [LinearEquiv.apply_symm_apply]
+  have h := DFunLike.congr_fun
+    (R.twoDiscCover.cuspPulledBackBoundaryCoordinateHom_eq_cuspDegreeTwoBoundaryCoordinateHom
+      R.homologyAlignment)
+    (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))
+  exact h.symm.trans (cuspRawFour_pulled_back_scalar_one R)
 
 public def correctedCuspDegreeTwoSplitting {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
@@ -59,15 +51,6 @@ public theorem correctedCuspDegreeTwoSplitting_rawFour {A : AnalyticData}
     rw [LinearEquiv.apply_symm_apply, one_smul]
   rw [map_zero, zero_add, hs, LinearEquiv.apply_symm_apply] at h
   simpa only [map_zero] using h
-
-public theorem correctedCuspDegreeTwoSplitting_boundary {A : AnalyticData}
-    (R : A.AffineRadialCompletionInput)
-    (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0)) :
-    R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
-      (correctedCuspDegreeTwoSplitting R)
-      (cuspToEllipticUnionHomology R.twoDiscCover 2 x) 1 =
-      A.cuspRawHomologyTwoEquiv x 4 :=
-  cuspBoundaryCoordinate_rawFour R x
 
 public theorem cuspEllipticFiberCoordinate_eq_union {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)

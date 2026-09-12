@@ -140,7 +140,8 @@ theorem orderThreeZeroSection_homology :
     A.orderThreeCentralAffineZeroSectionTriplePath_class
   change loopHomologyClass _ = hurewiczFunction _ (A.centralAffineCorePiOneData.rhoOne ^ 3) at h
   refine h.trans ?_
-  exact congrArg Multiplicative.toAdd ((hurewiczPi1 A.centralAffineBase).map_pow _ 3)
+  exact congrArg Multiplicative.toAdd
+    ((hurewiczPi1 A.centralAffineBase).map_pow A.centralAffineCorePiOneData.rhoOne 3)
 
 theorem orderFourZeroSection_homology :
     loopHomologyClass A.orderFourCentralAffineZeroSectionQuadruplePath =
@@ -149,7 +150,8 @@ theorem orderFourZeroSection_homology :
     A.orderFourCentralAffineZeroSectionQuadruplePath_class
   change loopHomologyClass _ = hurewiczFunction _ (A.centralAffineCorePiOneData.rhoTwo ^ 4) at h
   refine h.trans ?_
-  exact congrArg Multiplicative.toAdd ((hurewiczPi1 A.centralAffineBase).map_pow _ 4)
+  exact congrArg Multiplicative.toAdd
+    ((hurewiczPi1 A.centralAffineBase).map_pow A.centralAffineCorePiOneData.rhoTwo 4)
 
 end SphereSixComplex.Geometry.AnalyticData
 
@@ -349,14 +351,7 @@ theorem cuspPeriod_homology_eq_affineTranslation (a : Lattice) :
       (regularFamilyQuotientMap A.periods).continuous) =
       hurewiczFunction A.centralAffineBase
         (Additive.toMul (A.centralAffineCorePiOneData.translation a)) := by
-  refine (A.cuspPeriod_homology_eq_correctedTranslation a).trans ?_
-  rw [A.centralAffineCorePiOneData_translation]
-  unfold cuspToCentralAffineBaseEquiv
-  rw [fundamentalGroupMulEquivOfEq_apply]
-  obtain ⟨p, hp⟩ := Path.Homotopic.Quotient.mk_surjective
-    (Additive.toMul (A.correctedActualCuspCentralTranslation a))
-  rw [← hp]
-  exact (loopHomologyClass_cast p A.centralAffineBase_eq_cuspCentralBase).symm
+  exact A.cuspPeriod_homology_eq_correctedTranslation a
 
 noncomputable def centralToInteriorAbelian :
     FundamentalGroup A.CentralFamily A.centralAffineBase →*

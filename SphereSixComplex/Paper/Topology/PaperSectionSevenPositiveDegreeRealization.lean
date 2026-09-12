@@ -13,7 +13,7 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenEllipticTwoDiscCo
 
 Coordinate evaluation after an additive lattice equivalence gives additive homomorphisms.
 The cusp boundary coordinate is the actual Wang boundary followed by its marked invariant
-coordinate. Lattice-basis extensionality and the evaluation formulas are proved here.
+coordinate. The evaluation formula is proved here.
 -/
 
 @[expose] public section
@@ -24,39 +24,6 @@ open AlgebraicTopology Set
 
 namespace SphereSixComplex
 
-/-- Additive maps out of a finite free abelian group agree when they agree on its standard
-basis. -/
-public theorem addMonoidHom_ext_of_equiv_pi_single_one
-    {G H : Type*} [AddCommGroup G] [AddCommGroup H] {n : ℕ}
-    (e : G ≃+ (Fin n → ℤ)) (f g : G →+ H)
-    (h : ∀ i, f (e.symm (Pi.single i 1)) = g (e.symm (Pi.single i 1))) :
-    f = g := by
-  apply AddMonoidHom.ext
-  intro x
-  let y := e x
-  have hx : x = e.symm y := by simp [y]
-  rw [hx]
-  apply Pi.single_induction (M := fun _ : Fin n => ℤ)
-    (p := fun z => f (e.symm z) = g (e.symm z)) y
-  · simp
-  · intro a b ha hb
-    simpa using congrArg₂ (· + ·) ha hb
-  · intro i z
-    have hz : (Pi.single i z : Fin n → ℤ) =
-        z • (Pi.single i 1 : Fin n → ℤ) := by
-      ext j
-      classical
-      by_cases hji : j = i
-      · subst j
-        simp
-      · simp [hji]
-    calc
-      f (e.symm (Pi.single i z)) =
-          f (e.symm (z • (Pi.single i 1 : Fin n → ℤ))) := by rw [hz]
-      _ = z • f (e.symm (Pi.single i 1)) := by rw [map_zsmul, map_zsmul]
-      _ = z • g (e.symm (Pi.single i 1)) := congrArg (z • ·) (h i)
-      _ = g (e.symm (z • (Pi.single i 1 : Fin n → ℤ))) := by rw [map_zsmul, map_zsmul]
-      _ = g (e.symm (Pi.single i z)) := by rw [hz]
 
 namespace Geometry.AnalyticData
 
@@ -104,12 +71,6 @@ public theorem cuspDegreeTwoBoundaryCoordinateHom_apply
       N.actualHomologyCoordinates.degreeTwoInvariantEquiv
       ((presentationTwo (D := D)).totalToInvariants
         (cuspToEllipticUnionHomology D 2 x)) := rfl
-
-
-public theorem coordinateAfterAddEquiv_apply
-    {G : Type*} [AddCommGroup G] {n : ℕ}
-    (e : G ≃+ (Fin n → ℤ)) (i : Fin n) (x : G) :
-    coordinateAfterAddEquiv e i x = e x i := rfl
 
 
 end EllipticInteriorMarkedCycleData

@@ -52,12 +52,6 @@ public def abelianizationMulOppositeEquiv (G : Type) [Group G] :
   map_mul' := map_mul _
 
 
-@[simp]
-public theorem abelianizationMulOppositeEquiv_symm_of {G : Type} [Group G] (g : G) :
-    (abelianizationMulOppositeEquiv G).symm (Abelianization.of g) =
-      Abelianization.of (MulOpposite.op g) := rfl
-
-
 /-- The classical first Hurewicz theorem in degree one. -/
 public def abelianizationComparison
     (X : Type) [TopologicalSpace X] (b : X) [PathConnectedSpace X] :
@@ -101,6 +95,9 @@ public theorem homologyOneEquivOfPi1Opposite_apply_loop
     apply (abelianizationEquivOfPi1Opposite b e).symm.injective
     simp [abelianizationEquivOfPi1Opposite, loopClass, hmark,
       abelianizationCongr_symm]
+    change e.abelianizationCongr
+      (e.abelianizationCongr.symm (Abelianization.of (MulOpposite.op (deck a)))) = _
+    exact e.abelianizationCongr.apply_symm_apply _
   rw [hloop, (abelianizationComparison X b).equiv_loopClass]
 
 /-- The marked form of the quotient-cover first-Hurewicz comparison with a prescribed target

@@ -8,18 +8,13 @@ public import SphereSixComplex.Paper.Topology.PaperRegularFiberTransport
 public import SphereSixComplex.Prerequisites.Topology.RealMappingTorusFiberSlice
 public import SphereSixComplex.Prerequisites.Topology.CanonicalProductWangBoundaryNaturality
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverOrientedRefinementNaturality
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMarkedConnectingNaturalityProof
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
 public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
 public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
 public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
+
 public import SphereSixComplex.Prerequisites.Topology.WangHomologyPresentationProof
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverAssembly
-
-
-
-
-
 
 @[expose] public section
 noncomputable section

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualAffineCoreData
-public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCover
+
 public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
 public import SphereSixComplex.Paper.Topology.PaperActualVanKampenNiceness
 
@@ -226,16 +226,11 @@ public theorem cuspOverlapToCore_eq_fromActual
     A.cuspOverlapToCore gamma =
       A.cuspToCoreEquiv (A.cuspOverlapToCentralPiOne gamma) := by
   rw [A.cuspOverlapToCore_eq_central]
-  unfold cuspToCoreEquiv cuspToCentralAffineBaseEquiv
-    cuspOverlapToCentralPiOne
   change A.cuspCentralToCoreEquiv
-      (FundamentalGroup.mapOfEq A.cuspOverlapToCentral _ gamma) =
+      (FundamentalGroup.mapOfEq A.cuspOverlapToCentral rfl gamma) =
     A.cuspCentralToCoreEquiv
-      (SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
-        A.centralAffineBase_eq_cuspCentralBase.symm
-        (FundamentalGroup.map A.cuspOverlapToCentral
-          A.cuspOverlapBase gamma))
-  congr 1
+      (FundamentalGroup.map A.cuspOverlapToCentral A.cuspOverlapBase gamma)
+  rw [TauCeti.FundamentalGroup.mapOfEq_rfl]
 
 /-- Marked cusp-to-central naturality constructed from the literal cusp loops, geometric finite
 meridians, and their proved common peripheral conjugator. -/

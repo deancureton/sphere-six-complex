@@ -45,7 +45,6 @@ public import SphereSixComplex.Paper.Geometry.EstablishedFuchsianCuspNeighborhoo
 public import SphereSixComplex.Paper.Geometry.EstablishedFuchsianCuspNeighborhoodDefs
 public import SphereSixComplex.Paper.Geometry.EstablishedFuchsianCuspNeighborhoodProof
 public import SphereSixComplex.Paper.Geometry.FamilyEquivariance
-public import SphereSixComplex.Paper.Geometry.FuchsianPuncturedGlobalFamilyNiceness
 public import SphereSixComplex.Paper.Geometry.FuchsianRegularTorusFamily
 public import SphereSixComplex.Paper.Geometry.GlobalDeckSmoothness
 public import SphereSixComplex.Paper.Geometry.GlobalTorusFamily
@@ -226,7 +225,6 @@ public import SphereSixComplex.Paper.Topology.CuspChosenThirdPeriodLoop
 public import SphereSixComplex.Paper.Topology.CuspChosenThirdSweep
 public import SphereSixComplex.Paper.Topology.PaperCuspCollarRadialMappingTorus
 public import SphereSixComplex.Paper.Topology.CuspCoordinateCircleTransport
-public import SphereSixComplex.Paper.Topology.CuspCorrectedBoundaryCoordinate
 
 public import SphereSixComplex.Paper.Topology.CuspCorrectedEllipticSplitting
 
@@ -311,9 +309,6 @@ public import SphereSixComplex.Paper.Topology.EllipticThreeTorusWangLattice
 public import SphereSixComplex.Paper.Topology.EstablishedA2PhaseSpreading
 public import SphereSixComplex.Paper.Topology.EstablishedActualEllipticDegreeTwoHomologyBasisFiniteDataProof
 public import SphereSixComplex.Paper.Topology.EstablishedBasedVanKampen
-public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCover
-public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCoverDefs
-public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCoverProof
 public import SphereSixComplex.Prerequisites.Topology.FiniteCoverCechDefs
 public import SphereSixComplex.Prerequisites.Topology.FirstQuadrantRowwiseTotalizationProof
 public import SphereSixComplex.Prerequisites.Topology.BoundarySevenCechRowIdentificationsProof
@@ -531,7 +526,6 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspActualCoordin
 
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverOrientedRefinementNaturality
 public import SphereSixComplex.Prerequisites.Topology.CanonicalProductWangBoundaryNaturality
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMarkedConnectingNaturalityProof
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSlice
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenPositiveDegreeRealization

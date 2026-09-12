@@ -51,8 +51,17 @@ public theorem cuspAttachment_differenceMap_two_surjective {A : AnalyticData}
         (A.cuspEllipticFiberCoordinate_rawFive R (correctedCuspDegreeTwoSplitting R))
     · change R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv
         (correctedCuspDegreeTwoSplitting R) _ 1 = 0
-      rw [correctedCuspDegreeTwoSplitting_boundary, AddEquiv.apply_symm_apply]
-      simp
+      have h := DFunLike.congr_fun
+        (R.twoDiscCover.cuspPulledBackBoundaryCoordinateHom_eq_cuspDegreeTwoBoundaryCoordinateHom
+          R.homologyAlignment)
+        (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))
+      apply h.symm.trans
+      rw [R.twoDiscCover.cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate]
+      change R.homologyAlignment.actualHomologyCoordinates.bandOne
+        (R.twoDiscCover.cuspPulledBackBoundaryHom
+          (A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1))) 3 = 0
+      rw [cuspRawFive_pulled_back_boundary_zero, map_zero]
+      rfl
 
   have hker (y : Fin 2 → ℤ) :
       ∃ x, p x = 0 ∧ q x = y := by

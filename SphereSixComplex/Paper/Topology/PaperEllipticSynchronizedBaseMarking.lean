@@ -23,23 +23,13 @@ variable (A : AnalyticData)
 public theorem orderFourCentralAffineZeroSectionQuadruplePath_class :
     Path.Homotopic.Quotient.mk A.orderFourCentralAffineZeroSectionQuadruplePath =
       (A.cuspToCentralAffineBaseEquiv A.geometricCentralRhoTwo) ^ 4 := by
-  unfold orderFourCentralAffineZeroSectionQuadruplePath
-  rw [Path.Homotopic.Quotient.mk_cast,
-    A.ellipticFourCuspZeroSectionQuadruplePath_class]
-  rw [← map_pow]
-  unfold cuspToCentralAffineBaseEquiv
-  rw [fundamentalGroupMulEquivOfEq_apply]
+  exact A.ellipticFourCuspZeroSectionQuadruplePath_class
 
 
 public theorem orderThreeCentralAffineZeroSectionTriplePath_class :
     Path.Homotopic.Quotient.mk A.orderThreeCentralAffineZeroSectionTriplePath =
       (A.cuspToCentralAffineBaseEquiv A.geometricCentralRhoOne) ^ 3 := by
-  unfold orderThreeCentralAffineZeroSectionTriplePath
-  rw [Path.Homotopic.Quotient.mk_cast,
-    A.ellipticThreeCuspZeroSectionTriplePath_class]
-  rw [← map_pow]
-  unfold cuspToCentralAffineBaseEquiv
-  rw [fundamentalGroupMulEquivOfEq_apply]
+  exact A.ellipticThreeCuspZeroSectionTriplePath_class
 
 
 end SphereSixComplex.Geometry.AnalyticData

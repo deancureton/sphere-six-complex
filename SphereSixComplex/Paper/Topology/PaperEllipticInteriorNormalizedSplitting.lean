@@ -7,9 +7,8 @@ public import SphereSixComplex.Paper.Topology.PaperEllipticTwoDiscHomologyCoordi
 /-!
 # Swept-cycle normalization for the elliptic interior
 
-The rank-two Mayer--Vietoris computation splits an extension of a fibre cokernel by a boundary
-kernel.  An arbitrary projective splitting is unsuitable for the final inclusion calculation.
-This file instead uses an explicit swept-cycle section and proves the resulting two coordinates.
+The rank-two Mayer--Vietoris computation splits an extension of a fiber cokernel by a boundary
+kernel. A chosen swept-cycle section fixes convenient integral coordinates.
 -/
 
 @[expose] public section

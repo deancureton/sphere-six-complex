@@ -3,16 +3,10 @@ module
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspPullbackWangComparison
 
 /-!
-# The remaining cusp Wang naturality square
+# Cusp Wang boundary
 
-The canonical Mayer--Vietoris boundary is already natural under pullback.  The Wang sequence used
-for the radial cusp collar, however, is currently supplied only as four exact homomorphisms.  Its
-statement does not identify its boundary with a chain-level connecting morphism, so exactness
-alone cannot determine the orientation of that boundary.
-
-This file isolates the smallest general interface needed here: naturality after applying one
-marked coordinate to each connecting homomorphism.  Everything from that standard
-connecting-morphism square to the Section 7 boundary comparison is proved below.
+The cusp collar's Wang boundary is obtained from the mapping-torus boundary through the
+homology equivalence induced by the radial collar's homotopy equivalence.
 -/
 
 @[expose] public section
@@ -45,16 +39,6 @@ public noncomputable def actualCuspWangBoundaryHom (A : AnalyticData) :
   let P := circleMappingTorusHTwoPresentation G.clutching
   exact P.boundary.comp
     (integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv).toAddMonoidHom
-
-
-/-- The fourth marked coordinate on the actual elliptic band overlap. -/
-public noncomputable def ellipticBandFourthCoordinateHom
-    (N : A.EllipticBandHomologyAlignment D) :
-    IntegralSingularHomology 1
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) →+ ℤ :=
-  coordinateAfterAddEquiv N.actualHomologyCoordinates.bandOne 3
-
-
 
 
 end EllipticTwoDiscCoverData
