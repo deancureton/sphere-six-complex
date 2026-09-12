@@ -30,10 +30,10 @@ variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
 /-- The canonical algebraic extension together with the marked degree-one Hurewicz comparison. -/
-public noncomputable def establishedAffineCyclicUniversalCoverHOneIdentification
+public noncomputable def universalCoverHOneIdentification
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     AffineCyclicUniversalCoverHOneIdentification P := by
-  let H := establishedAffineCyclicDeckHurewiczComparison P
+  let H := deckHurewiczComparison P
   exact {
     extension := canonicalAffineCyclicFillingExtension P
     action_eq := canonicalAffineCyclicFillingExtension_action_eq P
@@ -194,10 +194,10 @@ public structure AffineCyclicHOnePresentationLiftWitness
 
 /-- The marked universal-cover identification supplies the meridian, its full-iterate relation,
 and bijectivity of the presentation map. -/
-public noncomputable def establishedAffineCyclicHOnePresentationLift_bijective
+public noncomputable def hOnePresentationLiftWitness
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     AffineCyclicHOnePresentationLiftWitness P := by
-  let I := establishedAffineCyclicUniversalCoverHOneIdentification P
+  let I := universalCoverHOneIdentification P
   exact {
     meridian := I.meridian P
     fullIterate := I.fullIterate P
@@ -208,7 +208,7 @@ canonical value of the presentation coordinates on the covering torus. -/
 public noncomputable def reducedCentralFiberHOnePresentation
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     ReducedCentralFiberHOnePresentation P := by
-  let R := establishedAffineCyclicHOnePresentationLift_bijective P
+  let R := hOnePresentationLiftWitness P
   exact reducedCentralFiberHOnePresentation_of_bijective
     P R.meridian R.fullIterate R.bijective
 

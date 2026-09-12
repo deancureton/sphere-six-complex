@@ -113,7 +113,7 @@ public theorem actualHomologyCoordinates_sidesOne_interToLeft
       ![3 * gamma (N.actualHomologyCoordinates.bandOne x),
         psiOne (N.actualHomologyCoordinates.bandOne x), 0, 0] := by
   let R := ellipticFiniteCoverHomologyRealization A.periods
-    (establishedActualEllipticDegreeTwoHomologyBasisFiniteData A)
+    (nonempty_actualEllipticDegreeTwoHomologyBasisFiniteData A)
   change EllipticBandHomologyAlignment.sidesOne (D := D) R
       (integralSingularHomologyMap 1
         (IntegralMayerVietoris.interToLeft D.orderThreeSide D.orderFourSide) x, 0) =
@@ -144,7 +144,7 @@ public theorem actualHomologyCoordinates_sidesTwo_interToLeft
       ![(alphaTwoMatrix *ᵥ N.actualHomologyCoordinates.bandTwo x) 0,
         (alphaTwoMatrix *ᵥ N.actualHomologyCoordinates.bandTwo x) 1, 0, 0] := by
   let R := ellipticFiniteCoverHomologyRealization A.periods
-    (establishedActualEllipticDegreeTwoHomologyBasisFiniteData A)
+    (nonempty_actualEllipticDegreeTwoHomologyBasisFiniteData A)
   change EllipticBandHomologyAlignment.sidesTwo (D := D) R
       (integralSingularHomologyMap 2
         (IntegralMayerVietoris.interToLeft D.orderThreeSide D.orderFourSide) x, 0) =

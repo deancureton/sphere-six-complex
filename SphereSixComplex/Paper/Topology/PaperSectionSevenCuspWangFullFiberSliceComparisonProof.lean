@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSlice
+public import SphereSixComplex.Prerequisites.Topology.RealMappingTorusFiberSlice
 public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationProof
 
 @[expose] public section
@@ -129,36 +130,6 @@ private theorem totalHomeomorph_actualCuspFullFiberSlice_snd
             (s.re, y))))).2 = _
   rw [A.actualCuspRadialClutchingData.totalHomeomorph.apply_symm_apply]
 
-private def circleMappingTorusRealFiberSlice
-    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (a : ℝ) :
-    C(F, CircleMappingTorus phi) :=
-  ⟨fun y ↦ SphereSixComplex.CyclicAngularFundamentalDomain.realMappingTorusHomeomorph phi
-      (Quotient.mk
-        (SphereSixComplex.CyclicAngularFundamentalDomain.realMappingTorusSetoid phi) (a, y)),
-    (SphereSixComplex.CyclicAngularFundamentalDomain.realMappingTorusHomeomorph phi).continuous.comp
-      (continuous_quot_mk.comp (continuous_const.prodMk continuous_id))⟩
-
-private def circleMappingTorusRealFiberSliceHomotopy
-    {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (a : ℝ) :
-    ContinuousMap.Homotopy (circleMappingTorusRealFiberSlice phi a)
-      (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ phi)) where
-  toFun q :=
-    SphereSixComplex.CyclicAngularFundamentalDomain.realMappingTorusHomeomorph phi
-      (Quotient.mk
-        (SphereSixComplex.CyclicAngularFundamentalDomain.realMappingTorusSetoid phi)
-        ((1 - (q.1 : ℝ)) * a, q.2))
-  continuous_toFun :=
-    (SphereSixComplex.CyclicAngularFundamentalDomain.realMappingTorusHomeomorph phi).continuous.comp
-      (continuous_quot_mk.comp
-        (((continuous_const.sub (continuous_subtype_val.comp continuous_fst)).mul
-          continuous_const).prodMk continuous_snd))
-  map_zero_left x := by
-    simp [circleMappingTorusRealFiberSlice]
-  map_one_left x := by
-    simpa using
-      SphereSixComplex.Geometry.CuspRadialClutchingConstruction.realMappingTorusHomeomorph_mk_zero
-        phi x
-
 private theorem cuspOpenCoverConnectingHom_eq_zero_of_intersection_image
     {A : AnalyticData} (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0))
@@ -205,7 +176,7 @@ private theorem actualCuspWangFiberSlice_to_mappingTorus
         ((TopologicalSpace.Opens.inclusion' (R.twoDiscCover.cuspOrderThreeOpen ⊓
           R.twoDiscCover.cuspOrderFourOpen)).hom.comp
           (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R)) =
-      circleMappingTorusRealFiberSlice G.clutching
+      CyclicAngularFundamentalDomain.realFiberSlice G.clutching
         (A.cuspAngularLiftPoint (actualCuspFullFiberCrossingTime A)).1.2.re := by
   dsimp
   let _ := A.actualCuspRadialClutchingData.fiberTopology
@@ -279,13 +250,13 @@ private theorem actualCuspRawCastAdd_mem_cuspCoverIntersectionImage
             (actualCuspWangFiberToCuspCoverIntersectionMap (A := A) R))) z :=
       SphereSixComplex.integralSingularHomologyMap_comp_wang _ _ _ _
     _ = integralSingularHomologyMap 2
-        (circleMappingTorusRealFiberSlice G.clutching
+        (CyclicAngularFundamentalDomain.realFiberSlice G.clutching
           (A.cuspAngularLiftPoint
             (actualCuspFullFiberCrossingTime A)).1.2.re) z := hsquare
     _ = integralSingularHomologyMap 2
         (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ G.clutching)) z := by
       rw [integralSingularHomologyMap_eq_of_homotopy 2
-        (circleMappingTorusRealFiberSliceHomotopy G.clutching
+        (CyclicAngularFundamentalDomain.realFiberSliceHomotopy G.clutching
           (A.cuspAngularLiftPoint
             (actualCuspFullFiberCrossingTime A)).1.2.re)]
     _ = y := hz

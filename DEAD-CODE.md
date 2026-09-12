@@ -102,9 +102,15 @@ The live sets differ only in one generated proof helper after Lean re-elaborated
 the removed predicate. Named mathematical dependencies are unchanged. The new resolved-source
 audit has no missing `.ilean` files and only the same two linter-option metadata references.
 No further deletion is justified by this audit without changing the retained proofs' elaboration
-strategy. The library contains 210,895 lines, and the Blueprint has 278 distinct declaration links.
+strategy. At that checkpoint, the library contained 210,895 lines and the Blueprint had 278
+distinct declaration links.
 
 The follow-up passed the full root and Blueprint builds, all 278 declaration-link checks, the
 import/layer and placeholder checks, and the strict axiom audit. Comparator's default kernel
 accepted the solution with the same permitted axioms. The construction audit no longer lists
 the deleted helper as an extra root; its axiom closure is unchanged.
+
+The subsequent naming and shared-homotopy cleanup was audited again. It retained the same 19
+elaboration helpers and introduced no new candidate ranges: 25,473 compiled project constants,
+21,024 in the endpoints' term closure. Both original fiber slices and both complete homotopies
+were compared with the shared prerequisite definitions by four kernel-checked `rfl` proofs.

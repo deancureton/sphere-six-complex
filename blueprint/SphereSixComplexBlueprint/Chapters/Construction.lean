@@ -430,7 +430,7 @@ the integral specialization maps and their saturation.
 The homology condition is a degreewise additive equivalence between integral singular homology and that of the standard six-sphere. Simple connectedness is proved separately.
 :::
 
-:::definition "mayer-vietoris-contract" (parent := "integral-homology") (lean := "SphereSixComplex.IntegralMayerVietoris.exact_sequence_of_isOpen, SphereSixComplex.establishedFourPieceMayerVietorisExactness, SphereSixComplex.FourPieceMayerVietorisExactness")
+:::definition "mayer-vietoris-contract" (parent := "integral-homology") (lean := "SphereSixComplex.IntegralMayerVietoris.exact_sequence_of_isOpen, SphereSixComplex.FourPieceOpenCover.mayerVietoris_exact, SphereSixComplex.FourPieceMayerVietorisExactness")
 Binary open-cover exactness for integral singular homology is proved using chain corestriction,
 subdivision, excision, and the cover-small chain comparison. Applying it to the three successive
 unions in the four-piece cover gives the Mayer--Vietoris sequences used in the construction.

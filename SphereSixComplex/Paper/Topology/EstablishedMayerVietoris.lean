@@ -14,7 +14,7 @@ namespace SphereSixComplex
 
 /-- The established binary theorem supplies exactness at each stage of an ordered four-piece open
 cover. -/
-public theorem establishedFourPieceMayerVietorisExactness
+public theorem FourPieceOpenCover.mayerVietoris_exact
     {X : Type} [TopologicalSpace X] (C : FourPieceOpenCover X) :
     FourPieceMayerVietorisExactness C := by
   intro r

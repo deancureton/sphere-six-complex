@@ -121,6 +121,18 @@ public theorem isEmbedding_ballParam :
   rw [heq]
   exact isOpenEmbedding_param.isEmbedding.comp SupNormBall.oneHomeomorphIoo.isEmbedding
 
+public theorem ballParam_ne_one {x : Fin 1 → ℝ}
+    (hx : x ∈ Metric.ball 0 1) : ballParam x ≠ 1 :=
+  param_ne_one (SupNormBall.oneHomeomorphIoo ⟨x, hx⟩).property
+
+public theorem surjOn_param_Icc :
+    Set.SurjOn param (Icc (-1 : ℝ) 1) Set.univ := by
+  intro z _
+  by_cases hz : z = 1
+  · exact ⟨-1, by norm_num, by simp [hz]⟩
+  · obtain ⟨t, ht, heq⟩ := surjOn_param hz
+    exact ⟨t, ⟨ht.1.le, ht.2.le⟩, heq⟩
+
 end SphereSixComplex.CircleCell
 
 end

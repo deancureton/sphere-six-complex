@@ -444,7 +444,7 @@ public noncomputable def actualHomologyCoordinates :
     A.EllipticTwoDiscHomologyCoordinates D :=
   homologyCoordinates (D := D)
     (Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization A.periods
-      (Topology.FiniteCoverPerfectPairing.establishedActualEllipticDegreeTwoHomologyBasisFiniteData A)) N
+      (Topology.FiniteCoverPerfectPairing.nonempty_actualEllipticDegreeTwoHomologyBasisFiniteData A)) N
 
 end EllipticBandHomologyAlignment
 

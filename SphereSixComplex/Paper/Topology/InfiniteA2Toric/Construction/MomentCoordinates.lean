@@ -32,17 +32,16 @@ open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
 
-public noncomputable def constructedA2PositiveRealUnit (x : ℝ) (hx : 0 < x) : ℂˣ :=
-  Units.mk0 (x : ℂ) (by exact_mod_cast hx.ne')
-
 namespace Construction
 
 /-- The positive dense-torus point with logarithmic position `(x₀,x₁)` and height `x₂`. -/
 public noncomputable def momentTorusPoint
     (x : Fin 3 → ℝ) (hx : 0 < x 2) : DenseTorus :=
-  ![constructedA2PositiveRealUnit (x 2 ^ x 0) (Real.rpow_pos_of_pos hx _),
-    constructedA2PositiveRealUnit (x 2 ^ x 1) (Real.rpow_pos_of_pos hx _),
-    constructedA2PositiveRealUnit (x 2) hx]
+  ![Units.mk0 ((x 2 ^ x 0 : ℝ) : ℂ)
+      (by exact_mod_cast (Real.rpow_pos_of_pos hx (x 0)).ne'),
+    Units.mk0 ((x 2 ^ x 1 : ℝ) : ℂ)
+      (by exact_mod_cast (Real.rpow_pos_of_pos hx (x 1)).ne'),
+    Units.mk0 (x 2 : ℂ) (by exact_mod_cast hx.ne')]
 
 private theorem momentTorusPoint_positive
     (x : Fin 3 → ℝ) (hx : 0 < x 2) :
@@ -50,11 +49,11 @@ private theorem momentTorusPoint_positive
       ((momentTorusPoint x hx i : ℂˣ) : ℂ).im = 0 := by
   intro i
   fin_cases i
-  · simp [momentTorusPoint, constructedA2PositiveRealUnit,
+  · simp [momentTorusPoint,
       Real.rpow_pos_of_pos hx]
-  · simp [momentTorusPoint, constructedA2PositiveRealUnit,
+  · simp [momentTorusPoint,
       Real.rpow_pos_of_pos hx]
-  · simpa [momentTorusPoint, constructedA2PositiveRealUnit] using hx
+  · simpa [momentTorusPoint] using hx
 
 private theorem momentTorusPoint_modulus
     (x : Fin 3 → ℝ) (hx : 0 < x 2) :
@@ -92,7 +91,7 @@ public noncomputable def offCentralMomentInverse {r : ℝ}
   let p : localCarrier constructedModel r := ⟨carrierTorusEmbedding g, by
     change carrierHeight (carrierTorusEmbedding g) ∈ Metric.ball 0 r
     rw [carrierHeight_torus]
-    simpa [g, momentTorusPoint, constructedA2PositiveRealUnit, Metric.mem_ball,
+    simpa [g, momentTorusPoint, Metric.mem_ball,
       dist_zero_right, abs_of_pos hx] using x.2.2⟩
   exact ⟨p, (mem_constructedLocalPositivePart_iff r p).mpr (by
     change carrierModulus (carrierTorusEmbedding g) = carrierTorusEmbedding g
@@ -148,11 +147,11 @@ public theorem offCentralMomentCoordinate_inverse
   fin_cases i
   · simp only [offCentralMomentCoordinate, rescaledPosition]
     rw [htorus, offCentralMomentInverse_t]
-    simp [momentTorusPoint, constructedA2PositiveRealUnit, Real.log_rpow hx, hlog,
+    simp [momentTorusPoint, Real.log_rpow hx, hlog,
       Real.norm_of_nonneg hx.le]
   · simp only [offCentralMomentCoordinate, rescaledPosition]
     rw [htorus, offCentralMomentInverse_t]
-    simp [momentTorusPoint, constructedA2PositiveRealUnit, Real.log_rpow hx, hlog,
+    simp [momentTorusPoint, Real.log_rpow hx, hlog,
       Real.norm_of_nonneg hx.le]
   · simp only [offCentralMomentCoordinate]
     rw [offCentralMomentInverse_t]

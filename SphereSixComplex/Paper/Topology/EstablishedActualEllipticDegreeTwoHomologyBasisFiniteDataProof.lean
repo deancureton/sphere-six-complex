@@ -17,7 +17,7 @@ open Geometry Geometry.EllipticFamilySpecialization
 
 /-- The primal finite calculation for the two elliptic cyclic quotients attached to the actual
 paper data, derived from normalized finite-order mapping-torus orbit sweeps. -/
-public theorem establishedActualEllipticDegreeTwoHomologyBasisFiniteData
+public theorem nonempty_actualEllipticDegreeTwoHomologyBasisFiniteData
     (A : AnalyticData) :
     Nonempty (EllipticDegreeTwoHomologyBasisFiniteData A.periods) :=
   actualEllipticDegreeTwoHomologyBasisFiniteData A.periods

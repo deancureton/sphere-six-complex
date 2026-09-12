@@ -58,13 +58,6 @@ public theorem correctedPositiveTwo_relativePhase_eq_one
     correctedPhaseOrbit_ball_formula] at h
   have hp := (correctedSingletonProductHomeomorph W).injective (Subtype.ext h)
   exact (congrArg Prod.snd hp).symm
-end Construction
-
-
-public theorem constructedCircleBallCell_ne_one {x : Fin 1 → ℝ}
-    (hx : x ∈ Metric.ball 0 1) : CircleCell.ballParam x ≠ 1 :=
-  CircleCell.param_ne_one (SupNormBall.oneHomeomorphIoo ⟨x, hx⟩).property
-namespace Construction
 
 
 public theorem circleOnePhase_ne_one {x : Fin 1 → ℝ}
@@ -73,7 +66,7 @@ public theorem circleOnePhase_ne_one {x : Fin 1 → ℝ}
   have hi := congrFun h i
   fin_cases i <;>
     simp [CircleCell.onePhase] at hi <;>
-    exact constructedCircleBallCell_ne_one hx hi
+    exact CircleCell.ballParam_ne_one hx hi
 
 public theorem circleTwoPhase_apply_ne_one {x : Fin 2 → ℝ}
     (hx : x ∈ Metric.ball 0 1) (i : Fin 2) : CircleCell.twoPhase x i ≠ 1 := by
@@ -117,7 +110,7 @@ public theorem correctedThreeOrbit_pairwiseDisjoint
   all_goals first
     | exact (hij rfl).elim
     | dsimp [CircleCell.onePhase] at hi
-      exact constructedCircleBallCell_ne_one
+      exact CircleCell.ballParam_ne_one
         (SupNormBall.prodHomeomorph 2 1 ⟨x, hx⟩).2.property hi
 
 public theorem correctedThree_four_disjoint
@@ -164,23 +157,12 @@ public theorem actualSingleton_not_of_support_ge_two
   have hn := actualCentralOrbitRel_componentSupport_ncard_eq W q p hrel
   rw [hcard] at hn
   omega
-end Construction
-
-
-public theorem constructedCircleCell_surjOn_closed :
-    Set.SurjOn CircleCell.param (Icc (-1 : ℝ) 1) Set.univ := by
-  intro z _
-  by_cases hz : z = 1
-  · exact ⟨-1, by norm_num, by simp [hz]⟩
-  · obtain ⟨t, ht, heq⟩ := CircleCell.surjOn_param hz
-    exact ⟨t, ⟨ht.1.le, ht.2.le⟩, heq⟩
-namespace Construction
 
 
 public theorem circleTwoPhase_surjOn_closed :
     Set.SurjOn CircleCell.twoPhase (Metric.closedBall 0 1) Set.univ := by
   intro k _
-  choose t ht heq using fun j : Fin 2 ↦ constructedCircleCell_surjOn_closed (Set.mem_univ (k j))
+  choose t ht heq using fun j : Fin 2 ↦ CircleCell.surjOn_param_Icc (Set.mem_univ (k j))
   refine ⟨t, ?_, funext heq⟩
   rw [Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg (by norm_num : (0 : ℝ) ≤ 1)]
   intro j

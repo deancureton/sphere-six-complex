@@ -72,7 +72,7 @@ public theorem continuous_positiveInteriorInverse (r : ℝ) :
     exact (continuous_apply i).comp continuous_subtype_val
   have hu {X : Type} [TopologicalSpace X] (f : X → ℝ) (hf : Continuous f)
       (hp : ∀ x, 0 < f x) :
-      Continuous (fun x ↦ constructedA2PositiveRealUnit (f x) (hp x)) := by
+      Continuous (fun x ↦ Units.mk0 (f x : ℂ) (by exact_mod_cast (hp x).ne')) := by
     rw [Units.continuous_iff]
     refine ⟨Complex.continuous_ofReal.comp hf, ?_⟩
     change Continuous (fun x ↦ ((f x : ℂ))⁻¹)

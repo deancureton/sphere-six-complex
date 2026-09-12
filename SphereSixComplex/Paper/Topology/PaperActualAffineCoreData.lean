@@ -25,7 +25,7 @@ variable (A : AnalyticData)
 
 /-- The chosen affine universal cover of the paper's punctured central family. -/
 public noncomputable def centralAffineUniversalCover :=
-  establishedPuncturedGlobalFamilyEquivariantUniversalCover A
+  puncturedGlobalFamilyEquivariantUniversalCover A
 
 /-- A chosen point of the affine universal cover above the actual cusp-overlap base. -/
 public noncomputable def centralAffineUniversalCoverPoint :

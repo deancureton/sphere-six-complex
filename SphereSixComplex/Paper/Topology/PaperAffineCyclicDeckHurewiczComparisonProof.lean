@@ -29,7 +29,7 @@ variable {p : SphereSixComplex.Periods.Parameters}
 variable {D : RadialEllipticActionData m
   (SphereSixComplex.Geometry.EllipticFamilySpecialization.AdditiveTorus p)}
 
-public noncomputable def establishedAffineCyclicDeckHurewiczComparison
+public noncomputable def deckHurewiczComparison
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     AffineCyclicDeckHurewiczComparison P := by
   let _ := affineCyclicFillingDeckAction P

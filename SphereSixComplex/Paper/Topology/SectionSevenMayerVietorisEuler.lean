@@ -43,7 +43,7 @@ intersection is homotopy equivalent to `S⁶` gives pieces satisfying every hypo
 `H₇(S⁷) = ℤ`: both the truncated dimension bound and the uncorrected identity
 `1 = 1 + 1 - 2` fail for that cover.  See `integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing`
 for the truncated form, which is available exactly when the union has no seventh homology. -/
-public theorem establishedIntegralMayerVietorisEulerAdditivitySeven
+public theorem IntegralMayerVietoris.euler_additivity_seven
     {X : Type} [TopologicalSpace X] (U V : Set X)
     (hUOpen : IsOpen U) (hVOpen : IsOpen V)
     (hUFinite : IntegralHomologyFiniteSix U)
@@ -81,7 +81,7 @@ public theorem integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing
         integralHomologyEulerCharacteristicSix V -
         integralHomologyEulerCharacteristicSix (U ∩ V : Set X) := by
   obtain ⟨hFinite, hAbove, hEuler⟩ :=
-    establishedIntegralMayerVietorisEulerAdditivitySeven U V hUOpen hVOpen hUFinite hVFinite
+    IntegralMayerVietoris.euler_additivity_seven U V hUOpen hVOpen hUFinite hVFinite
       hInterFinite
   have hTopRank : Module.finrank ℤ (IntegralSingularHomology 7 (U ∪ V : Set X)) = 0 := by
     have := hTop
@@ -97,7 +97,7 @@ public theorem integralMayerVietorisEulerAdditivitySix_of_topDegreeVanishing
 
 /-- The asymmetric form used to adjoin successive six-dimensional pieces to a partial union that
 may already carry degree-seven homology. -/
-public theorem establishedIntegralMayerVietorisEulerAdditivitySeven_asymmetric
+public theorem IntegralMayerVietoris.euler_additivity_seven_asymmetric
     {X : Type} [TopologicalSpace X] (U V : Set X)
     (hUOpen : IsOpen U) (hVOpen : IsOpen V)
     (hUFinite : IntegralHomologyFiniteSeven U)
@@ -203,7 +203,7 @@ public theorem integralHomologyEulerCharacteristicSeven_eq_localExpression
   have hStageZero : IntegralHomologyFiniteSeven (C.stage (0 : Fin 4)) :=
     IntegralHomologyFiniteSeven.of_six hStageZeroSix
   obtain ⟨hUnionZero, hAddZero⟩ :=
-    establishedIntegralMayerVietorisEulerAdditivitySeven_asymmetric
+    IntegralMayerVietoris.euler_additivity_seven_asymmetric
       (C.stage (0 : Fin 4)) (C.piece 1)
       (C.isOpen_stage 0) (C.isOpen_piece 1) hStageZero (hPiece 0) (hOverlap 0)
   have hStageOne : IntegralHomologyFiniteSeven (C.stage (1 : Fin 4)) :=
@@ -217,7 +217,7 @@ public theorem integralHomologyEulerCharacteristicSeven_eq_localExpression
     simpa using
       (integralHomologyEulerCharacteristicSeven_homeomorph (eNext 0)).symm.trans hAddZero
   obtain ⟨hUnionOne, hAddOne⟩ :=
-    establishedIntegralMayerVietorisEulerAdditivitySeven_asymmetric
+    IntegralMayerVietoris.euler_additivity_seven_asymmetric
       (C.stage (1 : Fin 4)) (C.piece 2)
       (C.isOpen_stage 1) (C.isOpen_piece 2) hStageOne (hPiece 1) (hOverlap 1)
   have hStageTwo : IntegralHomologyFiniteSeven (C.stage (2 : Fin 4)) :=
@@ -231,7 +231,7 @@ public theorem integralHomologyEulerCharacteristicSeven_eq_localExpression
     simpa using
       (integralHomologyEulerCharacteristicSeven_homeomorph (eNext 1)).symm.trans hAddOne
   obtain ⟨-, hAddTwo⟩ :=
-    establishedIntegralMayerVietorisEulerAdditivitySeven_asymmetric
+    IntegralMayerVietoris.euler_additivity_seven_asymmetric
       (C.stage (2 : Fin 4)) (C.piece 3)
       (C.isOpen_stage 2) (C.isOpen_piece 3) hStageTwo (hPiece 2) (hOverlap 2)
   have hAddTwo' :

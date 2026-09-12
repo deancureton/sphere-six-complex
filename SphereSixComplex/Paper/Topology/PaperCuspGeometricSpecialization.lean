@@ -40,7 +40,7 @@ public noncomputable def cuspFillingTwoReadout (A : AnalyticData) :
 
 
 
-public theorem establishedFiniteFiberDegreeOneSpecializationMatrix
+public theorem specializationHomologyOneMap_coinvariantsToTotal_single
     (A : AnalyticData) (j i : Fin 2) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
     let _ := G.fiberTopology
@@ -117,7 +117,7 @@ private theorem specializationHomologyOneMap_comp_coinvariants (A : AnalyticData
     funext i
     change G.specializationHomologyOneMap
         (P.coinvariantsToTotal (c.symm (Pi.single j 1))) i = _
-    simpa using establishedFiniteFiberDegreeOneSpecializationMatrix A j i
+    simpa using specializationHomologyOneMap_coinvariantsToTotal_single A j i
   apply LinearMap.ext
   intro x
   exact DFunLike.congr_fun hhom x

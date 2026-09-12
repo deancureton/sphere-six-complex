@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationDefs
+public import SphereSixComplex.Prerequisites.Topology.RealMappingTorusFiberSlice
 public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
 
 /-!
@@ -760,12 +761,6 @@ public theorem homeomorphOfQuotientMaps_apply {Z A B : Type*} [TopologicalSpace 
     CyclicAngularFundamentalDomain.homeomorphOfQuotientMaps hf hg hfibre (f w) = g w :=
   (hfibre _ _).mp (Function.surjInv_eq hf.surjective (f w))
 
-public theorem realMappingTorusHomeomorph_symm_fiberInclusion {T : Type} [TopologicalSpace T]
-    (phi : T ≃ₜ T) (y : T) :
-    (realMappingTorusHomeomorph phi).symm
-        (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ phi) y) =
-      Quotient.mk (realMappingTorusSetoid phi) ((0 : ℝ), y) := rfl
-
 public theorem collarFiberEquiv_self (s₀ : ℂ) (zeta : ComplexTwoSpace) :
     collarFiberEquiv N s₀ s₀ zeta = zeta := by
   rw [collarFiberEquiv_apply]
@@ -798,12 +793,6 @@ public theorem puncturedLocalCuspQuotientHomeomorph_apply
       (collarPeriodPointMap_eq_iff_collarRadialMap W s₀) (collarPeriodPointMap W a)) = _
   rw [homeomorphOfQuotientMaps_apply]
   rfl
-
-public theorem realMappingTorusHomeomorph_mk_zero {T : Type} [TopologicalSpace T]
-    (phi : T ≃ₜ T) (y : T) :
-    realMappingTorusHomeomorph phi (Quotient.mk (realMappingTorusSetoid phi) ((0 : ℝ), y)) =
-      finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ phi) y := by
-  rw [← realMappingTorusHomeomorph_symm_fiberInclusion, Homeomorph.apply_symm_apply]
 
 /-! ## The marked fibre -/
 

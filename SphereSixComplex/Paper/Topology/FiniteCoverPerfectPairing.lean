@@ -629,7 +629,7 @@ end EllipticDegreeTwoHomologyBasisFiniteData
 /-- The exact remaining cohomological input from Proposition 7.14: the displayed pullback
 classes are bases of the integral dual lattices of the two elliptic central fibres, and their
 integral evaluation pairings are perfect. -/
-public theorem establishedEllipticDegreeTwoPullbackBases
+public theorem nonempty_ellipticDegreeTwoPullbackBases
     (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
     Nonempty (EllipticDegreeTwoPullbackBases F) := by
   obtain ⟨B⟩ := hBasis
@@ -651,6 +651,6 @@ public theorem establishedEllipticDegreeTwoPullbackBases
 public noncomputable def ellipticDegreeTwoPullbackBases
     (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
     EllipticDegreeTwoPullbackBases F :=
-  Classical.choice (establishedEllipticDegreeTwoPullbackBases F hBasis)
+  Classical.choice (nonempty_ellipticDegreeTwoPullbackBases F hBasis)
 
 end SphereSixComplex.Topology.FiniteCoverPerfectPairing

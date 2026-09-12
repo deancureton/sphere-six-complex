@@ -151,3 +151,8 @@ Generic compact-representative and Cayley-neighborhood results belong to prerequ
 The final Euler argument does not require a separate intermediate-union vanishing contract.
 Its unused collar-dimension branch has been removed. Dependency cleanup starts at the two
 Comparator theorems and retains simp rules needed to elaborate the remaining proofs.
+
+Existence results use `nonempty_` names, and definitions returning comparison data are named as
+data rather than bijectivity claims. The real mapping-torus fiber slice and its explicit homotopy
+are shared prerequisites. Circle parametrization lemmas live with their parametrization; complex
+units use Mathlib's `Units.mk0` directly.

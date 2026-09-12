@@ -305,7 +305,7 @@ public theorem homologyOne_subsingleton_of_finalDifferences
         ((sectionSevenMayerVietorisCover A).piece 3) 1)) :
     Subsingleton (IntegralSingularHomology 1 (SectionSevenMayerVietorisSpace A)) := by
   have hUnion := unionHomology_subsingleton_of_exact _ _
-    (establishedFourPieceMayerVietorisExactness (sectionSevenMayerVietorisCover A) 2) 0
+    (FourPieceOpenCover.mayerVietoris_exact (sectionSevenMayerVietorisCover A) 2) 0
     hOne hZero
   let e := integralSingularHomologyEquiv 1 (finalUnionHomeomorph (A := A))
   exact ⟨fun x y ↦ e.symm.injective (hUnion.elim _ _)⟩
@@ -321,7 +321,7 @@ public theorem homologyTwo_subsingleton_of_finalDifferences
         ((sectionSevenMayerVietorisCover A).piece 3) 2)) :
     Subsingleton (IntegralSingularHomology 2 (SectionSevenMayerVietorisSpace A)) := by
   have hUnion := unionHomology_subsingleton_of_exact _ _
-    (establishedFourPieceMayerVietorisExactness (sectionSevenMayerVietorisCover A) 2) 1
+    (FourPieceOpenCover.mayerVietoris_exact (sectionSevenMayerVietorisCover A) 2) 1
     hTwo hOne
   let e := integralSingularHomologyEquiv 2 (finalUnionHomeomorph (A := A))
   exact ⟨fun x y ↦ e.symm.injective (hUnion.elim _ _)⟩

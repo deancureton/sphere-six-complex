@@ -568,7 +568,7 @@ public theorem paperPuncturedGlobalFamilyAffinePresentation_injective
 
 /-- The paper's punctured-family affine fundamental-group classification, derived from the
 canonical presentation and its proved injectivity. -/
-public noncomputable def establishedPuncturedGlobalFamilyAffineFundamentalGroup
+public noncomputable def puncturedGlobalFamilyAffineFundamentalGroup
     (A : AnalyticData) :
     PuncturedGlobalFamilyAffineFundamentalGroup A.periods where
   base := A.cuspCentralBase
@@ -584,7 +584,7 @@ This is now a theorem: the affine fundamental-group identification above is tran
 Tau Ceti's based-path universal cover, which is simply connected and whose fundamental-group
 action is a quotient covering map.  The conclusion supplies only the universal cover and its
 affine deck action. -/
-public noncomputable def establishedPuncturedGlobalFamilyEquivariantUniversalCover
+public noncomputable def puncturedGlobalFamilyEquivariantUniversalCover
     (A : AnalyticData) :
     ChosenEquivariantAffineUniversalCover IntegerPeriods Delta A.CentralFamily
       (twoMeridianOrbifoldMap g₁ g₂) integralOrbifoldPeriodMonodromy :=
@@ -593,7 +593,7 @@ public noncomputable def establishedPuncturedGlobalFamilyEquivariantUniversalCov
   letI := fuchsianPuncturedGlobalFamily_semilocallySimplyConnected
     A.modular.modularParameter A.periods
   puncturedGlobalFamilyEquivariantUniversalCover_of_fundamentalGroup A.periods
-    (establishedPuncturedGlobalFamilyAffineFundamentalGroup A)
+    (puncturedGlobalFamilyAffineFundamentalGroup A)
 
 end Geometry.GlobalTorusFamily
 
