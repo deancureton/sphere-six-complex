@@ -13,7 +13,7 @@ open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric.Construction
 open InfiniteA2Toric CuspLocalPhaseAction CuspFilling CuspPeriodExpansion
 open CuspStraighteningRetraction
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepZeroCarrier (x : Fin 2 → ℝ) : Carrier :=

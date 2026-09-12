@@ -289,7 +289,7 @@ section Collar
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspCollar
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   (N : NormalizedFuchsianCuspCoordinate E D)
 
 /-- The point of the period domain lying over the normalized cusp parameter `s`. -/
@@ -433,7 +433,7 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.RealPeriodTrivialization
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
   {M : Model}
   (W : ActualPuncturedCuspCollarWitness N M) (s₀ : ℂ)

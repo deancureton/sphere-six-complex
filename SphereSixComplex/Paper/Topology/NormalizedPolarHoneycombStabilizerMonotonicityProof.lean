@@ -83,7 +83,7 @@ public theorem compactPhaseOrbit_homotopy_eq_of_fundamentalDomain
     P hfundamental R).mpr (compactPhaseStabilizerMonotone_of_retraction P R)
 
 public theorem compactPhaseOrbit_homotopy_eq_of_invariantModulus
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hmodulus : CompactPhaseInvariantModulus Q) :

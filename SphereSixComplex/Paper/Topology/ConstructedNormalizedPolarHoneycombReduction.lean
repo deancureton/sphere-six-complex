@@ -45,7 +45,7 @@ open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The normalized positive deck formula preserves the explicit nonnegative part. -/
 public theorem constructedPositiveDeck_mem
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ)
     (lambda : ParameterLattice) (q : constructedLocalPositivePart r) :
     normalizedPositiveDeckLocalMap N constructedModel r lambda
@@ -71,7 +71,7 @@ public theorem constructedLocalPositivePart_locallyCompactSpace (r : ℝ) :
 
 /-- Every normalized positive deck transformation is continuous. -/
 public theorem constructedPositiveDeck_continuous
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ) :
     letI := normalizedPositiveDeckAction N constructedModel
       (constructedLocalPositivePart r) (constructedPositiveDeck_mem N r)
@@ -94,7 +94,7 @@ public theorem constructedPositiveDeck_continuous
 /-- At the quantitative cusp radius, straightening transfers proper discontinuity from the
 actual action to its frozen action. -/
 public theorem constructedFrozenAction_properlyDiscontinuous
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := frozenLocalCuspAction N constructedModel W.localWitness.radius
@@ -128,7 +128,7 @@ public theorem constructedFrozenAction_properlyDiscontinuous
 /-- The compact phase left after dividing the frozen complex multiplier by its positive radial
 part. -/
 public def frozenCompactPhase
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) : CompactTorus :=
   fun i ↦ ⟨(phaseEmbedding (N.phaseCoefficient lambda 0) i : ℂ) /
       (normalizedCuspPositiveTwist N lambda i : ℂ), by
@@ -139,7 +139,7 @@ public def frozenCompactPhase
     exact div_self (norm_ne_zero_iff.mpr (Units.ne_zero _))⟩
 
 public theorem compactTorusEmbedding_frozenCompactPhase_mul
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) :
     compactTorusEmbedding (frozenCompactPhase N lambda) *
         normalizedCuspPositiveTwist N lambda =
@@ -153,7 +153,7 @@ public theorem compactTorusEmbedding_frozenCompactPhase_mul
 
 /-- A frozen deck map is its positive radial deck map followed by one compact phase. -/
 public theorem frozenLocalPsiMap_eq_compactPhase_positiveDeck
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (lambda : ParameterLattice) (p : localCarrier M r) :
     frozenLocalPsiMap N M r lambda p =
@@ -322,7 +322,7 @@ end ConstructedHoneycombCellData
 
 /-- The logarithmic norm of the positive frozen multiplier is the frozen correction matrix. -/
 public theorem log_norm_normalizedCuspPositiveTwist
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice)
     (i : Fin 2) :
     Real.log ‖((normalizedCuspPositiveTwist N lambda i.castSucc : ℂˣ) : ℂ)‖ =
@@ -337,7 +337,7 @@ public theorem log_norm_normalizedCuspPositiveTwist
 /-- A fixed point of the positive deck action away from the central fibre satisfies the frozen
 logarithmic displacement equation. -/
 public theorem normalizedPositiveDeck_offCentral_logarithmic_equation
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) {r : ℝ}
     (lambda : ParameterLattice) (p : localCarrier M r) (ht : M.t p ≠ 0)
     (hfixed : normalizedPositiveDeckLocalMap N M r lambda p = p)
@@ -388,7 +388,7 @@ public theorem normalizedPositiveDeck_offCentral_logarithmic_equation
 
 /-- A fixed point of the positive deck action on the central fibre has zero lattice parameter. -/
 public theorem normalizedPositiveDeck_central_fixedPoint
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) {r : ℝ}
     (lambda : ParameterLattice) (p : localCarrier M r) (ht : M.t p = 0)
     (hfixed : normalizedPositiveDeckLocalMap N M r lambda p = p) :
@@ -419,7 +419,7 @@ public theorem normalizedPositiveDeck_central_fixedPoint
 
 /-- Frozen displacement injectivity rules out positive-deck fixed points off the central fibre. -/
 public theorem normalizedPositiveDeck_offCentral_fixedPoint
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (lambda : ParameterLattice)
@@ -471,7 +471,7 @@ public theorem normalizedPositiveDeck_offCentral_fixedPoint
 
 /-- The positive deck action has no nontrivial fixed parameter at the quantitative radius. -/
 public theorem normalizedPositiveDeck_fixedPoint
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (lambda : ParameterLattice)
@@ -486,7 +486,7 @@ public theorem normalizedPositiveDeck_fixedPoint
 
 /-- The normalized positive deck action is free at the quantitative cusp radius. -/
 public theorem constructedPositiveDeck_isCancelSMul
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -509,7 +509,7 @@ public theorem constructedPositiveDeck_isCancelSMul
 
 /-- Proper discontinuity descends from the frozen action to its positive radial section. -/
 public theorem constructedPositiveDeck_properlyDiscontinuous
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -561,7 +561,7 @@ public theorem constructedPositiveDeck_properlyDiscontinuous
 /-- Proper discontinuity and freeness discharge the covering field through Mathlib's regular
 orbit-cover theorem. -/
 public theorem constructedQuotientCovering_of_properlyDiscontinuous
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ)
     (hcancel :
       letI := normalizedPositiveDeckAction N constructedModel
@@ -593,7 +593,7 @@ public theorem constructedQuotientCovering_of_properlyDiscontinuous
 
 /-- The positive orbit projection at the quantitative cusp radius is a covering quotient. -/
 public theorem constructedPositiveDeck_quotientCovering
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -609,7 +609,7 @@ public theorem constructedPositiveDeck_quotientCovering
 
 /-- Proper discontinuity also discharges the Hausdorff quotient field. -/
 public theorem constructedQuotient_t2_of_properlyDiscontinuous
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ)
     (hproper :
       letI := normalizedPositiveDeckAction N constructedModel
@@ -633,7 +633,7 @@ public theorem constructedQuotient_t2_of_properlyDiscontinuous
 
 /-- The positive quotient at the quantitative cusp radius is Hausdorff. -/
 public theorem constructedPositiveDeck_quotient_t2
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -658,7 +658,7 @@ public theorem constructedLocalModulus_compactPhase (r : ℝ) (k : CompactTorus)
 /-- Assemble the fixed positive toric model from its honeycomb homeomorphism,
 contractibility, and relative CW structure. -/
 public def constructedPolarHoneycombConstructionData
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (honeycomb : (Fin 2 → ℝ) ≃ₜ

@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Periods.ModularFrame.Basic
+public import SphereSixComplex.Paper.Periods.FuchsianMuTorsor
 public import SphereSixComplex.Paper.Periods.ModularFrame.Construction
 public import SphereSixComplex.Paper.Periods.EstablishedOrbifoldAffineTorsorAnalyticDescent
 import all SphereSixComplex.Paper.Periods.Functions
@@ -31,23 +32,6 @@ variable (E : FuchsianModularLift)
 
 variable (F : ModularNegOneFrame E)
 
-/-- Every entire coefficient evaluated in the completed infinity coordinate is bounded on the
-fixed distinguished cusp component. -/
-public theorem _root_.SphereSixComplex.Periods.ModularNegOneFrame.infinity_coordinate_cusp_bounded
-    (_F : ModularNegOneFrame E) (f : ℂ → ℂ) (hf : MDiff f) :
-    BoundedOn (fun z ↦ f ((E.sourceCoordinate.coordinate z)⁻¹))
-      fuchsianCuspRegion := by
-  obtain ⟨B, hB, hqB⟩ :=
-    E.sourceCoordinate.inverse_coordinate_bounded_on_cusp
-  let K : Set ℂ := Metric.closedBall 0 B
-  have hK : IsCompact K := isCompact_closedBall 0 B
-  obtain ⟨A, hA⟩ := hK.bddAbove_image (hf.continuous.continuousOn.norm)
-  refine ⟨max A 0, le_max_right A 0, ?_⟩
-  intro z hz
-  have hqK : (E.sourceCoordinate.coordinate z)⁻¹ ∈ K := by
-    rw [Metric.mem_closedBall, dist_zero_right]
-    exact hqB z hz
-  exact (hA ⟨_, hqK, rfl⟩).trans (le_max_left A 0)
 
 /-- The pullback of the infinity-chart `O(-1)` frame.  Parentheses record that the reciprocal is
 taken before multiplication by the modular frame. -/
@@ -74,180 +58,6 @@ public theorem liftedNegOneInfinityFrame_two (z : UpperHalfPlane) :
     E.sourceCoordinate.coordinate_invariant, ModularNegOneFrame.frame, F.frame_two]
   ring
 
-/-- The two finite-generator laws imply invariance of the infinity frame under the positive cusp
-translation. -/
-public theorem liftedNegOneInfinityFrame_product_invariant (z : UpperHalfPlane) :
-    liftedNegOneInfinityFrame E F
-        (fuchsianSourceAction (g₁ * g₂) • z) =
-      liftedNegOneInfinityFrame E F z := by
-  rw [map_mul, mul_smul, liftedNegOneInfinityFrame_one,
-    liftedNegOneInfinityFrame_two]
-  have htau := congrArg (fun w : UpperHalfPlane ↦ (w : ℂ))
-    (E.modularParameter.transform_two z)
-  rw [rhoTauReal_g₂_smul] at htau
-  rw [htau]
-  field_simp [(E.modularParameter.tau z).ne_zero]
-
-/-- Hence the infinity frame is invariant under every integral cusp translation. -/
-public theorem liftedNegOneInfinityFrame_zpow_invariant (n : ℤ) (z : UpperHalfPlane) :
-    liftedNegOneInfinityFrame E F
-        (fuchsianSourceAction ((g₁ * g₂) ^ n) • z) =
-      liftedNegOneInfinityFrame E F z := by
-  have hnat (m : ℕ) (w : UpperHalfPlane) :
-      liftedNegOneInfinityFrame E F
-          (fuchsianSourceAction ((g₁ * g₂) ^ m) • w) =
-        liftedNegOneInfinityFrame E F w := by
-    induction m with
-    | zero => simp
-    | succ m ih =>
-        rw [pow_succ', map_mul, mul_smul,
-          liftedNegOneInfinityFrame_product_invariant E F, ih]
-  cases n with
-  | ofNat m => simpa [zpow_ofNat] using hnat m z
-  | negSucc m =>
-      have h := hnat (m + 1)
-        (fuchsianSourceAction ((g₁ * g₂) ^ (Int.negSucc m)) • z)
-      have hcancel :
-          fuchsianSourceAction ((g₁ * g₂) ^ (m + 1)) •
-              (fuchsianSourceAction
-                ((g₁ * g₂) ^ (Int.negSucc m)) • z) = z := by
-        rw [← mul_smul, ← map_mul]
-        simp [zpow_negSucc]
-      rw [hcancel] at h
-      exact h.symm
-
-private def frameCenteredCuspTruncation (H : ℝ) : Set UpperHalfPlane :=
-  {z | -cuspWidth / 2 ≤ z.re ∧ z.re ≤ cuspWidth / 2 ∧
-    1 ≤ z.im ∧ z.im ≤ max 1 H}
-
-private theorem frameCenteredCuspTruncation_isCompact (H : ℝ) :
-    IsCompact (frameCenteredCuspTruncation H) := by
-  have hrect : IsCompact
-      ((Set.Icc (-cuspWidth / 2) (cuspWidth / 2)) ×ℂ
-        Set.Icc (1 : ℝ) (max 1 H)) :=
-    isCompact_Icc.reProdIm isCompact_Icc
-  rw [UpperHalfPlane.isEmbedding_coe.isCompact_iff]
-  convert hrect using 1
-  ext z
-  constructor
-  · rintro ⟨w, ⟨hwreLower, hwreUpper, hwimLower, hwimUpper⟩, rfl⟩
-    exact ⟨⟨hwreLower, hwreUpper⟩, hwimLower, hwimUpper⟩
-  · rintro ⟨⟨hzreLower, hzreUpper⟩, hzimLower, hzimUpper⟩
-    have hzimPos : 0 < z.im := lt_of_lt_of_le (by norm_num) hzimLower
-    let w : UpperHalfPlane := ⟨z, hzimPos⟩
-    exact ⟨w, ⟨hzreLower, hzreUpper, hzimLower, hzimUpper⟩, rfl⟩
-
-private theorem boundedOn_cusp_of_eventually_bounded
-    (h : UpperHalfPlane → ℂ)
-    (hcontinuous : ContinuousOn h fuchsianCuspRegion)
-    (hinvariant : ∀ (n : ℤ) z,
-      h (fuchsianSourceAction ((g₁ * g₂) ^ n) • z) = h z)
-    {B : ℝ} (hB : 0 ≤ B)
-    (heventually : ∀ᶠ z in upperHalfPlaneAtInfinity, ‖h z‖ ≤ B) :
-    BoundedOn h fuchsianCuspRegion := by
-  rw [upperHalfPlaneAtInfinity, eventually_comap, eventually_atTop] at heventually
-  obtain ⟨H, hH⟩ := heventually
-  let K := frameCenteredCuspTruncation H
-  have hK : IsCompact K := frameCenteredCuspTruncation_isCompact H
-  have hKsub : K ⊆ fuchsianCuspRegion := fun _ hz ↦ hz.2.2.1
-  obtain ⟨A, hA⟩ := hK.bddAbove_image (hcontinuous.mono hKsub).norm
-  refine ⟨max A B, le_max_of_le_right hB, ?_⟩
-  intro z hz
-  by_cases hhigh : H ≤ z.im
-  · exact (hH z.im hhigh z rfl).trans (le_max_right A B)
-  · let w := centerPoint z
-    have hwmem : w ∈ K := by
-      refine ⟨centerPoint_re_lower z, (centerPoint_re_upper z).le, ?_, ?_⟩
-      · rw [centerPoint_im]
-        exact hz
-      · rw [centerPoint_im]
-        exact (le_of_not_ge hhigh).trans (le_max_right 1 H)
-    calc
-      ‖h z‖ = ‖h w‖ := by
-        exact congrArg norm (hinvariant (centerExponent z) z).symm
-      _ ≤ A := hA ⟨_, hwmem, rfl⟩
-      _ ≤ max A B := le_max_left A B
-
-/-- The eventual completed-cusp factorization and parabolic invariance imply boundedness on the
-whole distinguished cusp component. -/
-public theorem _root_.SphereSixComplex.Periods.ModularNegOneFrame.infinity_frame_cusp_bounded :
-    BoundedOn (liftedNegOneInfinityFrame E F) fuchsianCuspRegion := by
-  let K : Set ℂ := Metric.closedBall 0 (F.cuspRadius / 2)
-  have hK : IsCompact K := isCompact_closedBall 0 (F.cuspRadius / 2)
-  have hKsub : K ⊆ Metric.ball 0 F.cuspRadius := by
-    intro q hq
-    have hdist := Metric.mem_closedBall.mp hq
-    apply Metric.mem_ball.mpr
-    linarith [F.cuspRadius_pos]
-  have hunit : ContinuousOn F.cuspUnit K := by
-    intro q hq
-    exact (F.cuspUnit_holomorphic q (hKsub hq)).continuousAt.continuousWithinAt
-  obtain ⟨B, hBound⟩ := hK.bddAbove_image hunit.norm
-  have heventually : ∀ᶠ z in upperHalfPlaneAtInfinity,
-      ‖liftedNegOneInfinityFrame E F z‖ ≤ max B 0 := by
-    filter_upwards [F.inverse_coordinate_eventually_mem_closedBall,
-      F.cusp_factorization_eventually] with z hzmem hzfactor
-    rw [liftedNegOneInfinityFrame, ModularNegOneFrame.frame, hzfactor]
-    exact (hBound ⟨_, hzmem, rfl⟩).trans (le_max_left B 0)
-  apply boundedOn_cusp_of_eventually_bounded
-    (liftedNegOneInfinityFrame E F)
-  · intro z hz
-    exact (liftedNegOneInfinityFrame_holomorphicAt E F
-      (E.sourceCoordinate.coordinate_ne_zero_on_cusp z hz)).continuousAt.continuousWithinAt
-  · exact liftedNegOneInfinityFrame_zpow_invariant E F
-  · exact le_max_right B 0
-  · exact heventually
-
-private theorem bounded_comp_mul_of_bounded
-    {q h : UpperHalfPlane → ℂ} {s : Set UpperHalfPlane}
-    (hq : BoundedOn q s) (hh : BoundedOn h s)
-    (f : ℂ → ℂ) (hf : MDiff f) :
-    BoundedOn (fun z ↦ f (q z) * h z) s := by
-  obtain ⟨B, hB, hqB⟩ := hq
-  obtain ⟨D, hD, hhD⟩ := hh
-  let K : Set ℂ := Metric.closedBall 0 B
-  have hK : IsCompact K := isCompact_closedBall 0 B
-  obtain ⟨A, hA⟩ := hK.bddAbove_image (hf.continuous.continuousOn.norm)
-  refine ⟨max A 0 * D, mul_nonneg (le_max_right A 0) hD, ?_⟩
-  intro z hz
-  have hqK : q z ∈ K := by
-    rw [Metric.mem_closedBall, dist_zero_right]
-    exact hqB z hz
-  have hfA : ‖f (q z)‖ ≤ max A 0 :=
-    (hA ⟨q z, hqK, rfl⟩).trans (le_max_left A 0)
-  rw [norm_mul]
-  exact mul_le_mul hfA (hhD z hz) (norm_nonneg _) (le_max_right A 0)
-
-/-- The local cusp-unit theorem implies boundedness of every entire Cech correction on the fixed
-distinguished cusp component. -/
-public theorem _root_.SphereSixComplex.Periods.ModularNegOneFrame.cusp_correction_bounded
-    (f : ℂ → ℂ) (hf : MDiff f) :
-    BoundedOn
-      (fun z ↦ f ((E.sourceCoordinate.coordinate z)⁻¹) *
-        ((E.sourceCoordinate.coordinate z)⁻¹ * F.frame z))
-      fuchsianCuspRegion := by
-  simpa only [liftedNegOneInfinityFrame] using
-    bounded_comp_mul_of_bounded
-      E.sourceCoordinate.inverse_coordinate_bounded_on_cusp
-      (F.infinity_frame_cusp_bounded E) f hf
-
-/-- The source preimage of the standard infinity chart. -/
-@[expose] public def liftedInfinityRegion : Set UpperHalfPlane :=
-  {z | E.sourceCoordinate.coordinate z ≠ 0}
-
-public theorem liftedInfinityRegion_open : IsOpen (liftedInfinityRegion E) := by
-  exact isOpen_compl_singleton.preimage E.sourceCoordinate.coordinate_holomorphic.continuous
-
-public theorem liftedInfinityRegion_invariant (g : Delta) (z : UpperHalfPlane) :
-    fuchsianSourceAction g • z ∈ liftedInfinityRegion E ↔ z ∈ liftedInfinityRegion E := by
-  simp only [liftedInfinityRegion, Set.mem_ofPred_eq]
-  rw [E.sourceCoordinate.coordinate_invariant]
-
-public theorem fuchsianCuspRegion_subset_liftedInfinityRegion
-    (_F : ModularNegOneFrame E) :
-    fuchsianCuspRegion ⊆ liftedInfinityRegion E := by
-  intro z hz
-  exact E.sourceCoordinate.coordinate_ne_zero_on_cusp z hz
 
 /-- The paper's local beta section at the completed cusp. -/
 @[expose] public def cuspLocalBeta (z : UpperHalfPlane) : ℂ :=
@@ -463,102 +273,6 @@ general orbifold affine-torsor descent theorem. -/
     intro z u
     rfl
   cuspSection_normalized_bounded := (cuspLocalMu_properties E).2.2
-
-/-- The exact modular frame supplies the full `O(-1)` frame portion of the paper's Cech
-presentation.  The only data still absent are affine local sections of the torsor. -/
-public structure MuCechSections where
-  sectionZero : UpperHalfPlane → ℂ
-  sectionInfinity : UpperHalfPlane → ℂ
-  sectionZero_holomorphic : MDiff sectionZero
-  sectionInfinity_holomorphic : ∀ z, z ∈ liftedInfinityRegion E →
-    MDiffAt sectionInfinity z
-  sectionZero_one : ∀ z,
-    sectionZero (fuchsianSourceAction g₁ • z) =
-      (1 - sectionZero z) / E.modularParameter.tau z
-  sectionZero_two : ∀ z,
-    sectionZero (fuchsianSourceAction g₂ • z) =
-      1 + sectionZero z / E.modularParameter.tau z
-  sectionInfinity_one : ∀ z, z ∈ liftedInfinityRegion E →
-    sectionInfinity (fuchsianSourceAction g₁ • z) =
-      (1 - sectionInfinity z) / E.modularParameter.tau z
-  sectionInfinity_two : ∀ z, z ∈ liftedInfinityRegion E →
-    sectionInfinity (fuchsianSourceAction g₂ • z) =
-      1 + sectionInfinity z / E.modularParameter.tau z
-  overlapCocycle : ℂ → ℂ
-  overlapCocycle_holomorphic : HolomorphicOnPuncturedPlane overlapCocycle
-  section_mismatch : ∀ z, z ∈ liftedInfinityRegion E →
-    sectionZero z - sectionInfinity z =
-      overlapCocycle (E.sourceCoordinate.coordinate z) * F.frame z
-  sectionInfinity_cusp_bounded :
-    BoundedOn sectionInfinity fuchsianCuspRegion
-
-/-- Convert one concrete analytic descent certificate into the exact `mu` Cech sections consumed
-by the Fuchsian construction. -/
-@[expose] public def muAffineCechSectionsOfAnalyticDescentData
-    (A : (muDescentData E F).AnalyticDescentData) :
-    MuCechSections E F := by
-  let S := A.toTwoChartSections
-  refine {
-    sectionZero := S.sectionZero
-    sectionInfinity := S.sectionInfinity
-    sectionZero_holomorphic := S.sectionZero_holomorphic
-    sectionInfinity_holomorphic := S.sectionInfinity_holomorphic
-    sectionZero_one := ?_
-    sectionZero_two := ?_
-    sectionInfinity_one := ?_
-    sectionInfinity_two := ?_
-    overlapCocycle := S.overlapCocycle
-    overlapCocycle_holomorphic := S.overlapCocycle_holomorphic
-    section_mismatch := S.section_mismatch
-    sectionInfinity_cusp_bounded := S.sectionInfinity_normalized_cusp_bounded }
-  · intro z
-    exact S.sectionZero_one z
-  · intro z
-    exact S.sectionZero_two z
-  · intro z hz
-    exact S.sectionInfinity_one z hz
-  · intro z hz
-    exact S.sectionInfinity_two z hz
-
-
-/-- Combining the independent modular-frame theorem with affine local triviality gives exactly the
-`mu` local data consumed by the Cech splitting theorem. -/
-@[expose] public noncomputable def MuCechSections.toLocalData
-    (S : MuCechSections E F) : MuTorsorCechLocalData E where
-  zeroRegion := Set.univ
-  infinityRegion := liftedInfinityRegion E
-  zeroRegion_open := isOpen_univ
-  infinityRegion_open := liftedInfinityRegion_open E
-  regions_cover := Set.univ_union _
-  zeroRegion_invariant := by simp
-  infinityRegion_invariant := liftedInfinityRegion_invariant E
-  sectionZero := S.sectionZero
-  sectionInfinity := S.sectionInfinity
-  sectionZero_holomorphic := fun z _ ↦ S.sectionZero_holomorphic z
-  sectionInfinity_holomorphic := S.sectionInfinity_holomorphic
-  sectionZero_one := fun z _ ↦ S.sectionZero_one z
-  sectionZero_two := fun z _ ↦ S.sectionZero_two z
-  sectionInfinity_one := S.sectionInfinity_one
-  sectionInfinity_two := S.sectionInfinity_two
-  frameZero := F.frame
-  frameInfinity := liftedNegOneInfinityFrame E F
-  frameZero_holomorphic := fun z _ ↦ F.frame_holomorphic z
-  frameInfinity_holomorphic := fun _ hz ↦
-    liftedNegOneInfinityFrame_holomorphicAt E F hz
-  frameZero_one := fun z _ ↦ F.frame_one z
-  frameZero_two := fun z _ ↦ F.frame_two z
-  frameInfinity_one := fun z _ ↦ liftedNegOneInfinityFrame_one E F z
-  frameInfinity_two := fun z _ ↦ liftedNegOneInfinityFrame_two E F z
-  overlapCocycle := S.overlapCocycle
-  overlapCocycle_holomorphic := S.overlapCocycle_holomorphic
-  infinity_coordinate_ne_zero := fun z hz ↦ hz
-  frame_transition := by
-    intro z _
-    rfl
-  section_mismatch := fun z hz ↦ S.section_mismatch z hz.2
-  cusp_subset_infinity := fuchsianCuspRegion_subset_liftedInfinityRegion E F
-  sectionInfinity_cusp_bounded := S.sectionInfinity_cusp_bounded
-  infinity_frame_cusp_bounded := F.cusp_correction_bounded E
 
 @[expose] public def betaParameter
     (mu : UpperHalfPlane → ℂ) (z : UpperHalfPlane) : Parameters :=
@@ -895,10 +609,13 @@ public theorem fuchsianBetaAffine_product
 paper-specific algebra and local primitives are discharged before the general descent theorem is
 invoked. -/
 @[expose] public noncomputable def betaDescentData
-    (F : ModularNegOneFrame E) (Dmu : MuTorsorCechLocalData E) :
+    (F : ModularNegOneFrame E) (mu : UpperHalfPlane → ℂ)
+    (hmu : MDiff mu ∧
+      (∀ z, mu (fuchsianSourceAction g₁ • z) =
+        (1 - mu z) / E.modularParameter.tau z) ∧
+      (∀ z, mu (fuchsianSourceAction g₂ • z) =
+        1 + mu z / E.modularParameter.tau z) ∧ BoundedOn mu fuchsianCuspRegion) :
     OrbifoldAffineDescentData := by
-  let mu := descendedFuchsianMu E Dmu
-  have hmu := descendedFuchsianMu_spec E Dmu
   exact {
     quotient := E.sourceCoordinate
     affineOne := betaAffineMapOne E mu
@@ -1008,127 +725,39 @@ invoked. -/
       ring
     cuspSection_normalized_bounded := (cuspLocalBeta_properties E).2.2 }
 
-/-- General orbifold affine-torsor descent supplies the exact local structure-sheaf data for
-`beta` once the descended `mu` has been selected. -/
-public theorem exists_betaAffineCechSections
-    (F : ModularNegOneFrame E) (Dmu : MuTorsorCechLocalData E)
-    (A : (betaDescentData E F Dmu).AnalyticDescentData) :
-    Nonempty (BetaTorsorCechLocalData E (descendedFuchsianMu E Dmu)) := by
-  obtain ⟨S⟩ := OrbifoldAffineDescentData.nonempty_twoChartSections
-    (betaDescentData E F Dmu) A
+/-- The global torsor sections directly supply a coherent pair of additive period coordinates. -/
+public theorem nonempty_fuchsianPeriodData (F : ModularNegOneFrame E) :
+    Nonempty (FuchsianPeriodData E) := by
+  obtain ⟨mu, hmuHol, hmuOne, hmuTwo, hmuCusp⟩ :=
+    (muDescentData E F).hasCuspBoundedSection (Or.inl ⟨rfl, rfl, rfl⟩)
+  have hmu : MDiff mu ∧
+      (∀ z, mu (fuchsianSourceAction g₁ • z) =
+        (1 - mu z) / E.modularParameter.tau z) ∧
+      (∀ z, mu (fuchsianSourceAction g₂ • z) =
+        1 + mu z / E.modularParameter.tau z) ∧ BoundedOn mu fuchsianCuspRegion := by
+    refine ⟨hmuHol, hmuOne, hmuTwo, ?_⟩
+    simpa only [muDescentData, cuspLocalMu, sub_zero] using hmuCusp
+  obtain ⟨beta, hbetaHol, hbetaOne, hbetaTwo, hbetaCusp⟩ :=
+    (betaDescentData E F mu hmu).hasCuspBoundedSection (Or.inr ⟨rfl, rfl, rfl⟩)
   refine ⟨{
-    zeroRegion := Set.univ
-    infinityRegion := liftedInfinityRegion E
-    zeroRegion_open := isOpen_univ
-    infinityRegion_open := liftedInfinityRegion_open E
-    regions_cover := Set.univ_union _
-    zeroRegion_invariant := by simp
-    infinityRegion_invariant := liftedInfinityRegion_invariant E
-    sectionZero := S.sectionZero
-    sectionInfinity := S.sectionInfinity
-    sectionZero_holomorphic := fun z _ ↦ S.sectionZero_holomorphic z
-    sectionInfinity_holomorphic := S.sectionInfinity_holomorphic
-    sectionZero_one := ?_
-    sectionZero_two := ?_
-    sectionInfinity_one := ?_
-    sectionInfinity_two := ?_
-    overlapCocycle := S.overlapCocycle
-    overlapCocycle_holomorphic := S.overlapCocycle_holomorphic
-    infinity_coordinate_ne_zero := fun _ hz ↦ hz
-    section_mismatch := ?_
-    cusp_subset_infinity := fuchsianCuspRegion_subset_liftedInfinityRegion E F
-    sectionInfinity_add_tau_cusp_bounded := S.sectionInfinity_normalized_cusp_bounded
-    infinity_coordinate_cusp_bounded := F.infinity_coordinate_cusp_bounded E }⟩
-  · intro z _
-    convert S.sectionZero_one z using 1
-    simp [betaDescentData, betaAffineMapOne, betaParameter,
-      betaCocycleOne]
+    mu := mu
+    beta := beta
+    mu_holomorphic := hmu.1
+    beta_holomorphic := hbetaHol
+    mu_transform_one := hmu.2.1
+    mu_transform_two := hmu.2.2.1
+    beta_transform_one := ?_
+    beta_transform_two := ?_
+    mu_cusp_bounded := hmu.2.2.2
+    beta_add_tau_cusp_bounded := ?_ }⟩
+  · intro z
+    convert hbetaOne z using 1
+    simp [betaDescentData, betaAffineMapOne, betaParameter, betaCocycleOne]
     ring
-  · intro z _
-    convert S.sectionZero_two z using 1
-    simp [betaDescentData, betaAffineMapTwo, betaParameter,
-      betaCocycleTwo]
+  · intro z
+    convert hbetaTwo z using 1
+    simp [betaDescentData, betaAffineMapTwo, betaParameter, betaCocycleTwo]
     ring
-  · intro z hz
-    convert S.sectionInfinity_one z hz using 1
-    simp [betaDescentData, betaAffineMapOne, betaParameter,
-      betaCocycleOne]
-    ring
-  · intro z hz
-    convert S.sectionInfinity_two z hz using 1
-    simp [betaDescentData, betaAffineMapTwo, betaParameter,
-      betaCocycleTwo]
-    ring
-  · intro z hz
-    simpa [betaDescentData] using S.section_mismatch z hz.2
-
-/-- Conditional construction of the sole period-specific local-data package from the independent
-modular frame and the two affine local-triviality inputs. -/
-@[expose] public noncomputable def periodLocalDataOfSections
-    (Smu : MuCechSections E F)
-    (Sbeta : BetaTorsorCechLocalData E
-      (descendedFuchsianMu E (Smu.toLocalData E F))) :
-    FuchsianPeriodLocalData E where
-  muLocal := Smu.toLocalData E F
-  betaLocal := Sbeta
-
-/-- The exact affine local-triviality statement after the modular `O(-1)` frame and every finite
-cyclic consistency check have been supplied. -/
-@[expose] public def HasLocalTrivializations : Prop :=
-  ∃ Smu : MuCechSections E F,
-    Nonempty (BetaTorsorCechLocalData E
-      (descendedFuchsianMu E (Smu.toLocalData E F)))
-
-/-- The single beta descent certificate needed after applying a chosen mu descent certificate. -/
-public abbrev BetaDescentData
-    (Amu : (muDescentData E F).AnalyticDescentData) :=
-  (betaDescentData E F
-    ((muAffineCechSectionsOfAnalyticDescentData E F Amu).toLocalData E F)).AnalyticDescentData
-
-/-- The production `mu` analytic-descent certificate selected from the general
-Cartan--B/Cousin theorem. -/
-@[expose] public noncomputable def muAnalyticDescentData :
-    (muDescentData E F).AnalyticDescentData :=
-  Classical.choice
-    (OrbifoldAffineDescentData.nonempty_analyticDescentData (muDescentData E F)
-      (Or.inl ⟨rfl, rfl, rfl⟩))
-
-/-- The production `beta` analytic-descent certificate.  Its type depends on the actual `mu`
-certificate selected above, so both certificates determine one coherent period package. -/
-@[expose] public noncomputable def betaAnalyticDescentData :
-    BetaDescentData E F
-      (muAnalyticDescentData E F) :=
-  Classical.choice
-    (OrbifoldAffineDescentData.nonempty_analyticDescentData
-      (betaDescentData E F
-        ((muAffineCechSectionsOfAnalyticDescentData E F
-          (muAnalyticDescentData E F)).toLocalData E F))
-      (Or.inr ⟨rfl, rfl, rfl⟩))
-
-/-- Explicit analytic descent certificates discharge both concrete local-triviality problems. -/
-public theorem hasLocalTrivializations
-    (Amu : (muDescentData E F).AnalyticDescentData)
-    (Abeta : BetaDescentData E F Amu) :
-    HasLocalTrivializations E F := by
-  let Smu := muAffineCechSectionsOfAnalyticDescentData E F Amu
-  obtain ⟨Sbeta⟩ := exists_betaAffineCechSections E F (Smu.toLocalData E F)
-    Abeta
-  exact ⟨Smu, ⟨Sbeta⟩⟩
-
-
-/-- One concrete modular frame and its two explicit analytic descent certificates construct the
-complete local period package used by the paper. -/
-public theorem exists_fuchsianPeriodLocalData
-    (F : ModularNegOneFrame E)
-    (Amu : (muDescentData E F).AnalyticDescentData)
-    (Abeta : BetaDescentData E F Amu) :
-    Nonempty (FuchsianPeriodLocalData E) := by
-  obtain ⟨Smu, ⟨Sbeta⟩⟩ :=
-    hasLocalTrivializations E F Amu Abeta
-  exact ⟨periodLocalDataOfSections E F Smu Sbeta⟩
-
-
-
-
+  · simpa only [betaDescentData, cuspLocalBeta, sub_neg_eq_add] using hbetaCusp
 
 end SphereSixComplex.Periods.FuchsianAffineDescent

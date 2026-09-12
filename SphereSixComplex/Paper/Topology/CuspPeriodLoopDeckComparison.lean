@@ -14,7 +14,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.InfiniteA2Toric
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public def localCuspPeriodLift

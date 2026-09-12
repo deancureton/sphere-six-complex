@@ -13,7 +13,7 @@ namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex SphereSixComplex.Periods StandardCircleHomologyLiftDegree
 open CuspFilling CuspPeriodExpansion InfiniteA2Toric
 open InfiniteA2Toric InfiniteA2Toric.Construction
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 def phaseSweepRelativeEdgeVector

@@ -28,7 +28,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The prequotient central fibre as an invariant subspace of the actual cusp action. -/

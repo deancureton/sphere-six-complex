@@ -342,7 +342,7 @@ open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem exists_actualCentral_deck_translate_singleAxis

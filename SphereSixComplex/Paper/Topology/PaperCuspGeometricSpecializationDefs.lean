@@ -44,7 +44,7 @@ normalization field of `ActualCuspRadialClutchingData` pins the fibre marking to
 /-- The actual period parameter of the punctured cusp collar over the normalized cusp
 parameter `s`: the value of the assembled Fuchsian period functions at `N.lift s`. -/
 public noncomputable def actualCuspCollarPeriodParameter
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (s : ℂ) :
     SphereSixComplex.Periods.Parameters :=
   SphereSixComplex.Periods.periodValues (assembledFuchsianPeriodFunctions E D).tau
@@ -55,7 +55,7 @@ public noncomputable def actualCuspCollarPeriodParameter
 normalized cusp parameter `s`.  This is the honest period coordinate of the collar, read off its
 additive cover, and it depends on nothing but `W`. -/
 public noncomputable def actualCuspCollarPeriodPoint
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) {s : ℂ}
     (hs : ‖cuspQ s‖ < W.localWitness.radius) (zeta : ComplexTwoSpace) :
@@ -74,7 +74,7 @@ This is the cusp analogue of the marking carried by
 full-rank torus it admits no `±1` ambiguity: see
 `IsActualCuspFiberPeriodCoordinate.fiberCoordinate_unique`. -/
 public def IsActualCuspFiberPeriodCoordinate
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     {W : ActualPuncturedCuspCollarWitness N M}
     {F : Type} [TopologicalSpace F] {phi : F ≃ₜ F}
@@ -99,7 +99,7 @@ records is invisible to the hyperelliptic `±1` involution of the torus fibre, s
 equations are *false* when quantified over data of this type.  Use
 `ActualCuspRadialClutchingData` instead. -/
 public structure UnnormalizedCuspRadialClutchingData
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) where
   Fiber : Type
@@ -137,7 +137,7 @@ datum and the Section 7 specialization equations are refutable: see
 `not_standardA2CuspSpecializationDegreeOneStatement`
 and its degree-two counterpart. -/
 public structure ActualCuspRadialClutchingData
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     extends UnnormalizedCuspRadialClutchingData W where

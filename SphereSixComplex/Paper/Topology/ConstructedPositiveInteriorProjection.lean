@@ -9,7 +9,7 @@ open Set Topology
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
 open CuspPeriodExpansion InfiniteA2Toric.Construction
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 def constructedPositiveInteriorProjection

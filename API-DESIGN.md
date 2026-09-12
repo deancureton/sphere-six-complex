@@ -51,6 +51,13 @@ free. Freeness supplies `IsCancelSMul` separately; compact-overlap estimates giv
 without a one-field record. Čech splitting uses the actual descended torsor and its comparison
 maps, without the former `CousinCechReduction` function package.
 
+## Global additive periods
+
+`FuchsianPeriodData` stores the actual global μ and β, their holomorphicity, affine generator
+laws, and cusp bounds. The production constructor chooses μ once and applies the second affine
+torsor theorem to that same μ. The period assembly uses these sections directly, then applies
+the Schur shift. `AnalyticData.periodData` retains this coherent choice.
+
 ## Homology and markings
 
 The Mayer–Vietoris calculation exposes equalities of the actual difference homomorphisms in

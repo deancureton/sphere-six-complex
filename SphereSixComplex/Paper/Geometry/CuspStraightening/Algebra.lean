@@ -27,7 +27,7 @@ open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 /-- The displacement with the correction matrix frozen at the central parameter. -/
 public noncomputable def frozenEffectiveFanDisplacement
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (d : Fin 2 → ℝ) : Fin 2 → ℝ :=
   d + fun i ↦
     (NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0).mulVec (realFanShearInverse d) i / Real.log ‖q‖
@@ -35,14 +35,14 @@ public noncomputable def frozenEffectiveFanDisplacement
 
 /-- The punctured part of the actual local cusp carrier. -/
 public abbrev PuncturedLocalCarrier
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :=
   {p : localCarrier M W.localWitness.radius // M.t p ≠ 0}
 
 /-- Dense-torus coordinates are continuous on the punctured local carrier. -/
 public noncomputable def puncturedTorusCoordinates
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     C(PuncturedLocalCarrier W, DenseTorus) where
@@ -63,7 +63,7 @@ public noncomputable def puncturedTorusCoordinates
 
 @[simp]
 public theorem puncturedTorusCoordinates_apply
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     puncturedTorusCoordinates W p = torusCoordinates M p.1 :=
@@ -71,7 +71,7 @@ public theorem puncturedTorusCoordinates_apply
 
 /-- Rescaled logarithmic position is continuous away from the central fibre. -/
 public theorem continuous_puncturedRescaledPosition
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun p : PuncturedLocalCarrier W ↦ rescaledPosition M p.1) := by
@@ -102,7 +102,7 @@ public theorem continuous_puncturedRescaledPosition
 
 /-- Matrix of the actual rescaled-position displacement in the standard coordinate basis. -/
 public noncomputable def actualDisplacementMatrix
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) : Matrix (Fin 2) (Fin 2) ℝ :=
   !![1 + NormalizedFuchsianCuspCoordinate.phaseLogMatrix N q 0 1 / Real.log ‖q‖,
       -NormalizedFuchsianCuspCoordinate.phaseLogMatrix N q 0 0 / Real.log ‖q‖;
@@ -111,7 +111,7 @@ public noncomputable def actualDisplacementMatrix
 
 @[simp]
 public theorem actualDisplacementMatrix_mulVec
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (d : Fin 2 → ℝ) :
     actualDisplacementMatrix N q *ᵥ d = effectiveFanDisplacement N q d := by
   ext i
@@ -121,7 +121,7 @@ public theorem actualDisplacementMatrix_mulVec
 
 /-- On the punctured collar, the actual displacement matrix is nonsingular. -/
 public theorem actualDisplacementMatrix_det_ne_zero
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     (actualDisplacementMatrix N (M.t p.1)).det ≠ 0 := by
@@ -137,7 +137,7 @@ public theorem actualDisplacementMatrix_det_ne_zero
 /-- The correction matrix, hence the phase-log matrix, varies continuously on the local cusp
 carrier. -/
 public theorem continuous_puncturedPhaseLogMatrix_entry
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (i j : Fin 2) :
     Continuous (fun p : PuncturedLocalCarrier W ↦ NormalizedFuchsianCuspCoordinate.phaseLogMatrix N (M.t p.1) i j) := by
@@ -154,7 +154,7 @@ public theorem continuous_puncturedPhaseLogMatrix_entry
 
 /-- The actual displacement matrices form a continuous family on the punctured collar. -/
 public theorem continuous_actualDisplacementMatrix
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun p : PuncturedLocalCarrier W ↦ actualDisplacementMatrix N (M.t p.1)) := by
@@ -186,7 +186,7 @@ public theorem continuous_actualDisplacementMatrix
 
 /-- Matrix inversion is continuous along the nonsingular actual displacement family. -/
 public theorem continuous_actualDisplacementMatrix_inv
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun p : PuncturedLocalCarrier W ↦
@@ -208,7 +208,7 @@ public theorem continuous_actualDisplacementMatrix_inv
 
 /-- The explicit inverse actual displacement, expressed by nonsingular matrix inversion. -/
 public noncomputable def puncturedActualInverseDisplacement
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (x : Fin 2 → ℝ) : Fin 2 → ℝ :=
@@ -217,7 +217,7 @@ public noncomputable def puncturedActualInverseDisplacement
 
 /-- The explicit matrix inverse is a right inverse to the actual displacement. -/
 public theorem effectiveFanDisplacement_puncturedActualInverseDisplacement
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (x : Fin 2 → ℝ) :
@@ -232,7 +232,7 @@ public theorem effectiveFanDisplacement_puncturedActualInverseDisplacement
 
 /-- The abstract inverse used in the conjugation theorem is the explicit matrix inverse. -/
 public theorem actualEffectiveFanDisplacementEquiv_symm_apply
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (x : Fin 2 → ℝ) :
@@ -244,7 +244,7 @@ public theorem actualEffectiveFanDisplacementEquiv_symm_apply
 
 /-- Matrix of the displacement with the phase correction frozen at the central parameter. -/
 public noncomputable def frozenDisplacementMatrix
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) : Matrix (Fin 2) (Fin 2) ℝ :=
   !![1 + NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0 0 1 / Real.log ‖q‖,
       -NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0 0 0 / Real.log ‖q‖;
@@ -253,7 +253,7 @@ public noncomputable def frozenDisplacementMatrix
 
 @[simp]
 public theorem frozenDisplacementMatrix_mulVec
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (q : ℂ) (d : Fin 2 → ℝ) :
     frozenDisplacementMatrix N q *ᵥ d = frozenEffectiveFanDisplacement N q d := by
   ext i
@@ -263,7 +263,7 @@ public theorem frozenDisplacementMatrix_mulVec
 
 /-- The frozen displacement matrices are continuous on the punctured collar. -/
 public theorem continuous_frozenDisplacementMatrix
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun p : PuncturedLocalCarrier W ↦ frozenDisplacementMatrix N (M.t p.1)) := by
@@ -293,7 +293,7 @@ public theorem continuous_frozenDisplacementMatrix
 
 /-- The fully explicit punctured-fibre straightened rescaled position. -/
 public noncomputable def explicitPuncturedStraightenedPosition
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) : Fin 2 → ℝ :=
   frozenDisplacementMatrix N (M.t p.1) *ᵥ

@@ -32,7 +32,7 @@ namespace Construction
 
 /-- The relative CW structure still required on the constructed positive-deck quotient. -/
 public abbrev PositiveQuotientRelativeCW
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :=
   letI := normalizedPositiveDeckAction N constructedModel

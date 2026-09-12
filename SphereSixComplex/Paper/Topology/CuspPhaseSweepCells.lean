@@ -9,7 +9,7 @@ namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric.Construction
 open InfiniteA2Toric CuspLocalPhaseAction CuspFilling CuspPeriodExpansion
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepRotation (i : Fin 3) : Carrier ≃ₜ Carrier :=

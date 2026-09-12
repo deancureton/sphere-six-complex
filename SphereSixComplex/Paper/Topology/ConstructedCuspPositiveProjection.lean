@@ -9,7 +9,7 @@ namespace SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
 open CuspPeriodExpansion InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def constructedCuspPolarData

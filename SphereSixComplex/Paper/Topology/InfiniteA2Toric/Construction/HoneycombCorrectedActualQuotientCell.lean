@@ -22,7 +22,7 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem hexagonGauge_neg (x : Fin 2 → ℝ) :

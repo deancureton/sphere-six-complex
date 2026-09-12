@@ -21,7 +21,7 @@ open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 private theorem centralPhaseDisk_one_add_ne_zero_of_ball'

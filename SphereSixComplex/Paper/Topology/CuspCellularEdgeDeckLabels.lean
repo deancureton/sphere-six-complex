@@ -13,7 +13,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def centralEdgeEndpointDeck : Fin 3 → ParameterLattice :=

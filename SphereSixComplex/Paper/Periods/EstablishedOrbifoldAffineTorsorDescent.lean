@@ -1,17 +1,16 @@
 module
 
 public import SphereSixComplex.Paper.Periods.FuchsianModularLift
-public import SphereSixComplex.Prerequisites.Periods.EstablishedProjectiveLineCohomology
+public import Mathlib.Algebra.Polynomial.Laurent
+public import Mathlib.Geometry.Manifold.Instances.Real
+import Mathlib.Analysis.Complex.RemovableSingularity
 import all SphereSixComplex.Paper.Periods.Functions
 
 /-!
-# Established local triviality for holomorphic affine torsors
+# Data for holomorphic affine torsor descent
 
-This module states the general analytic descent theorem used for the additive period functions.
-It applies to an arbitrary holomorphic affine-line torsor over the exact `(3, 4, ∞)` orbifold
-quotient.  The input explicitly records the affine cocycle, its finite-cycle consistency, local
-elliptic and cusp primitives, and a homogeneous two-chart frame.  In particular, it contains no
-modular form, period function, or six-sphere construction.
+The affine torsor over the exact `(3, 4, ∞)` orbifold quotient is specified by its cocycle,
+finite-cycle consistency, local elliptic and cusp primitives, and homogeneous two-chart frame.
 -/
 
 open scoped Manifold
@@ -154,159 +153,5 @@ public structure OrbifoldAffineDescentData where
       cuspNormalize z u
   cuspSection_normalized_bounded :
     BoundedOn (fun z ↦ cuspNormalize z (cuspSection z)) fuchsianCuspRegion
-
-namespace OrbifoldAffineDescentData
-
-variable (P : OrbifoldAffineDescentData)
-
-/-- Exact two-chart local sections produced by affine-torsor descent. -/
-public structure TwoChartSections where
-  sectionZero : UpperHalfPlane → ℂ
-  sectionInfinity : UpperHalfPlane → ℂ
-  sectionZero_holomorphic : MDiff sectionZero
-  sectionInfinity_holomorphic : ∀ z, P.quotient.coordinate z ≠ 0 →
-    MDiffAt sectionInfinity z
-  sectionZero_one : ∀ z,
-    sectionZero (fuchsianSourceAction g₁ • z) = P.affineOne z (sectionZero z)
-  sectionZero_two : ∀ z,
-    sectionZero (fuchsianSourceAction g₂ • z) = P.affineTwo z (sectionZero z)
-  sectionInfinity_one : ∀ z, P.quotient.coordinate z ≠ 0 →
-    sectionInfinity (fuchsianSourceAction g₁ • z) = P.affineOne z (sectionInfinity z)
-  sectionInfinity_two : ∀ z, P.quotient.coordinate z ≠ 0 →
-    sectionInfinity (fuchsianSourceAction g₂ • z) = P.affineTwo z (sectionInfinity z)
-  overlapCocycle : ℂ → ℂ
-  overlapCocycle_holomorphic : HolomorphicOnPuncturedPlane overlapCocycle
-  section_mismatch : ∀ z, P.quotient.coordinate z ≠ 0 →
-    sectionZero z - sectionInfinity z =
-      overlapCocycle (P.quotient.coordinate z) * P.frameZero z
-  sectionInfinity_normalized_cusp_bounded :
-    BoundedOn (fun z ↦ P.cuspNormalize z (sectionInfinity z)) fuchsianCuspRegion
-
-/-- The genuinely analytic local-triviality input on the two affine quotient charts.
-
-Unlike `TwoChartSections`, cusp control is intrinsic: the infinity section is required to differ
-boundedly from the supplied regular cusp primitive.  The repaired normalization laws turn this
-into the normalized bound in the final output. -/
-public structure ChartTrivialization where
-  sectionZero : UpperHalfPlane → ℂ
-  sectionInfinity : UpperHalfPlane → ℂ
-  sectionZero_holomorphic : MDiff sectionZero
-  sectionInfinity_holomorphic : ∀ z, P.quotient.coordinate z ≠ 0 →
-    MDiffAt sectionInfinity z
-  sectionZero_one : ∀ z,
-    sectionZero (fuchsianSourceAction g₁ • z) =
-      P.affineOne z (sectionZero z)
-  sectionZero_two : ∀ z,
-    sectionZero (fuchsianSourceAction g₂ • z) =
-      P.affineTwo z (sectionZero z)
-  sectionInfinity_one : ∀ z, P.quotient.coordinate z ≠ 0 →
-    sectionInfinity (fuchsianSourceAction g₁ • z) =
-      P.affineOne z (sectionInfinity z)
-  sectionInfinity_two : ∀ z, P.quotient.coordinate z ≠ 0 →
-    sectionInfinity (fuchsianSourceAction g₂ • z) =
-      P.affineTwo z (sectionInfinity z)
-  sectionInfinity_sub_cusp_bounded :
-    BoundedOn (fun z ↦ sectionInfinity z - P.cuspSection z) fuchsianCuspRegion
-
-/-- A homogeneous holomorphic section over the punctured finite-coordinate chart. -/
-public structure HomogeneousPuncturedSection where
-  value : UpperHalfPlane → ℂ
-  holomorphic : ∀ z, P.quotient.coordinate z ≠ 0 → MDiffAt value z
-  transform_one : ∀ z, P.quotient.coordinate z ≠ 0 →
-    value (fuchsianSourceAction g₁ • z) = P.linearOne z * value z
-  transform_two : ∀ z, P.quotient.coordinate z ≠ 0 →
-    value (fuchsianSourceAction g₂ • z) = P.linearTwo z * value z
-
-/-- A homogeneous source section descended through the quotient in the finite-chart frame. -/
-public structure DescendedFrameCoefficient
-    (H : P.HomogeneousPuncturedSection) where
-  coefficient : ℂ → ℂ
-  coefficient_holomorphic : HolomorphicOnPuncturedPlane coefficient
-  factorization : ∀ z, P.quotient.coordinate z ≠ 0 →
-    H.value z = coefficient (P.quotient.coordinate z) * P.frameZero z
-
-/-- The difference of two affine chart sections transforms homogeneously. -/
-@[expose] public def ChartTrivialization.mismatch
-    (S : P.ChartTrivialization) :
-    P.HomogeneousPuncturedSection where
-  value := fun z ↦ S.sectionZero z - S.sectionInfinity z
-  holomorphic := by
-    intro z hz
-    exact S.sectionZero_holomorphic.mdifferentiableAt.sub
-      (S.sectionInfinity_holomorphic z hz)
-  transform_one := by
-    intro z hz
-    rw [S.sectionZero_one, S.sectionInfinity_one z hz, P.affineOne_sub]
-  transform_two := by
-    intro z hz
-    rw [S.sectionZero_two, S.sectionInfinity_two z hz, P.affineTwo_sub]
-
-/-- The two substantive analytic inputs for one affine-torsor descent problem.  They are explicit
-theorem premises rather than consequences silently inferred from topological covering data.
-Only the quotient descent of the chart mismatch actually used by the construction is required. -/
-public structure AnalyticDescentData where
-  charts : P.ChartTrivialization
-  mismatch_descent : P.DescendedFrameCoefficient charts.mismatch
-
-private theorem boundedOn_add
-    {f g : UpperHalfPlane → ℂ} {s : Set UpperHalfPlane}
-    (hf : BoundedOn f s) (hg : BoundedOn g s) :
-    BoundedOn (fun z ↦ f z + g z) s := by
-  obtain ⟨Cf, hCf, hf⟩ := hf
-  obtain ⟨Cg, hCg, hg⟩ := hg
-  refine ⟨Cf + Cg, add_nonneg hCf hCg, ?_⟩
-  intro z hz
-  exact (norm_add_le (f z) (g z)).trans (add_le_add (hf z hz) (hg z hz))
-
-/-- Intrinsic bounded difference from the regular cusp primitive implies the normalized bound. -/
-public theorem ChartTrivialization.normalized_cusp_bounded
-    (S : P.ChartTrivialization) :
-    BoundedOn (fun z ↦ P.cuspNormalize z (S.sectionInfinity z))
-      fuchsianCuspRegion := by
-  have hsum :
-      BoundedOn
-        (fun z ↦ P.cuspNormalize z (P.cuspSection z) +
-          (S.sectionInfinity z - P.cuspSection z))
-        fuchsianCuspRegion :=
-    boundedOn_add P.cuspSection_normalized_bounded S.sectionInfinity_sub_cusp_bounded
-  obtain ⟨C, hC, hsum⟩ := hsum
-  refine ⟨C, hC, ?_⟩
-  intro z hz
-  have hsub := P.cuspNormalize_sub z (S.sectionInfinity z) (P.cuspSection z)
-  change ‖P.cuspNormalize z (S.sectionInfinity z)‖ ≤ C
-  rw [show P.cuspNormalize z (S.sectionInfinity z) =
-      P.cuspNormalize z (P.cuspSection z) +
-        (S.sectionInfinity z - P.cuspSection z) by
-    linear_combination hsub]
-  exact hsum z hz
-
-/-- Assemble the final two-chart package from one explicit analytic descent certificate. -/
-@[expose] public def AnalyticDescentData.toTwoChartSections
-    (A : P.AnalyticDescentData) : P.TwoChartSections where
-  sectionZero := A.charts.sectionZero
-  sectionInfinity := A.charts.sectionInfinity
-  sectionZero_holomorphic := A.charts.sectionZero_holomorphic
-  sectionInfinity_holomorphic := A.charts.sectionInfinity_holomorphic
-  sectionZero_one := A.charts.sectionZero_one
-  sectionZero_two := A.charts.sectionZero_two
-  sectionInfinity_one := A.charts.sectionInfinity_one
-  sectionInfinity_two := A.charts.sectionInfinity_two
-  overlapCocycle := A.mismatch_descent.coefficient
-  overlapCocycle_holomorphic := A.mismatch_descent.coefficient_holomorphic
-  section_mismatch := A.mismatch_descent.factorization
-  sectionInfinity_normalized_cusp_bounded := A.charts.normalized_cusp_bounded
-
-end OrbifoldAffineDescentData
-
-/-- Assemble two-chart sections from the explicit analytic local-triviality and quotient-descent
-certificates.
-
-The original unrestricted assertion was false because `cuspNormalize` was unconstrained.  The
-repaired problem records its affine, holomorphic, and parabolic compatibility laws, while the two
-Cartan--B/Cousin obligations are exposed honestly as `AnalyticDescentData`. -/
-public theorem OrbifoldAffineDescentData.nonempty_twoChartSections
-    (P : OrbifoldAffineDescentData) (A : P.AnalyticDescentData) :
-    Nonempty P.TwoChartSections :=
-  ⟨A.toTwoChartSections⟩
 
 end SphereSixComplex.Periods

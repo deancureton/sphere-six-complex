@@ -3,6 +3,7 @@ module
 public import Mathlib.Geometry.Manifold.ContMDiff.Atlas
 public import Mathlib.Geometry.Manifold.Instances.Quotient
 public import Mathlib.Geometry.Manifold.LocalDiffeomorph
+import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!
 # Complex-manifold quotients
@@ -303,26 +304,12 @@ public theorem quotientProjection_isLocalDiffeomorphAt_section
       (chartAt H q).symm (chartAt H s x)
     rw [← quotientChart_eq_chartAt]
     exact (quotientChart_symm_apply_chart q hx.1).symm
-  let φ : PartialDiffeomorph I I M (OrbitQuotient (M := M) (G := G)) n :=
-    { toFun := quotientProjection (M := M) (G := G)
-      invFun := b
-      source := b.target
-      target := b.source
-      map_source' := fun x hx ↦ by
-        rw [heq hx]
-        exact b.symm.map_source hx
-      map_target' := fun _ hx ↦ b.map_source hx
-      left_inv' := fun x hx ↦ by
-        rw [heq hx]
-        exact b.right_inv hx
-      right_inv' := fun x hx ↦ by
-        rw [heq (b.map_source hx)]
-        exact b.left_inv hx
-      open_source := b.open_target
-      open_target := b.open_source
-      contMDiffOn_toFun := hbsymm.congr heq
-      contMDiffOn_invFun := hb }
-  apply φ.isLocalDiffeomorphAt
+  refine ⟨{
+    toPartialEquiv := b.symm.toPartialEquiv
+    open_source := b.open_target
+    open_target := b.open_source
+    contMDiffOn_toFun := hbsymm
+    contMDiffOn_invFun := hb }, ?_, heq⟩
   change s ∈ b.target
   have hqsource : q ∈ b.source := by
     change q ∈ (chartAt H q).source ∧ chartAt H q q ∈ (chartAt H s).target

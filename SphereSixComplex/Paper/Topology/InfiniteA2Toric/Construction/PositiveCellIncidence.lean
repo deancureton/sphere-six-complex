@@ -14,7 +14,7 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 namespace Construction

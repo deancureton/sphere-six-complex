@@ -61,7 +61,7 @@ public theorem centralFamily_t2 : T2Space A.CentralFamily := by
 
 /-- The actual phase-corrected local cusp filling quotient is Hausdorff. -/
 public theorem actualLocalCuspFilling_t2
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     T2Space (ActualLocalCuspFilling W) := by

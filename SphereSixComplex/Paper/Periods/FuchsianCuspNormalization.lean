@@ -607,7 +607,7 @@ public theorem normalizedModularParameter_tau_translate
 /-- The selected assembled period family has the same exact parabolic translation law, regardless
 of how its final nondegeneracy shift was selected. -/
 public theorem assembledPeriodFunctions_tau_translate
-    (E : FuchsianModularLift) (D : FuchsianPeriodLocalData E)
+    (E : FuchsianModularLift) (D : FuchsianPeriodData E)
     (z : UpperHalfPlane) :
     (assembledFuchsianPeriodFunctions E D).tau
         (upperHalfPlaneRealTranslate sourceCuspWidth z) =
@@ -620,7 +620,7 @@ public theorem assembledPeriodFunctions_tau_translate
 /-- The general parabolic inverse theorem constructs the normalized cusp coordinate required by
 the Fuchsian period expansion. -/
 public theorem exists_normalizedFuchsianCuspCoordinate
-    (E : FuchsianModularLift) (D : FuchsianPeriodLocalData E) :
+    (E : FuchsianModularLift) (D : FuchsianPeriodData E) :
     Nonempty (NormalizedFuchsianCuspCoordinate E D) := by
   let F := assembledFuchsianPeriodFunctions E D
   obtain ⟨L⟩ := nonempty_parabolicCuspLocalInverse sourceCuspWidth 1 1

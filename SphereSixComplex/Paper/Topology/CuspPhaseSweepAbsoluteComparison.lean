@@ -21,7 +21,7 @@ open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction
 open CuspPeriodExpansion
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem phaseSweepSkeletalPrism_toCentral

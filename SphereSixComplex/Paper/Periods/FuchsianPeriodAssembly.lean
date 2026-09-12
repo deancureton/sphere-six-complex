@@ -1,16 +1,18 @@
 module
 
-public import SphereSixComplex.Paper.Periods.FuchsianBetaTorsor
+public import SphereSixComplex.Paper.Periods.FuchsianModularLift
+public import SphereSixComplex.Paper.Periods.SchurCompactness
+public import SphereSixComplex.Paper.Periods.FuchsianUniformizationBridge
 public import SphereSixComplex.Paper.TriangleGroup.FuchsianTriangleCover
 import all SphereSixComplex.Paper.Periods.Functions
 import all SphereSixComplex.Paper.Periods.FuchsianUniformizationBridge
 
 /-!
-# Assembly of the explicit Fuchsian period functions
+# Assembly of global Fuchsian period functions
 
-This file combines the established modular parameter with exact local Cech data for the `mu` and
-`beta` torsors.  The two descent theorems produce global pre-period data.  The doubled Fuchsian
-fundamental region then supplies the compact core needed for the final Schur shift.
+Global holomorphic additive coordinates with their affine transformation laws and cusp bounds
+combine with the fixed modular lift. The doubled fundamental region supplies the compact core
+for the final Schur shift imposing nondegeneracy.
 -/
 
 open scoped Manifold
@@ -23,47 +25,25 @@ open SphereSixComplex.TriangleGroup
 
 variable (E : FuchsianModularLift)
 
-/-- The global `mu` selected from exact local `O(-1)` torsor data. -/
-@[expose] public noncomputable def descendedFuchsianMu
-    (D : MuTorsorCechLocalData E) : UpperHalfPlane → ℂ :=
-  Classical.choose (exists_globalFuchsianMu E D)
+/-- Global additive period coordinates for the fixed modular lift. -/
+public structure FuchsianPeriodData where
+  mu : UpperHalfPlane → ℂ
+  beta : UpperHalfPlane → ℂ
+  mu_holomorphic : MDiff mu
+  beta_holomorphic : MDiff beta
+  mu_transform_one : ∀ z, mu (fuchsianSourceAction g₁ • z) =
+    (1 - mu z) / E.modularParameter.tau z
+  mu_transform_two : ∀ z, mu (fuchsianSourceAction g₂ • z) =
+    1 + mu z / E.modularParameter.tau z
+  beta_transform_one : ∀ z, beta (fuchsianSourceAction g₁ • z) =
+    beta z + 2 - 6 * (1 - mu z) ^ 2 / E.modularParameter.tau z
+  beta_transform_two : ∀ z, beta (fuchsianSourceAction g₂ • z) =
+    beta z - 3 - 6 * mu z ^ 2 / E.modularParameter.tau z
+  mu_cusp_bounded : BoundedOn mu fuchsianCuspRegion
+  beta_add_tau_cusp_bounded :
+    BoundedOn (fun z ↦ beta z + E.modularParameter.tau z) fuchsianCuspRegion
 
-public theorem descendedFuchsianMu_spec (D : MuTorsorCechLocalData E) :
-    MDiff (descendedFuchsianMu E D) ∧
-      (∀ z, descendedFuchsianMu E D (fuchsianSourceAction g₁ • z) =
-        (1 - descendedFuchsianMu E D z) / E.modularParameter.tau z) ∧
-      (∀ z, descendedFuchsianMu E D (fuchsianSourceAction g₂ • z) =
-        1 + descendedFuchsianMu E D z / E.modularParameter.tau z) ∧
-      BoundedOn (descendedFuchsianMu E D) fuchsianCuspRegion :=
-  Classical.choose_spec (exists_globalFuchsianMu E D)
-
-/-- The exact remaining local analytic input for both additive period coordinates. -/
-public structure FuchsianPeriodLocalData where
-  /-- Exact local descent data for the `O(-1)` affine `mu` torsor. -/
-  muLocal : MuTorsorCechLocalData E
-  /-- Exact local descent data for the `O` affine `beta` torsor, after the descended `mu` has
-  been selected. -/
-  betaLocal : BetaTorsorCechLocalData E (descendedFuchsianMu E muLocal)
-
-variable (D : FuchsianPeriodLocalData E)
-
-/-- The global `beta` selected from exact local structure-sheaf torsor data. -/
-@[expose] public noncomputable def descendedFuchsianBeta : UpperHalfPlane → ℂ :=
-  Classical.choose (exists_globalFuchsianBeta E D.betaLocal)
-
-public theorem descendedFuchsianBeta_spec :
-    MDiff (descendedFuchsianBeta E D) ∧
-      (∀ z, descendedFuchsianBeta E D (fuchsianSourceAction g₁ • z) =
-        descendedFuchsianBeta E D z + 2 -
-          6 * (1 - descendedFuchsianMu E D.muLocal z) ^ 2 /
-            E.modularParameter.tau z) ∧
-      (∀ z, descendedFuchsianBeta E D (fuchsianSourceAction g₂ • z) =
-        descendedFuchsianBeta E D z - 3 -
-          6 * descendedFuchsianMu E D.muLocal z ^ 2 / E.modularParameter.tau z) ∧
-      BoundedOn
-        (fun z ↦ descendedFuchsianBeta E D z + E.modularParameter.tau z)
-        fuchsianCuspRegion :=
-  Classical.choose_spec (exists_globalFuchsianBeta E D.betaLocal)
+variable (D : FuchsianPeriodData E)
 
 private theorem tau_transform_two_coe (z : UpperHalfPlane) :
     ((E.modularParameter.tau (fuchsianSourceAction g₂ • z) : UpperHalfPlane) : ℂ) =
@@ -72,79 +52,75 @@ private theorem tau_transform_two_coe (z : UpperHalfPlane) :
     (E.modularParameter.equivariant g₂ z)).trans (rhoTauReal_g₂_smul _)
 
 /-- The two elliptic affine laws make `mu` invariant under the parabolic product. -/
-public theorem descendedFuchsianMu_transform_product (z : UpperHalfPlane) :
-    descendedFuchsianMu E D.muLocal
+public theorem FuchsianPeriodData.mu_transform_product (z : UpperHalfPlane) :
+    D.mu
         (fuchsianSourceAction (g₁ * g₂) • z) =
-      descendedFuchsianMu E D.muLocal z := by
-  have hOne := (descendedFuchsianMu_spec E D.muLocal).2.1
-  have hTwo := (descendedFuchsianMu_spec E D.muLocal).2.2.1
+      D.mu z := by
+  have hOne := D.mu_transform_one
+  have hTwo := D.mu_transform_two
   rw [map_mul, mul_smul, hOne, hTwo, tau_transform_two_coe E]
   field_simp [(E.modularParameter.tau z).ne_zero]
   ring
 
 /-- Invariance under the parabolic product gives invariance under its inverse `g₀`. -/
-public theorem descendedFuchsianMu_transform_cusp (z : UpperHalfPlane) :
-    descendedFuchsianMu E D.muLocal (fuchsianSourceAction g₀ • z) =
-      descendedFuchsianMu E D.muLocal z := by
-  have h := descendedFuchsianMu_transform_product E D
+public theorem FuchsianPeriodData.mu_transform_cusp (z : UpperHalfPlane) :
+    D.mu (fuchsianSourceAction g₀ • z) =
+      D.mu z := by
+  have h := FuchsianPeriodData.mu_transform_product E D
     (fuchsianSourceAction g₀ • z)
   rw [← mul_smul, ← map_mul, g₁_mul_g₂_mul_g₀, map_one, one_smul] at h
   exact h.symm
 
 /-- The two elliptic affine laws make `beta` decrease by one under the parabolic product. -/
-public theorem descendedFuchsianBeta_transform_product (z : UpperHalfPlane) :
-    descendedFuchsianBeta E D (fuchsianSourceAction (g₁ * g₂) • z) =
-      descendedFuchsianBeta E D z - 1 := by
-  have hBetaOne := (descendedFuchsianBeta_spec E D).2.1
-  have hBetaTwo := (descendedFuchsianBeta_spec E D).2.2.1
-  have hMuTwo := (descendedFuchsianMu_spec E D.muLocal).2.2.1
+public theorem FuchsianPeriodData.beta_transform_product (z : UpperHalfPlane) :
+    D.beta (fuchsianSourceAction (g₁ * g₂) • z) =
+      D.beta z - 1 := by
+  have hBetaOne := D.beta_transform_one
+  have hBetaTwo := D.beta_transform_two
+  have hMuTwo := D.mu_transform_two
   rw [map_mul, mul_smul, hBetaOne, hBetaTwo, hMuTwo, tau_transform_two_coe E]
   field_simp [(E.modularParameter.tau z).ne_zero]
   ring
 
 /-- The inverse parabolic generator increases `beta` by one. -/
-public theorem descendedFuchsianBeta_transform_cusp (z : UpperHalfPlane) :
-    descendedFuchsianBeta E D (fuchsianSourceAction g₀ • z) =
-      descendedFuchsianBeta E D z + 1 := by
-  have h := descendedFuchsianBeta_transform_product E D
+public theorem FuchsianPeriodData.beta_transform_cusp (z : UpperHalfPlane) :
+    D.beta (fuchsianSourceAction g₀ • z) =
+      D.beta z + 1 := by
+  have h := FuchsianPeriodData.beta_transform_product E D
     (fuchsianSourceAction g₀ • z)
   rw [← mul_smul, ← map_mul, g₁_mul_g₂_mul_g₀, map_one, one_smul] at h
   linear_combination -h
 
-/-- The two exact local torsor descents assemble into the paper's full Fuchsian pre-period data. -/
+/-- The global additive coordinates assemble into the Fuchsian pre-period data. -/
 @[expose] public noncomputable def assembledFuchsianPrePeriodData : FuchsianPrePeriodData where
   toFuchsianModularParameter := E.modularParameter
   tau_at_zOne := E.tau_at_one
   tau_at_zTwo := E.tau_at_two
-  mu := descendedFuchsianMu E D.muLocal
-  beta := descendedFuchsianBeta E D
-  mu_holomorphic := (descendedFuchsianMu_spec E D.muLocal).1
-  beta_holomorphic := (descendedFuchsianBeta_spec E D).1
-  mu_transform_one := (descendedFuchsianMu_spec E D.muLocal).2.1
-  mu_transform_two := (descendedFuchsianMu_spec E D.muLocal).2.2.1
-  beta_transform_one := (descendedFuchsianBeta_spec E D).2.1
-  beta_transform_two := (descendedFuchsianBeta_spec E D).2.2.1
-  mu_transform_cusp := descendedFuchsianMu_transform_cusp E D
-  beta_transform_cusp := descendedFuchsianBeta_transform_cusp E D
-  mu_cusp_bounded := (descendedFuchsianMu_spec E D.muLocal).2.2.2
-  beta_add_tau_cusp_bounded := (descendedFuchsianBeta_spec E D).2.2.2
+  mu := D.mu
+  beta := D.beta
+  mu_holomorphic := D.mu_holomorphic
+  beta_holomorphic := D.beta_holomorphic
+  mu_transform_one := D.mu_transform_one
+  mu_transform_two := D.mu_transform_two
+  beta_transform_one := D.beta_transform_one
+  beta_transform_two := D.beta_transform_two
+  mu_transform_cusp := FuchsianPeriodData.mu_transform_cusp E D
+  beta_transform_cusp := FuchsianPeriodData.beta_transform_cusp E D
+  mu_cusp_bounded := D.mu_cusp_bounded
+  beta_add_tau_cusp_bounded := D.beta_add_tau_cusp_bounded
 
 
-
-
-
-
-/-- The exact local torsor data produces actual nondegenerate period functions for the explicit
+/-- The global additive period data produces nondegenerate period functions for the explicit
 Fuchsian uniformization. -/
 public theorem exists_assembledFuchsianPeriodFunctions :
-    (D : FuchsianPeriodLocalData E) →
+    (D : FuchsianPeriodData E) →
     Nonempty (PeriodFunctions E.modularParameter.toTriangleUniformization) :=
   fun D ↦ (assembledFuchsianPrePeriodData E D).toPrePeriodFunctions.exists_shiftedPeriodFunctions
     (orientedFuchsianQuotientCompactCore E.modularParameter)
 
 /-- A selected nondegenerate period family produced by the compact-core Schur shift. -/
 @[expose] public noncomputable def assembledFuchsianPeriodFunctions
-    (D : FuchsianPeriodLocalData E) :
+    (D : FuchsianPeriodData E) :
     PeriodFunctions E.modularParameter.toTriangleUniformization := by
   exact Classical.choice (exists_assembledFuchsianPeriodFunctions E D)
 

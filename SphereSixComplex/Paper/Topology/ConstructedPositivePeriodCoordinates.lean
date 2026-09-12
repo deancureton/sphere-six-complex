@@ -16,7 +16,7 @@ open CuspStraightening
 open CuspStraightening InfiniteA2Toric.QuantitativeRegions
 open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 open InfiniteA2Toric.Construction
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {r : ℝ}
 
 theorem constructedModulus_torusCoordinates_norm

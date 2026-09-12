@@ -10,7 +10,7 @@ namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction CuspFilling CuspPeriodExpansion
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepCellIndex (i : Fin 3) : Fin 4 := i.succ

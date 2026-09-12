@@ -32,7 +32,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspCollar
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem circleSweep_one_to_two

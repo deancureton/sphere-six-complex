@@ -24,6 +24,11 @@ normalized by that class. The fourth-period sweep gives a unit coefficient for r
 These two classes generate the remaining elliptic coordinates in the kernel of cusp specialization.
 Together with specialization, they prove that the degree-two Mayer–Vietoris difference map is onto.
 
+The analytic construction uses the global sections supplied by the two affine torsor theorems
+directly. It selects μ once and constructs β for that same μ before applying the Schur shift.
+Elliptic collars escape central compact sets because the continuous orbifold coordinate separates
+those compact sets from the elliptic values.
+
 First homology vanishes directly from the local elliptic and cusp relations. The adjacent
 Mayer–Vietoris map is then a surjection between free abelian groups of the same rank, hence an
 isomorphism; exactness gives vanishing second homology. The geometric Euler calculation,

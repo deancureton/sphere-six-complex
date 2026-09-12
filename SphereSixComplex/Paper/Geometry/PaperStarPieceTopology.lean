@@ -21,7 +21,7 @@ noncomputable section
 
 /-- The actual local cusp quotient is second countable. -/
 public theorem actualLocalCuspFilling_secondCountable
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     SecondCountableTopology (ActualLocalCuspFilling W) := by

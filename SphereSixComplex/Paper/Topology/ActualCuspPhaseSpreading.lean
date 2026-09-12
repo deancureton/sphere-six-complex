@@ -29,7 +29,7 @@ open InfiniteA2Toric
 
 namespace FrozenLocalCuspPhaseSpreadingData
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
   {P : PolarHoneycombData M r} (F : FrozenLocalCuspPhaseSpreadingData N M r P)
 
@@ -69,7 +69,7 @@ end FrozenLocalCuspPhaseSpreadingData
 /-- Transport the phase-spread frozen retraction through the point-level straightening
 homeomorphism. -/
 public noncomputable def actualLocalCuspCentralFiberRetractionData
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (P : PolarHoneycombData M W.localWitness.radius)

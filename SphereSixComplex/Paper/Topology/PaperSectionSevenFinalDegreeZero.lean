@@ -86,7 +86,7 @@ public theorem puncturedLocalCarrier_pathConnected
 
 /-- The actual phase-action quotient of the punctured local cusp carrier is path-connected. -/
 public theorem puncturedLocalCuspQuotient_pathConnected
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     PathConnectedSpace (PuncturedLocalCuspQuotient W) := by

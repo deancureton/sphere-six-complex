@@ -15,7 +15,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedCentralCellAtlas_edge_left

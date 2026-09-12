@@ -12,7 +12,7 @@ open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedCentralOneCell_injOn_closedBall

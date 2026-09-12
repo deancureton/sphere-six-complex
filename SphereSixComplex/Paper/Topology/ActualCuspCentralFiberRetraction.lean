@@ -34,7 +34,7 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   (W : ActualPuncturedCuspCollarWitness N M)
 

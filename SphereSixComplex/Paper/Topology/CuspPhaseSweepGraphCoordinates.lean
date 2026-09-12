@@ -11,7 +11,7 @@ namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex SphereSixComplex.Periods StandardCircleHomologyLiftDegree
 open CuspPeriodExpansion InfiniteA2Toric
 open InfiniteA2Toric InfiniteA2Toric.Construction
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem phaseSweepCellAtlas_edges_same_left

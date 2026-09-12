@@ -39,7 +39,7 @@ open SphereSixComplex.Geometry.FamilyEquivariance
 open FuchsianCuspNeighborhood
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The inverse angular turn conjugates a lattice translation by inverse cusp monodromy. -/

@@ -1,7 +1,9 @@
 module
 
-public import SphereSixComplex.Paper.Periods.OrbifoldAffineTorsorCuspBoundedCousinCorrection
-public import SphereSixComplex.Prerequisites.Periods.EstablishedProjectiveLineCohomology
+public import SphereSixComplex.Paper.Periods.EstablishedOrbifoldAffineTorsorAnalyticDescentProof
+public import Mathlib.Algebra.Polynomial.Laurent
+public import Mathlib.Geometry.Manifold.Instances.Real
+import Mathlib.Analysis.Complex.RemovableSingularity
 public import SphereSixComplex.Paper.Periods.FuchsianModularLift.CuspBounds
 import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianTessellation
 import all SphereSixComplex.Paper.Periods.Functions

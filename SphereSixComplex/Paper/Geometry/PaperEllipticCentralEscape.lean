@@ -1,14 +1,14 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.PaperStarCollarPairProperness
-public import SphereSixComplex.Prerequisites.Topology.CompactRepresentatives
+public import SphereSixComplex.Paper.Geometry.OrbifoldCoordinate
 
 /-!
 # Elliptic collars escape compact subsets at the central end
 
-The quotient projection of a free properly discontinuous action admits compact sets of local
-representatives over compact subsets.  Combined with proper discontinuity on the upper
-half-plane, this gives a positive Cayley-radius lower bound along either elliptic collar.
+The invariant orbifold coordinate maps central compact sets to compact sets avoiding the two
+elliptic values. Continuity at each elliptic center then gives a positive Cayley-radius lower
+bound along its collar.
 -/
 
 open CategoryTheory TopologicalSpace Topology
@@ -80,22 +80,6 @@ public theorem AnalyticData.centralQuotientProjection_surjective
   rw [centralQuotientProjection.eq_def]
   exact Quotient.mk_surjective
 
-/-- Every compact subset of the central quotient is covered by a compact set of regular-family
-representatives. -/
-public theorem AnalyticData.centralCompact_has_compactRepresentatives
-    (P : AnalyticData) (K : Set P.CentralFamily) (hK : IsCompact K) :
-    ∃ L : Set (RegularTotalSpace P.periods),
-      IsCompact L ∧ K ⊆ P.centralQuotientProjection '' L := by
-  let _ := P.starCentralCharts
-  let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ P.CentralFamily :=
-    P.starCentral_isManifold
-  let _ : LocallyCompactSpace P.CentralFamily :=
-    Manifold.locallyCompact_of_finiteDimensional
-      (modelWithCornersSelf ℂ ComplexModel)
-  exact SphereSixComplex.IsLocalHomeomorph.exists_compact_source_cover
-    P.centralQuotientProjection_isLocalHomeomorph
-    P.centralQuotientProjection_surjective hK
-
 public theorem AnalyticData.orderThreeStarToCentral_mk
     (P : AnalyticData)
     (q : (orderThreeAffinePuncturedCarrier P.periods
@@ -162,187 +146,98 @@ public theorem AnalyticData.orderFourStarCollarRadius_mk
   rw [P.orderFourPuncturedCollarToFilling_mk]
   rfl
 
-/-- A compact set of representatives for a central compact set gives a uniform positive
-order-three Cayley radius for every representative lying in the selected collar. -/
-public theorem AnalyticData.orderThreeCentralOrbitRadius_lowerBound
-    (P : AnalyticData) (r : ℝ) (hr : r < 1)
-    (K : Set P.CentralFamily) (L : Set (RegularTotalSpace P.periods))
-    (hL : IsCompact L)
-    (hcover : K ⊆ P.centralQuotientProjection '' L) :
+private theorem centralOrbitRadius_lowerBound
+    (P : AnalyticData) (e : UpperHalfPlane ≃ₜ ComplexUnitDisc)
+    (K : Set P.CentralFamily) (hK : IsCompact K)
+    (hmiss : ∀ q : RegularTotalSpace P.periods,
+      P.modular.sourceCoordinate.coordinate (regularTotalSpaceBase P.periods q).1 ≠
+        P.modular.sourceCoordinate.coordinate (e.symm ComplexUnitDisc.center)) :
     ∃ a : ℝ, 0 < a ∧ ∀ q : RegularTotalSpace P.periods,
       P.centralQuotientProjection q ∈ K →
-      ‖(orderThreeCayleyHomeomorph
-        (regularTotalSpaceBase P.periods q).1).1‖ < r →
+      a ≤ ‖(e (regularTotalSpaceBase P.periods q).1).1‖ := by
+  let c := P.modular.sourceCoordinate.coordinate
+  let C := orbifoldCoordinate P.periods
+  have hC (q : RegularTotalSpace P.periods) :
+      C (P.centralQuotientProjection q) = c (regularTotalSpaceBase P.periods q).1 :=
+    P.modular.induced_coordinate _
+  let B := C '' K
+  have hB : IsCompact B := hK.image (continuous_orbifoldCoordinate _)
+  have hc : c (e.symm ComplexUnitDisc.center) ∉ B := by
+    rintro ⟨y, _, hy⟩
+    obtain ⟨q, rfl⟩ := P.centralQuotientProjection_surjective y
+    exact hmiss q ((hC q).symm.trans hy)
+  have hopen : IsOpen ((fun z : ComplexUnitDisc ↦ c (e.symm z)) ⁻¹' Bᶜ) :=
+    hB.isClosed.isOpen_compl.preimage
+      (P.modular.sourceCoordinate.coordinate_holomorphic.continuous.comp e.symm.continuous)
+  obtain ⟨a, ha, hball⟩ := Metric.isOpen_iff.mp hopen ComplexUnitDisc.center hc
+  refine ⟨a, ha, ?_⟩
+  intro q hq
+  by_contra h
+  have hnear : e (regularTotalSpaceBase P.periods q).1 ∈
+      Metric.ball ComplexUnitDisc.center a := by
+    change dist ((e (regularTotalSpaceBase P.periods q).1).1 : ℂ) 0 < a
+    simpa only [dist_zero_right] using lt_of_not_ge h
+  have hnot := hball hnear
+  apply hnot
+  change c (e.symm (e (regularTotalSpaceBase P.periods q).1)) ∈ B
+  rw [Homeomorph.symm_apply_apply]
+  exact ⟨P.centralQuotientProjection q, hq, hC q⟩
+
+/-- Central compact sets give a uniform positive order-three Cayley radius. -/
+public theorem AnalyticData.orderThreeCentralOrbitRadius_lowerBound
+    (P : AnalyticData) (K : Set P.CentralFamily) (hK : IsCompact K) :
+    ∃ a : ℝ, 0 < a ∧ ∀ q : RegularTotalSpace P.periods,
+      P.centralQuotientProjection q ∈ K →
       a ≤ ‖(orderThreeCayleyHomeomorph
         (regularTotalSpaceBase P.periods q).1).1‖ := by
+  apply centralOrbitRadius_lowerBound P orderThreeCayleyHomeomorph K hK
+  intro q heq
+  have hcenter : orderThreeCayleyHomeomorph.symm ComplexUnitDisc.center = fuchsianOneFixedPoint :=
+    orderThreeCayleyHomeomorph.symm_apply_eq.mpr orderThreeCayleyHomeomorph_fixedPoint.symm
+  rw [hcenter] at heq
+  obtain ⟨g, hg⟩ := (P.modular.sourceCoordinate.coordinate_eq_iff_orbit _ _).mp heq
   let U := P.modular.modularParameter.toTriangleUniformization
-  let hsource : U.sourceAction = fuchsianSourceAction :=
-    P.modular.modularParameter.toTriangleUniformization_sourceAction
-  let _ : MulAction Delta UpperHalfPlane := fuchsianSourceMulAction
-  let _ : ProperlyDiscontinuousSMul Delta UpperHalfPlane :=
-    fuchsianProperlyDiscontinuous_of_source hsource
-      (sourceActionProperlyDiscontinuous_of_eq hsource)
-  let _ : ContinuousConstSMul Delta UpperHalfPlane :=
-    ⟨fun g ↦ (fuchsianSourceAction_contMDiff g 0).continuous⟩
-  let B : Set UpperHalfPlane :=
-    (fun x : RegularTotalSpace P.periods ↦
-      (regularTotalSpaceBase P.periods x).1) '' L
-  have hB : IsCompact B := hL.image
-    (continuous_subtype_val.comp (regularTotalSpaceBase_continuous P.periods))
-  let V : Set UpperHalfPlane := {z |
-    0 ≤ ‖(orderThreeCayleyHomeomorph z).1‖ ∧
-      ‖(orderThreeCayleyHomeomorph z).1‖ ≤ r}
-  have hV : IsCompact V := orderThreeCayleyRadiusBand_isCompact 0 r hr
-  obtain ⟨a, ha, haBound⟩ :=
-    properlyDiscontinuous_compact_translate_positiveLowerBound
-      (fun z : UpperHalfPlane ↦ ‖(orderThreeCayleyHomeomorph z).1‖)
-      (continuous_norm.comp
-        (continuous_subtype_val.comp orderThreeCayleyHomeomorph.continuous))
-      hB hV (by
-        intro (g : Delta) z hzB
-        obtain ⟨x, hxL, rfl⟩ := hzB
-        have hne : orderThreeCayleyHomeomorph
-            (g • (regularTotalSpaceBase P.periods x).1) ≠ ComplexUnitDisc.center := by
-          intro heq
-          have hfixed : g • (regularTotalSpaceBase P.periods x).1 =
-              fuchsianOneFixedPoint := by
-            apply orderThreeCayleyHomeomorph.injective
-            rw [heq, orderThreeCayleyHomeomorph_fixedPoint]
-          have hreg := isRegularBasePoint_smul (U := U) g
-            (regularTotalSpaceBase P.periods x).property
-          have hnot := (isRegularBasePoint_iff_not_mem_orbits
-            (U := U) (U.sourceAction g •
-              (regularTotalSpaceBase P.periods x).1)).mp hreg
-          apply hnot
-          left
-          have hfixedU : U.sourceAction g •
-              (regularTotalSpaceBase P.periods x).1 = U.zOne := by
-            rw [hsource, (ellipticFixedPoints_eq_of_fuchsian hsource).1]
-            exact hfixed
-          rw [hfixedU]
-          simp only [sourceOrbitSet.eq_def, Set.mem_iUnion,
-            Set.mem_singleton_iff]
-          exact ⟨1, by simp⟩
-        exact norm_pos_iff.mpr (coe_ne_zero_of_ne_center hne))
-  refine ⟨a, ha, ?_⟩
-  intro q hqK hqr
-  obtain ⟨x, hxL, hxq⟩ := hcover hqK
-  let _ := regularFamilyDeckAction P.periods
-  rw [centralQuotientProjection.eq_def] at hxq
-  have hrel := Quotient.exact hxq.symm
-  change MulAction.orbitRel Delta _ q x at hrel
-  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hrel
-  obtain ⟨g, hg⟩ := hrel
-  change regularFamilyDeckMap P.periods g x = q at hg
-  have hxB : (regularTotalSpaceBase P.periods x).1 ∈ B := ⟨x, hxL, rfl⟩
-  have hbase : g • (regularTotalSpaceBase P.periods x).1 =
-      (regularTotalSpaceBase P.periods q).1 := by
-    change fuchsianSourceAction g • (regularTotalSpaceBase P.periods x).1 = _
-    rw [← hsource]
-    calc
-      U.sourceAction g • (regularTotalSpaceBase P.periods x).1 =
-          (regularTotalSpaceBase P.periods
-            (regularFamilyDeckMap P.periods g x)).1 :=
-        congrArg Subtype.val
-          (regularTotalSpaceBase_familyDeckMap P.periods g x).symm
-      _ = (regularTotalSpaceBase P.periods q).1 :=
-        congrArg (fun y ↦ (regularTotalSpaceBase P.periods y).1) hg
-  have hVq : g • (regularTotalSpaceBase P.periods x).1 ∈ V := by
-    rw [hbase]
-    exact ⟨norm_nonneg _, hqr.le⟩
-  simpa only [hbase] using
-    haBound g (regularTotalSpaceBase P.periods x).1 hxB hVq
+  have hreg := isRegularBasePoint_smul (U := U) g
+    (regularTotalSpaceBase P.periods q).property
+  have hnot := (isRegularBasePoint_iff_not_mem_orbits _).mp hreg
+  have hsource := P.modular.modularParameter.toTriangleUniformization_sourceAction
+  have hfixed := (ellipticFixedPoints_eq_of_fuchsian hsource).1
+  have heqU : U.sourceAction g • (regularTotalSpaceBase P.periods q).1 = U.zOne := by
+    rw [hsource, hfixed]
+    exact hg
+  apply hnot
+  left
+  rw [heqU]
+  simp only [sourceOrbitSet.eq_def, Set.mem_iUnion, Set.mem_singleton_iff]
+  exact ⟨1, by simp⟩
 
-/-- A compact set of representatives for a central compact set gives a uniform positive
-order-four Cayley radius for every representative lying in the selected collar. -/
+/-- Central compact sets give a uniform positive order-four Cayley radius. -/
 public theorem AnalyticData.orderFourCentralOrbitRadius_lowerBound
-    (P : AnalyticData) (r : ℝ) (hr : r < 1)
-    (K : Set P.CentralFamily) (L : Set (RegularTotalSpace P.periods))
-    (hL : IsCompact L)
-    (hcover : K ⊆ P.centralQuotientProjection '' L) :
+    (P : AnalyticData) (K : Set P.CentralFamily) (hK : IsCompact K) :
     ∃ a : ℝ, 0 < a ∧ ∀ q : RegularTotalSpace P.periods,
       P.centralQuotientProjection q ∈ K →
-      ‖(orderFourCayleyHomeomorph
-        (regularTotalSpaceBase P.periods q).1).1‖ < r →
       a ≤ ‖(orderFourCayleyHomeomorph
         (regularTotalSpaceBase P.periods q).1).1‖ := by
+  apply centralOrbitRadius_lowerBound P orderFourCayleyHomeomorph K hK
+  intro q heq
+  have hcenter : orderFourCayleyHomeomorph.symm ComplexUnitDisc.center = fuchsianTwoFixedPoint :=
+    orderFourCayleyHomeomorph.symm_apply_eq.mpr orderFourCayleyHomeomorph_fixedPoint.symm
+  rw [hcenter] at heq
+  obtain ⟨g, hg⟩ := (P.modular.sourceCoordinate.coordinate_eq_iff_orbit _ _).mp heq
   let U := P.modular.modularParameter.toTriangleUniformization
-  let hsource : U.sourceAction = fuchsianSourceAction :=
-    P.modular.modularParameter.toTriangleUniformization_sourceAction
-  let _ : MulAction Delta UpperHalfPlane := fuchsianSourceMulAction
-  let _ : ProperlyDiscontinuousSMul Delta UpperHalfPlane :=
-    fuchsianProperlyDiscontinuous_of_source hsource
-      (sourceActionProperlyDiscontinuous_of_eq hsource)
-  let _ : ContinuousConstSMul Delta UpperHalfPlane :=
-    ⟨fun g ↦ (fuchsianSourceAction_contMDiff g 0).continuous⟩
-  let B : Set UpperHalfPlane :=
-    (fun x : RegularTotalSpace P.periods ↦
-      (regularTotalSpaceBase P.periods x).1) '' L
-  have hB : IsCompact B := hL.image
-    (continuous_subtype_val.comp (regularTotalSpaceBase_continuous P.periods))
-  let V : Set UpperHalfPlane := {z |
-    0 ≤ ‖(orderFourCayleyHomeomorph z).1‖ ∧
-      ‖(orderFourCayleyHomeomorph z).1‖ ≤ r}
-  have hV : IsCompact V := orderFourCayleyRadiusBand_isCompact 0 r hr
-  obtain ⟨a, ha, haBound⟩ :=
-    properlyDiscontinuous_compact_translate_positiveLowerBound
-      (fun z : UpperHalfPlane ↦ ‖(orderFourCayleyHomeomorph z).1‖)
-      (continuous_norm.comp
-        (continuous_subtype_val.comp orderFourCayleyHomeomorph.continuous))
-      hB hV (by
-        intro (g : Delta) z hzB
-        obtain ⟨x, hxL, rfl⟩ := hzB
-        have hne : orderFourCayleyHomeomorph
-            (g • (regularTotalSpaceBase P.periods x).1) ≠ ComplexUnitDisc.center := by
-          intro heq
-          have hfixed : g • (regularTotalSpaceBase P.periods x).1 =
-              fuchsianTwoFixedPoint := by
-            apply orderFourCayleyHomeomorph.injective
-            rw [heq, orderFourCayleyHomeomorph_fixedPoint]
-          have hreg := isRegularBasePoint_smul (U := U) g
-            (regularTotalSpaceBase P.periods x).property
-          have hnot := (isRegularBasePoint_iff_not_mem_orbits
-            (U := U) (U.sourceAction g •
-              (regularTotalSpaceBase P.periods x).1)).mp hreg
-          apply hnot
-          right
-          have hfixedU : U.sourceAction g •
-              (regularTotalSpaceBase P.periods x).1 = U.zTwo := by
-            rw [hsource, (ellipticFixedPoints_eq_of_fuchsian hsource).2]
-            exact hfixed
-          rw [hfixedU]
-          simp only [sourceOrbitSet.eq_def, Set.mem_iUnion,
-            Set.mem_singleton_iff]
-          exact ⟨1, by simp⟩
-        exact norm_pos_iff.mpr (coe_ne_zero_of_ne_center hne))
-  refine ⟨a, ha, ?_⟩
-  intro q hqK hqr
-  obtain ⟨x, hxL, hxq⟩ := hcover hqK
-  let _ := regularFamilyDeckAction P.periods
-  rw [centralQuotientProjection.eq_def] at hxq
-  have hrel := Quotient.exact hxq.symm
-  change MulAction.orbitRel Delta _ q x at hrel
-  rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hrel
-  obtain ⟨g, hg⟩ := hrel
-  change regularFamilyDeckMap P.periods g x = q at hg
-  have hxB : (regularTotalSpaceBase P.periods x).1 ∈ B := ⟨x, hxL, rfl⟩
-  have hbase : g • (regularTotalSpaceBase P.periods x).1 =
-      (regularTotalSpaceBase P.periods q).1 := by
-    change fuchsianSourceAction g • (regularTotalSpaceBase P.periods x).1 = _
-    rw [← hsource]
-    calc
-      U.sourceAction g • (regularTotalSpaceBase P.periods x).1 =
-          (regularTotalSpaceBase P.periods
-            (regularFamilyDeckMap P.periods g x)).1 :=
-        congrArg Subtype.val
-          (regularTotalSpaceBase_familyDeckMap P.periods g x).symm
-      _ = (regularTotalSpaceBase P.periods q).1 :=
-        congrArg (fun y ↦ (regularTotalSpaceBase P.periods y).1) hg
-  have hVq : g • (regularTotalSpaceBase P.periods x).1 ∈ V := by
-    rw [hbase]
-    exact ⟨norm_nonneg _, hqr.le⟩
-  simpa only [hbase] using
-    haBound g (regularTotalSpaceBase P.periods x).1 hxB hVq
+  have hreg := isRegularBasePoint_smul (U := U) g
+    (regularTotalSpaceBase P.periods q).property
+  have hnot := (isRegularBasePoint_iff_not_mem_orbits _).mp hreg
+  have hsource := P.modular.modularParameter.toTriangleUniformization_sourceAction
+  have hfixed := (ellipticFixedPoints_eq_of_fuchsian hsource).2
+  have heqU : U.sourceAction g • (regularTotalSpaceBase P.periods q).1 = U.zTwo := by
+    rw [hsource, hfixed]
+    exact hg
+  apply hnot
+  right
+  rw [heqU]
+  simp only [sourceOrbitSet.eq_def, Set.mem_iUnion, Set.mem_singleton_iff]
+  exact ⟨1, by simp⟩
 
 /-- Compact subsets of the central piece stay a positive distance from the missing order-three
 elliptic fibre along the actual affine collar. -/
@@ -353,10 +248,7 @@ public theorem AnalyticData.orderThreeCentralPositiveLowerTrap
         P.starToCentral (1 : Fin 3) s ∈ K →
           a ≤ P.starCollarRadius (1 : Fin 3) s := by
   intro K hK
-  obtain ⟨L, hL, hcover⟩ := P.centralCompact_has_compactRepresentatives K hK
-  obtain ⟨a, ha, haBound⟩ := P.orderThreeCentralOrbitRadius_lowerBound
-    P.starSeparation.orderThree.radius
-    P.starSeparation.orderThree.radius_lt_one K L hL hcover
+  obtain ⟨a, ha, haBound⟩ := P.orderThreeCentralOrbitRadius_lowerBound K hK
   refine ⟨a, ha, ?_⟩
   intro s hsK
   induction s using Quotient.inductionOn with
@@ -380,15 +272,10 @@ public theorem AnalyticData.orderThreeCentralPositiveLowerTrap
           (orderThreeCollarToRegular_base P.periods hproper
             P.modular.modularParameter.toTriangleUniformization_sourceAction
             P.starSeparation.orderThree.sourceData qlin)
-      have hlt : ‖(orderThreeCayleyHomeomorph
-          (regularTotalSpaceBase P.periods qreg).1).1‖ <
-          P.starSeparation.orderThree.radius := by
-        rw [hbase]
-        exact qlin.property.2
       calc
         a ≤ ‖(orderThreeCayleyHomeomorph
             (regularTotalSpaceBase P.periods qreg).1).1‖ :=
-          haBound qreg hqregK hlt
+          haBound qreg hqregK
         _ = orderThreeFamilyRadius P.periods qlin := hbase
         _ = orderThreeFamilyRadius P.periods q :=
           orderThreeFamilyRadius_principalGauge P.periods q
@@ -404,10 +291,7 @@ public theorem AnalyticData.orderFourCentralPositiveLowerTrap
         P.starToCentral (2 : Fin 3) s ∈ K →
           a ≤ P.starCollarRadius (2 : Fin 3) s := by
   intro K hK
-  obtain ⟨L, hL, hcover⟩ := P.centralCompact_has_compactRepresentatives K hK
-  obtain ⟨a, ha, haBound⟩ := P.orderFourCentralOrbitRadius_lowerBound
-    P.starSeparation.orderFour.radius
-    P.starSeparation.orderFour.radius_lt_one K L hL hcover
+  obtain ⟨a, ha, haBound⟩ := P.orderFourCentralOrbitRadius_lowerBound K hK
   refine ⟨a, ha, ?_⟩
   intro s hsK
   induction s using Quotient.inductionOn with
@@ -431,15 +315,10 @@ public theorem AnalyticData.orderFourCentralPositiveLowerTrap
           (orderFourCollarToRegular_base P.periods hproper
             P.modular.modularParameter.toTriangleUniformization_sourceAction
             P.starSeparation.orderFour.sourceData qlin)
-      have hlt : ‖(orderFourCayleyHomeomorph
-          (regularTotalSpaceBase P.periods qreg).1).1‖ <
-          P.starSeparation.orderFour.radius := by
-        rw [hbase]
-        exact qlin.property.2
       calc
         a ≤ ‖(orderFourCayleyHomeomorph
             (regularTotalSpaceBase P.periods qreg).1).1‖ :=
-          haBound qreg hqregK hlt
+          haBound qreg hqregK
         _ = orderFourFamilyRadius P.periods qlin := hbase
         _ = orderFourFamilyRadius P.periods q :=
           orderFourFamilyRadius_principalGauge P.periods q

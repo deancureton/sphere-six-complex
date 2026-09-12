@@ -54,6 +54,7 @@ public import SphereSixComplex.Paper.Geometry.PaperAnalyticFillingPieces
 public import SphereSixComplex.Paper.Geometry.PaperBiholomorphicStar
 public import SphereSixComplex.Paper.Geometry.PaperCentralCompactCore
 public import SphereSixComplex.Paper.Geometry.PaperCentralEndCover
+public import SphereSixComplex.Paper.Geometry.OrbifoldCoordinate
 public import SphereSixComplex.Paper.Geometry.PaperCentralFamilyTopology
 public import SphereSixComplex.Paper.Geometry.PaperCollarSeparation
 public import SphereSixComplex.Paper.Geometry.PaperEllipticCentralEscape
@@ -102,12 +103,9 @@ public import SphereSixComplex.Paper.Periods.ModularFrame.EisensteinSixRoot
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.EstablishedExactFuchsianOrbifoldCoordinate
 public import Mathlib.Topology.ContinuousMap.Basic
 public import SphereSixComplex.Paper.Periods.ExactFuchsianInvariantHolomorphicDescent
-public import SphereSixComplex.Paper.Periods.OrbifoldAffineTorsorCuspBoundedCousinCorrection
-public import SphereSixComplex.Prerequisites.Periods.EstablishedProjectiveLineCohomology
 public import SphereSixComplex.Paper.Periods.ModularFrame.Construction
 public import SphereSixComplex.Paper.Periods.ModularFrame.Basic
 public import SphereSixComplex.Paper.Periods.FuchsianModularLift.Ramification
-public import SphereSixComplex.Paper.Periods.FuchsianBetaTorsor
 public import SphereSixComplex.Paper.Periods.FuchsianUniformizationBridge
 public import SphereSixComplex.Prerequisites.Periods.FuchsianCompactGeometry
 public import SphereSixComplex.Paper.Periods.FuchsianCuspNormalization

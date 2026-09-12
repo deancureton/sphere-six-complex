@@ -605,7 +605,7 @@ public theorem exists_cusp_starCollar_of_normalizedBase
     additiveCuspRadiusCover_halfPlane W.localWitness.radius_le p
   have hps : p.1.2 = s := by
     have h := congrArg (fun z : UpperHalfPlane ↦
-      (((assembledFuchsianPeriodFunctions P.modular P.localPeriods).tau z :
+      (((assembledFuchsianPeriodFunctions P.modular P.periodData).tau z :
         UpperHalfPlane) : ℂ)) hplift
     rw [P.cuspCoordinate.lift_tau p.1.2 hpHalf,
       P.cuspCoordinate.lift_tau s hs] at h

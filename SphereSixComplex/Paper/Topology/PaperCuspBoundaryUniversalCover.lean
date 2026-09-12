@@ -70,7 +70,7 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.FamilyEquivariance
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- Translation of normalized additive coordinates by a rank-four period vector. -/

@@ -253,7 +253,7 @@ private noncomputable def partialDiffeomorphOfLocalCovers
 
 /-- The normalized regular bundle chart region as an ambient open subset. -/
 @[expose] public noncomputable def regularCuspBundleOpen
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     TopologicalSpace.Opens
@@ -268,7 +268,7 @@ private noncomputable def partialDiffeomorphOfLocalCovers
 /-- Product charts inherited from the ambient regular vector bundle. -/
 @[expose, instance_reducible]
 public noncomputable def regularCuspBundleRegionCharts
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     ChartedSpace (ModelProd ℂ ComplexTwoSpace) (RegularCuspBundleRegion W) :=
@@ -280,7 +280,7 @@ public noncomputable def regularCuspBundleRegionCharts
   show ChartedSpace (ModelProd ℂ ComplexTwoSpace) U from inferInstance
 
 private theorem normalizedLift_contMDiffOn
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D) :
     ContMDiffOn (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) ∞
       (fun s : ℂ ↦ (N.lift s : ℂ)) (cuspHalfPlane N.height) := by
@@ -290,7 +290,7 @@ private theorem normalizedLift_contMDiffOn
     (isOpen_lt continuous_const Complex.continuous_im)).contMDiffOn
 
 private theorem additiveCuspBundleHomeomorph_contMDiff
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     letI := additiveCuspRadiusCoverCharts W.localWitness.radius
@@ -342,7 +342,7 @@ private theorem additiveCuspBundleHomeomorph_contMDiff
   exact hambient
 
 private theorem additiveCuspBundleHomeomorph_symm_contMDiff
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     letI := additiveCuspRadiusCoverCharts W.localWitness.radius
@@ -401,7 +401,7 @@ private theorem additiveCuspBundleHomeomorph_symm_contMDiff
   rfl
 
 private noncomputable def additiveCuspBundleDiffeomorph
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     letI := additiveCuspRadiusCoverCharts W.localWitness.radius
@@ -560,7 +560,7 @@ public theorem isLocalDiffeomorph_denseCuspExponentialCover_radius (r : ℝ) :
 /-- Composing the coordinate exponential with the canonical dense-torus chart gives a local
 biholomorphism into the punctured local toric carrier. -/
 public theorem additiveCuspExponentialPoint_isLocalDiffeomorph
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     letI := additiveCuspRadiusCoverCharts W.localWitness.radius
@@ -608,7 +608,7 @@ public theorem additiveCuspExponentialPoint_isLocalDiffeomorph
 /-- The normalized cusp lift and its exact inverse `tau` give a locally biholomorphic product
 chart from additive cusp coordinates to the regular vector-bundle cover. -/
 public theorem additiveCuspBundleMap_isLocalDiffeomorph
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     let hproper : SourceActionProperlyDiscontinuous :=
@@ -652,7 +652,7 @@ public theorem additiveCuspBundleMap_isLocalDiffeomorph
   rfl
 
 private noncomputable def additiveCuspCoverToPuncturedQuotient
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     additiveCuspRadiusCover W.localWitness.radius → PuncturedLocalCuspQuotient W :=
@@ -660,7 +660,7 @@ private noncomputable def additiveCuspCoverToPuncturedQuotient
     (additiveToPuncturedLocalHomeomorph M W.localWitness.radius (Quotient.mk _ p))
 
 private theorem puncturedLocalCuspQuotientMap_additiveCover
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : additiveCuspRadiusCover W.localWitness.radius) :
@@ -672,7 +672,7 @@ private theorem puncturedLocalCuspQuotientMap_additiveCover
 
 /-- The additive exponential cover mapped into the full local filling. -/
 public noncomputable def additiveCuspCoverToFilling
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     additiveCuspRadiusCover W.localWitness.radius → ActualLocalCuspFilling W :=
@@ -681,7 +681,7 @@ public noncomputable def additiveCuspCoverToFilling
       (mem_ball_zero_iff.mpr p.2))
 
 public theorem additiveCuspCoverToFilling_isLocalDiffeomorph
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     letI := additiveCuspRadiusCoverCharts W.localWitness.radius
@@ -708,7 +708,7 @@ public theorem additiveCuspCoverToFilling_isLocalDiffeomorph
   rfl
 
 private theorem puncturedLocalCuspToFilling_additiveCover
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : additiveCuspRadiusCover W.localWitness.radius) :
@@ -720,7 +720,7 @@ private theorem puncturedLocalCuspToFilling_additiveCover
   exact additiveToPuncturedLocalHomeomorph_mk M W.localWitness.radius p
 
 private theorem additiveCuspCoverToGlobal_range
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Set.range (additiveCuspCoverToGlobal W) = puncturedGlobalCuspCollar W := by
@@ -743,7 +743,7 @@ private theorem additiveCuspCoverToGlobal_range
         rw [hv]
 
 private theorem additiveCuspCoverToFilling_range
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Set.range (additiveCuspCoverToFilling W) = actualLocalCuspFillingCollar W := by

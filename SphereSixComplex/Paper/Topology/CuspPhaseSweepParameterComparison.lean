@@ -119,7 +119,7 @@ public theorem compactCircle_embedding (i : Fin 2) (z : UnitAddCircle) :
     simp [compactTorusEmbedding, effectivePhaseSection, cuspPeriodCompactCircle,
       phaseEmbedding, cuspPeriodPhaseCircle, CircleExponential.toUnits]
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem phaseSweepOrbit_eq_compact_of_carrier

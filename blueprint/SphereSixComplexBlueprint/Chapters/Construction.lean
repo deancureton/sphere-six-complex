@@ -79,7 +79,7 @@ The Setup inequalities make the four period columns a real basis of $`\mathbb C^
 is preserved by the triangle-group action.
 :::
 
-:::theorem "period-functions" (parent := "construction_spine") (lean := "SphereSixComplex.Periods.FuchsianAffineDescent.exists_fuchsianPeriodLocalData, SphereSixComplex.Periods.exists_assembledFuchsianPeriodFunctions") (priority := "high")
+:::theorem "period-functions" (parent := "construction_spine") (lean := "SphereSixComplex.Periods.FuchsianAffineDescent.nonempty_fuchsianPeriodData, SphereSixComplex.Periods.exists_assembledFuchsianPeriodFunctions") (priority := "high")
 There are holomorphic functions $`\tau,\mu,\beta` on the upper half-plane satisfying the transformation,
 cusp-growth, and nondegeneracy conditions listed in the Setup.
 :::
@@ -162,8 +162,11 @@ order-four orbits.  The inhomogeneous $`\beta` cocycles sum to zero, and weighte
 the explicit local primitives used to build the two analytic torsors.
 :::
 
-:::theorem "projective-line-cech-splitting" (parent := "period-functions") (lean := "SphereSixComplex.Periods.exists_cech_coboundary_neg_one, SphereSixComplex.Periods.exists_cech_coboundary_zero")
-Holomorphic overlap cocycles on the standard two-chart cover of the projective line split for both $`\mathcal O(-1)` and $`\mathcal O`. These analytic Čech splittings are proved in Lean.
+:::theorem "projective-line-cech-splitting" (parent := "period-functions") (lean := "SphereSixComplex.Analysis.CauchyGreen.exists_negativeOne_holomorphic_cocycle_solution")
+A holomorphic additive cocycle on an open cover of the complex plane has holomorphic local
+primitives. If one chart contains the complement of a disc, its primitive can be normalized as
+$`z^{-1}g(z^{-1})`, with $`g` holomorphic near zero. This proved Cauchy–Green splitting supplies
+the corrections used by both affine torsors and controls their behavior at the cusp.
 :::
 
 :::theorem "fuchsian-modular-neg-one-frame" (parent := "projective-line-cech-splitting") (lean := "SphereSixComplex.Periods.AnalyticSquareRoot.exists_analyticOnNhd_sq_eq, SphereSixComplex.Periods.nonempty_eisensteinSixRoot, SphereSixComplex.Periods.nonempty_modularFrameCuspGerm, SphereSixComplex.Periods.ModularNegOneFrame, SphereSixComplex.Periods.nonempty_modularNegOneFrame, SphereSixComplex.Periods.FuchsianAffineDescent.liftedNegOneInfinityFrame, SphereSixComplex.Periods.muAffineOne_closes, SphereSixComplex.Periods.muAffineTwo_closes, SphereSixComplex.Periods.betaCocycleOne_cycle, SphereSixComplex.Periods.betaCocycleTwo_cycle")
@@ -172,22 +175,20 @@ two-chart frame for the pulled-back $`\mathcal O(-1)` bundle, including its elli
 factorization. The modular uniformization and frame constructions are proved results.
 :::
 
-:::theorem "fuchsian-mu-torsor-descent" (parent := "fuchsian-modular-neg-one-frame") (lean := "SphereSixComplex.Periods.OrbifoldAffineDescentData.HasAcyclicProjectiveLineFrame, SphereSixComplex.Periods.OrbifoldAffineDescentData.nonempty_analyticDescentData, SphereSixComplex.Periods.FuchsianAffineDescent.muDescentData, SphereSixComplex.Periods.FuchsianAffineDescent.muAnalyticDescentData, SphereSixComplex.Periods.MuTorsorCechLocalData, SphereSixComplex.Periods.exists_compatibleAdjustedMuSections, SphereSixComplex.Periods.gluedAdjustedMu_holomorphic, SphereSixComplex.Periods.gluedAdjustedMu_transform_one, SphereSixComplex.Periods.gluedAdjustedMu_transform_two, SphereSixComplex.Periods.gluedAdjustedMu_cusp_bounded, SphereSixComplex.Periods.exists_globalFuchsianMu")
-Exact local $`\mathcal O(-1)` torsor data on two invariant quotient charts glues to a global
-holomorphic $`\mu` with both affine generator laws and the required cusp bound. The analytic
-splitting, construction of `AnalyticDescentData`, Čech correction, and global gluing are all proved.
-No Cartan--B or Cousin axiom is retained.
+:::theorem "fuchsian-mu-torsor-descent" (parent := "fuchsian-modular-neg-one-frame") (lean := "SphereSixComplex.Periods.OrbifoldAffineDescentData.HasAcyclicProjectiveLineFrame, SphereSixComplex.Periods.OrbifoldAffineDescentData.hasCuspBoundedSection, SphereSixComplex.Periods.FuchsianAffineDescent.muDescentData")
+The affine $`\mathcal O(-1)` torsor has a global holomorphic section $`\mu` with both generator
+laws and the required cusp bound. The standard-transition splitting theorem supplies this section
+directly from the modular frame.
 :::
 
-:::theorem "fuchsian-beta-torsor-descent" (parent := "fuchsian-mu-torsor-descent") (lean := "SphereSixComplex.Periods.FuchsianAffineDescent.BetaDescentData, SphereSixComplex.Periods.FuchsianAffineDescent.betaAnalyticDescentData, SphereSixComplex.Periods.BetaTorsorCechLocalData, SphereSixComplex.Periods.FuchsianAffineDescent.exists_betaAffineCechSections, SphereSixComplex.Periods.exists_compatibleAdjustedBetaSections, SphereSixComplex.Periods.gluedAdjustedBeta_holomorphic, SphereSixComplex.Periods.gluedAdjustedBeta_transform_one, SphereSixComplex.Periods.gluedAdjustedBeta_transform_two, SphereSixComplex.Periods.gluedAdjustedBeta_add_tau_cusp_bounded, SphereSixComplex.Periods.exists_globalFuchsianBeta")
-For a fixed global $`\mu`, exact local $`\mathcal O` torsor data likewise glues to a global
-holomorphic $`\beta` with both affine generator laws and the normalized $`\beta+\tau` cusp bound.
-Applying the same general analytic theorem to the torsor determined by the selected $`\mu`
-constructs the dependent beta certificate; its overlap correction and global gluing are proved.
+:::theorem "fuchsian-beta-torsor-descent" (parent := "fuchsian-mu-torsor-descent") (lean := "SphereSixComplex.Periods.FuchsianAffineDescent.betaDescentData, SphereSixComplex.Periods.FuchsianAffineDescent.nonempty_fuchsianPeriodData")
+For the selected global $`\mu`, the affine $`\mathcal O` torsor has a global holomorphic section
+$`\beta` with both generator laws and the normalized $`\beta+\tau` cusp bound. Both sections are
+stored together, preserving their dependence on the same $`\mu`.
 :::
 
-:::theorem "fuchsian-period-assembly" (parent := "fuchsian-beta-torsor-descent") (lean := "SphereSixComplex.Periods.FuchsianPeriodLocalData, SphereSixComplex.Periods.assembledFuchsianPrePeriodData, SphereSixComplex.Periods.descendedFuchsianMu_transform_cusp, SphereSixComplex.Periods.descendedFuchsianBeta_transform_cusp, SphereSixComplex.Periods.FuchsianAffineDescent.exists_fuchsianPeriodLocalData, SphereSixComplex.Periods.exists_assembledFuchsianPeriodFunctions, SphereSixComplex.Periods.assembledFuchsianPeriodFunctions")
-The two production torsor packages assemble with the established modular parameter into full
+:::theorem "fuchsian-period-assembly" (parent := "fuchsian-beta-torsor-descent") (lean := "SphereSixComplex.Periods.FuchsianPeriodData, SphereSixComplex.Periods.assembledFuchsianPrePeriodData, SphereSixComplex.Periods.FuchsianPeriodData.mu_transform_cusp, SphereSixComplex.Periods.FuchsianPeriodData.beta_transform_cusp, SphereSixComplex.Periods.FuchsianAffineDescent.nonempty_fuchsianPeriodData, SphereSixComplex.Periods.exists_assembledFuchsianPeriodFunctions, SphereSixComplex.Periods.assembledFuchsianPeriodFunctions")
+The two global additive sections assemble with the established modular parameter into full
 pre-period data. The elliptic generator laws imply the parabolic $`\mu` and $`\beta` laws, and the
 doubled Fuchsian compact core supplies the Schur shift to an actual nondegenerate period family.
 :::

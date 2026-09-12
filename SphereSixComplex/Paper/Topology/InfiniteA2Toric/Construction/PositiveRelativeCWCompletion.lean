@@ -23,7 +23,7 @@ open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 namespace Construction
 
 public theorem contMDiff_positiveDeck
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := localPositiveQuadrantChartedSpace W.localWitness.radius
@@ -64,7 +64,7 @@ public theorem contMDiff_positiveDeck
   convert hc using 1 <;> rfl
 
 public def positiveCOneManifoldBoundaryData
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     PositiveCOneManifoldBoundaryData W where
@@ -74,7 +74,7 @@ public def positiveCOneManifoldBoundaryData
   deck_contMDiff := contMDiff_positiveDeck W
 
 public theorem nonempty_positiveQuotientRelativeCW
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     Nonempty (PositiveQuotientRelativeCW W) :=
@@ -82,7 +82,7 @@ public theorem nonempty_positiveQuotientRelativeCW
     (positiveCOneManifoldBoundaryData W)
 
 public noncomputable def polarHoneycombConstructionData_of_contractible
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (h : ContractibleSpace (constructedLocalPositivePart W.localWitness.radius)) :

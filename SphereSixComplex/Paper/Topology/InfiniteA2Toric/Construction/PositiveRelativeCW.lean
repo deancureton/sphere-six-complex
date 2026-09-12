@@ -35,7 +35,7 @@ namespace Construction
 
 /-- The orbit quotient of the constructed positive part at the quantitative cusp radius. -/
 public abbrev PositiveQuotient
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :=
   letI := normalizedPositiveDeckAction N constructedModel
@@ -46,7 +46,7 @@ public abbrev PositiveQuotient
 
 /-- The image of the zero-height honeycomb in the constructed positive quotient. -/
 public abbrev positiveQuotientCore
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     Set (PositiveQuotient W) :=
@@ -68,7 +68,7 @@ public theorem isClosed_positiveCentralFiber (r : ℝ) :
 
 /-- The zero-height fibre is saturated under the normalized positive deck action. -/
 public theorem positiveDeck_central_preimage
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -119,7 +119,7 @@ public theorem positiveDeck_central_preimage
 
 /-- The central orbit core is closed in the positive quotient. -/
 public theorem isClosed_positiveDeck_orbitCore
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     IsClosed (positiveQuotientCore W) := by
@@ -143,7 +143,7 @@ positive quotient.  Its three fields are intrinsic to the explicit positive tori
 quadrant manifold structure, identification of its boundary with the zero-height fibre, and
 smoothness of the normalized deck transformations. -/
 public structure PositiveCOneManifoldBoundaryData
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) where
   charts : ChartedSpace (EuclideanQuadrant 3)
@@ -173,7 +173,7 @@ public structure PositiveCOneManifoldBoundaryData
 Relative triangulation and preservation of manifold boundary by the quotient local
 diffeomorphism then give the required relative CW structure. -/
 public theorem nonempty_positiveQuotientRelativeCW_of_manifoldBoundary
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     {W : ActualPuncturedCuspCollarWitness N constructedModel}
     (A : PositiveCOneManifoldBoundaryData W) :

@@ -13,7 +13,7 @@ open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
 open CuspPeriodExpansion CuspStraighteningRetraction CuspStraightening
 open CuspStraightening InfiniteA2Toric.QuantitativeRegions
 open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
 
 theorem positiveDeck_preserves_height (lambda : ParameterLattice) (p : localCarrier M r) :

@@ -33,7 +33,7 @@ public theorem constructedLocalPositivePart_contractible {r : ℝ}
   exact c.contractibleSpace hB
 
 public def constructedPolarHoneycombConstruction
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     NormalizedPolarHoneycombConstructionData N constructedModel W.localWitness.radius :=
@@ -41,7 +41,7 @@ public def constructedPolarHoneycombConstruction
     (constructedLocalPositivePart_contractible W.localWitness.radius_pos W.localWitness.radius_lt_one)
 
 public instance constructedHasCuspPhaseSpreading
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) : HasCuspPhaseSpreading W := by
   let Q := constructedPolarHoneycombConstruction W

@@ -7,7 +7,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
 open CuspPeriodExpansion InfiniteA2Toric
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
 
 public theorem polarModulus_frozenDeck

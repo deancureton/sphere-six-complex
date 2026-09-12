@@ -11,7 +11,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspCollar
 open ComplexTorus SphereSixComplex.Periods InfiniteA2Toric CuspLocalPhaseAction CuspFilling
 open CuspPeriodExpansion CuspToricPhaseAction CuspPhaseEstimates
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public theorem localPhaseActionEquiv_psiMap

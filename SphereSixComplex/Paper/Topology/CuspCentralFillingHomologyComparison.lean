@@ -8,7 +8,7 @@ namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex SphereSixComplex.Periods
 open CuspFilling CuspPeriodExpansion InfiniteA2Toric
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public def actualCuspCentralOrbitFillingHomologyEquiv

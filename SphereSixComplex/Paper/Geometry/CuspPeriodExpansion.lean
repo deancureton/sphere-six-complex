@@ -177,7 +177,7 @@ public theorem nonempty_holomorphicCuspDescent
 The lift is a holomorphic inverse to `τ` on a half-plane, lands in the source cusp, and intertwines
 translation by `-1` with the exact Fuchsian cusp generator. -/
 public structure NormalizedFuchsianCuspCoordinate
-    (E : FuchsianModularLift) (D : FuchsianPeriodLocalData E) where
+    (E : FuchsianModularLift) (D : FuchsianPeriodData E) where
   height : ℝ
   lift : ℂ → UpperHalfPlane
   lift_holomorphic : MDiff[cuspHalfPlane height] lift
@@ -190,7 +190,7 @@ public structure NormalizedFuchsianCuspCoordinate
 
 namespace NormalizedFuchsianCuspCoordinate
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     (N : NormalizedFuchsianCuspCoordinate E D)
 
 /-- The invariant `μ` coefficient pulled back to the normalized cusp half-plane. -/

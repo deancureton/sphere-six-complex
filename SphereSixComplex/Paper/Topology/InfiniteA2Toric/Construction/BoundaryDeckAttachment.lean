@@ -20,7 +20,7 @@ open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem effectivePhase_fanShear_commute

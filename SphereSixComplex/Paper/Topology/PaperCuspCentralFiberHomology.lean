@@ -44,7 +44,7 @@ private theorem standardA2ToricCellularBoundary_eq (n : ℕ)
 incidence formula encoded by `cuspToricCellularBoundary`: the three oriented one-cells run from
 the first vertex to the second, and every higher cellular boundary is zero. -/
 public theorem centralFiber_cellularBoundary_eq
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -75,7 +75,7 @@ public theorem centralFiber_cellularBoundary_eq
 
 /-- The actual quotient cusp central fibre has second integral homology `ℤ⁴`. -/
 public noncomputable def actualCuspCentralFiberHomologyTwoEquiv
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -91,7 +91,7 @@ public noncomputable def actualCuspCentralFiberHomologyTwoEquiv
 
 /-- The actual local cusp filling has second integral homology `ℤ⁴`. -/
 public noncomputable def actualLocalCuspFillingHomologyTwoEquiv
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :

@@ -116,7 +116,6 @@ public import SphereSixComplex.Prerequisites.Geometry.QuotientDeckFundamentalGro
 public import SphereSixComplex.Prerequisites.Geometry.QuotientTopology
 public import SphereSixComplex.Prerequisites.Geometry.StarCompactCover
 public import SphereSixComplex.Prerequisites.Periods.AnalyticSquareRoot
-public import SphereSixComplex.Prerequisites.Periods.EstablishedProjectiveLineCohomology
 public import SphereSixComplex.Prerequisites.Periods.FuchsianCompactGeometry
 public import SphereSixComplex.Prerequisites.Periods.FuchsianModularParameter
 public import SphereSixComplex.Prerequisites.Periods.FuchsianModularParameterExistence

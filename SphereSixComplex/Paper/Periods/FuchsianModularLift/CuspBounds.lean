@@ -129,7 +129,6 @@ private theorem one_le_normSq_at_one_of_sameQuadrant
       nlinarith
 
 
-
 private theorem neWord_ends_true_height_le {i : Bool}
     (w : Monoid.CoprodI.NeWord DeltaFactor i true) :
     (fuchsianSourceAction (indexedToDelta w.prod) • fuchsianOneFixedPoint).im ≤
@@ -269,69 +268,5 @@ public theorem ExactFuchsianOrbifoldCoordinate.inverse_coordinate_tendsto_zero
   filter_upwards [C.cusp.reciprocal_factorization] with z hz
   exact hz.symm
 
-private def centeredCuspTruncation (H : ℝ) : Set UpperHalfPlane :=
-  {z | -FuchsianFundamentalDomain.cuspWidth / 2 ≤ z.re ∧
-    z.re ≤ FuchsianFundamentalDomain.cuspWidth / 2 ∧
-    1 ≤ z.im ∧ z.im ≤ max 1 H}
-
-private theorem centeredCuspTruncation_isCompact (H : ℝ) :
-    IsCompact (centeredCuspTruncation H) := by
-  have hrect : IsCompact
-      ((Set.Icc (-FuchsianFundamentalDomain.cuspWidth / 2)
-          (FuchsianFundamentalDomain.cuspWidth / 2)) ×ℂ
-        Set.Icc (1 : ℝ) (max 1 H)) :=
-    isCompact_Icc.reProdIm isCompact_Icc
-  rw [UpperHalfPlane.isEmbedding_coe.isCompact_iff]
-  convert hrect using 1
-  ext z
-  constructor
-  · rintro ⟨w, ⟨hwreLower, hwreUpper, hwimLower, hwimUpper⟩, rfl⟩
-    exact ⟨⟨hwreLower, hwreUpper⟩, hwimLower, hwimUpper⟩
-  · rintro ⟨⟨hzreLower, hzreUpper⟩, hzimLower, hzimUpper⟩
-    have hzimPos : 0 < z.im := lt_of_lt_of_le (by norm_num) hzimLower
-    let w : UpperHalfPlane := ⟨z, hzimPos⟩
-    refine ⟨w, ?_, rfl⟩
-    exact ⟨hzreLower, hzreUpper, hzimLower, hzimUpper⟩
-
-/-- The reciprocal of an exact Fuchsian quotient coordinate is uniformly bounded on the
-standard cusp region. -/
-public theorem ExactFuchsianOrbifoldCoordinate.inverse_coordinate_bounded_on_cusp
-    (C : ExactFuchsianOrbifoldCoordinate) :
-    SphereSixComplex.Periods.BoundedOn
-      (fun z => (C.coordinate z)⁻¹) fuchsianCuspRegion := by
-  have heventually : ∀ᶠ z in upperHalfPlaneAtInfinity,
-      (C.coordinate z)⁻¹ ∈ Metric.ball 0 1 :=
-    (inverse_coordinate_tendsto_zero C).eventually
-      (Metric.ball_mem_nhds 0 (by norm_num))
-  rw [upperHalfPlaneAtInfinity, eventually_comap, eventually_atTop] at heventually
-  obtain ⟨H, hH⟩ := heventually
-  let K := centeredCuspTruncation H
-  have hK : IsCompact K := centeredCuspTruncation_isCompact H
-  have hcontinuous : ContinuousOn (fun z => (C.coordinate z)⁻¹) K := by
-    apply C.coordinate_holomorphic.continuous.continuousOn.inv₀
-    intro z hz
-    exact C.coordinate_ne_zero_on_cusp z hz.2.2.1
-  obtain ⟨B, hB⟩ := hK.bddAbove_image hcontinuous.norm
-  rw [SphereSixComplex.Periods.BoundedOn.eq_def]
-  refine ⟨max B 1, by positivity, ?_⟩
-  intro z hz
-  by_cases hhigh : H ≤ z.im
-  · have hball := hH z.im hhigh z rfl
-    have hlt : ‖(C.coordinate z)⁻¹‖ < 1 := by simpa using hball
-    exact hlt.le.trans (le_max_right B 1)
-  · let w := centerPoint z
-    have hwmem : w ∈ K := by
-      refine ⟨centerPoint_re_lower z, (centerPoint_re_upper z).le, ?_, ?_⟩
-      · rw [centerPoint_im]
-        exact hz
-      · rw [centerPoint_im]
-        exact (le_of_not_ge hhigh).trans (le_max_right 1 H)
-    have hcoord : C.coordinate w = C.coordinate z := by
-      exact C.coordinate_invariant
-        ((g₁ * g₂) ^ FuchsianTessellation.centerExponent z) z
-    calc
-      ‖(C.coordinate z)⁻¹‖ = ‖(C.coordinate w)⁻¹‖ := by rw [hcoord]
-      _ ≤ B := hB ⟨_, hwmem, rfl⟩
-      _ ≤ max B 1 := le_max_left B 1
 
 end SphereSixComplex.Periods

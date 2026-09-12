@@ -23,7 +23,7 @@ open SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- Transport the explicit characteristic maps from the constructed toric model. -/
 public noncomputable def centralOrbitCellAtlas
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     CentralFiber.CellAtlas (ActualLocalCuspCentralOrbitQuotient W) := by
@@ -36,7 +36,7 @@ public noncomputable def centralOrbitCellAtlas
 /-- Transport the orbit-quotient atlas to the radial retraction's concrete central-fibre
 subspace. -/
 public noncomputable def centralFiberCellAtlas
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -51,7 +51,7 @@ public noncomputable def centralFiberCellAtlas
     (actualLocalCuspCentralOrbitCoreHomeomorph W R)
 
 public theorem centralFiber_coordinateBoundary_eq
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -117,7 +117,7 @@ public theorem centralFiber_coordinateBoundary_eq
 /-- The compact periodic `A₂` central fibre has its standard labelled CW realization and exact
 attaching-incidence formula. -/
 public noncomputable def centralFiberCellularModel
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -131,7 +131,7 @@ public noncomputable def centralFiberCellularModel
 
 /-- The quotient central fibre equipped with its labelled CW model. -/
 public noncomputable def centralFiberCWModel
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -144,7 +144,7 @@ public noncomputable def centralFiberCWModel
 /-- The actual quotient central fibre has the cusp toric cell model required by the local Euler
 calculation. -/
 public noncomputable def actualCuspCentralFiberCellModel
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :

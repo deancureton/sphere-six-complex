@@ -43,7 +43,7 @@ Producing the marking is the same real-period-coordinate construction used for t
 `PaperSectionSevenAffineMarkedBandTrivialization`: lift the contractible base through the
 covering, then read the period coordinate on the lifted sheet. -/
 public noncomputable def radialClutchingData
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) : ActualCuspRadialClutchingData W :=
   SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData W
@@ -53,7 +53,7 @@ namespace UnnormalizedCuspRadialClutchingData
 
 open LatticeData LatticeWangAlgebra CuspMonodromyCoinvariants
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W] (G : UnnormalizedCuspRadialClutchingData W)
 
@@ -130,7 +130,7 @@ end UnnormalizedCuspRadialClutchingData
 
 namespace ActualCuspRadialClutchingData
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W] (G : ActualCuspRadialClutchingData W)
 

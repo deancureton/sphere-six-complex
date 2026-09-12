@@ -17,7 +17,7 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M₁ M₂ : Model}
 
 public def centralModelMap (W₁ : ActualPuncturedCuspCollarWitness N M₁)

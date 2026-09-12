@@ -168,7 +168,7 @@ public theorem localCarrier_connected (M : Model) {r : ℝ} (hr : 0 < r) :
 
 /-- The actual phase-corrected local cusp quotient is connected. -/
 public theorem actualLocalCuspFilling_connected
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     ConnectedSpace (ActualLocalCuspFilling W) := by

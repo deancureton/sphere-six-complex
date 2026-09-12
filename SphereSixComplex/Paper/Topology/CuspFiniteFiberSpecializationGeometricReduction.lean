@@ -31,7 +31,7 @@ open SphereSixComplex.LatticeWangAlgebra
 open SphereSixComplex.CuspMonodromyCoinvariants
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W]
 

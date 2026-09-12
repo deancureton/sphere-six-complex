@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Paper.Geometry.PaperEllipticCentralEscape
 public import SphereSixComplex.Paper.Geometry.PaperFillingCompactCores
+public import SphereSixComplex.Prerequisites.Topology.CompactRepresentatives
 
 /-!
 # A compact core for the paper's central family

@@ -16,7 +16,7 @@ open InfiniteA2Toric.Construction InfiniteA2Toric
 open SphereSixComplex.StandardCircleHomologyLiftDegree
 open SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 open SphereSixComplex.StandardTorusHomology
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedA2CircleSweepParameter_period (i : Fin 2) (t : unitInterval) :

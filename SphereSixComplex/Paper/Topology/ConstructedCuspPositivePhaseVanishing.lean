@@ -12,7 +12,7 @@ open SphereSixComplex.Periods SphereSixComplex.Topology
 open CuspFilling CuspLocalPhaseAction CuspCollar CuspPeriodExpansion
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction CircleProductIdentityMappingTorus
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedCuspPositiveProjection_central_action

@@ -15,7 +15,7 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open SphereSixComplex.Geometry.InfiniteA2Toric
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 private theorem isEmbedding_restrict_of_compact_boundary_separation

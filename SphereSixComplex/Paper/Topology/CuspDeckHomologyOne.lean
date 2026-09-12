@@ -8,7 +8,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods SphereSixComplex.Topology
 open CuspPeriodExpansion CuspFilling CuspLocalPhaseAction InfiniteA2Toric
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public def actualCuspDeckHomologyOneEquiv (W : ActualPuncturedCuspCollarWitness N M) :

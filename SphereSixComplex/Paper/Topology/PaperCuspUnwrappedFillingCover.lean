@@ -28,7 +28,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- A selected preimage in the normalized additive cover of a prescribed boundary base point. -/

@@ -51,33 +51,6 @@ public theorem IsLocalHomeomorph.exists_compact_source_cover
         ⟨y, interior_subset hyz, rfl⟩⟩
     · exact hf.apply_localInverseAt_of_mem ((hCsource z) (interior_subset hyz))
 
-/-- Proper discontinuity makes a positive continuous function uniformly positive on all
-translates of a compact set that meet a second compact set. -/
-public theorem properlyDiscontinuous_compact_translate_positiveLowerBound
-    {G X : Type*} [Group G] [TopologicalSpace X] [MulAction G X]
-    [ProperlyDiscontinuousSMul G X] [ContinuousConstSMul G X]
-    (rho : X → ℝ) (hrho : Continuous rho)
-    {K V : Set X} (hK : IsCompact K) (hV : IsCompact V)
-    (hpos : ∀ (g : G) (x : X), x ∈ K → 0 < rho (g • x)) :
-    ∃ a : ℝ, 0 < a ∧ ∀ (g : G) (x : X), x ∈ K → g • x ∈ V → a ≤ rho (g • x) := by
-  let S : Set G := {g | ((g • ·) '' K ∩ V).Nonempty}
-  have hS : S.Finite := finite_disjoint_inter_image hK hV
-  let T : Set X := ⋃ g ∈ hS.toFinset, (g • ·) '' K
-  have hT : IsCompact T := hS.toFinset.isCompact_biUnion fun g _ ↦
-    hK.image (continuous_const_smul g)
-  by_cases hTne : T.Nonempty
-  · obtain ⟨z, hzT, hzmin⟩ := hT.exists_isMinOn hTne hrho.continuousOn
-    obtain ⟨g, hg, x, hx, rfl⟩ := Set.mem_iUnion₂.mp hzT
-    refine ⟨rho (g • x), hpos g x hx, ?_⟩
-    intro k y hyK hkyV
-    have hkS : k ∈ S := ⟨k • y, ⟨⟨y, hyK, rfl⟩, hkyV⟩⟩
-    apply hzmin
-    exact Set.mem_iUnion₂.mpr ⟨k, by simpa [S] using hkS, ⟨y, hyK, rfl⟩⟩
-  · refine ⟨1, zero_lt_one, ?_⟩
-    intro g x hxK hgV
-    have hgS : g ∈ S := ⟨g • x, ⟨⟨x, hxK, rfl⟩, hgV⟩⟩
-    exact False.elim (hTne ⟨g • x,
-      Set.mem_iUnion₂.mpr ⟨g, by simpa [S] using hgS, ⟨x, hxK, rfl⟩⟩⟩)
 
 end
 

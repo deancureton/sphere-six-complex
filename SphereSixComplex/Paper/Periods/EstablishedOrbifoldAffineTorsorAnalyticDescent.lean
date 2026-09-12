@@ -20,26 +20,13 @@ namespace SphereSixComplex.Periods
     (P.frameOrderOne = 0 ∧ P.frameOrderTwo = 0 ∧
       P.frameTransition = fun _ ↦ 1)
 
-public theorem OrbifoldAffineDescentData.nonempty_cuspBoundedCorrection
-    (P : OrbifoldAffineDescentData)
-    (hP : P.HasAcyclicProjectiveLineFrame) :
-    Nonempty P.CuspBoundedCorrection := by
-  apply P.nonempty_correction_of_hasCuspBoundedSection
-  apply P.hasCuspBoundedSection_of_standard_transition
-  exact hP.elim (fun h ↦ Or.inl h.2.2) (fun h ↦ Or.inr h.2.2)
 
 public theorem OrbifoldAffineDescentData.hasCuspBoundedSection
     (P : OrbifoldAffineDescentData)
     (hP : P.HasAcyclicProjectiveLineFrame) :
     P.HasCuspBoundedSection := by
-  obtain ⟨C⟩ := OrbifoldAffineDescentData.nonempty_cuspBoundedCorrection P hP
-  exact P.hasCuspBoundedSection_of_correction C
+  apply P.hasCuspBoundedSection_of_standard_transition
+  exact hP.elim (fun h ↦ Or.inl h.2.2) (fun h ↦ Or.inr h.2.2)
 
-public theorem OrbifoldAffineDescentData.nonempty_analyticDescentData
-    (P : OrbifoldAffineDescentData)
-    (hP : P.HasAcyclicProjectiveLineFrame) :
-    Nonempty P.AnalyticDescentData :=
-  OrbifoldAffineDescentData.nonempty_analyticDescentData_of_hasCuspBoundedSection P
-    (OrbifoldAffineDescentData.hasCuspBoundedSection P hP)
 
 end SphereSixComplex.Periods

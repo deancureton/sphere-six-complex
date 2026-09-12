@@ -687,7 +687,7 @@ section Lift
 
 open SphereSixComplex.Periods
 
-variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   (N : NormalizedFuchsianCuspCoordinate E D)
 
 /-- The normalized lift goes arbitrarily deep into the source cusp. -/

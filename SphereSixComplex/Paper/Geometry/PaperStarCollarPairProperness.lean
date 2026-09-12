@@ -180,7 +180,7 @@ public theorem orderFourCayleyRadiusBand_isCompact
 
 /-- Absolute value of the height coordinate on the actual local cusp filling. -/
 @[expose] public noncomputable def actualLocalCuspFillingRadius
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     ActualLocalCuspFilling W → ℝ :=
@@ -199,7 +199,7 @@ public theorem orderFourCayleyRadiusBand_isCompact
       ((C.toCuspActionData (M := M)).preserves_t gamma q))
 
 public theorem actualLocalCuspFillingRadius_continuous
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (actualLocalCuspFillingRadius W) := by
@@ -208,7 +208,7 @@ public theorem actualLocalCuspFillingRadius_continuous
     (M.t_holomorphic.continuous.comp continuous_subtype_val)
 
 public theorem actualLocalCuspFillingRadius_lt
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (y : ActualLocalCuspFilling W) :
