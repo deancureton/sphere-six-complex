@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.ConstructedA2HoneycombCompactPhaseCorrection
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CompactPhaseCorrection
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
 @[expose] public section
@@ -403,7 +403,7 @@ public theorem constructedCentralCarrier_mem_edge_or_phaseFace_implies_mem_bound
   let _ := actualLocalCuspQuotientAction W
   rcases hp with ⟨x, hx, heq⟩ | ⟨x, hx, heq⟩
   · apply Or.inl
-    apply constructedCentralCarrier_eq_oneCell_implies_mem_oneSkeleton W p j x hx
+    apply mem_centralOneSkeleton_of_carrier_eq_oneCell W p j x hx
     fin_cases j <;> exact heq.symm
   · apply Or.inr
     refine Set.mem_iUnion.mpr ⟨j, x, hx, ?_⟩

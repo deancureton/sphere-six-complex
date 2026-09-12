@@ -6,6 +6,7 @@ public import SphereSixComplex.Paper.Topology.CuspFiniteFiberCoordinateTori
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology Matrix
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open ComplexTorus CuspToricPhaseAction
@@ -50,7 +51,7 @@ theorem constructedModulus_rescaledPosition
 
 def constructedPuncturedModulus
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (p : PuncturedLocalCarrier W) :
-    constructedA2PositiveOffCentral W.localWitness.radius :=
+    positiveOffCentral W.localWitness.radius :=
   ⟨constructedLocalModulusRetraction W.localWitness.radius p.1, by
     change constructedModel.t (constructedLocalModulusRetraction W.localWitness.radius p.1) ≠ 0
     rw [constructedLocalModulusRetraction_t]

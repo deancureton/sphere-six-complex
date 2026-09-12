@@ -5,6 +5,7 @@ public import SphereSixComplex.Paper.Topology.CuspPhaseSweepAtlas
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology CategoryTheory CategoryTheory.Limits
 namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods StandardA2ToricCentralFiberCellAtlas
@@ -21,7 +22,7 @@ public theorem constructedCellAtlas_d_two
   let _ := (constructedCentralCellAtlas W).cwComplex
   change integralCWRelativeBoundary (ActualLocalCuspCentralOrbitQuotient W) 1 = 0
   exact T.relativeBoundary_eq_zero_of_attachingDegree_eq_zero _ 1
-    (constructedA2TwoCell_attachingDegree_zero W T)
+    (twoCell_attachingDegree_zero W T)
 
 public theorem constructedCellAtlas_d_three
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -31,7 +32,7 @@ public theorem constructedCellAtlas_d_three
   let _ := (constructedCentralCellAtlas W).cwComplex
   change integralCWRelativeBoundary (ActualLocalCuspCentralOrbitQuotient W) 2 = 0
   exact T.relativeBoundary_eq_zero_of_attachingDegree_eq_zero _ 2
-    (constructedA2ThreeCell_attachingDegree_zero W T)
+    (threeCell_attachingDegree_zero W T)
 
 public theorem phaseSweepCellAtlas_closedImage
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (n : ℕ) (i : CuspWCellIndex n) :

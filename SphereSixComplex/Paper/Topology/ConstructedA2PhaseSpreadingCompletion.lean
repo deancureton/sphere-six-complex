@@ -1,8 +1,8 @@
 module
 
 public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveLocalCollars
-public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveInteriorContractibility
-public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveRelativeCWCompletion
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveInterior
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveRelativeCWCompletion
 public import SphereSixComplex.Paper.Topology.HasCuspPhaseSpreading
 
 @[expose] public section
@@ -28,7 +28,7 @@ public theorem constructedLocalPositivePart_contractible {r : ℝ}
   have hB : IsClosed B := isClosed_eq
     (constructedModel.t_holomorphic.continuous.comp
       (continuous_subtype_val.comp continuous_subtype_val)) continuous_const
-  let _ : ContractibleSpace ↥(Bᶜ) := constructedA2PositiveOffCentral_contractible hr hr1
+  let _ : ContractibleSpace ↥(Bᶜ) := positiveOffCentral_contractible hr hr1
   obtain ⟨c⟩ := LocallyCollared.nonempty_collar B (constructedPositiveCentralFiber_locallyCollared r)
   exact c.contractibleSpace hB
 
@@ -37,7 +37,7 @@ public def constructedPolarHoneycombConstruction
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     NormalizedPolarHoneycombConstructionData N constructedModel W.localWitness.radius :=
-  constructedPolarHoneycombConstructionData_of_contractible W
+  polarHoneycombConstructionData_of_contractible W
     (constructedLocalPositivePart_contractible W.localWitness.radius_pos W.localWitness.radius_lt_one)
 
 public instance constructedHasCuspPhaseSpreading

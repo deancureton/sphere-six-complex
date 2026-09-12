@@ -1,11 +1,12 @@
 module
 
 public import SphereSixComplex.Paper.Topology.ConstructedPositiveQuotientInterior
-public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveInteriorContractibility
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveInterior
 
 @[expose] public section
 
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology Matrix
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
@@ -98,7 +99,7 @@ theorem positiveLogPeriodCoordinate_deck (W : ActualPuncturedCuspCollarWitness N
 open InfiniteA2Toric.Construction
 
 def positiveInteriorRegionProduct (r : ℝ) :
-    constructedA2PositiveInteriorRegion r ≃ₜ ((Fin 2 → ℝ) × Set.Ioo (0 : ℝ) r) where
+    positiveInteriorRegion r ≃ₜ ((Fin 2 → ℝ) × Set.Ioo (0 : ℝ) r) where
   toFun x := (fun i ↦ x.1 i.castSucc, ⟨x.1 2, x.2⟩)
   invFun x := ⟨![x.1 0, x.1 1, x.2.1], x.2.2⟩
   left_inv x := by apply Subtype.ext; ext i; fin_cases i <;> rfl
@@ -108,9 +109,9 @@ def positiveInteriorRegionProduct (r : ℝ) :
   continuous_invFun := by fun_prop
 
 def positiveInteriorRawProduct (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    constructedA2PositiveOffCentral W.localWitness.radius ≃ₜ
+    positiveOffCentral W.localWitness.radius ≃ₜ
       ((Fin 2 → ℝ) × Set.Ioo (0 : ℝ) W.localWitness.radius) :=
-  (constructedA2PositiveInteriorHomeomorph W.localWitness.radius_lt_one).trans
+  (positiveInteriorHomeomorph W.localWitness.radius_lt_one).trans
     (positiveInteriorRegionProduct W.localWitness.radius)
 
 def positiveHeightReference (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -121,7 +122,7 @@ def positiveHeightReference (W : ActualPuncturedCuspCollarWitness N constructedM
 theorem positiveHeightReference_height (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (t : Set.Ioo (0 : ℝ) W.localWitness.radius) :
     constructedModel.t (positiveHeightReference W t).1 = (t.1 : ℂ) := by
-  exact constructedA2OffCentralMomentInverse_t _ _
+  exact offCentralMomentInverse_t _ _
 
 theorem positiveHeightReference_continuous (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     Continuous (positiveHeightReference W) := by
@@ -191,7 +192,7 @@ def positiveLogProductNormalization (W : ActualPuncturedCuspCollarWitness N cons
     exact ((positiveHeightDisplacement_continuous W).comp continuous_snd).matrix_mulVec (by fun_prop)
 
 def positiveInteriorLogProduct (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    constructedA2PositiveOffCentral W.localWitness.radius ≃ₜ
+    positiveOffCentral W.localWitness.radius ≃ₜ
       ((Fin 2 → ℝ) × Set.Ioo (0 : ℝ) W.localWitness.radius) :=
   (positiveInteriorRawProduct W).trans (positiveLogProductNormalization W)
 
@@ -203,7 +204,7 @@ theorem positivePart_height_eq_norm (q : constructedLocalPositivePart r) :
 
 theorem positiveInteriorLogProduct_first
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (q : constructedA2PositiveOffCentral W.localWitness.radius) :
+    (q : positiveOffCentral W.localWitness.radius) :
     (positiveInteriorLogProduct W q).1 = positiveLogPeriodCoordinate W ⟨q.1.1, q.2⟩ := by
   change CuspFillingRadialCompactness.realFanShearInverse
     ((frozenDisplacementMatrix N (‖constructedModel.t q.1.1‖ : ℝ))⁻¹ *ᵥ
@@ -216,8 +217,8 @@ theorem positiveInteriorLogProduct_first
   rfl
 
 def positiveOffCentralDeck (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (lambda : ParameterLattice) (q : constructedA2PositiveOffCentral W.localWitness.radius) :
-    constructedA2PositiveOffCentral W.localWitness.radius :=
+    (lambda : ParameterLattice) (q : positiveOffCentral W.localWitness.radius) :
+    positiveOffCentral W.localWitness.radius :=
   ⟨⟨normalizedPositiveDeckLocalMap N constructedModel W.localWitness.radius lambda q.1.1,
     constructedPositiveDeck_mem N W.localWitness.radius lambda q.1⟩,
     by
@@ -227,7 +228,7 @@ def positiveOffCentralDeck (W : ActualPuncturedCuspCollarWitness N constructedMo
 
 theorem positiveInteriorLogProduct_deck
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (lambda : ParameterLattice) (q : constructedA2PositiveOffCentral W.localWitness.radius) :
+    (lambda : ParameterLattice) (q : positiveOffCentral W.localWitness.radius) :
     positiveInteriorLogProduct W (positiveOffCentralDeck W lambda q) =
       ((positiveInteriorLogProduct W q).1 + CuspPhaseEstimates.realParameter lambda,
         (positiveInteriorLogProduct W q).2) := by
@@ -241,7 +242,7 @@ theorem positiveInteriorLogProduct_deck
 
 theorem positiveOffCentralDeck_eq_iff_logProduct
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (lambda : ParameterLattice) (p q : constructedA2PositiveOffCentral W.localWitness.radius) :
+    (lambda : ParameterLattice) (p q : positiveOffCentral W.localWitness.radius) :
     positiveOffCentralDeck W lambda p = q ↔
       (positiveInteriorLogProduct W q).1 =
           (positiveInteriorLogProduct W p).1 + CuspPhaseEstimates.realParameter lambda ∧

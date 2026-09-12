@@ -1,9 +1,10 @@
 module
 
-public import SphereSixComplex.Paper.Topology.ConstructedA2HexagonCircleLoop
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.HexagonCircleLoop
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology Matrix
 namespace SphereSixComplex
 open Geometry.InfiniteA2Toric
@@ -76,23 +77,23 @@ public theorem squareRadialCircleLoop_eq_positive (r : ℝ) (hr : 0 < r) :
   rw [hp, loopHomologyClass_cast]
 
 public theorem hexagonBoundaryLoop_square_homology_eq_positive :
-    loopHomologyClass (constructedA2HexagonBoundaryLoop.map
-      constructedA2SquareBoundaryHexagonHomeomorph.symm.continuous) =
+    loopHomologyClass (hexagonBoundaryLoop.map
+      squareBoundaryHexagonHomeomorph.symm.continuous) =
       loopHomologyClass cwSquareBoundaryPositiveLoop := by
   have h := congrArg (integralSingularHomologyMap 1 puncturedPlaneToSquareBoundary)
-    constructedA2HexagonBoundaryLoop_homology_eq_circle
+    hexagonBoundaryLoop_homology_eq_circle
   rw [integralSingularHomologyMap_loopHomologyClass,
     integralSingularHomologyMap_loopHomologyClass, squareRadialCircleLoop_eq_positive _ (by norm_num)] at h
-  have hp : (constructedA2HexagonBoundaryLoop.map
-      constructedA2HexagonBoundaryToPunctured.continuous).map
+  have hp : (hexagonBoundaryLoop.map
+      hexagonBoundaryToPunctured.continuous).map
         puncturedPlaneToSquareBoundary.continuous =
-      (constructedA2HexagonBoundaryLoop.map
-        constructedA2SquareBoundaryHexagonHomeomorph.symm.continuous).cast
-          (constructedA2Hexagon_radial_to_square _)
-          (constructedA2Hexagon_radial_to_square _) := by
+      (hexagonBoundaryLoop.map
+        squareBoundaryHexagonHomeomorph.symm.continuous).cast
+          (hexagon_radial_to_square _)
+          (hexagon_radial_to_square _) := by
     apply Path.ext
     funext t
-    exact constructedA2Hexagon_radial_to_square _
+    exact hexagon_radial_to_square _
   rw [hp, loopHomologyClass_cast] at h
   exact h
 

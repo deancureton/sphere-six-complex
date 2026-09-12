@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralOrbitCellAtlasProof
-public import SphereSixComplex.Paper.Topology.ConstructedA2HigherCellPartition
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.HigherCellPartition
 
 @[expose] public section
 noncomputable section
@@ -71,7 +71,7 @@ public theorem actualCentralOrbit_support_eq_translate
   change MulAction.orbitRel (Multiplicative ParameterLattice) _ p q at hr
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hr
   obtain ⟨g, rfl⟩ := hr
-  exact ⟨shearVector g.toAdd, constructedA2ActualCentral_support_smul W g q⟩
+  exact ⟨shearVector g.toAdd, actualCentral_support_smul W g q⟩
 
 public theorem actualCentralOrbit_eq_of_same_finite_support
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -85,7 +85,7 @@ public theorem actualCentralOrbit_eq_of_same_finite_support
   change MulAction.orbitRel (Multiplicative ParameterLattice) _ p q at hr
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hr
   obtain ⟨g, hg⟩ := hr
-  have hs := constructedA2ActualCentral_support_smul W g q
+  have hs := actualCentral_support_smul W g q
   rw [hg, hp, hq] at hs
   have hk : shearVector g.toAdd = 0 :=
     translation_eq_zero_of_finite_forward_invariant hfin hne (by
@@ -447,7 +447,7 @@ public theorem constructedCentralPhaseTwoCell_zeroCell_disjoint
         (constructedCentralOriginPoint W (![false, true] j)) := by
     fin_cases i <;> fin_cases j <;> exact he.symm
   have hr := Quotient.exact h
-  have hn := constructedA2ActualCentralOrbitRel_componentSupport_ncard_eq W _ _ hr
+  have hn := actualCentralOrbitRel_componentSupport_ncard_eq W _ _ hr
   change (componentSupport constructedModel
       ((constructedCentralPhaseCellPoint W i x).1.1 : Carrier)).ncard =
     (componentSupport constructedModel (inclusion (![false, true] j, 0) 0)).ncard at hn
@@ -474,10 +474,10 @@ public theorem constructedCentralPhaseTwoCell_oneSkeleton_disjoint
 public theorem constructedCentralPhaseTwoCell_singleton_disjoint
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 3) :
     Disjoint (constructedCentralPhaseTwoCell W i '' Metric.ball 0 1)
-      (constructedA2ActualSingletonStratum W) := by
+      (actualSingletonStratum W) := by
   rw [Set.disjoint_left]
   rintro z ⟨x, hx, rfl⟩ hz
-  have hn := constructedA2ActualSingleton_not_of_support_ge_two W
+  have hn := actualSingleton_not_of_support_ge_two W
     (constructedCentralPhaseCellPoint W i x) (by
       rw [constructedCentralPhaseCellPoint_support W i x hx, constructedCentralEdgeSupport_ncard])
   apply hn
@@ -486,10 +486,10 @@ public theorem constructedCentralPhaseTwoCell_singleton_disjoint
 public theorem constructedCentralOneCell_singleton_disjoint
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 3) :
     Disjoint (constructedCentralOneCell W i '' Metric.ball 0 1)
-      (constructedA2ActualSingletonStratum W) := by
+      (actualSingletonStratum W) := by
   rw [Set.disjoint_left]
   rintro z ⟨x, hx, rfl⟩ hz
-  have hn := constructedA2ActualSingleton_not_of_support_ge_two W
+  have hn := actualSingleton_not_of_support_ge_two W
     (constructedCentralEdgeCellPoint W i x) (by
       rw [constructedCentralEdgeCellPoint_support W i x hx, constructedCentralEdgeSupport_ncard])
   apply hn
@@ -498,10 +498,10 @@ public theorem constructedCentralOneCell_singleton_disjoint
 public theorem constructedCentralZeroCell_singleton_disjoint
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :
     Disjoint (constructedCentralZeroCell W i '' Metric.closedBall 0 1)
-      (constructedA2ActualSingletonStratum W) := by
+      (actualSingletonStratum W) := by
   rw [Set.disjoint_left]
   rintro z ⟨x, hx, rfl⟩ hz
-  have hn := constructedA2ActualSingleton_not_of_support_ge_two W
+  have hn := actualSingleton_not_of_support_ge_two W
     (constructedCentralOriginPoint W (![false, true] i)) (by
       change 2 ≤ (componentSupport constructedModel (inclusion (![false, true] i, 0) 0)).ncard
       rw [carrierOrigin_componentSupport_ncard]

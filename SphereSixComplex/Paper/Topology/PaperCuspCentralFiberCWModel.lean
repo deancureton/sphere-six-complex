@@ -2,12 +2,13 @@ module
 
 public import SphereSixComplex.Paper.Topology.ConstructedA2CellAtlas
 public import SphereSixComplex.Paper.Topology.ActualCuspCentralModelEquivalence
-public import SphereSixComplex.Paper.Topology.ConstructedA2HigherIncidenceProof
-public import SphereSixComplex.Paper.Topology.ConstructedA2DegreeTwoIncidence
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.HigherIncidence
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.DegreeTwoIncidence
 public import SphereSixComplex.Paper.Topology.ToricCellAtlasIncidenceTransport
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open AlgebraicTopology CategoryTheory Set
 open scoped ContinuousMap
 namespace SphereSixComplex
@@ -93,7 +94,7 @@ public theorem centralFiber_coordinateBoundary_eq
       1 (Pi.single j 1 : Fin 4 → ℤ) i.castSucc = _
     refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 1 j i.castSucc).symm.trans ?_
     refine (C.transport_coordinateBoundary_single e₁ 1 j i.castSucc).symm.trans ?_
-    exact constructedA2TwoCell_coordinateBoundary_single_zero W₁ j i.castSucc
+    exact twoCell_coordinateBoundary_single_zero W₁ j i.castSucc
   · intro j i
     let : DecidableEq (CuspWCellIndex 3) := inferInstanceAs (DecidableEq (Fin 2))
     change standardA2ToricCellularCoordinateBoundary ((C.transport e₁).transport e₂).toCWDecomposition
@@ -101,7 +102,7 @@ public theorem centralFiber_coordinateBoundary_eq
     refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 2 j i).symm.trans ?_
     refine (C.transport_coordinateBoundary_single e₁ 2 j i).symm.trans ?_
     exact (C.coordinateBoundary_single_eq_attachingDegree 2 j i).trans
-      (constructedA2ThreeCell_attachingDegree_zero W₁ _ j i)
+      (threeCell_attachingDegree_zero W₁ _ j i)
   · intro j i
     fin_cases j
     let : DecidableEq (CuspWCellIndex 4) := inferInstanceAs (DecidableEq (Fin 1))
@@ -110,7 +111,7 @@ public theorem centralFiber_coordinateBoundary_eq
     refine ((C.transport e₁).transport_coordinateBoundary_single e₂ 3 (0 : Fin 1) i).symm.trans ?_
     refine (C.transport_coordinateBoundary_single e₁ 3 (0 : Fin 1) i).symm.trans ?_
     exact (C.coordinateBoundary_single_eq_attachingDegree 3 (0 : Fin 1) i).trans
-      (constructedA2FourCell_attachingDegree_zero W₁ _ i)
+      (fourCell_attachingDegree_zero W₁ _ i)
 
 /-- The compact periodic `A₂` central fibre has its standard labelled CW realization and exact
 attaching-incidence formula. -/

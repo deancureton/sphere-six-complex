@@ -18,6 +18,10 @@ public def cylinderUpperSideInclusion {X : Type} [TopologicalSpace X] (A : Set X
 public def cylinderBaseInclusion {X : Type} [TopologicalSpace X] (A : Set X) :
     TopCat.of A ⟶ TopCat.of X := TopCat.ofHom ⟨Subtype.val, continuous_subtype_val⟩
 
+public instance mono_cylinderBaseInclusion {X : Type} [TopologicalSpace X] (A : Set X) :
+    Mono (cylinderBaseInclusion A) :=
+  (TopCat.mono_iff_injective _).mpr Subtype.val_injective
+
 public instance cylinderUpperSideInclusion_mono {X : Type} [TopologicalSpace X] (A : Set X) :
     Mono (cylinderUpperSideInclusion A) :=
   (TopCat.mono_iff_injective _).mpr Subtype.val_injective

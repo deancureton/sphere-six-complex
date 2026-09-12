@@ -5,6 +5,7 @@ public import SphereSixComplex.Prerequisites.Topology.RelativeSingularHomotopy
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology CategoryTheory
 namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
@@ -27,7 +28,7 @@ public theorem phaseSweepCompactAction_zeroSkeleton
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (k : Fin 2 → Circle) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     ∀ x : IntegralCWSkeletonLT (ActualLocalCuspCentralOrbitQuotient W) 1,
-      constructedA2CentralCompactOrbitMap W k x.1 = x.1 := by
+      centralCompactOrbitMap W k x.1 = x.1 := by
   let _ := (phaseSweepCellAtlas W).cwComplex
   dsimp only
   intro x
@@ -46,7 +47,7 @@ public theorem phaseSweepCompactAction_zeroSkeleton
     have hm0 : m = 0 := by omega
     subst m
     rw [← he]
-    exact constructedA2CentralCompactOrbitMap_zeroCell W k j b
+    exact centralCompactOrbitMap_zeroCell W k j b
 
 public def phaseSweepSkeletalBasePair
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -65,7 +66,7 @@ public theorem phaseSweepCompactAction_oneSkeleton
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (k : Fin 2 → Circle) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     ∀ x : IntegralCWSkeletonLT (ActualLocalCuspCentralOrbitQuotient W) 2,
-      constructedA2CentralCompactOrbitMap W k x.1 ∈
+      centralCompactOrbitMap W k x.1 ∈
         (phaseSweepCellAtlas W).skeletalSet 3 := by
   let _ := (phaseSweepCellAtlas W).cwComplex
   dsimp only
@@ -87,7 +88,7 @@ public theorem phaseSweepCompactAction_oneSkeleton
       rcases hm' with rfl | rfl
       · exact Or.inl (Set.mem_iUnion.mpr ⟨j, b, hb, he⟩)
       · exact Or.inr (Set.mem_iUnion.mpr ⟨j, b, hb, he⟩)
-  have hy := constructedA2CentralCompactOrbitMap_oneSkeleton W k hxold
+  have hy := centralCompactOrbitMap_oneSkeleton W k hxold
   have hy' := constructedCentralBoundaryTwoSkeleton_subset_cellSkeleton W (by decide : 3 ≤ 3) hy
   change _ ∈ (Topology.RelCWComplex.skeletonLT
     (Set.univ : Set (ActualLocalCuspCentralOrbitQuotient W)) (3 : ℕ∞) :
@@ -108,12 +109,12 @@ public def phaseSweepSkeletalHomotopy
     [T2Space (ActualLocalCuspCentralOrbitQuotient W)] (i : Fin 2) :
     TopCat.Homotopy (phaseSweepSkeletalBasePair W).right
       (phaseSweepSkeletalBasePair W).right where
-  toFun p := ⟨constructedA2CircleSweepHomotopy W i (p.1, p.2.1),
-    phaseSweepCompactAction_oneSkeleton W (constructedA2CircleSweepParameter i p.1) p.2⟩
-  continuous_toFun := ((constructedA2CircleSweepHomotopy W i).continuous.comp
+  toFun p := ⟨circleSweepHomotopy W i (p.1, p.2.1),
+    phaseSweepCompactAction_oneSkeleton W (circleSweepParameter i p.1) p.2⟩
+  continuous_toFun := ((circleSweepHomotopy W i).continuous.comp
     (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))).subtype_mk _
-  map_zero_left x := Subtype.ext ((constructedA2CircleSweepHomotopy W i).map_zero_left x.1)
-  map_one_left x := Subtype.ext ((constructedA2CircleSweepHomotopy W i).map_one_left x.1)
+  map_zero_left x := Subtype.ext ((circleSweepHomotopy W i).map_zero_left x.1)
+  map_one_left x := Subtype.ext ((circleSweepHomotopy W i).map_one_left x.1)
 
 public def phaseSweepSkeletalRelativeHomotopy
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -124,6 +125,6 @@ public def phaseSweepSkeletalRelativeHomotopy
     (phaseSweepSkeletalHomotopy W i) (by
       ext p : 1
       apply Subtype.ext
-      exact phaseSweepCompactAction_zeroSkeleton W (constructedA2CircleSweepParameter i p.2.down) p.1)
+      exact phaseSweepCompactAction_zeroSkeleton W (circleSweepParameter i p.2.down) p.1)
 
 end SphereSixComplex.Geometry.CuspCollar

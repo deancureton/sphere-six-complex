@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2PositiveQuadrantAtlas
-public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveQuotientRelativeCWProof
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveRelativeCW
 
 @[expose] public section
 

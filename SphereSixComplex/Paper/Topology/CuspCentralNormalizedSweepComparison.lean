@@ -2,11 +2,12 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.UniversalCirclePrism
 public import SphereSixComplex.Paper.Topology.CuspPhaseCentralCompatibility
-public import SphereSixComplex.Paper.Topology.ConstructedA2CircleSweepPrism
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CircleSweepPrism
 public import SphereSixComplex.Paper.Topology.CuspCellularLoopDeckComparison
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open CategoryTheory AlgebraicTopology MonoidalCategory
 namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex SphereSixComplex.Periods
@@ -19,7 +20,7 @@ variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedA2CircleSweepParameter_period (i : Fin 2) (t : unitInterval) :
-    constructedA2CircleSweepParameter i t = cuspPeriodCompactCircle i ((t : ℝ) : UnitAddCircle) := by
+    circleSweepParameter i t = cuspPeriodCompactCircle i ((t : ℝ) : UnitAddCircle) := by
   have h : CircleCell.ballParam ![2 * (t : ℝ) - 1] =
       AddCircle.toCircle ((t : ℝ) : UnitAddCircle) := by
     rw [AddCircle.toCircle_apply_mk]
@@ -28,17 +29,17 @@ public theorem constructedA2CircleSweepParameter_period (i : Fin 2) (t : unitInt
     simp
     ring
   fin_cases i <;> ext j <;> fin_cases j <;>
-    simp [constructedA2CircleSweepParameter, constructedA2CircleOnePhase,
+    simp [circleSweepParameter, CircleCell.onePhase,
       cuspPeriodCompactCircle, h]
 
 public theorem constructedA2CircleSweep_filling
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2)
     (t : unitInterval) (q : ActualLocalCuspCentralOrbitQuotient W) :
-    actualLocalCuspCentralOrbitMap W (constructedA2CircleSweepHomotopy W i (t, q)) =
+    actualLocalCuspCentralOrbitMap W (Construction.circleSweepHomotopy W i (t, q)) =
       cuspFillingPeriodCircle W i (((t : ℝ) : UnitAddCircle), actualLocalCuspCentralOrbitMap W q) := by
   rw [cuspFillingPeriodCircle_centralOrbit]
   change actualLocalCuspCentralOrbitMap W
-    (constructedA2CentralCompactOrbitMap W (constructedA2CircleSweepParameter i t) q) = _
+    (centralCompactOrbitMap W (circleSweepParameter i t) q) = _
   rw [constructedA2CircleSweepParameter_period]
 
 public theorem constructedA2CirclePrism_filling
@@ -46,20 +47,20 @@ public theorem constructedA2CirclePrism_filling
     (x : IntegralSingularHomology 1 (ActualLocalCuspCentralOrbitQuotient W)) :
     integralSingularHomologyMap 2
       ⟨actualLocalCuspCentralOrbitMap W, (actualLocalCuspCentralOrbitMap_isEmbedding W).continuous⟩
-      (closedPrismHomology (constructedA2CircleSweepPrism W i) 0 x) =
-    closedPrismHomology ((circleSweepHomotopy (cuspFillingPeriodCircle W i)).singularChainComplexFunctorObjMap
+      (closedPrismHomology (circleSweepPrism W i) 0 x) =
+    closedPrismHomology ((SphereSixComplex.circleSweepHomotopy (cuspFillingPeriodCircle W i)).singularChainComplexFunctorObjMap
       (AddCommGrpCat.of ℤ)) 0
       (integralSingularHomologyMap 1
         ⟨actualLocalCuspCentralOrbitMap W, (actualLocalCuspCentralOrbitMap_isEmbedding W).continuous⟩ x) := by
   let f : TopCat.of (ActualLocalCuspCentralOrbitQuotient W) ⟶ TopCat.of (ActualLocalCuspFilling W) :=
     TopCat.ofHom ⟨actualLocalCuspCentralOrbitMap W, (actualLocalCuspCentralOrbitMap_isEmbedding W).continuous⟩
-  have h := closedPrismHomology_naturality (constructedA2CircleSweepPrism W i) 0
-    ((circleSweepHomotopy (cuspFillingPeriodCircle W i)).singularChainComplexFunctorObjMap
+  have h := closedPrismHomology_naturality (circleSweepPrism W i) 0
+    ((SphereSixComplex.circleSweepHomotopy (cuspFillingPeriodCircle W i)).singularChainComplexFunctorObjMap
       (AddCommGrpCat.of ℤ))
     (((singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).map f)
     (((singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).map f)
-    (fun p q ↦ topologicalPrism_naturality (constructedA2CircleSweepHomotopy W i)
-      (circleSweepHomotopy (cuspFillingPeriodCircle W i)) f f (by
+    (fun p q ↦ topologicalPrism_naturality (Construction.circleSweepHomotopy W i)
+      (SphereSixComplex.circleSweepHomotopy (cuspFillingPeriodCircle W i)) f f (by
         ext z
         exact (constructedA2CircleSweep_filling W i (TopCat.I.homeomorph z.2) z.1).symm)
       (AddCommGrpCat.of ℤ) p q)
@@ -71,7 +72,7 @@ public theorem constructedA2CirclePrism_normalized_of_sign
     {q : ActualLocalCuspCentralOrbitQuotient W} (p : Path q q) :
     integralSingularHomologyMap 2
       ⟨actualLocalCuspCentralOrbitMap W, (actualLocalCuspCentralOrbitMap_isEmbedding W).continuous⟩
-      (closedPrismHomology (constructedA2CircleSweepPrism W i) 0 (loopHomologyClass p)) =
+      (closedPrismHomology (circleSweepPrism W i) 0 (loopHomologyClass p)) =
     n • integralSingularHomologyMap 2 (cuspFillingPeriodCircle W i)
       (normalizedCircleCross 1
         (integralSingularHomologyMap 1
@@ -88,7 +89,7 @@ public theorem constructedA2GraphPrism_normalized_of_sign
     let _ := (constructedCentralCellAtlas W).cwComplex
     integralSingularHomologyMap 2
       ⟨actualLocalCuspCentralOrbitMap W, (actualLocalCuspCentralOrbitMap_isEmbedding W).continuous⟩
-      (closedPrismHomology (constructedA2CircleSweepPrism W i) 0
+      (closedPrismHomology (circleSweepPrism W i) 0
         (loopHomologyClass (((constructedCentralCellularEdgePath W j).trans
           (constructedCentralCellularEdgePath W k).symm).map continuous_subtype_val))) =
       n • integralSingularHomologyMap 2 (cuspFillingPeriodCircle W i)

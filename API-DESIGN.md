@@ -128,3 +128,8 @@ The modular lift, its Eisenstein root, and its modular frame share the same sele
 Locally finite closed-cover gluing and the Cayley manifold construction belong to prerequisites.
 The quotient comparison uses Mathlib's `IsQuotientMap.lift`. The constructed toric model is named
 directly where it is used; it no longer appears to depend on an unused analytic-data argument.
+
+The fixed toric construction uses `InfiniteA2Toric.Construction`, with modules grouped by
+geometric subject. General circle-cell parametrizations, sup-norm ball boundary lemmas, and
+homotopies obtained from loops belong to prerequisites. Continuity, embedding, and related
+lemmas use predicate-first names. Function reindexing uses Mathlib's `AddEquiv.arrowCongr`.

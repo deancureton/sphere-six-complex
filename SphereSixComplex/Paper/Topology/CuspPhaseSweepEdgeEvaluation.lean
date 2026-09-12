@@ -5,6 +5,7 @@ public import SphereSixComplex.Prerequisites.Topology.CylinderTimeReflection
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology CategoryTheory CategoryTheory.Limits HomologicalComplex Matrix MonoidalCategory
 namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
@@ -14,10 +15,10 @@ variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 theorem circleSweepParameter_eq_period (i : Fin 2) (t : unitInterval) :
-    constructedA2CircleSweepParameter i t = cuspPeriodCompactCircle i ((t : ℝ) : UnitAddCircle) := by
+    circleSweepParameter i t = cuspPeriodCompactCircle i ((t : ℝ) : UnitAddCircle) := by
   ext j
   fin_cases i <;> fin_cases j <;>
-    simp [constructedA2CircleSweepParameter, constructedA2CircleOnePhase,
+    simp [circleSweepParameter, CircleCell.onePhase,
       CircleCell.ballParam, CircleCell.param, cuspPeriodCompactCircle,
       AddCircle.toCircle_apply_mk]
   all_goals congr 2; ring
@@ -54,7 +55,7 @@ theorem phaseSweepForwardCylinderPair_reverse
       cylinderReversedSweep (X := TopCat.of (CWCharacteristicClosedBall 1))
         (phaseSweepForwardCylinderPair W i).right p := by
   apply Subtype.ext
-  change constructedA2CentralCompactOrbitMap W (constructedA2CircleSweepParameter
+  change centralCompactOrbitMap W (circleSweepParameter
     (phaseSweepPeriod i) p.1) ((phaseSweepEdgeBasePair W i).right p.2).1 = _
   rw [circleSweepParameter_eq_period, phaseSweepEdgeBasePair_apply]
   have hb : p.2.1 = (fun _ ↦ p.2.1 0) := by ext j; fin_cases j; rfl
@@ -72,13 +73,13 @@ theorem phaseSweepForwardCylinderPair_reverse
     rfl
   · change _ = ((phaseSweepCylinderPair W 1).right (unitInterval.symm p.1, p.2)).1
     rw [phaseSweepCylinderPair_apply, phaseSweepOrbit_period]
-    change _ = constructedA2CentralCompactOrbitMap W
+    change _ = centralCompactOrbitMap W
       (cuspPeriodCompactCircle 0 (-((1 - (p.1 : ℝ) : ℝ) : UnitAddCircle))) _
     rw [negate_complement_addCircle]
     rfl
   · change _ = ((phaseSweepCylinderPair W 2).right (unitInterval.symm p.1, p.2)).1
     rw [phaseSweepCylinderPair_apply, phaseSweepOrbit_period]
-    change _ = constructedA2CentralCompactOrbitMap W
+    change _ = centralCompactOrbitMap W
       (cuspPeriodCompactCircle 1 (-((1 - (p.1 : ℝ) : ℝ) : UnitAddCircle))) _
     rw [negate_complement_addCircle]
     rfl
@@ -105,7 +106,7 @@ theorem phaseSweepRelativePrism_edge
       ext p : 1
       apply Subtype.ext
       exact phaseSweepCompactAction_zeroSkeleton W
-        (constructedA2CircleSweepParameter (phaseSweepPeriod i) p.2.down) p.1)
+        (circleSweepParameter (phaseSweepPeriod i) p.2.down) p.1)
     (by
       ext p : 1
       exact phaseSweepForwardCylinderPair_reverse W i (p.2.down, p.1)) 0
@@ -187,7 +188,7 @@ theorem phaseSweepRelativePrism_edge_of_cylinder
       ext p : 1
       apply Subtype.ext
       exact phaseSweepCompactAction_zeroSkeleton W
-        (constructedA2CircleSweepParameter j p.2.down) p.1)
+        (circleSweepParameter j p.2.down) p.1)
     (by
       ext p : 1
       exact hF (p.2.down, p.1)) 0
@@ -252,10 +253,10 @@ theorem phaseSweepRelativePrism_fixed_edge
           (phaseSweepFixedCylinderPair W i).right p := by
     intro p
     apply Subtype.ext
-    change constructedA2CentralCompactOrbitMap W (constructedA2CircleSweepParameter j p.1)
+    change centralCompactOrbitMap W (circleSweepParameter j p.1)
       ((phaseSweepEdgeBasePair W i).right p.2).1 = _
     rw [circleSweepParameter_eq_period, phaseSweepEdgeBasePair_apply]
-    change constructedA2CentralCompactOrbitMap W (cuspPeriodCompactCircle j ((p.1 : ℝ) : UnitAddCircle))
+    change centralCompactOrbitMap W (cuspPeriodCompactCircle j ((p.1 : ℝ) : UnitAddCircle))
       (constructedCentralOneCell W i p.2.1) = constructedCentralOneCell W i p.2.1
     fin_cases j
     · exact compactOrbit_eq_self_of_carrier W 2 0 _ _ (thirdPhase_edgeTwo_fixed _ _)
@@ -283,9 +284,9 @@ theorem phaseSweepRelativePrism_edgeZero_equal
     calc
       _ = phaseSweepSkeletalHomotopy W 0 (p.1, (phaseSweepEdgeBasePair W 0).right p.2) := by
         apply Subtype.ext
-        change constructedA2CentralCompactOrbitMap W (constructedA2CircleSweepParameter 1 p.1)
+        change centralCompactOrbitMap W (circleSweepParameter 1 p.1)
           ((phaseSweepEdgeBasePair W 0).right p.2).1 =
-          constructedA2CentralCompactOrbitMap W (constructedA2CircleSweepParameter 0 p.1)
+          centralCompactOrbitMap W (circleSweepParameter 0 p.1)
             ((phaseSweepEdgeBasePair W 0).right p.2).1
         rw [circleSweepParameter_eq_period, circleSweepParameter_eq_period,
           phaseSweepEdgeBasePair_apply]

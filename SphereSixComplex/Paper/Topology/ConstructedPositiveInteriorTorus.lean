@@ -6,6 +6,7 @@ public import Mathlib.Topology.Instances.AddCircle.Real
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
@@ -59,7 +60,7 @@ theorem constructedPositiveInteriorTorusMap_isQuotientMap
 
 theorem constructedPositiveInteriorTorusMap_fibers
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (p q : constructedA2PositiveOffCentral W.localWitness.radius) :
+    (p q : positiveOffCentral W.localWitness.radius) :
     constructedPositiveInteriorProjection W p = constructedPositiveInteriorProjection W q ↔
       constructedPositiveInteriorTorusMap W p = constructedPositiveInteriorTorusMap W q := by
   rw [constructedPositiveInteriorProjection_eq_iff]
@@ -78,7 +79,7 @@ theorem constructedPositiveInteriorTorusMap_fibers
 
 def constructedPositiveInteriorTorusHomeomorph
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    ↥((constructedA2PositiveQuotientCore W)ᶜ) ≃ₜ
+    ↥((positiveQuotientCore W)ᶜ) ≃ₜ
       ((Fin 2 → UnitAddCircle) × Set.Ioo (0 : ℝ) W.localWitness.radius) :=
   CyclicAngularFundamentalDomain.homeomorphOfQuotientMaps
     (constructedPositiveInteriorProjection_isQuotientMap W)
@@ -87,7 +88,7 @@ def constructedPositiveInteriorTorusHomeomorph
 
 theorem constructedPositiveInteriorTorusHomeomorph_projection
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (p : constructedA2PositiveOffCentral W.localWitness.radius) :
+    (p : positiveOffCentral W.localWitness.radius) :
     constructedPositiveInteriorTorusHomeomorph W (constructedPositiveInteriorProjection W p) =
       constructedPositiveInteriorTorusMap W p :=
   CyclicAngularFundamentalDomain.homeomorphOfQuotientMaps_apply _ _ _ p

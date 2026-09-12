@@ -6,6 +6,7 @@ public import SphereSixComplex.Prerequisites.Topology.CompactSeparatedRestrictio
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology Matrix
 namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
@@ -20,32 +21,32 @@ public def phaseSweepZeroCarrier (x : Fin 2 → ℝ) : Carrier :=
 
 public def phaseSweepZeroPoint (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (x : Fin 2 → ℝ) : actualLocalCuspCentralSubMulAction W :=
-  constructedA2CentralCompactMap W ![1, circleCutParameter (x 1)]
+  centralCompactMap W ![1, circleCutParameter (x 1)]
     (constructedCentralEdgeZeroPoint W (fun _ ↦ x 0))
 
 public theorem phaseSweepZeroPoint_carrier
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (x : Fin 2 → ℝ) :
     (phaseSweepZeroPoint W x).1.1 = phaseSweepZeroCarrier x := by
   unfold phaseSweepZeroPoint phaseSweepZeroCarrier fourthPhaseEdgeZeroSweep
-  dsimp [constructedA2CentralCompactMap, compactPhaseLocalAction,
+  dsimp [centralCompactMap, compactPhaseLocalAction,
     constructedCentralEdgeZeroPoint, constructedCentralEdgeZeroLocal]
   apply congrArg (fun g ↦ constructedModel.torusAction g (constructedCentralEdgeZeroCarrier _))
   ext i
   fin_cases i <;>
-    simp [compactTorusEmbedding, constructedA2EffectivePhaseSection,
+    simp [compactTorusEmbedding, effectivePhaseSection,
       CuspToricPhaseAction.phaseEmbedding]
 
 
 public theorem phaseSweepZeroPoint_continuous
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     Continuous (phaseSweepZeroPoint W) := by
-  unfold phaseSweepZeroPoint constructedA2CentralCompactMap
+  unfold phaseSweepZeroPoint centralCompactMap
   apply Continuous.subtype_mk
   apply Continuous.subtype_mk
   have hg : Continuous (fun x : Fin 2 → ℝ ↦ compactTorusEmbedding
-      (constructedA2EffectivePhaseSection ![1, circleCutParameter (x 1)])) := by
+      (effectivePhaseSection ![1, circleCutParameter (x 1)])) := by
     apply continuous_compactTorusEmbedding.comp
-    apply constructedA2EffectivePhaseSection_continuous.comp
+    apply continuous_effectivePhaseSection.comp
     apply continuous_pi
     intro i
     fin_cases i
@@ -56,7 +57,7 @@ public theorem phaseSweepZeroPoint_continuous
     constructedCentralEdgeZeroCarrier_continuous.comp (continuous_pi fun _ ↦ continuous_apply 0)
   exact Continuous.comp
     (f := fun x : Fin 2 → ℝ ↦
-      (compactTorusEmbedding (constructedA2EffectivePhaseSection ![1, circleCutParameter (x 1)]),
+      (compactTorusEmbedding (effectivePhaseSection ![1, circleCutParameter (x 1)]),
         constructedCentralEdgeZeroCarrier (fun _ ↦ x 0)))
     (g := fun z : DenseTorus × constructedModel.Carrier ↦ constructedModel.torusAction z.1 z.2)
     (continuous_torusAction constructedModel) (hg.prodMk hp)

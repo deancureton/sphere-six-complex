@@ -25,10 +25,10 @@ public def constructedCentralCellMap
       PartialEquiv (Fin n → ℝ) (ActualLocalCuspCentralOrbitQuotient W)
   | 0 => constructedCentralZeroCell W
   | 1 => constructedCentralOneCell W
-  | 2 => ![constructedA2CorrectedPositiveTwoCell W, constructedCentralPhaseTwoCell W 0,
+  | 2 => ![correctedPositiveTwoCell W, constructedCentralPhaseTwoCell W 0,
       constructedCentralPhaseTwoCell W 1, constructedCentralPhaseTwoCell W 2]
-  | 3 => constructedA2CorrectedThreeCell W
-  | 4 => fun _ ↦ constructedA2CorrectedFourCell W
+  | 3 => correctedThreeCell W
+  | 4 => fun _ ↦ correctedFourCell W
   | _ + 5 => fun i ↦ i.elim
 
 public theorem constructedCentralCellMap_source_eq
@@ -40,12 +40,12 @@ public theorem constructedCentralCellMap_source_eq
   · exact constructedCentralOneCell_source_eq W i
   · change Fin 4 at i
     fin_cases i
-    · exact constructedA2CorrectedPositiveTwoCell_source_eq W
+    · exact correctedPositiveTwoCell_source_eq W
     · exact constructedCentralPhaseTwoCell_source_eq W 0
     · exact constructedCentralPhaseTwoCell_source_eq W 1
     · exact constructedCentralPhaseTwoCell_source_eq W 2
-  · exact constructedA2CorrectedThreeCell_source_eq W i
-  · exact constructedA2CorrectedFourCell_source_eq W
+  · exact correctedThreeCell_source_eq W i
+  · exact correctedFourCell_source_eq W
   · exact i.elim
 
 public theorem constructedCentralCellMap_continuousOn
@@ -57,12 +57,12 @@ public theorem constructedCentralCellMap_continuousOn
   · exact constructedCentralOneCell_continuousOn W i
   · change Fin 4 at i
     fin_cases i
-    · exact constructedA2CorrectedPositiveTwoCell_continuousOn W
+    · exact continuousOn_correctedPositiveTwoCell W
     · exact constructedCentralPhaseTwoCell_continuousOn W 0
     · exact constructedCentralPhaseTwoCell_continuousOn W 1
     · exact constructedCentralPhaseTwoCell_continuousOn W 2
-  · exact constructedA2CorrectedThreeCell_continuousOn W i
-  · exact constructedA2CorrectedFourCell_continuousOn W
+  · exact continuousOn_correctedThreeCell W i
+  · exact continuousOn_correctedFourCell W
   · exact i.elim
 
 public theorem constructedCentralCellMap_continuousOn_symm
@@ -74,12 +74,12 @@ public theorem constructedCentralCellMap_continuousOn_symm
   · exact constructedCentralOneCell_continuousOn_symm W i
   · change Fin 4 at i
     fin_cases i
-    · exact constructedA2CorrectedPositiveTwoCell_continuousOn_symm W
+    · exact continuousOn_correctedPositiveTwoCell_symm W
     · exact constructedCentralPhaseTwoCell_continuousOn_symm W 0
     · exact constructedCentralPhaseTwoCell_continuousOn_symm W 1
     · exact constructedCentralPhaseTwoCell_continuousOn_symm W 2
-  · exact constructedA2CorrectedThreeCell_continuousOn_symm W i
-  · exact constructedA2CorrectedFourCell_continuousOn_symm W
+  · exact continuousOn_correctedThreeCell_symm W i
+  · exact continuousOn_correctedFourCell_symm W
   · exact i.elim
 
 public def constructedCentralCellSkeleton
@@ -115,7 +115,7 @@ public theorem constructedCentralBoundaryTwoSkeleton_subset_cellSkeleton
 
 public theorem constructedA2CorrectedTwoSkeleton_subset_cellSkeleton
     (W : ActualPuncturedCuspCollarWitness N constructedModel) {n : ℕ} (hn : 2 < n) :
-    constructedA2CorrectedTwoSkeleton W ⊆ constructedCentralCellSkeleton W n := by
+    correctedTwoSkeleton W ⊆ constructedCentralCellSkeleton W n := by
   intro x hx
   rcases hx with hx | hx
   · exact constructedCentralBoundaryTwoSkeleton_subset_cellSkeleton W hn hx
@@ -124,7 +124,7 @@ public theorem constructedA2CorrectedTwoSkeleton_subset_cellSkeleton
 
 public theorem constructedA2CorrectedThreeSkeleton_subset_cellSkeleton
     (W : ActualPuncturedCuspCollarWitness N constructedModel) {n : ℕ} (hn : 3 < n) :
-    constructedA2CorrectedThreeSkeleton W ⊆ constructedCentralCellSkeleton W n := by
+    correctedThreeSkeleton W ⊆ constructedCentralCellSkeleton W n := by
   intro x hx
   rcases hx with hx | hx
   · exact constructedA2CorrectedTwoSkeleton_subset_cellSkeleton W (by omega) hx
@@ -148,13 +148,13 @@ public theorem constructedCentralCellMap_mapsTo
   · apply Set.MapsTo.mono_right _ (constructedCentralOneSkeleton_subset_cellSkeleton W (by decide))
     change Fin 4 at i
     fin_cases i
-    · exact constructedA2CorrectedPositiveTwoCell_mapsTo_oneSkeleton W
+    · exact correctedPositiveTwoCell_mapsTo_oneSkeleton W
     · exact constructedCentralPhaseTwoCell_mapsTo_oneSkeleton W 0
     · exact constructedCentralPhaseTwoCell_mapsTo_oneSkeleton W 1
     · exact constructedCentralPhaseTwoCell_mapsTo_oneSkeleton W 2
-  · exact (constructedA2CorrectedThreeOrbit_mapsTo_twoSkeleton W i).mono_right
+  · exact (correctedThreeOrbit_mapsTo_twoSkeleton W i).mono_right
       (constructedA2CorrectedTwoSkeleton_subset_cellSkeleton W (by decide))
-  · exact (constructedA2CorrectedFourOrbit_mapsTo_threeSkeleton W).mono_right
+  · exact (correctedFourOrbit_mapsTo_threeSkeleton W).mono_right
       (constructedA2CorrectedThreeSkeleton_subset_cellSkeleton W (by decide))
   · exact i.elim
 
@@ -164,8 +164,8 @@ public theorem constructedCentralCellMap_union_eq
   apply Set.eq_univ_of_forall
   intro x
   have hx : x ∈ constructedCentralBoundaryTwoSkeleton W ∪
-      constructedA2CorrectedFourOrbit W '' Metric.closedBall 0 1 := by
-    rw [constructedA2BoundaryTwoSkeleton_union_closedFour W]
+      correctedFourOrbit W '' Metric.closedBall 0 1 := by
+    rw [boundaryTwoSkeleton_union_closedFour W]
     trivial
   rcases hx with hx | hx
   · have hs := constructedCentralBoundaryTwoSkeleton_subset_cellSkeleton W (n := 5) (by decide) hx
@@ -180,21 +180,21 @@ private theorem constructedCentralCellMap_disjoint_0
     (hij : (⟨0, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 0 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
-  have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+  have hp : correctedPositiveTwoCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPositiveTwoOrbit_mem_singleton W hx
-  have ht (i : Fin 2) : constructedA2CorrectedThreeCell W i '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPositiveTwoOrbit_mem_singleton W hx
+  have ht (i : Fin 2) : correctedThreeCell W i '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 1 _ hx
-  have hf : constructedA2CorrectedFourCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPhaseOrbit_mem_singleton W 1 _ hx
+  have hf : correctedFourCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 2 _ hx
+    exact correctedPhaseOrbit_mem_singleton W 2 _ hx
   have hz (i : Fin 2) : Disjoint
       (constructedCentralZeroCell W i '' Metric.ball 0 1)
-      (constructedA2ActualSingletonStratum W) :=
+      (actualSingletonStratum W) :=
     (constructedCentralZeroCell_singleton_disjoint W i).mono_left
       (Set.image_mono Metric.ball_subset_closedBall)
   rcases m with (_ | _ | _ | _ | _ | m)
@@ -212,7 +212,7 @@ private theorem constructedCentralCellMap_disjoint_0
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (1 : Fin 3)) (Set.mem_univ (2 : Fin 3)) (by decide)
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (2 : Fin 3)) (Set.mem_univ (0 : Fin 3)) (by decide)
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (2 : Fin 3)) (Set.mem_univ (1 : Fin 3)) (by decide)
-    | exact (constructedA2CorrectedThreeOrbit_pairwiseDisjoint W) (Set.mem_univ _) (Set.mem_univ _) (by decide)
+    | exact (correctedThreeOrbit_pairwiseDisjoint W) (Set.mem_univ _) (Set.mem_univ _) (by decide)
     | exact constructedCentralZeroCell_oneCell_disjoint W _ _
     | exact (constructedCentralZeroCell_oneCell_disjoint W _ _).symm
     | exact (constructedCentralPhaseTwoCell_zeroCell_disjoint W 0 _).mono_right (Set.image_mono Metric.ball_subset_closedBall)
@@ -227,12 +227,12 @@ private theorem constructedCentralCellMap_disjoint_0
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 0 _).symm
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 1 _).symm
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 2 _).symm
-    | exact constructedA2CorrectedPositiveTwo_three_disjoint W _
-    | exact (constructedA2CorrectedPositiveTwo_three_disjoint W _).symm
-    | exact constructedA2CorrectedPositiveTwo_four_disjoint W
-    | exact (constructedA2CorrectedPositiveTwo_four_disjoint W).symm
-    | exact constructedA2CorrectedThree_four_disjoint W _
-    | exact (constructedA2CorrectedThree_four_disjoint W _).symm
+    | exact correctedPositiveTwo_three_disjoint W _
+    | exact (correctedPositiveTwo_three_disjoint W _).symm
+    | exact correctedPositiveTwo_four_disjoint W
+    | exact (correctedPositiveTwo_four_disjoint W).symm
+    | exact correctedThree_four_disjoint W _
+    | exact (correctedThree_four_disjoint W _).symm
     | exact (hz _).mono_right hp
     | exact ((hz _).mono_right hp).symm
     | exact (hz _).mono_right (ht _)
@@ -245,21 +245,21 @@ private theorem constructedCentralCellMap_disjoint_1
     (hij : (⟨1, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 1 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
-  have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+  have hp : correctedPositiveTwoCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPositiveTwoOrbit_mem_singleton W hx
-  have ht (i : Fin 2) : constructedA2CorrectedThreeCell W i '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPositiveTwoOrbit_mem_singleton W hx
+  have ht (i : Fin 2) : correctedThreeCell W i '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 1 _ hx
-  have hf : constructedA2CorrectedFourCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPhaseOrbit_mem_singleton W 1 _ hx
+  have hf : correctedFourCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 2 _ hx
+    exact correctedPhaseOrbit_mem_singleton W 2 _ hx
   have hz (i : Fin 2) : Disjoint
       (constructedCentralZeroCell W i '' Metric.ball 0 1)
-      (constructedA2ActualSingletonStratum W) :=
+      (actualSingletonStratum W) :=
     (constructedCentralZeroCell_singleton_disjoint W i).mono_left
       (Set.image_mono Metric.ball_subset_closedBall)
   rcases m with (_ | _ | _ | _ | _ | m)
@@ -277,7 +277,7 @@ private theorem constructedCentralCellMap_disjoint_1
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (1 : Fin 3)) (Set.mem_univ (2 : Fin 3)) (by decide)
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (2 : Fin 3)) (Set.mem_univ (0 : Fin 3)) (by decide)
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (2 : Fin 3)) (Set.mem_univ (1 : Fin 3)) (by decide)
-    | exact (constructedA2CorrectedThreeOrbit_pairwiseDisjoint W) (Set.mem_univ _) (Set.mem_univ _) (by decide)
+    | exact (correctedThreeOrbit_pairwiseDisjoint W) (Set.mem_univ _) (Set.mem_univ _) (by decide)
     | exact constructedCentralZeroCell_oneCell_disjoint W _ _
     | exact (constructedCentralZeroCell_oneCell_disjoint W _ _).symm
     | exact (constructedCentralPhaseTwoCell_zeroCell_disjoint W 0 _).mono_right (Set.image_mono Metric.ball_subset_closedBall)
@@ -292,12 +292,12 @@ private theorem constructedCentralCellMap_disjoint_1
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 0 _).symm
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 1 _).symm
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 2 _).symm
-    | exact constructedA2CorrectedPositiveTwo_three_disjoint W _
-    | exact (constructedA2CorrectedPositiveTwo_three_disjoint W _).symm
-    | exact constructedA2CorrectedPositiveTwo_four_disjoint W
-    | exact (constructedA2CorrectedPositiveTwo_four_disjoint W).symm
-    | exact constructedA2CorrectedThree_four_disjoint W _
-    | exact (constructedA2CorrectedThree_four_disjoint W _).symm
+    | exact correctedPositiveTwo_three_disjoint W _
+    | exact (correctedPositiveTwo_three_disjoint W _).symm
+    | exact correctedPositiveTwo_four_disjoint W
+    | exact (correctedPositiveTwo_four_disjoint W).symm
+    | exact correctedThree_four_disjoint W _
+    | exact (correctedThree_four_disjoint W _).symm
     | exact (hz _).mono_right hp
     | exact ((hz _).mono_right hp).symm
     | exact (hz _).mono_right (ht _)
@@ -316,21 +316,21 @@ private theorem constructedCentralCellMap_disjoint_2_0
     (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 2 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
-  have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+  have hp : correctedPositiveTwoCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPositiveTwoOrbit_mem_singleton W hx
-  have ht (i : Fin 2) : constructedA2CorrectedThreeCell W i '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPositiveTwoOrbit_mem_singleton W hx
+  have ht (i : Fin 2) : correctedThreeCell W i '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 1 _ hx
-  have hf : constructedA2CorrectedFourCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPhaseOrbit_mem_singleton W 1 _ hx
+  have hf : correctedFourCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 2 _ hx
+    exact correctedPhaseOrbit_mem_singleton W 2 _ hx
   have hz (i : Fin 2) : Disjoint
       (constructedCentralZeroCell W i '' Metric.ball 0 1)
-      (constructedA2ActualSingletonStratum W) :=
+      (actualSingletonStratum W) :=
     (constructedCentralZeroCell_singleton_disjoint W i).mono_left
       (Set.image_mono Metric.ball_subset_closedBall)
   subst i
@@ -349,7 +349,7 @@ private theorem constructedCentralCellMap_disjoint_2_0
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (1 : Fin 3)) (Set.mem_univ (2 : Fin 3)) (by decide)
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (2 : Fin 3)) (Set.mem_univ (0 : Fin 3)) (by decide)
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (2 : Fin 3)) (Set.mem_univ (1 : Fin 3)) (by decide)
-    | exact (constructedA2CorrectedThreeOrbit_pairwiseDisjoint W) (Set.mem_univ _) (Set.mem_univ _) (by decide)
+    | exact (correctedThreeOrbit_pairwiseDisjoint W) (Set.mem_univ _) (Set.mem_univ _) (by decide)
     | exact constructedCentralZeroCell_oneCell_disjoint W _ _
     | exact (constructedCentralZeroCell_oneCell_disjoint W _ _).symm
     | exact (constructedCentralPhaseTwoCell_zeroCell_disjoint W 0 _).mono_right (Set.image_mono Metric.ball_subset_closedBall)
@@ -364,12 +364,12 @@ private theorem constructedCentralCellMap_disjoint_2_0
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 0 _).symm
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 1 _).symm
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 2 _).symm
-    | exact constructedA2CorrectedPositiveTwo_three_disjoint W _
-    | exact (constructedA2CorrectedPositiveTwo_three_disjoint W _).symm
-    | exact constructedA2CorrectedPositiveTwo_four_disjoint W
-    | exact (constructedA2CorrectedPositiveTwo_four_disjoint W).symm
-    | exact constructedA2CorrectedThree_four_disjoint W _
-    | exact (constructedA2CorrectedThree_four_disjoint W _).symm
+    | exact correctedPositiveTwo_three_disjoint W _
+    | exact (correctedPositiveTwo_three_disjoint W _).symm
+    | exact correctedPositiveTwo_four_disjoint W
+    | exact (correctedPositiveTwo_four_disjoint W).symm
+    | exact correctedThree_four_disjoint W _
+    | exact (correctedThree_four_disjoint W _).symm
     | exact (hz _).mono_right hp
     | exact ((hz _).mono_right hp).symm
     | exact (hz _).mono_right (ht _)
@@ -395,21 +395,21 @@ private theorem constructedCentralCellMap_disjoint_2_1
     (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 2 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
-  have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+  have hp : correctedPositiveTwoCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPositiveTwoOrbit_mem_singleton W hx
-  have ht (i : Fin 2) : constructedA2CorrectedThreeCell W i '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPositiveTwoOrbit_mem_singleton W hx
+  have ht (i : Fin 2) : correctedThreeCell W i '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 1 _ hx
-  have hf : constructedA2CorrectedFourCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPhaseOrbit_mem_singleton W 1 _ hx
+  have hf : correctedFourCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 2 _ hx
+    exact correctedPhaseOrbit_mem_singleton W 2 _ hx
   have hz (i : Fin 2) : Disjoint
       (constructedCentralZeroCell W i '' Metric.ball 0 1)
-      (constructedA2ActualSingletonStratum W) :=
+      (actualSingletonStratum W) :=
     (constructedCentralZeroCell_singleton_disjoint W i).mono_left
       (Set.image_mono Metric.ball_subset_closedBall)
   subst i
@@ -435,21 +435,21 @@ private theorem constructedCentralCellMap_disjoint_2_2
     (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 2 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
-  have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+  have hp : correctedPositiveTwoCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPositiveTwoOrbit_mem_singleton W hx
-  have ht (i : Fin 2) : constructedA2CorrectedThreeCell W i '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPositiveTwoOrbit_mem_singleton W hx
+  have ht (i : Fin 2) : correctedThreeCell W i '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 1 _ hx
-  have hf : constructedA2CorrectedFourCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPhaseOrbit_mem_singleton W 1 _ hx
+  have hf : correctedFourCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 2 _ hx
+    exact correctedPhaseOrbit_mem_singleton W 2 _ hx
   have hz (i : Fin 2) : Disjoint
       (constructedCentralZeroCell W i '' Metric.ball 0 1)
-      (constructedA2ActualSingletonStratum W) :=
+      (actualSingletonStratum W) :=
     (constructedCentralZeroCell_singleton_disjoint W i).mono_left
       (Set.image_mono Metric.ball_subset_closedBall)
   subst i
@@ -475,21 +475,21 @@ private theorem constructedCentralCellMap_disjoint_2_3
     (hij : (⟨2, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 2 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
-  have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+  have hp : correctedPositiveTwoCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPositiveTwoOrbit_mem_singleton W hx
-  have ht (i : Fin 2) : constructedA2CorrectedThreeCell W i '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPositiveTwoOrbit_mem_singleton W hx
+  have ht (i : Fin 2) : correctedThreeCell W i '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 1 _ hx
-  have hf : constructedA2CorrectedFourCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPhaseOrbit_mem_singleton W 1 _ hx
+  have hf : correctedFourCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 2 _ hx
+    exact correctedPhaseOrbit_mem_singleton W 2 _ hx
   have hz (i : Fin 2) : Disjoint
       (constructedCentralZeroCell W i '' Metric.ball 0 1)
-      (constructedA2ActualSingletonStratum W) :=
+      (actualSingletonStratum W) :=
     (constructedCentralZeroCell_singleton_disjoint W i).mono_left
       (Set.image_mono Metric.ball_subset_closedBall)
   subst i
@@ -527,21 +527,21 @@ private theorem constructedCentralCellMap_disjoint_3
     (hij : (⟨3, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 3 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
-  have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+  have hp : correctedPositiveTwoCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPositiveTwoOrbit_mem_singleton W hx
-  have ht (i : Fin 2) : constructedA2CorrectedThreeCell W i '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPositiveTwoOrbit_mem_singleton W hx
+  have ht (i : Fin 2) : correctedThreeCell W i '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 1 _ hx
-  have hf : constructedA2CorrectedFourCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPhaseOrbit_mem_singleton W 1 _ hx
+  have hf : correctedFourCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 2 _ hx
+    exact correctedPhaseOrbit_mem_singleton W 2 _ hx
   have hz (i : Fin 2) : Disjoint
       (constructedCentralZeroCell W i '' Metric.ball 0 1)
-      (constructedA2ActualSingletonStratum W) :=
+      (actualSingletonStratum W) :=
     (constructedCentralZeroCell_singleton_disjoint W i).mono_left
       (Set.image_mono Metric.ball_subset_closedBall)
   rcases m with (_ | _ | _ | _ | _ | m)
@@ -559,7 +559,7 @@ private theorem constructedCentralCellMap_disjoint_3
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (1 : Fin 3)) (Set.mem_univ (2 : Fin 3)) (by decide)
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (2 : Fin 3)) (Set.mem_univ (0 : Fin 3)) (by decide)
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (2 : Fin 3)) (Set.mem_univ (1 : Fin 3)) (by decide)
-    | exact (constructedA2CorrectedThreeOrbit_pairwiseDisjoint W) (Set.mem_univ _) (Set.mem_univ _) (by decide)
+    | exact (correctedThreeOrbit_pairwiseDisjoint W) (Set.mem_univ _) (Set.mem_univ _) (by decide)
     | exact constructedCentralZeroCell_oneCell_disjoint W _ _
     | exact (constructedCentralZeroCell_oneCell_disjoint W _ _).symm
     | exact (constructedCentralPhaseTwoCell_zeroCell_disjoint W 0 _).mono_right (Set.image_mono Metric.ball_subset_closedBall)
@@ -574,12 +574,12 @@ private theorem constructedCentralCellMap_disjoint_3
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 0 _).symm
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 1 _).symm
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 2 _).symm
-    | exact constructedA2CorrectedPositiveTwo_three_disjoint W _
-    | exact (constructedA2CorrectedPositiveTwo_three_disjoint W _).symm
-    | exact constructedA2CorrectedPositiveTwo_four_disjoint W
-    | exact (constructedA2CorrectedPositiveTwo_four_disjoint W).symm
-    | exact constructedA2CorrectedThree_four_disjoint W _
-    | exact (constructedA2CorrectedThree_four_disjoint W _).symm
+    | exact correctedPositiveTwo_three_disjoint W _
+    | exact (correctedPositiveTwo_three_disjoint W _).symm
+    | exact correctedPositiveTwo_four_disjoint W
+    | exact (correctedPositiveTwo_four_disjoint W).symm
+    | exact correctedThree_four_disjoint W _
+    | exact (correctedThree_four_disjoint W _).symm
     | exact (hz _).mono_right hp
     | exact ((hz _).mono_right hp).symm
     | exact (hz _).mono_right (ht _)
@@ -611,21 +611,21 @@ private theorem constructedCentralCellMap_disjoint_4
     (hij : (⟨4, i⟩ : Σ n, SphereSixComplex.CuspWCellIndex n) ≠ ⟨m, j⟩) :
     Disjoint (constructedCentralCellMap W 4 i '' Metric.ball 0 1)
       (constructedCentralCellMap W m j '' Metric.ball 0 1) := by
-  have hp : constructedA2CorrectedPositiveTwoCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+  have hp : correctedPositiveTwoCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPositiveTwoOrbit_mem_singleton W hx
-  have ht (i : Fin 2) : constructedA2CorrectedThreeCell W i '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPositiveTwoOrbit_mem_singleton W hx
+  have ht (i : Fin 2) : correctedThreeCell W i '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 1 _ hx
-  have hf : constructedA2CorrectedFourCell W '' Metric.ball 0 1 ⊆
-      constructedA2ActualSingletonStratum W := by
+    exact correctedPhaseOrbit_mem_singleton W 1 _ hx
+  have hf : correctedFourCell W '' Metric.ball 0 1 ⊆
+      actualSingletonStratum W := by
     rintro z ⟨x, hx, rfl⟩
-    exact constructedA2CorrectedPhaseOrbit_mem_singleton W 2 _ hx
+    exact correctedPhaseOrbit_mem_singleton W 2 _ hx
   have hz (i : Fin 2) : Disjoint
       (constructedCentralZeroCell W i '' Metric.ball 0 1)
-      (constructedA2ActualSingletonStratum W) :=
+      (actualSingletonStratum W) :=
     (constructedCentralZeroCell_singleton_disjoint W i).mono_left
       (Set.image_mono Metric.ball_subset_closedBall)
   rcases m with (_ | _ | _ | _ | _ | m)
@@ -643,7 +643,7 @@ private theorem constructedCentralCellMap_disjoint_4
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (1 : Fin 3)) (Set.mem_univ (2 : Fin 3)) (by decide)
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (2 : Fin 3)) (Set.mem_univ (0 : Fin 3)) (by decide)
     | exact (constructedCentralPhaseTwoCell_pairwiseDisjoint W) (Set.mem_univ (2 : Fin 3)) (Set.mem_univ (1 : Fin 3)) (by decide)
-    | exact (constructedA2CorrectedThreeOrbit_pairwiseDisjoint W) (Set.mem_univ _) (Set.mem_univ _) (by decide)
+    | exact (correctedThreeOrbit_pairwiseDisjoint W) (Set.mem_univ _) (Set.mem_univ _) (by decide)
     | exact constructedCentralZeroCell_oneCell_disjoint W _ _
     | exact (constructedCentralZeroCell_oneCell_disjoint W _ _).symm
     | exact (constructedCentralPhaseTwoCell_zeroCell_disjoint W 0 _).mono_right (Set.image_mono Metric.ball_subset_closedBall)
@@ -658,12 +658,12 @@ private theorem constructedCentralCellMap_disjoint_4
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 0 _).symm
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 1 _).symm
     | exact (constructedCentralPhaseTwoCell_oneCell_disjoint W 2 _).symm
-    | exact constructedA2CorrectedPositiveTwo_three_disjoint W _
-    | exact (constructedA2CorrectedPositiveTwo_three_disjoint W _).symm
-    | exact constructedA2CorrectedPositiveTwo_four_disjoint W
-    | exact (constructedA2CorrectedPositiveTwo_four_disjoint W).symm
-    | exact constructedA2CorrectedThree_four_disjoint W _
-    | exact (constructedA2CorrectedThree_four_disjoint W _).symm
+    | exact correctedPositiveTwo_three_disjoint W _
+    | exact (correctedPositiveTwo_three_disjoint W _).symm
+    | exact correctedPositiveTwo_four_disjoint W
+    | exact (correctedPositiveTwo_four_disjoint W).symm
+    | exact correctedThree_four_disjoint W _
+    | exact (correctedThree_four_disjoint W _).symm
     | exact (hz _).mono_right hp
     | exact ((hz _).mono_right hp).symm
     | exact (hz _).mono_right (ht _)

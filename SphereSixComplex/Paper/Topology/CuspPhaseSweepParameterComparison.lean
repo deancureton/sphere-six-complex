@@ -5,6 +5,7 @@ public import SphereSixComplex.Paper.Topology.CuspPhaseSweepAtlas
 @[expose] public section
 
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology Matrix
 namespace SphereSixComplex.Geometry.CuspCollar
 open InfiniteA2Toric InfiniteA2Toric.Construction
@@ -111,11 +112,11 @@ public theorem phaseSweepCarrier_two_period (r t : ℝ) :
     AddCircle.toCircle_neg]
 
 public theorem compactCircle_embedding (i : Fin 2) (z : UnitAddCircle) :
-    compactTorusEmbedding (constructedA2EffectivePhaseSection (cuspPeriodCompactCircle i z)) =
+    compactTorusEmbedding (effectivePhaseSection (cuspPeriodCompactCircle i z)) =
       phaseEmbedding (cuspPeriodPhaseCircle i z) := by
   ext j
   fin_cases i <;> fin_cases j <;>
-    simp [compactTorusEmbedding, constructedA2EffectivePhaseSection, cuspPeriodCompactCircle,
+    simp [compactTorusEmbedding, effectivePhaseSection, cuspPeriodCompactCircle,
       phaseEmbedding, cuspPeriodPhaseCircle, CircleExponential.toUnits]
 
 variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
@@ -126,14 +127,14 @@ public theorem phaseSweepOrbit_eq_compact_of_carrier
     (i : Fin 3) (j : Fin 2) (x : Fin 2 → ℝ) (y : Fin 1 → ℝ) (z : UnitAddCircle)
     (h : phaseSweepCarrier i x = constructedModel.torusAction
       (phaseEmbedding (cuspPeriodPhaseCircle j z)) (constructedCentralEdgeCarrier i y)) :
-    phaseSweepOrbit W i x = constructedA2CentralCompactOrbitMap W
+    phaseSweepOrbit W i x = centralCompactOrbitMap W
       (cuspPeriodCompactCircle j z) (constructedCentralOneCell W i y) := by
   let _ := actualLocalCuspQuotientAction W
-  have hp : phaseSweepPoint W i x = constructedA2CentralCompactMap W
+  have hp : phaseSweepPoint W i x = centralCompactMap W
       (cuspPeriodCompactCircle j z) (constructedCentralEdgeCellPoint W i y) := by
     apply Subtype.ext
     apply Subtype.ext
-    dsimp [phaseSweepPoint, constructedA2CentralCompactMap, compactPhaseLocalAction]
+    dsimp [phaseSweepPoint, centralCompactMap, compactPhaseLocalAction]
     rw [compactCircle_embedding]
     fin_cases i <;> exact h
   change Quotient.mk _ (phaseSweepPoint W i x) = _
@@ -175,14 +176,14 @@ public theorem compactOrbit_eq_self_of_carrier
     (i : Fin 3) (j : Fin 2) (y : Fin 1 → ℝ) (z : UnitAddCircle)
     (h : constructedModel.torusAction (phaseEmbedding (cuspPeriodPhaseCircle j z))
       (constructedCentralEdgeCarrier i y) = constructedCentralEdgeCarrier i y) :
-    constructedA2CentralCompactOrbitMap W (cuspPeriodCompactCircle j z)
+    centralCompactOrbitMap W (cuspPeriodCompactCircle j z)
       (constructedCentralOneCell W i y) = constructedCentralOneCell W i y := by
   let _ := actualLocalCuspQuotientAction W
-  have hp : constructedA2CentralCompactMap W (cuspPeriodCompactCircle j z)
+  have hp : centralCompactMap W (cuspPeriodCompactCircle j z)
       (constructedCentralEdgeCellPoint W i y) = constructedCentralEdgeCellPoint W i y := by
     apply Subtype.ext
     apply Subtype.ext
-    dsimp [constructedA2CentralCompactMap, compactPhaseLocalAction]
+    dsimp [centralCompactMap, compactPhaseLocalAction]
     rw [compactCircle_embedding]
     fin_cases i <;> exact h
   fin_cases i <;> exact congrArg (Quotient.mk _) hp
@@ -197,7 +198,7 @@ public def phaseSweepTime (i : Fin 3) (t : ℝ) : UnitAddCircle :=
 public theorem phaseSweepOrbit_period
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 3) (r t : ℝ) :
     phaseSweepOrbit W i ![r, 2 * t - 1] =
-      constructedA2CentralCompactOrbitMap W
+      centralCompactOrbitMap W
         (cuspPeriodCompactCircle (phaseSweepPeriod i) (phaseSweepTime i t))
         (constructedCentralOneCell W i (fun _ ↦ r)) := by
   fin_cases i

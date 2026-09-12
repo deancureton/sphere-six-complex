@@ -5,6 +5,7 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2CellularEdgeLoops
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open CategoryTheory HomologicalComplex
 namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex SphereSixComplex.Periods StandardCircleHomologyLiftDegree
@@ -134,7 +135,7 @@ public theorem phaseSweepGraphPrism_relativeCoordinates
     (T : CellularHomology.IntegralComparison) (i : Fin 2) (j k : Fin 3) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     phaseSweepHomologyTwoToRelativeEquiv W T
-      (topologicalClosedPrismHomology (constructedA2CircleSweepHomotopy W i) 0
+      (topologicalClosedPrismHomology (circleSweepHomotopy W i) 0
         (homologyMap (cwIntegralSingularChainMapObj
           (integralCWSkeletonToSpace (ActualLocalCuspCentralOrbitQuotient W) 2)) 1
           (loopHomologyClass ((phaseSweepCellularEdgePath W j).trans
@@ -158,7 +159,7 @@ public theorem phaseSweepGraphPrism_cellCoordinates
     (T : CellularHomology.IntegralComparison) (i : Fin 2) (j k : Fin 3) :
     let _ := (phaseSweepCellAtlas W).cwComplex
     phaseSweepHomologyTwoCellEquiv W T
-      (topologicalClosedPrismHomology (constructedA2CircleSweepHomotopy W i) 0
+      (topologicalClosedPrismHomology (circleSweepHomotopy W i) 0
         (homologyMap (cwIntegralSingularChainMapObj
           (integralCWSkeletonToSpace (ActualLocalCuspCentralOrbitQuotient W) 2)) 1
           (loopHomologyClass ((phaseSweepCellularEdgePath W j).trans

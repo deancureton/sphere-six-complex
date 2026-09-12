@@ -1,9 +1,10 @@
 module
 public import SphereSixComplex.Paper.Topology.CuspFillingPhaseCircle
-public import SphereSixComplex.Paper.Topology.ConstructedA2CentralCompactAction
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralCompactAction
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods InfiniteA2Toric
@@ -20,12 +21,12 @@ public theorem cuspFillingPeriodCircle_centralOrbit
     (z : UnitAddCircle) (q : ActualLocalCuspCentralOrbitQuotient W) :
     cuspFillingPeriodCircle W i (z,actualLocalCuspCentralOrbitMap W q) =
       actualLocalCuspCentralOrbitMap W
-        (constructedA2CentralCompactOrbitMap W (cuspPeriodCompactCircle i z) q) := by
+        (centralCompactOrbitMap W (cuspPeriodCompactCircle i z) q) := by
   let _ := actualLocalCuspQuotientAction W
   induction q using Quotient.inductionOn with
   | _ p =>
     change Quotient.mk _ (localCuspPeriodCircle W i (z,p.1)) =
-      Quotient.mk _ (constructedA2CentralCompactMap W (cuspPeriodCompactCircle i z) p).1
+      Quotient.mk _ (centralCompactMap W (cuspPeriodCompactCircle i z) p).1
     apply congrArg (Quotient.mk _)
     apply Subtype.ext
     change constructedModel.torusAction _ p.1.1 = constructedModel.torusAction _ p.1.1
@@ -33,7 +34,7 @@ public theorem cuspFillingPeriodCircle_centralOrbit
     ext j
     fin_cases i <;> fin_cases j <;>
       simp [CuspToricPhaseAction.phaseEmbedding, cuspPeriodPhaseCircle,
-        cuspPeriodCompactCircle, constructedA2EffectivePhaseSection,
+        cuspPeriodCompactCircle, effectivePhaseSection,
         compactTorusEmbedding, CircleExponential.toUnits]
 
 public theorem lowerChart_phase_weights (c : CuspToricPhaseAction.Phase) :

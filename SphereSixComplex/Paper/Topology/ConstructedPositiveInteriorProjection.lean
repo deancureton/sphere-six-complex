@@ -4,6 +4,7 @@ public import SphereSixComplex.Paper.Topology.ConstructedPositiveLogCoordinates
 
 @[expose] public section
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
@@ -13,10 +14,10 @@ variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
 
 def constructedPositiveInteriorProjection
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (p : constructedA2PositiveOffCentral W.localWitness.radius) :
-    ↥((constructedA2PositiveQuotientCore W)ᶜ) := by
+    (p : positiveOffCentral W.localWitness.radius) :
+    ↥((positiveQuotientCore W)ᶜ) := by
   refine ⟨Quotient.mk _ p.1, ?_⟩
-  have h := Set.ext_iff.mp (constructedPositiveDeck_central_preimage W) p.1
+  have h := Set.ext_iff.mp (positiveDeck_central_preimage W) p.1
   exact fun hp ↦ p.2 (h.mp hp)
 
 theorem constructedPositiveInteriorProjection_continuous
@@ -30,13 +31,13 @@ theorem constructedPositiveInteriorProjection_surjective
   rintro ⟨x, hx⟩
   obtain ⟨p, rfl⟩ := Quotient.exists_rep x
   have hp : constructedModel.t p.1.1 ≠ 0 := by
-    have h := Set.ext_iff.mp (constructedPositiveDeck_central_preimage W) p
+    have h := Set.ext_iff.mp (positiveDeck_central_preimage W) p
     exact fun hp ↦ hx (h.mpr hp)
   exact ⟨⟨p, hp⟩, rfl⟩
 
 theorem constructedPositiveInteriorProjection_eq_iff
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (p q : constructedA2PositiveOffCentral W.localWitness.radius) :
+    (p q : positiveOffCentral W.localWitness.radius) :
     constructedPositiveInteriorProjection W p = constructedPositiveInteriorProjection W q ↔
       ∃ lambda : ParameterLattice, positiveOffCentralDeck W lambda q = p := by
   rw [Subtype.ext_iff]
@@ -58,8 +59,8 @@ theorem constructedPositiveInteriorProjection_isOpenMap
   let _ := normalizedPositiveDeckAction N constructedModel
     (constructedLocalPositivePart W.localWitness.radius)
     (constructedPositiveDeck_mem N W.localWitness.radius)
-  have h : IsOpen (constructedA2PositiveOffCentral W.localWitness.radius) :=
-    (constructedPositiveCentralFiber_isClosed W.localWitness.radius).isOpen_compl
+  have h : IsOpen (positiveOffCentral W.localWitness.radius) :=
+    (isClosed_positiveCentralFiber W.localWitness.radius).isOpen_compl
   exact ((constructedPositiveDeck_quotientCovering W).isCoveringMap.isLocalHomeomorph.isOpenMap.comp
     h.isOpenMap_subtype_val).subtype_mk _
 

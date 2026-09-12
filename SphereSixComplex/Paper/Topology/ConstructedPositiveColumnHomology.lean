@@ -6,6 +6,7 @@ public import SphereSixComplex.Paper.Topology.ConstructedCuspPositivePhaseVanish
 @[expose] public section
 
 noncomputable section
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open Set Topology
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
@@ -29,7 +30,7 @@ open CuspPeriodExpansion CuspCollar CuspStraighteningRetraction
 open CuspRadialClutchingConstruction
 
 def constructedFirstTorusPositiveHomotopyEquiv (A : AnalyticData) :
-    ContinuousMap.HomotopyEquiv (StdTorus 2) (ConstructedA2PositiveQuotient A.starCuspWitness) :=
+    ContinuousMap.HomotopyEquiv (StdTorus 2) (PositiveQuotient A.starCuspWitness) :=
   ((intervalProductSliceEquiv
     (⟨‖cuspQ (markedCuspParameter A.starCuspWitness)‖,
       norm_pos_iff.mpr (Complex.exp_ne_zero _),
@@ -47,7 +48,7 @@ theorem constructedFirstTorusPositiveHomotopyEquiv_toFun (A : AnalyticData) :
 
 def constructedFirstTorusPositiveHomologyEquiv (A : AnalyticData) :
     IntegralSingularHomology 2 (StdTorus 2) ≃+
-      IntegralSingularHomology 2 (ConstructedA2PositiveQuotient A.starCuspWitness) :=
+      IntegralSingularHomology 2 (PositiveQuotient A.starCuspWitness) :=
   integralSingularHomologyEquivOfHomotopyEquiv 2 (constructedFirstTorusPositiveHomotopyEquiv A)
 
 theorem constructedFirstTorusPositiveHomologyEquiv_apply (A : AnalyticData)
@@ -61,7 +62,7 @@ theorem constructedFirstTorusPositiveHomologyEquiv_apply (A : AnalyticData)
   rfl
 
 def constructedPositiveHomologyTwoReadout (A : AnalyticData) :
-    IntegralSingularHomology 2 (ConstructedA2PositiveQuotient A.starCuspWitness) →+ ℤ where
+    IntegralSingularHomology 2 (PositiveQuotient A.starCuspWitness) →+ ℤ where
   toFun x := (stdTorusHomologyTwo 2 ((constructedFirstTorusPositiveHomologyEquiv A).symm x))
     standardTwoTorusDegreeTwoIndex
   map_zero' := by simp

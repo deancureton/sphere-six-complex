@@ -104,15 +104,6 @@ public noncomputable def integralCellularChainModel
   letI := D.cwComplex
   exact CellularHomology.normalizedModel D.Carrier
 
-/-- Reindex integer coordinates along the labelled orbit-cell equivalence. -/
-public def standardIntegerFunctionReindexAddEquiv {I J : Type} (e : I ≃ J) :
-    (J → ℤ) ≃+ (I → ℤ) where
-  toFun x i := x (e i)
-  invFun x j := x (e.symm j)
-  left_inv x := by funext j; simp
-  right_inv x := by funext i; simp
-  map_add' _ _ := rfl
-
 /-- The cellular basis in the standard orbit-cell coordinates. -/
 public noncomputable def labelledCellBasis
     (D : StandardA2ToricCentralFiberCWDecomposition X) (n : ℕ) :
@@ -125,7 +116,7 @@ public noncomputable def labelledCellBasis
   letI : Finite (Topology.CWComplex.cell (Set.univ : Set D.Carrier) n) :=
     Finite.of_equiv _ (D.cellEquiv n).symm
   exact
-    (standardIntegerFunctionReindexAddEquiv (D.cellEquiv n)).trans
+    (AddEquiv.arrowCongr (D.cellEquiv n).symm (AddEquiv.refl ℤ)).trans
       Finsupp.addEquivFunOnFinite.symm |>.trans (D.integralCellularChainModel.cellBasis n)
 
 /-- Forget the exact orbit labels and retain a finite CW model supported below degree seven. -/
