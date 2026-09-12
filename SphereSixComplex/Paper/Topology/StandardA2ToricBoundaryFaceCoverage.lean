@@ -9,7 +9,7 @@ noncomputable section
 
 open Function Set Topology Matrix
 
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open SphereSixComplex.Geometry.CuspCombinatorics
@@ -342,7 +342,7 @@ open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem exists_actualCentral_deck_translate_singleAxis
@@ -449,6 +449,6 @@ public theorem constructedCentral_support_ge_two_mem_boundaryTwoSkeleton
   rw [hw]
   exact hv w
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar
 
 end

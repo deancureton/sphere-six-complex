@@ -24,11 +24,10 @@ namespace SphereSixComplex
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
 open Geometry.EllipticFamilySpecialization
-open Topology.PaperEllipticFillingRadialRetraction
-open Topology.PaperEllipticReducedCentralFiberCoverModels
-open Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData
-open Topology.PaperAffineCyclicQuotientHomologyCoordinates
-open LatticeData Topology.PaperLemmaSevenThirteenAlgebra
+open EllipticFilling
+open EllipticFilling.RadialEllipticActionData
+open AffineCyclicQuotientHomology
+open LatticeData MultipleFiberCoinvariants
 
 /-- Path connectedness is invariant under a homotopy equivalence. -/
 public theorem pathConnectedSpace_of_homotopyEquiv

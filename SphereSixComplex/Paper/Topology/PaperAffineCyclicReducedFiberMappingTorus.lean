@@ -20,11 +20,11 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData
+namespace SphereSixComplex.EllipticFilling.RadialEllipticActionData
 
 open Geometry Geometry.EquivariantQuotientHomeomorph
 open Geometry.EllipticLocalCoordinates
-open PaperEllipticFillingRadialRetraction
+open EllipticFilling
 open TriangleGroup
 
 variable {m : ℕ} [NeZero m] {T : Type} [TopologicalSpace T] [AddCommGroup T]
@@ -180,9 +180,9 @@ public noncomputable def centralFiberOrbitQuotientHomeomorph
   exact (Homeomorph.Quotient.congrRight fun x y ↦
     centralFiberOrbitRel_iff_projection_eq D x y).trans hq.homeomorph
 
-end SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData
+end SphereSixComplex.EllipticFilling.RadialEllipticActionData
 
-namespace SphereSixComplex.Topology.PaperAffineCyclicReducedFiberMappingTorus
+namespace SphereSixComplex.EllipticReducedFiberMappingTorus
 
 open Geometry Geometry.ComplexTorus Geometry.EllipticFamilySpecialization
 open Geometry.AnalyticTorusFamily
@@ -539,9 +539,9 @@ variable {m : ℕ} {F : Type} [TopologicalSpace F]
 section NonzeroOrder
 variable [NeZero m]
 
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData
-open PaperEllipticFillingRadialRetraction
+open EllipticFilling
+open EllipticFilling.RadialEllipticActionData
+open EllipticFilling
 
 /-- Final reduction for a paper reduced central fibre.  Once its actual affine generator is
 put in normalized gamma-circle times three-torus coordinates, the reduced fibre is the claimed
@@ -623,7 +623,7 @@ public noncomputable def orderFourReducedCentralFiberCircleMappingTorusHomeomorp
 
 end NonzeroOrder
 
-end SphereSixComplex.Topology.PaperAffineCyclicReducedFiberMappingTorus
+end SphereSixComplex.EllipticReducedFiberMappingTorus
 
 end
 

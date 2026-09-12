@@ -5,7 +5,7 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenLocalEulerModelAs
 public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
 public import SphereSixComplex.Prerequisites.Topology.FiniteCWModelSix
 public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomain
-public import SphereSixComplex.Paper.Topology.WangDimensionVanishing
+public import SphereSixComplex.Prerequisites.Topology.WangDimensionVanishing
 
 /-!
 # The elliptic collars' sixth homology
@@ -58,7 +58,7 @@ variable (A : AnalyticData)
 public theorem subsingleton_homology_six_orderThreeCollar :
     Subsingleton (IntegralSingularHomology 6 (A.StarCollarSource 1)) :=
   subsingleton_homology_six_of_radialMappingTorus_fourTorusFiber
-    (EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel _
+    (StandardTorusHomology.additiveTorusFourTorusHomologicalModel _
       (ComplexTorus.FullRank.ofSetupInequalities _
         (AnalyticTorusFamily.parameterMap A.periods _).2))
     _ A.starSeparation.orderThree.radius_pos
@@ -68,7 +68,7 @@ public theorem subsingleton_homology_six_orderThreeCollar :
 public theorem subsingleton_homology_six_orderFourCollar :
     Subsingleton (IntegralSingularHomology 6 (A.StarCollarSource 2)) :=
   subsingleton_homology_six_of_radialMappingTorus_fourTorusFiber
-    (EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel _
+    (StandardTorusHomology.additiveTorusFourTorusHomologicalModel _
       (ComplexTorus.FullRank.ofSetupInequalities _
         (AnalyticTorusFamily.parameterMap A.periods _).2))
     _ A.starSeparation.orderFour.radius_pos

@@ -5,10 +5,10 @@ public import SphereSixComplex.Paper.Topology.ActualCuspCentralFiberRetraction
 @[expose] public section
 noncomputable section
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods SphereSixComplex.Topology
 open CuspPeriodExpansion CuspFilling CuspLocalPhaseAction InfiniteA2Toric
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public def actualCuspDeckHomologyOneEquiv (W : ActualPuncturedCuspCollarWitness N M) :
@@ -49,4 +49,4 @@ public theorem actualCuspDeckHomologyOneEquiv_eq (W : ActualPuncturedCuspCollarW
   congr 1
   exact abelianCoverHomologyEquiv_basepoint _ _ _
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

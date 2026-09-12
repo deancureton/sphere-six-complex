@@ -199,11 +199,10 @@ public theorem markedBandHomotopies_of_affineNamedSheetStabilizingDecks
         A.periods A.starSeparation.orderFour.radius) :=
     (A.affineOrderFourNamedRadialCollarCompatibility_iff).mpr hbounds.2
   apply markedBandHomotopies_of_pinnedLiftEndpointGaugeFormulas
-    A A.affineNamedStripLift
+    A.affineNamedStripLift
       A.affineNamedStripLift_apply_midpoint
       A.affineOrderThreeEndpointGauge
       A.affineOrderFourEndpointGauge
-  constructor
   · exact A.affineOrderThreeEndpointGauge_formula
       (A.affineOrderThreeEndpointRealPeriodIdentity hbounds.1)
   · exact A.affineOrderFourEndpointGauge_formula

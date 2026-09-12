@@ -19,7 +19,7 @@ noncomputable section
 namespace SphereSixComplex.Topology.EllipticReducedFiberMappingTorusHomology
 
 open Geometry Geometry.EllipticFamilySpecialization Periods
-open PaperEllipticFillingRadialRetraction
+open EllipticFilling
 open StandardTorusHomology
 
 /-- The two source-specific geometric identifications needed in place of finite-CW models. -/
@@ -68,7 +68,7 @@ public theorem orderFourEuler_eq_zero (M : ReducedFiberMappingTorusModels F) :
 
 end ReducedFiberMappingTorusModels
 
-open PaperAffineCyclicReducedFiberMappingTorus
+open EllipticReducedFiberMappingTorus
 
 /-- The explicit affine cyclic normal forms supply the mapping-torus models for both elliptic
 reduced central fibres. -/

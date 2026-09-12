@@ -16,26 +16,12 @@ noncomputable section
 
 open Matrix
 
-namespace SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra
+namespace SphereSixComplex.MultipleFiberCoinvariants
 
 open LatticeData
-open TwistObstruction
+open SphereSixComplex.Topology.TwistObstruction
 
 public abbrev IntSquared := Fin 2 → ℤ
-
-/-- Exposed copy of the first source matrix, used only to evaluate its integral action. -/
-public def explicitAOne : Matrix (Fin 4) (Fin 4) ℤ :=
-  !![1, 0, 0, 0; 6, 0, 1, 0; -6, -1, -1, 0; -2, 1, 0, 1]
-
-/-- Exposed copy of the second source matrix, used only to evaluate its integral action. -/
-public def explicitATwo : Matrix (Fin 4) (Fin 4) ℤ :=
-  !![1, 0, 0, 0; 0, 0, -1, 0; -6, 1, 0, 0; 3, 0, 1, 1]
-
-public theorem AOne_eq_explicit : A₁ = explicitAOne := by
-  rfl
-
-public theorem ATwo_eq_explicit : A₂ = explicitATwo := by
-  rfl
 
 @[simp]
 public theorem gamma_apply (x : LatticeData.Lattice) : gamma x = x 0 := by
@@ -116,15 +102,15 @@ public theorem range_orderOneDifference :
   constructor
   · rintro ⟨y, rfl⟩
     constructor
-    · simp [orderOneDifference, AOne_eq_explicit, explicitAOne, dotProduct,
+    · simp [orderOneDifference, A₁, dotProduct,
         Fin.sum_univ_succ]
-    · simp [orderOneDifference, AOne_eq_explicit, explicitAOne, dotProduct,
+    · simp [orderOneDifference, A₁, dotProduct,
         Fin.sum_univ_succ]
       ring
   · rintro ⟨h0, hpsi⟩
     refine ⟨![0, x 3, x 1 + x 3, 0], ?_⟩
     funext i
-    fin_cases i <;> simp [orderOneDifference, AOne_eq_explicit, explicitAOne, h0]
+    fin_cases i <;> simp [orderOneDifference, A₁, h0]
     all_goals omega
 
 /-- Explicit description of the image of `A₂ - I`. -/
@@ -135,15 +121,15 @@ public theorem range_orderTwoDifference :
   constructor
   · rintro ⟨y, rfl⟩
     constructor
-    · simp [orderTwoDifference, ATwo_eq_explicit, explicitATwo, dotProduct,
+    · simp [orderTwoDifference, A₂, dotProduct,
         Fin.sum_univ_succ]
-    · simp [orderTwoDifference, ATwo_eq_explicit, explicitATwo, dotProduct,
+    · simp [orderTwoDifference, A₂, dotProduct,
         Fin.sum_univ_succ]
       ring
   · rintro ⟨h0, hpsi⟩
     refine ⟨![0, -x 1 - x 3, x 3, 0], ?_⟩
     funext i
-    fin_cases i <;> simp [orderTwoDifference, ATwo_eq_explicit, explicitATwo, h0]
+    fin_cases i <;> simp [orderTwoDifference, A₂, h0]
     all_goals omega
 
 public theorem ker_orderOneCoordinates :
@@ -379,4 +365,4 @@ public theorem orderTwoSelectedPresentationEquivIntSquared_mk
 
 
 
-end SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra
+end SphereSixComplex.MultipleFiberCoinvariants

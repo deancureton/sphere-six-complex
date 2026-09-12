@@ -25,7 +25,7 @@ open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination

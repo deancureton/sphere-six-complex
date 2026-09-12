@@ -14,14 +14,13 @@ open AlgebraicTopology
 
 noncomputable section
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
 open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
 open LatticeData Periods TriangleGroup
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperLemmaSevenThirteenAlgebra TwistObstruction
+open EllipticFilling
+open MultipleFiberCoinvariants SphereSixComplex.Topology.TwistObstruction
 
 
 /-- Exact input for the standard fundamental-group presentation of a free affine cyclic torus
@@ -48,18 +47,17 @@ public structure AffineCyclicCentralFiberPresentationData
   free : letI := D.actionData.diagonalAction
     IsCancelSMul (FiniteCyclic m) D.Product
 
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
 open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
 open LatticeData Periods TriangleGroup
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperLemmaSevenThirteenAlgebra TwistObstruction
-open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open EllipticFilling
+open MultipleFiberCoinvariants SphereSixComplex.Topology.TwistObstruction
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
@@ -68,7 +66,7 @@ variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     IntegralSingularHomology 1
         (RadialEllipticActionData.CentralFiberCoverSource D) ≃+ Lattice :=
-  ((EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).homeomorph
+  ((StandardTorusHomology.additiveTorusHomologyBasis p P.fullRank).homeomorph
     (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)).degreeOne
 
 /-- The canonical map from the covering lattice to the abelian multiple-fibre presentation. -/
@@ -96,13 +94,12 @@ public structure ReducedCentralFiberHOnePresentation
 
 end SphereSixComplex.AffineCyclicQuotientHomology
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
 open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
 open LatticeData Periods TriangleGroup
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperLemmaSevenThirteenAlgebra TwistObstruction
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open EllipticFilling
+open MultipleFiberCoinvariants SphereSixComplex.Topology.TwistObstruction
+end SphereSixComplex.AffineCyclicQuotientHomology
 
 end

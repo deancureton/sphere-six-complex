@@ -17,12 +17,12 @@ noncomputable section
 open AlgebraicTopology Set
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+namespace SphereSixComplex.EllipticFilling
 
 open Geometry Geometry.ComplexTorus Geometry.EllipticFixedPointCriterion
 open Geometry.EllipticLocalCoordinates
 open Geometry.EquivariantQuotientHomeomorph
-open Topology.PaperEllipticFillingRadialRetraction
+open EllipticFilling
 
 variable {m : ℕ} [NeZero m] {T : Type} [TopologicalSpace T] [AddCommGroup T]
     (D : RadialEllipticActionData m T)
@@ -47,7 +47,7 @@ public theorem mem_centralSlice_iff_quotient_mem_reducedCentralFiber (p : D.Prod
       p ∈ D.centralSlice := by
   constructor
   · intro hp
-    rw [PaperEllipticFillingRadialRetraction.RadialEllipticActionData.reducedCentralFiber] at hp
+    rw [EllipticFilling.RadialEllipticActionData.reducedCentralFiber] at hp
     obtain ⟨q, hq, heq⟩ := hp
     have horbit := Quotient.exact heq.symm
     change ∃ g : FiniteCyclic m,
@@ -59,7 +59,7 @@ public theorem mem_centralSlice_iff_quotient_mem_reducedCentralFiber (p : D.Prod
     change (actionMap D.actionData.diagonalAction g q).1 = ComplexUnitDisc.center
     exact h.symm
   · intro hp
-    rw [PaperEllipticFillingRadialRetraction.RadialEllipticActionData.reducedCentralFiber]
+    rw [EllipticFilling.RadialEllipticActionData.reducedCentralFiber]
     exact ⟨p, hp, rfl⟩
 
 /-- Insert a torus point into the inverse image of the reduced central fibre. -/
@@ -125,7 +125,7 @@ public theorem centralFiberCoverProjection_isCovering
 
 end RadialEllipticActionData
 
-end SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+end SphereSixComplex.EllipticFilling
 
 end
 

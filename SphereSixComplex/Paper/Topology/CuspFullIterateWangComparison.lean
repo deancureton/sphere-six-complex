@@ -20,7 +20,7 @@ public theorem loopHomologyClass_eq_of_pointwise {X : Type} [TopologicalSpace X]
 
 namespace Geometry.AnalyticData
 open SphereSixComplex.Topology Hurewicz.Chains
-open CuspPuncturedCollarBridge CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
+open CuspCollar CuspCollar.CuspFiberSpecializationNormalization
 variable (A : AnalyticData)
 
 public theorem cuspBridgeMeridian_hurewicz :

@@ -4,11 +4,11 @@ public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWConstructio
 
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex SphereSixComplex.Periods
 open CuspFilling CuspPeriodExpansion InfiniteA2Toric
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public def actualCuspCentralOrbitFillingHomologyEquiv
@@ -39,4 +39,4 @@ public theorem actualCuspCentralOrbitFillingHomologyEquiv_apply
   rw [hc]
   rfl
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

@@ -7,11 +7,11 @@ public import SphereSixComplex.Prerequisites.Topology.CellularPathComparison
 @[expose] public section
 noncomputable section
 open Set Topology CategoryTheory CategoryTheory.Limits HomologicalComplex
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction CuspFilling CuspPeriodExpansion
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepEdgeBasePair
@@ -76,4 +76,4 @@ public theorem phaseSweepEdgeBasePair_orientedClass
   rw [T.normalized_diskOrientation_one, normalizedIntervalDiskOrientation_symm_one] at h
   exact h.symm
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

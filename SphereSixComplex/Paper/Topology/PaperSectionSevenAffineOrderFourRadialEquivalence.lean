@@ -177,7 +177,7 @@ public theorem regularFlatVector_continuous :
         (RegularBase (U := A.modular.modularParameter.toTriangleUniformization) ×
           ComplexTwoSpace) ↦
         periodCoordinates (parameterMap A.periods bp.2.1.1) bp.2.2) :=
-    (EllipticRealPeriodProductTrivialization.periodCoordinates_parameterMap_continuous
+    (RealPeriodTrivialization.periodCoordinates_parameterMap_continuous
       A.periods).comp
       ((continuous_subtype_val.comp (continuous_fst.comp continuous_snd)).prodMk
         (continuous_snd.comp continuous_snd))

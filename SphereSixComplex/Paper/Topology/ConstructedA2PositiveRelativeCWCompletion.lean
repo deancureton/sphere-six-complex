@@ -16,11 +16,11 @@ open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 public theorem constructedPositiveDeck_contMDiff
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := localPositiveQuadrantChartedSpace W.localWitness.radius
@@ -61,7 +61,7 @@ public theorem constructedPositiveDeck_contMDiff
   convert hc using 1 <;> rfl
 
 public def constructedA2PositiveCOneManifoldBoundaryData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     ConstructedA2PositiveCOneManifoldBoundaryData W where
@@ -71,7 +71,7 @@ public def constructedA2PositiveCOneManifoldBoundaryData
   deck_contMDiff := constructedPositiveDeck_contMDiff W
 
 public theorem constructedA2PositiveQuotientRelativeCW
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     Nonempty (ConstructedA2PositiveQuotientRelativeCW W) :=
@@ -79,7 +79,7 @@ public theorem constructedA2PositiveQuotientRelativeCW
     (constructedA2PositiveCOneManifoldBoundaryData W)
 
 public noncomputable def constructedPolarHoneycombConstructionData_of_contractible
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (h : ContractibleSpace (constructedLocalPositivePart W.localWitness.radius)) :

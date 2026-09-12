@@ -16,11 +16,8 @@ meridian class whose `m`-th multiple is the twist class then produces a canonica
 the presentation by `multipleFiberLift`, and any inverse of that canonical map satisfies the
 naturality clause on the nose.
 
-What remains of the axiom is therefore the single statement that one explicit map is bijective,
-together with the choice of a meridian class.  The auxiliary predicate
-`IsCentralFiberCoverSourceCoordinate` records the coordinate formula for
-`RadialEllipticActionData.centralFiberCoverSourceHomeomorph`, which holds by `rfl` but is not
-available to importing modules because that definition is not exposed.
+The presentation map is determined by a meridian class satisfying the full-iterate relation.
+Its inverse has the required covering-torus coordinate formula whenever the map is bijective.
 -/
 
 open AlgebraicTopology CategoryTheory
@@ -29,15 +26,14 @@ noncomputable section
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
 open Geometry.EllipticFamilySpecialization Geometry.EllipticLocalCoordinates
 open Geometry.EquivariantQuotientHomeomorph
 open LatticeData Periods
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperLemmaSevenThirteenAlgebra
-open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open EllipticFilling
+open MultipleFiberCoinvariants
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
@@ -72,22 +68,6 @@ fibre. -/
     ⟨RadialEllipticActionData.centralFiberCoverSourceHomeomorph D,
       (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).continuous⟩
 
-/-- The coordinate description of the canonical identification between the covering source of
-the reduced central fibre and the central torus.
-
-`RadialEllipticActionData.centralFiberCoverSourceHomeomorph` is *the* projection to the torus
-coordinate, so this predicate holds by `rfl`; it is carried explicitly because that definition is
-not exposed to importing modules. -/
-public def IsCentralFiberCoverSourceCoordinate
-    (D : RadialEllipticActionData m (AdditiveTorus p)) : Prop :=
-  ∀ t : RadialEllipticActionData.CentralFiberCoverSource D,
-    RadialEllipticActionData.centralFiberCoverSourceHomeomorph D t = t.1.2
-
-/-- The canonical central-fibre covering-source homeomorphism is the torus coordinate. -/
-public theorem isCentralFiberCoverSourceCoordinate :
-    IsCentralFiberCoverSourceCoordinate D :=
-  RadialEllipticActionData.centralFiberCoverSourceHomeomorph_apply D
-
 /-- Points of the covering source sit over the centre of the disc. -/
 public theorem centralFiberCoverSource_fst
     (t : RadialEllipticActionData.CentralFiberCoverSource D) :
@@ -98,15 +78,13 @@ public theorem centralFiberCoverSource_fst
 
 /-- The underlying pair of a point of the covering source, in torus coordinates. -/
 public theorem centralFiberCoverSource_val
-    (hcoord : IsCentralFiberCoverSourceCoordinate D)
     (t : RadialEllipticActionData.CentralFiberCoverSource D) :
     t.1 = (ComplexUnitDisc.center, RadialEllipticActionData.centralFiberCoverSourceHomeomorph D t) := by
-  rw [hcoord t]
+  rw [RadialEllipticActionData.centralFiberCoverSourceHomeomorph_apply D t]
   exact Prod.ext (centralFiberCoverSource_fst t) rfl
 
 /-- The cyclic generator acts on the covering source as the fibre generator. -/
 public theorem centralFiberCoverSource_smul
-    (hcoord : IsCentralFiberCoverSourceCoordinate D)
     (t : RadialEllipticActionData.CentralFiberCoverSource D) :
     actionMap D.actionData.diagonalAction (cyclicGenerator m) t.1 =
       (ComplexUnitDisc.center, D.actionData.fiberGenerator
@@ -122,11 +100,10 @@ public theorem centralFiberCoverSource_smul
   rw [hfix] at hequiv
   rw [hpair] at hequiv
   have hrot : ComplexUnitDisc.center = D.actionData.rotation t.1.1 := congrArg Prod.fst hequiv
-  rw [hpair, hcoord t, ← hrot]
+  rw [hpair, RadialEllipticActionData.centralFiberCoverSourceHomeomorph_apply D t, ← hrot]
 
 /-- The covering projection is invariant under the transported cyclic generator. -/
 public theorem centralFiberCoverProjection_comp_generator
-    (hcoord : IsCentralFiberCoverSourceCoordinate D)
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     (RadialEllipticActionData.centralFiberCoverProjection D).comp
         (centralFiberCoverGenerator P) =
@@ -134,11 +111,11 @@ public theorem centralFiberCoverProjection_comp_generator
   ext s
   refine Quotient.sound ⟨cyclicGenerator m, ?_⟩
   show actionMap D.actionData.diagonalAction (cyclicGenerator m) s.1 = _
-  have hgen := centralFiberCoverSource_smul hcoord s
+  have hgen := centralFiberCoverSource_smul s
   have htarget : (centralFiberCoverGenerator P s).1 =
       (ComplexUnitDisc.center, P.affine.map
         (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D s)) := by
-    have h := centralFiberCoverSource_val hcoord
+    have h := centralFiberCoverSource_val
       ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
         (P.affine.map (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D s)))
     rw [(RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).apply_symm_apply] at h
@@ -153,9 +130,9 @@ public theorem centralFiberCoverSourceDegreeOneBasis_generator
     centralFiberCoverSourceDegreeOneBasis P
         (integralSingularHomologyMap 1 (centralFiberCoverGenerator P) z) =
       P.affine.latticeMap (centralFiberCoverSourceDegreeOneBasis P z) := by
-  have hnat := (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality p P.fullRank
+  have hnat := (StandardTorusHomology.additiveTorusHomologyBasis_naturality p P.fullRank
     P.affine).1
-  change (EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne
+  change (StandardTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne
       (integralSingularHomologyEquiv 1
         (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)
         (integralSingularHomologyMap 1 (centralFiberCoverGenerator P) z)) = _
@@ -182,7 +159,6 @@ public theorem coverProjectionLatticeMap_apply
 
 /-- The canonical lattice class map is invariant under the integral monodromy. -/
 public theorem coverProjectionLatticeMap_latticeMap
-    (hcoord : IsCentralFiberCoverSourceCoordinate D)
     (P : AffineCyclicCentralFiberPresentationData m p D) (x : Lattice) :
     coverProjectionLatticeMap P (P.affine.latticeMap x) = coverProjectionLatticeMap P x := by
   have hbasis := centralFiberCoverSourceDegreeOneBasis_generator P
@@ -193,67 +169,59 @@ public theorem coverProjectionLatticeMap_latticeMap
         ((centralFiberCoverSourceDegreeOneBasis P).symm x) := by
     rw [← hbasis, (centralFiberCoverSourceDegreeOneBasis P).symm_apply_apply]
   rw [coverProjectionLatticeMap_apply, coverProjectionLatticeMap_apply, hsymm,
-    ← homologyMap_comp, centralFiberCoverProjection_comp_generator hcoord P]
+    ← homologyMap_comp, centralFiberCoverProjection_comp_generator P]
 
 /-- The canonical lattice class map kills the monodromy difference, so it factors through the
 coinvariants appearing in the multiple-fibre presentation. -/
 public theorem coverProjectionLatticeMap_latticeDifference
-    (hcoord : IsCentralFiberCoverSourceCoordinate D)
     (P : AffineCyclicCentralFiberPresentationData m p D) (x : Lattice) :
     coverProjectionLatticeMap P (P.latticeDifference x) = 0 := by
   rw [P.latticeDifference_eq, LinearMap.sub_apply, LinearMap.id_apply, map_sub]
   rw [show P.affine.latticeMap.toLinearMap x = P.affine.latticeMap x from rfl,
-    coverProjectionLatticeMap_latticeMap hcoord P x, sub_self]
+    coverProjectionLatticeMap_latticeMap P x, sub_self]
 
 /-- The canonical map *out of* the abelian multiple-fibre presentation determined by a meridian
 class whose `m`-th multiple is the twist class. -/
 @[expose] public def presentationLift
-    (hcoord : IsCentralFiberCoverSourceCoordinate D)
     (P : AffineCyclicCentralFiberPresentationData m p D)
     (b : IntegralSingularHomology 1 D.reducedCentralFiber)
     (hb : (m : ℤ) • b = coverProjectionLatticeMap P P.twist) :
     CyclicCoinvariants.Presentation P.latticeDifference P.twist (m : ℤ) →ₗ[ℤ]
       IntegralSingularHomology 1 D.reducedCentralFiber :=
   CyclicCoinvariants.lift P.latticeDifference P.twist (m : ℤ) (coverProjectionLatticeMap P)
-    (coverProjectionLatticeMap_latticeDifference hcoord P) b hb
+    (coverProjectionLatticeMap_latticeDifference P) b hb
 
 /-- On the image of the covering torus the canonical map is the canonical lattice class map. -/
 public theorem presentationLift_latticeProjection
-    (hcoord : IsCentralFiberCoverSourceCoordinate D)
     (P : AffineCyclicCentralFiberPresentationData m p D)
     (b : IntegralSingularHomology 1 D.reducedCentralFiber)
     (hb : (m : ℤ) • b = coverProjectionLatticeMap P P.twist) (x : Lattice) :
-    presentationLift hcoord P b hb (latticeProjection P x) = coverProjectionLatticeMap P x := by
+    presentationLift P b hb (latticeProjection P x) = coverProjectionLatticeMap P x := by
   change CyclicCoinvariants.lift P.latticeDifference P.twist (m : ℤ) (coverProjectionLatticeMap P)
-      (coverProjectionLatticeMap_latticeDifference hcoord P) b hb
+      (coverProjectionLatticeMap_latticeDifference P) b hb
       (Submodule.Quotient.mk (Submodule.Quotient.mk x, (0 : ℤ))) = _
   rw [CyclicCoinvariants.lift_mk, zero_smul, add_zero]
 
-/-- **Reduction of the multiple-fibre presentation axiom.**  Once the canonical map out of the
-presentation is bijective, the full conclusion of
-`_root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOnePresentation` follows: its
-naturality clause on the covering torus holds automatically. -/
+/-- The inverse of the bijective presentation map preserves the covering-torus coordinates. -/
 public def reducedCentralFiberHOnePresentation_of_bijective
-    (hcoord : IsCentralFiberCoverSourceCoordinate D)
     (P : AffineCyclicCentralFiberPresentationData m p D)
     (b : IntegralSingularHomology 1 D.reducedCentralFiber)
     (hb : (m : ℤ) • b = coverProjectionLatticeMap P P.twist)
-    (hbij : Function.Bijective (presentationLift hcoord P b hb)) :
+    (hbij : Function.Bijective (presentationLift P b hb)) :
     ReducedCentralFiberHOnePresentation P where
-  equiv := (LinearEquiv.ofBijective (presentationLift hcoord P b hb) hbij).symm
+  equiv := (LinearEquiv.ofBijective (presentationLift P b hb) hbij).symm
   projection x := by
-    have h : LinearEquiv.ofBijective (presentationLift hcoord P b hb) hbij
+    have h : LinearEquiv.ofBijective (presentationLift P b hb) hbij
         (latticeProjection P x) = coverProjectionLatticeMap P x :=
-      presentationLift_latticeProjection hcoord P b hb x
+      presentationLift_latticeProjection P b hb x
     rw [← coverProjectionLatticeMap_apply, ← h, LinearEquiv.symm_apply_apply]
 
 /-- Values of the canonical map on presentation coordinates. -/
 public theorem presentationLift_mk
-    (hcoord : IsCentralFiberCoverSourceCoordinate D)
     (P : AffineCyclicCentralFiberPresentationData m p D)
     (b : IntegralSingularHomology 1 D.reducedCentralFiber)
     (hb : (m : ℤ) • b = coverProjectionLatticeMap P P.twist) (x : Lattice) (k : ℤ) :
-    presentationLift hcoord P b hb (Submodule.Quotient.mk (Submodule.Quotient.mk x, k)) =
+    presentationLift P b hb (Submodule.Quotient.mk (Submodule.Quotient.mk x, k)) =
       coverProjectionLatticeMap P x + k • b :=
   CyclicCoinvariants.lift_mk _ _ _ _ _ _ _ x k
 

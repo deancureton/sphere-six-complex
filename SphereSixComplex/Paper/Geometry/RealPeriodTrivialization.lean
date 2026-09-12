@@ -9,7 +9,7 @@ The canonical real period basis gives a product trivialization of the moving vec
 torus family. Explicit inverse coordinates prove joint continuity of the inverse period map.
 -/
 
-namespace SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+namespace SphereSixComplex.Geometry.RealPeriodTrivialization
 
 open SphereSixComplex.Geometry SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.ComplexTorus
@@ -751,4 +751,4 @@ public theorem orderFourRealPeriodProductHomeomorph_equivariant
 
 end
 
-end SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+end SphereSixComplex.Geometry.RealPeriodTrivialization

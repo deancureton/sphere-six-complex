@@ -14,7 +14,7 @@ open scoped ContDiff Manifold
 
 namespace SphereSixComplex.Geometry
 
-open CuspPuncturedCollarBridge
+open CuspCollar
 
 noncomputable section
 

@@ -21,8 +21,7 @@ noncomputable section
 open AlgebraicTopology Set
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.EllipticFilling
 open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.AnalyticData

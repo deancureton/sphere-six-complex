@@ -30,8 +30,7 @@ namespace SphereSixComplex
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
 open Geometry.EllipticFamilySpecialization
-open Topology.PaperEllipticFillingRadialRetraction
-open Topology.PaperEllipticReducedCentralFiberCoverModels
+open EllipticFilling
 
 namespace Geometry.AnalyticData
 

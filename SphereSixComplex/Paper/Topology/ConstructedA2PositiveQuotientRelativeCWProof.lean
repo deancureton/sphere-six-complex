@@ -28,12 +28,12 @@ open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The orbit quotient of the constructed positive part at the quantitative cusp radius. -/
 public abbrev ConstructedA2PositiveQuotient
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :=
   letI := normalizedPositiveDeckAction N constructedModel
@@ -44,7 +44,7 @@ public abbrev ConstructedA2PositiveQuotient
 
 /-- The image of the zero-height honeycomb in the constructed positive quotient. -/
 public abbrev constructedA2PositiveQuotientCore
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     Set (ConstructedA2PositiveQuotient W) :=
@@ -66,7 +66,7 @@ public theorem constructedPositiveCentralFiber_isClosed (r : ℝ) :
 
 /-- The zero-height fibre is saturated under the normalized positive deck action. -/
 public theorem constructedPositiveDeck_central_preimage
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -117,7 +117,7 @@ public theorem constructedPositiveDeck_central_preimage
 
 /-- The central orbit core is closed in the positive quotient. -/
 public theorem constructedPositiveDeck_orbitCore_isClosed
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     IsClosed (constructedA2PositiveQuotientCore W) := by
@@ -141,7 +141,7 @@ positive quotient.  Its three fields are intrinsic to the explicit positive tori
 quadrant manifold structure, identification of its boundary with the zero-height fibre, and
 smoothness of the normalized deck transformations. -/
 public structure ConstructedA2PositiveCOneManifoldBoundaryData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) where
   charts : ChartedSpace (EuclideanQuadrant 3)
@@ -171,7 +171,7 @@ public structure ConstructedA2PositiveCOneManifoldBoundaryData
 Relative triangulation and preservation of manifold boundary by the quotient local
 diffeomorphism then give the required relative CW structure. -/
 public theorem constructedA2PositiveQuotientRelativeCW_of_cOneManifoldBoundary
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     {W : ActualPuncturedCuspCollarWitness N constructedModel}
     (A : ConstructedA2PositiveCOneManifoldBoundaryData W) :

@@ -13,8 +13,8 @@ open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
-namespace Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
-open Geometry.AnalyticData
+namespace CuspSpecialization
+open Geometry Geometry.CuspCollar Geometry.AnalyticData
 
 public theorem actualFiberSpecializationTwo_bijective (A : AnalyticData) :
     let G := CuspRadialClutchingConstruction.actualCuspRadialClutchingData A.starCuspWitness
@@ -247,18 +247,18 @@ public theorem degreeTwo
   rw [A.actualCuspRadialClutchingData_eq]
   exact DFunLike.congr_fun (finiteBasisNaturality A).degreeTwo x
 
-end Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
+end CuspSpecialization
 
 namespace Geometry.AnalyticData
 
-open CuspPuncturedCollarBridge
+open CuspCollar
 open SphereSixComplex.CircleMappingTorusHomologyBases
 
 variable (A : AnalyticData)
 
 public noncomputable def actualCuspFillingHomologyTwoEquiv :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.filling 0) ≃+ (Fin 4 → ℤ) :=
-  EstablishedStandardA2CuspSpecialization.cuspFillingTwoReadout A
+  CuspSpecialization.cuspFillingTwoReadout A
 
 /-- The corresponding dimensionally correct realization of the paper's cusp collar. -/
 public noncomputable def cuspCollarRadialMappingTorusRealization :
@@ -312,7 +312,7 @@ public theorem cuspFillingInclusionCoordinates
           (integralSingularHomologyMap 1
             ⟨puncturedLocalCuspToFilling A.starCuspWitness,
               puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) = _
-    rw [EstablishedStandardA2CuspSpecialization.degreeOne A x]
+    rw [CuspSpecialization.degreeOne A x]
     exact cuspSectionSevenOneCoordinateChange_specialization
       (A.cuspRawHomologyOneEquiv x)
   degreeTwo x := by
@@ -320,7 +320,7 @@ public theorem cuspFillingInclusionCoordinates
           (integralSingularHomologyMap 2
             ⟨puncturedLocalCuspToFilling A.starCuspWitness,
               puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) = _
-    exact (EstablishedStandardA2CuspSpecialization.degreeTwo A x).trans
+    exact (CuspSpecialization.degreeTwo A x).trans
       (cuspSectionSevenTwoCoordinateChange_specialization
         (A.cuspRawHomologyTwoEquiv x))
 

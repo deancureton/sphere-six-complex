@@ -21,8 +21,8 @@ open SphereSixComplex
 open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
-open SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.EllipticLogarithmicGauge
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.TorusFamily

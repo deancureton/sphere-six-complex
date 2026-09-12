@@ -9,16 +9,16 @@ open Set Topology
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 
-open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex.Geometry
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Periods
 open SphereSixComplex.TriangleGroup
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+open SphereSixComplex.EllipticFilling
 open SphereSixComplex.Topology.QuotientCoveringMarkedLoops
 
 variable {m : ℕ} [NeZero m]

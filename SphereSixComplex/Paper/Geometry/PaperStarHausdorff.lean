@@ -49,7 +49,7 @@ public theorem gluedT2_of_cuspProper
 
 
 /-- The concrete completed four-piece star is Hausdorff. -/
-public theorem starGluedT2 :
+public theorem t2Space_starGlued :
     T2Space
       (GluedSpace A.openEmbeddingStarData.toFourPieceStarGluingData.glueData) :=
   A.gluedT2_of_cuspProper A.cuspCollarPairMap_isProper

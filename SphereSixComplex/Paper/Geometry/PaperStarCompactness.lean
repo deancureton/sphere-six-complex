@@ -42,7 +42,7 @@ public noncomputable def compactCoverData_of_endControl
 
 
 /-- The completed four-piece star is compact. -/
-public theorem starGluedCompact :
+public theorem compactSpace_starGlued :
     CompactSpace
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) :=
   P.compactCoverData.compactSpace

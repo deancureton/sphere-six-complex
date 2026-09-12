@@ -6,11 +6,11 @@ public import SphereSixComplex.Prerequisites.Topology.CylinderTimeReflection
 @[expose] public section
 noncomputable section
 open Set Topology CategoryTheory CategoryTheory.Limits HomologicalComplex Matrix MonoidalCategory
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction CuspFilling CuspPeriodExpansion
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 theorem circleSweepParameter_eq_period (i : Fin 2) (t : unitInterval) :
@@ -297,4 +297,4 @@ theorem phaseSweepRelativePrism_edgeZero_equal
   rw [phaseSweepRelativePrism_edge_of_cylinder T W 0 1 (phaseSweepForwardCylinderPair W 0) hp]
   exact (phaseSweepRelativePrism_edge T W 0).symm
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

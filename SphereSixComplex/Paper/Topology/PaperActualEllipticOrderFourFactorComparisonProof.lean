@@ -20,7 +20,7 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.GlobalTorusFamily
 
 variable (A : AnalyticData)

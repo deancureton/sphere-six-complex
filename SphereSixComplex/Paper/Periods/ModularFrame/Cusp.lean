@@ -107,8 +107,8 @@ weight-six Eisenstein series.
 The reciprocal source quotient coordinate and the frame are related only sufficiently far into
 the cusp.  This is the precise germ statement compatible with the non-parabolic elliptic
 automorphy of the frame. -/
-public structure ExactFuchsianCuspFrameGerm
-    (E : NormalizedFuchsianModularParameter) (s : UpperHalfPlane → ℂ) where
+public structure ModularFrameCuspGerm
+    (E : FuchsianModularLift) (s : UpperHalfPlane → ℂ) where
   /-- The holomorphic unit remaining after the simple cusp pole is removed. -/
   cuspUnit : ℂ → ℂ
   /-- Radius of a completed source-cusp coordinate neighborhood. -/
@@ -135,7 +135,7 @@ public structure ExactFuchsianCuspFrameGerm
 /-- A holomorphic parabolic-invariant square root of the pulled-back weight-six Eisenstein
 series has a holomorphic germ in the completed source cusp parameter. -/
 public theorem exists_sqrtEisensteinSixCuspGerm
-    (E : NormalizedFuchsianModularParameter)
+    (E : FuchsianModularLift)
     (s : UpperHalfPlane → ℂ)
     (hs_holomorphic : MDiff s)
     (hs_sq : ∀ z, s z ^ 2 = ModularForm.E₆ (E.modularParameter.tau z))
@@ -224,13 +224,13 @@ public theorem exists_sqrtEisensteinSixCuspGerm
 
 /-- The modular frame associated to a parabolic-invariant holomorphic square root has the exact
 eventual simple-pole normalization required at the completed source cusp. -/
-public theorem exists_exactFuchsianCuspFrameGerm
-    (E : NormalizedFuchsianModularParameter)
+public theorem nonempty_modularFrameCuspGerm
+    (E : FuchsianModularLift)
     (s : UpperHalfPlane → ℂ)
     (hs_holomorphic : MDiff s)
     (hs_sq : ∀ z, s z ^ 2 = ModularForm.E₆ (E.modularParameter.tau z))
     (hs_cusp : ∀ z, s (fuchsianSourceAction g₀ • z) = s z) :
-    Nonempty (ExactFuchsianCuspFrameGerm E s) := by
+    Nonempty (ModularFrameCuspGerm E s) := by
   obtain ⟨sGerm, hsGerm_analytic, hsGerm_zero_ne, hsGerm_factor⟩ :=
     exists_sqrtEisensteinSixCuspGerm E s hs_holomorphic hs_sq hs_cusp
   obtain ⟨phi, hphi_analytic, _hphi_order, hphi_zero, hphi_factor⟩ :=

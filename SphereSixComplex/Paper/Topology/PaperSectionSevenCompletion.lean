@@ -38,7 +38,7 @@ public theorem star_nonempty_homologyEquiv_sixSphere :
       IntegralSingularHomology k SixSphere) := by
   let R := P.affineRadialCompletionInput
   exact P.star_nonempty_homologyEquiv_sixSphere_of_positiveDegree
-    (EstablishedSectionSevenCuspTopology.correctedPositiveDegreeAssembly R)
+    (CuspAttachment.correctedPositiveDegreeAssembly R)
     P.stageTopDegreeVanishing
 
 end SphereSixComplex.Geometry.AnalyticData

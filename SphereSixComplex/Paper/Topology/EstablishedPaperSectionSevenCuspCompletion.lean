@@ -15,7 +15,7 @@ coefficient are proved from the actual marked geometry.
 noncomputable section
 open AlgebraicTopology
 namespace SphereSixComplex.Geometry.AnalyticData
-namespace EstablishedSectionSevenCuspTopology
+namespace CuspAttachment
 
 public def correctedPositiveDegreeAssembly_of_rawFive
     {A : AnalyticData} (R : A.AffineRadialCompletionInput)
@@ -34,6 +34,6 @@ public def correctedPositiveDegreeAssembly
   correctedPositiveDegreeAssembly_of_rawFive R
     (A.cuspEllipticFiberCoordinate_rawFive R (correctedCuspDegreeTwoSplitting R))
 
-end EstablishedSectionSevenCuspTopology
+end CuspAttachment
 
 end SphereSixComplex.Geometry.AnalyticData

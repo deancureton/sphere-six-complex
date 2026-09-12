@@ -25,9 +25,9 @@ open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 
-variable {E : Periods.NormalizedFuchsianModularParameter}
+variable {E : Periods.FuchsianModularLift}
   {D : Periods.FuchsianPeriodLocalData E}
   {N : CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate E D}
   {M : InfiniteA2Toric.Model}
@@ -50,7 +50,7 @@ public theorem realMappingTorusHomeomorph_intervalProjection
     exact C.totalHomeomorphCircleMappingTorus.symm_apply_apply _]
   exact C.circleToTotal_mk p
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar
 
 end
 

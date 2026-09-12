@@ -25,7 +25,7 @@ open SphereSixComplex.WangHomologyPresentation
 open EllipticThreeTorusClutchingDegreeTwo
 open EllipticThreeTorusWangEndpointCoordinates
 open EllipticThreeTorusWangLattice
-open PaperAffineCyclicReducedFiberMappingTorus
+open EllipticReducedFiberMappingTorus
 open SphereSixComplex.StandardTorusHomology
 
 public abbrev orderThreePresentation :=

@@ -52,7 +52,7 @@ public theorem star_hasIntegralHomologyOfSixSphere
       A P.fourPieceStarGluingData_nonemptyCentralCollar
         P.biholomorphicFourPieceStarData
   let _ : ChartedSpace ComplexModel (GluedSpace D) := gluedChartedSpace D
-  let _ : T2Space (GluedSpace D) := P.starGluedT2
+  let _ : T2Space (GluedSpace D) := P.t2Space_starGlued
   let _ : Countable D.J := by
     change Countable (Option (Fin 3))
     infer_instance
@@ -64,7 +64,7 @@ public theorem star_hasIntegralHomologyOfSixSphere
     connectedSpace_gluedSpace D
       (A.intersectionGraphConnected P.fourPieceStarGluingData_nonemptyCentralCollar)
   exact H.hasIntegralHomologyOfSixSphere_of_localEulerCalculation
-    (A := P.openEmbeddingStarData) hManifold P.starGluedCompact hConnected
+    (A := P.openEmbeddingStarData) hManifold P.compactSpace_starGlued hConnected
       hCentralFinite hFillingFinite hCollarFinite hTop hLocal
 
 /-- Geometric local CW, bundle, cover, and retraction models discharge every finiteness and

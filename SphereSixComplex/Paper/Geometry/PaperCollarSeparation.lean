@@ -1,9 +1,9 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.CuspPuncturedCollarBridge
+public import SphereSixComplex.Paper.Geometry.CuspCollar.Basic
 public import SphereSixComplex.Paper.Geometry.PaperAnalyticFillingPieces
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ExactNormalizedModularJCuspUnitBounds
-import all SphereSixComplex.Paper.Geometry.CuspPuncturedCollarBridge
+import all SphereSixComplex.Paper.Geometry.CuspCollar.Basic
 import all SphereSixComplex.Paper.Geometry.GlobalTorusFamily
 
 /-!
@@ -13,15 +13,17 @@ The elliptic collars must be shrunk simultaneously: each avoids the closed orbit
 the selected cusp horodisc, and their images in the Fuchsian base quotient are disjoint.
 -/
 
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
+
 namespace SphereSixComplex.Geometry
 
 open Set Topology SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open TorusFamily GlobalTorusFamily EllipticCayleyHomeomorph
-open EllipticWholeFiberCompactCover EllipticPuncturedCollarGaugeHomeomorph
+open EllipticWholeFiberCompactCover EllipticLogarithmicGauge
 open EllipticVaryingFamilyQuotient EllipticAffineGlobalSeparation
 open EllipticLinearCollarGlobalDescent InfiniteA2Toric
 open InfiniteA2Toric.QuantitativeRegions.BoundedPolydiscRegions
-open CuspPeriodExpansion CuspPuncturedCollarBridge FuchsianCuspNeighborhood
+open CuspPeriodExpansion CuspCollar FuchsianCuspNeighborhood
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 
@@ -95,8 +97,8 @@ public theorem orderFourCollarToRegular_base
 
 /-- The quantitative local cusp witness attached to the selected analytic package. -/
 @[expose] public noncomputable def actualLocalCuspWitness :
-    ActualLocalCuspQuotientWitness A.cuspCoordinate A.toricModel :=
-  Classical.choice (exists_actualLocalCuspQuotientWitness A.cuspCoordinate A.toricModel)
+    ActualLocalCuspQuotientWitness A.cuspCoordinate constructedModel :=
+  Classical.choice (exists_actualLocalCuspQuotientWitness A.cuspCoordinate constructedModel)
 
 /-- The fixed exact modular uniformization used to control the paper cusp collar. -/
 @[expose] public noncomputable def actualNormalizedModularJUniformization
@@ -105,7 +107,7 @@ public theorem orderFourCollarToRegular_base
 
 /-- Analytic facts retained by the quantitative choice of the actual cusp collar. -/
 public structure ActualCuspCoordinateControl
-    (W : ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel) : Prop where
+    (W : ActualPuncturedCuspCollarWitness A.cuspCoordinate constructedModel) : Prop where
   coordinate_exterior : ∀ s : ℂ, s ∈ cuspHalfPlane A.cuspCoordinate.height →
     ‖cuspQ s‖ < W.localWitness.radius →
       2 < ‖A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift s)‖
@@ -130,7 +132,7 @@ public structure ActualCuspCoordinateControl
 /-- A common-radius cusp witness chosen far enough into the cusp that its quotient coordinate is
 uniformly exterior and its exact reciprocal factorization holds throughout the collar. -/
 public theorem exists_actualPuncturedCuspWitness_coordinate_exterior :
-    ∃ W : ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel,
+    ∃ W : ActualPuncturedCuspCollarWitness A.cuspCoordinate constructedModel,
       A.ActualCuspCoordinateControl W := by
   let J : ExactNormalizedModularJUniformization :=
     A.actualNormalizedModularJUniformization
@@ -177,7 +179,7 @@ public theorem exists_actualPuncturedCuspWitness_coordinate_exterior :
     A.cuspCoordinate W₀.radius W₀.radius_pos
   let W₁ := restrictActualLocalCuspQuotientWitness
     W₀ S.radius S.radius_pos S.radius_le_upper
-  let W : ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel :=
+  let W : ActualPuncturedCuspCollarWitness A.cuspCoordinate constructedModel :=
     ⟨W₁, S.region_open, S.region_regular, S.orbitClosure_region_regular,
       S.translates_meet_only_parabolic⟩
   refine ⟨W, ?_⟩
@@ -312,7 +314,7 @@ public theorem exists_actualPuncturedCuspWitness_coordinate_exterior :
 
 /-- The quantitatively normalized common-radius cusp witness used by the paper star. -/
 @[expose] public noncomputable def actualPuncturedCuspWitness :
-    ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel :=
+    ActualPuncturedCuspCollarWitness A.cuspCoordinate constructedModel :=
   Classical.choose A.exists_actualPuncturedCuspWitness_coordinate_exterior
 
 public theorem actualPuncturedCuspWitness_coordinate_exterior
@@ -346,7 +348,7 @@ public theorem actualPuncturedCuspWitness_reciprocal_factorization
 
 /-- Simultaneously shrunk elliptic radii, separated from one another and from the cusp orbit. -/
 public structure CollarSeparationData
-    (W : ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel) where
+    (W : ActualPuncturedCuspCollarWitness A.cuspCoordinate constructedModel) where
   orderThree : A.OrderThreeFillingPiece
   orderFour : A.OrderFourFillingPiece
   orderThree_avoids_cusp : ∀ z : UpperHalfPlane,
@@ -374,7 +376,7 @@ public structure CollarSeparationData
         A.modular.modularParameter.toTriangleUniformization.sourceAction g • x ≠ z
 
 public theorem exists_collarSeparationData
-    (W : ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel) :
+    (W : ActualPuncturedCuspCollarWitness A.cuspCoordinate constructedModel) :
     Nonempty (A.CollarSeparationData W) := by
   let U := A.modular.modularParameter.toTriangleUniformization
   let hsource : U.sourceAction = fuchsianSourceAction :=
@@ -482,7 +484,7 @@ public theorem exists_collarSeparationData
 namespace CollarSeparationData
 
 variable {A : AnalyticData}
-  {W : ActualPuncturedCuspCollarWitness A.cuspCoordinate A.toricModel}
+  {W : ActualPuncturedCuspCollarWitness A.cuspCoordinate constructedModel}
 
 /-- The two simultaneously shrunk elliptic collar images are disjoint in the central family. -/
 public theorem elliptic_centralRanges_disjoint (S : A.CollarSeparationData W) :

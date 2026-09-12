@@ -18,7 +18,7 @@ namespace SphereSixComplex.Topology.EllipticGammaShearDegreeTwoCoordinates
 
 open StandardTorusHomology
 open Geometry.ComplexTorus
-open PaperAffineCyclicReducedFiberMappingTorus
+open EllipticReducedFiberMappingTorus
 
 /-- The standard four-torus basis transported to gamma-circle times three-torus coordinates. -/
 public noncomputable def gammaProductHomologyTwo :

@@ -17,7 +17,7 @@ noncomputable section
 open AlgebraicTopology Set Topology
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 
 open SphereSixComplex
 open SphereSixComplex.Geometry.ComplexTorus
@@ -29,7 +29,7 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Topology
 open Hurewicz
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M}
 
@@ -387,7 +387,7 @@ public theorem actualCuspDegreeOne_section
 
 end CuspFiberSpecializationNormalization
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar
 
 end
 

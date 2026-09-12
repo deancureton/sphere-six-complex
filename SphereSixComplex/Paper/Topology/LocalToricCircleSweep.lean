@@ -7,7 +7,7 @@ noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
-open SphereSixComplex.Topology CuspStraighteningExtension
+open SphereSixComplex.Topology CuspStraightening
 open CuspPhaseEstimates CuspLocalPhaseAction
 
 public def localHeightPreservingCircleAction (M : Model) (r : ℝ)

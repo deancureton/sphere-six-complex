@@ -51,7 +51,7 @@ open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Topology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex.TriangleGroup
 
 variable (A : AnalyticData)

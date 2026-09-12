@@ -7,6 +7,7 @@ module
 
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricPolarModulus
 public import SphereSixComplex.Prerequisites.Geometry.QuotientTopology
+public import SphereSixComplex.Prerequisites.Topology.LocallyFiniteClosedCover
 public import SphereSixComplex.Paper.Topology.NormalizedPolarHoneycombAmbientPhaseHomotopy
 public import SphereSixComplex.Paper.Topology.NormalizedPolarHoneycombStabilizerMonotonicityProof
 
@@ -33,10 +34,10 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspFillingRadialCompactness
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
-open SphereSixComplex.Geometry.CuspStraighteningAlgebra
+open SphereSixComplex.Geometry.CuspCollar
+open SphereSixComplex.Geometry.CuspStraightening
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
-open SphereSixComplex.Geometry.CuspStraighteningHomeomorph
+open SphereSixComplex.Geometry.CuspStraightening
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
@@ -44,7 +45,7 @@ open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 /-- The normalized positive deck formula preserves the explicit nonnegative part. -/
 public theorem constructedPositiveDeck_mem
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ)
     (lambda : ParameterLattice) (q : constructedLocalPositivePart r) :
     normalizedPositiveDeckLocalMap N constructedModel r lambda
@@ -70,7 +71,7 @@ public theorem constructedLocalPositivePart_locallyCompactSpace (r : ℝ) :
 
 /-- Every normalized positive deck transformation is continuous. -/
 public theorem constructedPositiveDeck_continuous
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ) :
     letI := normalizedPositiveDeckAction N constructedModel
       (constructedLocalPositivePart r) (constructedPositiveDeck_mem N r)
@@ -93,7 +94,7 @@ public theorem constructedPositiveDeck_continuous
 /-- At the quantitative cusp radius, straightening transfers proper discontinuity from the
 actual action to its frozen action. -/
 public theorem constructedFrozenAction_properlyDiscontinuous
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := frozenLocalCuspAction N constructedModel W.localWitness.radius
@@ -127,7 +128,7 @@ public theorem constructedFrozenAction_properlyDiscontinuous
 /-- The compact phase left after dividing the frozen complex multiplier by its positive radial
 part. -/
 public def frozenCompactPhase
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) : CompactTorus :=
   fun i ↦ ⟨(phaseEmbedding (N.phaseCoefficient lambda 0) i : ℂ) /
       (normalizedCuspPositiveTwist N lambda i : ℂ), by
@@ -138,7 +139,7 @@ public def frozenCompactPhase
     exact div_self (norm_ne_zero_iff.mpr (Units.ne_zero _))⟩
 
 public theorem compactTorusEmbedding_frozenCompactPhase_mul
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) :
     compactTorusEmbedding (frozenCompactPhase N lambda) *
         normalizedCuspPositiveTwist N lambda =
@@ -152,7 +153,7 @@ public theorem compactTorusEmbedding_frozenCompactPhase_mul
 
 /-- A frozen deck map is its positive radial deck map followed by one compact phase. -/
 public theorem frozenLocalPsiMap_eq_compactPhase_positiveDeck
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (lambda : ParameterLattice) (p : localCarrier M r) :
     frozenLocalPsiMap N M r lambda p =
@@ -293,137 +294,7 @@ public theorem chart_eq_chartAtCentralRay_of_vertex
 
 
 
-namespace LocallyFiniteClosedCover
 
-/-- Projection from the disjoint union of a family of subsets. -/
-public def projection {ι X : Type*} (A : ι → Set X) (p : Σ i, A i) : X :=
-  p.2.1
-
-public theorem projection_continuous {ι X : Type*} [TopologicalSpace X]
-    (A : ι → Set X) : Continuous (projection A) :=
-  continuous_sigma_iff.mpr fun _ ↦ continuous_subtype_val
-
-public theorem projection_surjective {ι X : Type*} {A : ι → Set X}
-    (hcover : ⋃ i, A i = Set.univ) : Function.Surjective (projection A) := by
-  intro x
-  have hx : x ∈ ⋃ i, A i := by rw [hcover]; trivial
-  obtain ⟨i, hi⟩ := Set.mem_iUnion.mp hx
-  exact ⟨⟨i, x, hi⟩, rfl⟩
-
-/-- Projection from a locally finite closed cover is a closed map. -/
-public theorem projection_isClosedMap {ι X : Type*} [TopologicalSpace X]
-    {A : ι → Set X} (hclosed : ∀ i, IsClosed (A i)) (hloc : LocallyFinite A) :
-    IsClosedMap (projection A) := by
-  intro S hS
-  let F : ι → Set X := fun i ↦
-    (Subtype.val : A i → X) '' ((fun x : A i ↦ Sigma.mk i x) ⁻¹' S)
-  have hFclosed (i : ι) : IsClosed (F i) :=
-    (hclosed i).isClosedMap_subtype_val _ (hS.preimage continuous_sigmaMk)
-  have hFsub (i : ι) : F i ⊆ A i := by
-    rintro x ⟨a, _, rfl⟩
-    exact a.2
-  have heq : projection A '' S = ⋃ i, F i := by
-    ext x
-    constructor
-    · rintro ⟨⟨i, a⟩, ha, rfl⟩
-      exact Set.mem_iUnion.mpr ⟨i, a, ha, rfl⟩
-    · intro hx
-      obtain ⟨i, a, ha, rfl⟩ := Set.mem_iUnion.mp hx
-      exact ⟨⟨i, a⟩, ha, rfl⟩
-  rw [heq]
-  exact (hloc.subset hFsub).isClosed_iUnion hFclosed
-
-public theorem projection_isQuotientMap {ι X : Type*} [TopologicalSpace X]
-    {A : ι → Set X} (hcover : ⋃ i, A i = Set.univ)
-    (hclosed : ∀ i, IsClosed (A i)) (hloc : LocallyFinite A) :
-    Topology.IsQuotientMap (projection A) :=
-  (projection_isClosedMap hclosed hloc).isQuotientMap (projection_continuous A)
-    (projection_surjective hcover)
-
-/-- Homeomorphisms on the members of an indexed cover assemble over the disjoint union. -/
-public def sigmaHomeomorph {ι X Y : Type*} [TopologicalSpace X]
-    [TopologicalSpace Y] (A : ι → Set X) (B : ι → Set Y)
-    (e : ∀ i, A i ≃ₜ B i) : (Σ i, A i) ≃ₜ (Σ i, B i) where
-  toFun p := ⟨p.1, e p.1 p.2⟩
-  invFun p := ⟨p.1, (e p.1).symm p.2⟩
-  left_inv := by rintro ⟨i, a⟩; simp
-  right_inv := by rintro ⟨i, b⟩; simp
-  continuous_toFun :=
-    continuous_sigma_iff.mpr fun i ↦ continuous_sigmaMk.comp (e i).continuous
-  continuous_invFun :=
-    continuous_sigma_iff.mpr fun i ↦ continuous_sigmaMk.comp (e i).symm.continuous
-
-public noncomputable def descend {A X Y : Type*} (f : A → X) (g : A → Y)
-    (hf : Function.Surjective f) (x : X) : Y :=
-  g (hf x).choose
-
-public theorem descend_apply {A X Y : Type*} (f : A → X) (g : A → Y)
-    (hf : Function.Surjective f) (hfg : ∀ a b, f a = f b → g a = g b) (a : A) :
-    descend f g hf (f a) = g a :=
-  hfg _ a (hf (f a)).choose_spec
-
-public theorem descend_surjective {A X Y : Type*} (f : A → X) (g : A → Y)
-    (hf : Function.Surjective f) (hfg : ∀ a b, f a = f b → g a = g b)
-    (hg : Function.Surjective g) : Function.Surjective (descend f g hf) := by
-  intro y
-  obtain ⟨a, rfl⟩ := hg y
-  exact ⟨f a, descend_apply f g hf hfg a⟩
-
-public theorem descend_injective {A X Y : Type*} (f : A → X) (g : A → Y)
-    (hf : Function.Surjective f) (hgf : ∀ a b, g a = g b → f a = f b) :
-    Function.Injective (descend f g hf) := by
-  intro x y h
-  have he := hgf (hf x).choose (hf y).choose h
-  exact (hf x).choose_spec.symm.trans (he.trans (hf y).choose_spec)
-
-public theorem descend_continuous {A X Y : Type*} (f : A → X) (g : A → Y)
-    (hf : Function.Surjective f) [TopologicalSpace A] [TopologicalSpace X]
-    [TopologicalSpace Y] (hq : Topology.IsQuotientMap f) (hg : Continuous g)
-    (hfg : ∀ a b, f a = f b → g a = g b) : Continuous (descend f g hf) := by
-  apply hq.continuous_iff.mpr
-  have he : descend f g hf ∘ f = g := funext (descend_apply f g hf hfg)
-  rwa [he]
-
-/-- Compatible cellwise homeomorphisms on two locally finite closed covers glue to a global
-homeomorphism. -/
-public noncomputable def homeomorph {ι X Y : Type*} [TopologicalSpace X]
-    [TopologicalSpace Y] (A : ι → Set X) (B : ι → Set Y)
-    (e : ∀ i, A i ≃ₜ B i) (hAcov : ⋃ i, A i = Set.univ)
-    (hAcl : ∀ i, IsClosed (A i)) (hAloc : LocallyFinite A)
-    (hBcov : ⋃ i, B i = Set.univ) (hBcl : ∀ i, IsClosed (B i))
-    (hBloc : LocallyFinite B)
-    (hglue : ∀ i j (x : A i) (y : A j),
-      (x : X) = (y : X) ↔ (e i x : Y) = (e j y : Y)) : X ≃ₜ Y := by
-  let f := projection A
-  let g := projection B ∘ sigmaHomeomorph A B e
-  have hf : Topology.IsQuotientMap f := projection_isQuotientMap hAcov hAcl hAloc
-  have hg : Topology.IsQuotientMap g :=
-    (projection_isQuotientMap hBcov hBcl hBloc).comp
-      (sigmaHomeomorph A B e).isQuotientMap
-  have hfg : ∀ a b, f a = f b ↔ g a = g b := fun a b ↦
-    hglue a.1 b.1 a.2 b.2
-  let E : X ≃ Y :=
-    Equiv.ofBijective (descend f g hf.surjective)
-      ⟨descend_injective f g hf.surjective (fun a b ↦ (hfg a b).mpr),
-        descend_surjective f g hf.surjective (fun a b ↦ (hfg a b).mp) hg.surjective⟩
-  refine
-    { toEquiv := E
-      continuous_toFun :=
-        descend_continuous f g hf.surjective hf hg.continuous
-          (fun a b ↦ (hfg a b).mp)
-      continuous_invFun := ?_ }
-  apply hg.continuous_iff.mpr
-  change Continuous (E.symm ∘ g)
-  have hcomp : E.symm ∘ g = f := by
-    funext a
-    apply E.injective
-    change E (E.symm (g a)) = E (f a)
-    rw [E.apply_symm_apply]
-    exact (descend_apply f g hf.surjective (fun a b ↦ (hfg a b).mp) a).symm
-  rw [hcomp]
-  exact hf.continuous
-
-end LocallyFiniteClosedCover
 
 /-- Exact cellwise input still needed for the honeycomb homeomorphism.  All target-side
 closed-cover facts are already supplied by the constructed carrier. -/
@@ -442,7 +313,7 @@ namespace ConstructedHoneycombCellData
 /-- Compatible homeomorphisms on the planar and toric cells give the required honeycomb. -/
 public noncomputable def honeycomb {r : ℝ} (H : ConstructedHoneycombCellData r) :
     (Fin 2 → ℝ) ≃ₜ constructedPositiveCentralFiber r :=
-  LocallyFiniteClosedCover.homeomorph H.planeCell (constructedPositiveCentralCell r)
+  SphereSixComplex.LocallyFiniteClosedCover.homeomorph H.planeCell (constructedPositiveCentralCell r)
     H.cellHomeomorph H.planeCell_cover H.planeCell_closed H.planeCell_locallyFinite
     (iUnion_constructedPositiveCentralCell r) (constructedPositiveCentralCell_isClosed r)
     (constructedPositiveCentralCells_locallyFinite r) H.cellHomeomorph_compatible
@@ -451,7 +322,7 @@ end ConstructedHoneycombCellData
 
 /-- The logarithmic norm of the positive frozen multiplier is the frozen correction matrix. -/
 public theorem log_norm_normalizedCuspPositiveTwist
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice)
     (i : Fin 2) :
     Real.log ‖((normalizedCuspPositiveTwist N lambda i.castSucc : ℂˣ) : ℂ)‖ =
@@ -466,7 +337,7 @@ public theorem log_norm_normalizedCuspPositiveTwist
 /-- A fixed point of the positive deck action away from the central fibre satisfies the frozen
 logarithmic displacement equation. -/
 public theorem normalizedPositiveDeck_offCentral_logarithmic_equation
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) {r : ℝ}
     (lambda : ParameterLattice) (p : localCarrier M r) (ht : M.t p ≠ 0)
     (hfixed : normalizedPositiveDeckLocalMap N M r lambda p = p)
@@ -517,7 +388,7 @@ public theorem normalizedPositiveDeck_offCentral_logarithmic_equation
 
 /-- A fixed point of the positive deck action on the central fibre has zero lattice parameter. -/
 public theorem normalizedPositiveDeck_central_fixedPoint
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) {r : ℝ}
     (lambda : ParameterLattice) (p : localCarrier M r) (ht : M.t p = 0)
     (hfixed : normalizedPositiveDeckLocalMap N M r lambda p = p) :
@@ -548,7 +419,7 @@ public theorem normalizedPositiveDeck_central_fixedPoint
 
 /-- Frozen displacement injectivity rules out positive-deck fixed points off the central fibre. -/
 public theorem normalizedPositiveDeck_offCentral_fixedPoint
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (lambda : ParameterLattice)
@@ -600,7 +471,7 @@ public theorem normalizedPositiveDeck_offCentral_fixedPoint
 
 /-- The positive deck action has no nontrivial fixed parameter at the quantitative radius. -/
 public theorem normalizedPositiveDeck_fixedPoint
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (lambda : ParameterLattice)
@@ -615,7 +486,7 @@ public theorem normalizedPositiveDeck_fixedPoint
 
 /-- The normalized positive deck action is free at the quantitative cusp radius. -/
 public theorem constructedPositiveDeck_isCancelSMul
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -638,7 +509,7 @@ public theorem constructedPositiveDeck_isCancelSMul
 
 /-- Proper discontinuity descends from the frozen action to its positive radial section. -/
 public theorem constructedPositiveDeck_properlyDiscontinuous
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -690,7 +561,7 @@ public theorem constructedPositiveDeck_properlyDiscontinuous
 /-- Proper discontinuity and freeness discharge the covering field through Mathlib's regular
 orbit-cover theorem. -/
 public theorem constructedQuotientCovering_of_properlyDiscontinuous
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ)
     (hcancel :
       letI := normalizedPositiveDeckAction N constructedModel
@@ -722,7 +593,7 @@ public theorem constructedQuotientCovering_of_properlyDiscontinuous
 
 /-- The positive orbit projection at the quantitative cusp radius is a covering quotient. -/
 public theorem constructedPositiveDeck_quotientCovering
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -738,7 +609,7 @@ public theorem constructedPositiveDeck_quotientCovering
 
 /-- Proper discontinuity also discharges the Hausdorff quotient field. -/
 public theorem constructedQuotient_t2_of_properlyDiscontinuous
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ)
     (hproper :
       letI := normalizedPositiveDeckAction N constructedModel
@@ -762,7 +633,7 @@ public theorem constructedQuotient_t2_of_properlyDiscontinuous
 
 /-- The positive quotient at the quantitative cusp radius is Hausdorff. -/
 public theorem constructedPositiveDeck_quotient_t2
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     letI := normalizedPositiveDeckAction N constructedModel
@@ -787,7 +658,7 @@ public theorem constructedLocalModulus_compactPhase (r : ℝ) (k : CompactTorus)
 /-- Assemble the fixed positive toric model from its honeycomb homeomorphism,
 contractibility, and relative CW structure. -/
 public def constructedPolarHoneycombConstructionData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (honeycomb : (Fin 2 → ℝ) ≃ₜ

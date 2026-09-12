@@ -19,10 +19,9 @@ namespace SphereSixComplex.Topology.FiniteCoverPerfectPairing
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.EllipticFamilySpecialization
 open Geometry.GlobalTorusFamily
-open LatticeData PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels PaperLemmaSevenThirteenAlgebra
-open PaperMultipleFiberHOneTopology
-open PaperAffineCyclicQuotientHomologyCoordinates
+open LatticeData EllipticFilling
+open EllipticFilling MultipleFiberCoinvariants
+open AffineCyclicQuotientHomology
 
 variable {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U)
 

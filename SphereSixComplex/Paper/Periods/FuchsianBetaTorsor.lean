@@ -20,7 +20,7 @@ namespace SphereSixComplex.Periods
 
 open SphereSixComplex.TriangleGroup
 
-variable (E : NormalizedFuchsianModularParameter)
+variable (E : FuchsianModularLift)
 
 /-- Local analytic data identifying the affine `beta` problem with a Cech torsor under `O` on
 the quotient projective line.  It contains local sections and their overlap mismatch, but no

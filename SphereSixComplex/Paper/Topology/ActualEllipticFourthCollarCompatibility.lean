@@ -9,7 +9,7 @@ namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus TorusFamily AnalyticTorusFamily GlobalTorusFamily
 open EllipticVaryingFamilyQuotient EllipticLinearCollarGlobalDescent
-open EllipticPuncturedCollarGaugeHomeomorph
+open EllipticLogarithmicGauge
 
 public def centralFourthTranslation (A : AnalyticData) :
     C(UnitAddCircle × A.CentralFamily, A.CentralFamily) :=

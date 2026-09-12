@@ -6,28 +6,26 @@ open AlgebraicTopology
 
 noncomputable section
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
 open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
 open LatticeData Periods TriangleGroup
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperLemmaSevenThirteenAlgebra TwistObstruction
+open EllipticFilling
+open MultipleFiberCoinvariants SphereSixComplex.Topology.TwistObstruction
 
 
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
 open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
 open LatticeData Periods TriangleGroup
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperLemmaSevenThirteenAlgebra TwistObstruction
-open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open EllipticFilling
+open MultipleFiberCoinvariants SphereSixComplex.Topology.TwistObstruction
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
@@ -161,7 +159,7 @@ public theorem toAbelianization_injective : Function.Injective (I.toAbelianizati
   exact sub_eq_zero.mp (key _ hsub)
 
 public theorem presentationLift_eq :
-    presentationLift isCentralFiberCoverSourceCoordinate P (I.meridian P) (I.fullIterate P) =
+    presentationLift P (I.meridian P) (I.fullIterate P) =
       I.hOneEquiv.toLinearMap.comp (I.toAbelianization P) := by
   apply LinearMap.ext
   intro q
@@ -178,7 +176,7 @@ public theorem presentationLift_eq :
 
 public theorem presentationLift_bijective :
     Function.Bijective
-      (presentationLift isCentralFiberCoverSourceCoordinate P (I.meridian P)
+      (presentationLift P (I.meridian P)
         (I.fullIterate P)) := by
   rw [I.presentationLift_eq P]
   exact ⟨I.hOneEquiv.injective.comp (I.toAbelianization_injective P),
@@ -192,7 +190,7 @@ public structure AffineCyclicHOnePresentationLiftWitness
   meridian : IntegralSingularHomology 1 D.reducedCentralFiber
   fullIterate : (m : ℤ) • meridian = coverProjectionLatticeMap P P.twist
   bijective : Function.Bijective
-    (presentationLift isCentralFiberCoverSourceCoordinate P meridian fullIterate)
+    (presentationLift P meridian fullIterate)
 
 /-- The marked universal-cover identification supplies the meridian, its full-iterate relation,
 and bijectivity of the presentation map. -/
@@ -212,7 +210,7 @@ public noncomputable def reducedCentralFiberHOnePresentation
     ReducedCentralFiberHOnePresentation P := by
   let R := establishedAffineCyclicHOnePresentationLift_bijective P
   exact reducedCentralFiberHOnePresentation_of_bijective
-    isCentralFiberCoverSourceCoordinate P R.meridian R.fullIterate R.bijective
+    P R.meridian R.fullIterate R.bijective
 
 /-- For a free affine action of a finite cyclic group on a full-rank torus, first integral
 homology is the abelianization of the standard covering-group presentation.  Thus it is the
@@ -242,13 +240,12 @@ public theorem reducedCentralFiberHOneEquivPresentation_projection
 
 end SphereSixComplex.AffineCyclicQuotientHomology
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
 open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
 open LatticeData Periods TriangleGroup
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperLemmaSevenThirteenAlgebra TwistObstruction
+open EllipticFilling
+open MultipleFiberCoinvariants SphereSixComplex.Topology.TwistObstruction
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
 /-- First integral homology of the actual order-three reduced elliptic fibre, with the exact
@@ -339,6 +336,6 @@ public theorem orderFourReducedCentralFiberHOneEquivIntSquared_projection_raw (x
           ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x))) = _
   exact hc
 
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
 end

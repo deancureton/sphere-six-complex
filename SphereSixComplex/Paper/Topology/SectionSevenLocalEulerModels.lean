@@ -57,8 +57,8 @@ end CuspToricCellModel
 
 namespace Geometry.AnalyticData
 
-open CuspPuncturedCollarBridge
-open Topology.PaperEllipticFillingRadialRetraction
+open CuspCollar
+open EllipticFilling
 
 variable (A : AnalyticData)
 

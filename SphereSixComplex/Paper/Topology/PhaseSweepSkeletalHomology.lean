@@ -6,11 +6,11 @@ public import SphereSixComplex.Paper.Topology.CuspPhaseSweepAtlas
 @[expose] public section
 noncomputable section
 open Set Topology CategoryTheory CategoryTheory.Limits
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods StandardA2ToricCentralFiberCellAtlas
 open InfiniteA2Toric InfiniteA2Toric.Construction
 open InfiniteA2Toric CuspPeriodExpansion
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedCellAtlas_d_two
@@ -117,4 +117,4 @@ public theorem phaseSweepHomologyTwoToRelativeEquiv_skeletal
   exact ConcreteCategory.congr_hom hc x
 
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

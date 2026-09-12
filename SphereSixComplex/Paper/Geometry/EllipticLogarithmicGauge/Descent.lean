@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.EllipticLogarithmicGauge
+public import SphereSixComplex.Paper.Geometry.EllipticLogarithmicGauge.Basic
 public import SphereSixComplex.Prerequisites.Geometry.EquivariantQuotientHomeomorph
 import all SphereSixComplex.Paper.Geometry.EllipticWholeFiberTrivialization
 import all SphereSixComplex.Paper.Geometry.EllipticVaryingFamilyQuotient
@@ -15,7 +15,7 @@ collar quotient.  It does not posit a global logarithm on a punctured disc or id
 local quotient with a paper-specific space.
 -/
 
-namespace SphereSixComplex.Geometry.EllipticLogarithmicGaugeDescent
+namespace SphereSixComplex.Geometry.EllipticLogarithmicGauge
 
 open Set
 open SphereSixComplex.Geometry SphereSixComplex.TriangleGroup
@@ -101,4 +101,4 @@ public theorem orderFourLinear_actionMap_generator
 
 end
 
-end SphereSixComplex.Geometry.EllipticLogarithmicGaugeDescent
+end SphereSixComplex.Geometry.EllipticLogarithmicGauge

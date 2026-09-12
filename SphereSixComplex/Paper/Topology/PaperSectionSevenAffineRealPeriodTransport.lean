@@ -21,7 +21,7 @@ open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticFixedPointCriterion
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 
 /-- The explicit order-three fibre transfer preserves the fixed order-three real-period torus

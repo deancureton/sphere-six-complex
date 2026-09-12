@@ -4,20 +4,19 @@ public import SphereSixComplex.Paper.Topology.PaperMultipleFiberHOneTopologyCore
 
 open Topology
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 
-open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex.Geometry
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.EllipticFixedPointCriterion
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.EllipticFilling
 
 variable {m : ℕ} [NeZero m]
 variable {p : SphereSixComplex.Periods.Parameters}
@@ -79,6 +78,6 @@ public theorem complexTwoReducedCentralFiberProjection_isQuotientMap
 
 end SphereSixComplex.AffineCyclicQuotientHomology
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
 
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+end SphereSixComplex.AffineCyclicQuotientHomology

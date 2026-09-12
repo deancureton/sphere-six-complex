@@ -7,14 +7,14 @@ public import SphereSixComplex.Paper.Topology.PaperCuspActualAffineFillingCoverS
 @[expose] public section
 noncomputable section
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.InfiniteA2Toric
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public def localCuspPeriodLift
@@ -87,4 +87,4 @@ public theorem localCuspPeriodLoop_homology
     (Additive.toMul lambda) (localCuspPeriodLoop W s hs hsr lambda)
     (localCuspPeriodLift W s hs hsr lambda) (fun _ ↦ rfl)
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

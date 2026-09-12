@@ -4,6 +4,7 @@ public import SphereSixComplex.Paper.Topology.ConstructedNormalizedPolarHoneycom
 public import Mathlib.Algebra.Order.Round
 public import Mathlib.Data.Int.Interval
 public import Mathlib.Data.Pi.Interval
+public import SphereSixComplex.Prerequisites.Topology.LocallyFiniteClosedCover
 
 /-!
 # Periodic planar cells for the constructed A₂ honeycomb
@@ -540,41 +541,7 @@ public theorem constructedA2CellSquareProjection_isQuotientMap {r : ℝ} (hr : 0
     (constructedA2CellSquareProjection_surjective hr v)
     (constructedA2CellSquareProjection_continuous hr v)
 
-/-- Quotient maps out of a common space with identical fibres have homeomorphic targets. -/
-public noncomputable def constructedA2HomeomorphOfQuotientMaps
-    {W A B : Type*} [TopologicalSpace W] [TopologicalSpace A] [TopologicalSpace B]
-    {f : W → A} {g : W → B} (hf : Topology.IsQuotientMap f)
-    (hg : Topology.IsQuotientMap g) (hfg : ∀ x y, f x = f y ↔ g x = g y) : A ≃ₜ B := by
-  let F := LocallyFiniteClosedCover.descend f g hf.surjective
-  let E : A ≃ B := Equiv.ofBijective F
-    ⟨LocallyFiniteClosedCover.descend_injective f g hf.surjective
-      (fun x y h ↦ (hfg x y).mpr h),
-      LocallyFiniteClosedCover.descend_surjective f g hf.surjective
-        (fun x y h ↦ (hfg x y).mp h) hg.surjective⟩
-  refine
-    { toEquiv := E
-      continuous_toFun :=
-        LocallyFiniteClosedCover.descend_continuous f g hf.surjective hf hg.continuous
-          (fun x y h ↦ (hfg x y).mp h)
-      continuous_invFun := ?_ }
-  apply hg.continuous_iff.mpr
-  change Continuous (E.symm ∘ g)
-  have hcomp : E.symm ∘ g = f := by
-    funext x
-    apply E.injective
-    change E (E.symm (g x)) = E (f x)
-    rw [E.apply_symm_apply]
-    exact (LocallyFiniteClosedCover.descend_apply f g hf.surjective
-      (fun x y h ↦ (hfg x y).mp h) x).symm
-  rw [hcomp]
-  exact hf.continuous
 
-public theorem constructedA2HomeomorphOfQuotientMaps_apply
-    {W A B : Type*} [TopologicalSpace W] [TopologicalSpace A] [TopologicalSpace B]
-    {f : W → A} {g : W → B} (hf : Topology.IsQuotientMap f)
-    (hg : Topology.IsQuotientMap g) (hfg : ∀ x y, f x = f y ↔ g x = g y)
-    (x : W) : constructedA2HomeomorphOfQuotientMaps hf hg hfg (f x) = g x :=
-  (hfg _ _).mp (Function.surjInv_eq hf.surjective (f x))
 
 
 

@@ -8,7 +8,7 @@ open AlgebraicTopology
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
-open GlobalTorusFamily CuspPuncturedCollarBridge CuspRadialClutchingConstruction
+open GlobalTorusFamily CuspCollar CuspRadialClutchingConstruction
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus TorusFamily CuspPeriodExpansion
 open EllipticTwoDiscCoverData

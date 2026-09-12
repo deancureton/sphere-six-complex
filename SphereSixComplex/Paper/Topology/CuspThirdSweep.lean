@@ -8,7 +8,7 @@ open AlgebraicTopology
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
-open CuspRadialClutchingConstruction CuspPuncturedCollarBridge
+open CuspRadialClutchingConstruction CuspCollar
 open EllipticTwoDiscCoverData
 
 public def cuspThirdSweep (A : AnalyticData) :

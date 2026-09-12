@@ -9,11 +9,11 @@ public import SphereSixComplex.Paper.Topology.CuspCentralNormalizedSweepComparis
 @[expose] public section
 noncomputable section
 open CategoryTheory HomologicalComplex Matrix
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex SphereSixComplex.Periods StandardCircleHomologyLiftDegree
 open CuspFilling CuspPeriodExpansion InfiniteA2Toric
 open InfiniteA2Toric InfiniteA2Toric.Construction
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 def phaseSweepRelativeEdgeVector
@@ -146,11 +146,11 @@ theorem phaseSweepFillingGraph_coordinates
       rw [smul_smul, hnn, one_zsmul]
     _ = _ := congrArg (fun v ↦ n • v) he.symm
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar
 
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Periods StandardCircleHomologyLiftDegree
-open StandardTorusHomology CuspPuncturedCollarBridge CuspFilling CuspPeriodExpansion
+open StandardTorusHomology CuspCollar CuspFilling CuspPeriodExpansion
 
 local instance (A : AnalyticData) :
     T2Space (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness) := by

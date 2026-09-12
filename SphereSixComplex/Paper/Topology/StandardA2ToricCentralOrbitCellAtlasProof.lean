@@ -8,7 +8,7 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 
 open SphereSixComplex
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -21,7 +21,7 @@ open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 private theorem centralPhaseDisk_one_add_ne_zero_of_ball'
@@ -321,6 +321,6 @@ public theorem constructedCentralPhaseTwoCellTwo_continuousOn
     ContinuousOn (constructedCentralPhaseTwoCellTwo W) (Metric.closedBall 0 1) :=
   constructedCentralPhaseFaceTwoOrbit_continuousOn_closedBall W
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar
 
 end

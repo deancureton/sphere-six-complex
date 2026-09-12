@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Paper.Periods.OrbifoldAffineTorsorCuspBoundedCousinCorrection
 public import SphereSixComplex.Prerequisites.Periods.EstablishedProjectiveLineCohomology
-public import SphereSixComplex.Paper.Periods.ExactFuchsianCuspBounds
+public import SphereSixComplex.Paper.Periods.FuchsianModularLift.CuspBounds
 import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianTessellation
 import all SphereSixComplex.Paper.Periods.Functions
 

@@ -7,7 +7,7 @@ public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWConstructio
 noncomputable section
 open Set
 
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspFilling
@@ -17,7 +17,7 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M₁ M₂ : Model}
 
 public def centralModelMap (W₁ : ActualPuncturedCuspCollarWitness N M₁)
@@ -96,4 +96,4 @@ public def centralOrbitModelHomeomorph (W₁ : ActualPuncturedCuspCollarWitness 
     rw [centralModelHomeomorph_equivariant W₁ W₂]
     exact hg
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

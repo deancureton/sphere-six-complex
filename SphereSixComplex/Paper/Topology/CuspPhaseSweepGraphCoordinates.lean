@@ -6,11 +6,11 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2CellularEdgeLoops
 @[expose] public section
 noncomputable section
 open CategoryTheory HomologicalComplex
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex SphereSixComplex.Periods StandardCircleHomologyLiftDegree
 open CuspPeriodExpansion InfiniteA2Toric
 open InfiniteA2Toric InfiniteA2Toric.Construction
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem phaseSweepCellAtlas_edges_same_left
@@ -174,4 +174,4 @@ public theorem phaseSweepGraphPrism_cellCoordinates
     ((T.cellBasis (ActualLocalCuspCentralOrbitQuotient W) 2).symm x) l)
     (phaseSweepGraphPrism_relativeCoordinates W T i j k)
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

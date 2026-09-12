@@ -7,12 +7,12 @@ public import SphereSixComplex.Prerequisites.Topology.CompactSeparatedRestrictio
 @[expose] public section
 noncomputable section
 open Set Topology Matrix
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric.Construction
 open InfiniteA2Toric CuspLocalPhaseAction CuspFilling CuspPeriodExpansion
 open CuspStraighteningRetraction
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepZeroCarrier (x : Fin 2 → ℝ) : Carrier :=
@@ -169,4 +169,4 @@ public theorem phaseSweepZeroCarrier_boundary (x : Fin 2 → ℝ)
 
 
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

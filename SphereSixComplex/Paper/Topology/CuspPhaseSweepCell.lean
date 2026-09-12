@@ -5,7 +5,7 @@ public import SphereSixComplex.Paper.Topology.CuspPhaseCentralCompatibility
 @[expose] public section
 noncomputable section
 open Set Topology Matrix
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open InfiniteA2Toric InfiniteA2Toric.Construction
 open InfiniteA2Toric
 
@@ -252,4 +252,4 @@ public theorem fourthPhaseEdgeZeroSweep_image :
     obtain ⟨c, hc, x, hx, he⟩ := lowerAxisZero_mem_fourthPhaseEdgeZeroSweep z hz
     exact ⟨(c, x), ⟨hc, hx⟩, he⟩
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

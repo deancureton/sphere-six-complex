@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.CuspStraighteningHomeomorph
+public import SphereSixComplex.Paper.Geometry.CuspStraightening.Homeomorph
 
 /-!
 # Joint continuity of the standard toric action
@@ -17,7 +17,7 @@ noncomputable section
 
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
 
-open SphereSixComplex.Geometry.CuspStraighteningExtension
+open SphereSixComplex.Geometry.CuspStraightening
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- Every integral character of the dense algebraic torus is continuous. -/

@@ -6,14 +6,13 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2EdgeIncidence
 @[expose] public section
 noncomputable section
 open CategoryTheory
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex StandardCircleHomologyLiftDegree
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
-open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedCentralCellAtlas_edges_same_left
@@ -60,4 +59,4 @@ public def constructedCentralCellularEdgePath
         (cwCellularEdgePath_right X (0 : Fin 3)).symm)⟩
 
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

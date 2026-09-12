@@ -15,14 +15,13 @@ open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Topology
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.CyclicAngularFundamentalDomain
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.EllipticFilling
+open SphereSixComplex.AffineCyclicQuotientHomology
 open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 
 variable (A : AnalyticData)

@@ -20,7 +20,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
-open SphereSixComplex.Geometry.CuspStraighteningExtension
+open SphereSixComplex.Geometry.CuspStraightening
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 
 /-- The positive real complex unit with the same norm as a given complex unit. -/
@@ -49,7 +49,7 @@ public theorem positiveRadialPart_mul (z w : ℂˣ) :
 
 /-- The coordinatewise positive radial part of the normalized frozen cusp multiplier. -/
 public def normalizedCuspPositiveTwist
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) :
     ParameterLattice → DenseTorus :=
   fun lambda i ↦ positiveRadialPart
@@ -57,14 +57,14 @@ public def normalizedCuspPositiveTwist
 
 @[simp]
 public theorem normalizedCuspPositiveTwist_zero
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) :
     normalizedCuspPositiveTwist N 0 = 1 := by
   funext i
   simp [normalizedCuspPositiveTwist, positiveRadialPart]
 
 public theorem normalizedCuspPositiveTwist_add
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda mu : ParameterLattice) :
     normalizedCuspPositiveTwist N (lambda + mu) =
       normalizedCuspPositiveTwist N lambda * normalizedCuspPositiveTwist N mu := by
@@ -76,14 +76,14 @@ public theorem normalizedCuspPositiveTwist_add
 
 @[simp]
 public theorem normalizedCuspPositiveTwist_last
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) :
     normalizedCuspPositiveTwist N lambda 2 = 1 := by
   apply Units.ext
   simp [normalizedCuspPositiveTwist, positiveRadialPart]
 
 public theorem normalizedCuspPositiveTwist_real
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) (i : Fin 3) :
     0 < ((normalizedCuspPositiveTwist N lambda i : ℂˣ) : ℂ).re ∧
       ((normalizedCuspPositiveTwist N lambda i : ℂˣ) : ℂ).im = 0 :=
@@ -91,7 +91,7 @@ public theorem normalizedCuspPositiveTwist_real
 
 /-- The canonical positive twist has exactly the frozen cusp multiplier's radial norm. -/
 public theorem norm_normalizedCuspPositiveTwist
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda : ParameterLattice) (i : Fin 3) :
     ‖((normalizedCuspPositiveTwist N lambda i : ℂˣ) : ℂ)‖ =
       ‖((phaseEmbedding (N.phaseCoefficient lambda 0) i : ℂˣ) : ℂ)‖ :=
@@ -99,7 +99,7 @@ public theorem norm_normalizedCuspPositiveTwist
 
 /-- Fan shear fixes the canonical positive twist because its height coordinate is one. -/
 public theorem denseTorusShear_normalizedCuspPositiveTwist
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (lambda mu : ParameterLattice) :
     denseTorusShear lambda (normalizedCuspPositiveTwist N mu) =
       normalizedCuspPositiveTwist N mu := by
@@ -109,7 +109,7 @@ public theorem denseTorusShear_normalizedCuspPositiveTwist
 
 /-- The canonical positive deck formula on the ambient toric carrier. -/
 public def normalizedPositiveDeckCarrierMap
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model)
     (lambda : ParameterLattice) (p : M.Carrier) : M.Carrier :=
   M.torusAction (normalizedCuspPositiveTwist N lambda)
@@ -117,13 +117,13 @@ public def normalizedPositiveDeckCarrierMap
 
 @[simp]
 public theorem normalizedPositiveDeckCarrierMap_zero
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (p : M.Carrier) :
     normalizedPositiveDeckCarrierMap N M 0 p = p := by
   simp [normalizedPositiveDeckCarrierMap, normalizedCuspPositiveTwist_zero]
 
 public theorem normalizedPositiveDeckCarrierMap_add
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model)
     (lambda mu : ParameterLattice) (p : M.Carrier) :
     normalizedPositiveDeckCarrierMap N M (lambda + mu) p =
@@ -135,7 +135,7 @@ public theorem normalizedPositiveDeckCarrierMap_add
 
 /-- The canonical positive deck formula restricted to a height sublevel. -/
 public def normalizedPositiveDeckLocalMap
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (lambda : ParameterLattice) (p : localCarrier M r) : localCarrier M r :=
   ⟨normalizedPositiveDeckCarrierMap N M lambda (p : M.Carrier), by
@@ -369,7 +369,7 @@ public noncomputable def PolarHoneycombConstructionData.toPolarHoneycombData
 
 /-- The canonical positive deck action on any positive part preserved by the ambient formula. -/
 @[instance_reducible] public def normalizedPositiveDeckAction
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) {r : ℝ}
     (positivePart : Set (localCarrier M r))
     (positiveDeck_mem : ∀ lambda (q : positivePart),
@@ -401,7 +401,7 @@ public noncomputable def PolarHoneycombConstructionData.toPolarHoneycombData
 /-- The narrowed geometric residue.  The positive twist and deck action are now canonical;
 only preservation of the positive part and the genuinely global quotient properties remain. -/
 public structure NormalizedPolarHoneycombConstructionData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ) where
   positivePart : Set (localCarrier M r)
   modulus : C(localCarrier M r, positivePart)
@@ -430,7 +430,7 @@ public structure NormalizedPolarHoneycombConstructionData
 
 /-- The central honeycomb is canonically the zero locus of the height coordinate. -/
 public def NormalizedPolarHoneycombConstructionData.central
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r) : Set Q.positivePart :=
   {q : Q.positivePart | M.t (q : localCarrier M r) = 0}
@@ -438,7 +438,7 @@ public def NormalizedPolarHoneycombConstructionData.central
 /-- Build the previous construction interface from the normalized geometric residue. -/
 public noncomputable def
     NormalizedPolarHoneycombConstructionData.toPolarHoneycombConstructionData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r) :
     PolarHoneycombConstructionData M r where
@@ -471,7 +471,7 @@ public noncomputable def
 
 /-- The full polar-honeycomb datum determined by normalized construction data. -/
 public noncomputable def NormalizedPolarHoneycombConstructionData.toPolarHoneycombData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r) :
     PolarHoneycombData M r :=

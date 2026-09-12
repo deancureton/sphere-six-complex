@@ -17,7 +17,7 @@ period-torus filling.
 open AlgebraicTopology CategoryTheory Set
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+namespace SphereSixComplex.EllipticFilling
 
 open SphereSixComplex.Geometry
 open SphereSixComplex.Geometry.AnalyticTorusFamily
@@ -468,4 +468,4 @@ homotopy equivalence; the conclusion is derived, not stored in the chart. -/
 
 end
 
-end SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+end SphereSixComplex.EllipticFilling

@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
 public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
-public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
+public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
 public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
 
 /-!
@@ -25,7 +25,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.CircleMappingTorusHomologyBases
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open SphereSixComplex.Geometry.CuspCollar
 open EllipticInteriorMarkedCycleData
 
 variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)

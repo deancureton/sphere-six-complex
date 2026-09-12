@@ -22,7 +22,7 @@ namespace SphereSixComplex
 
 namespace CircleMappingTorusHomologyBases
 
-open LatticeData LatticeWangAlgebra Topology.PaperCuspSpecializationAlgebra
+open LatticeData LatticeWangAlgebra CuspMonodromyCoinvariants
 
 /-- Geometrically chosen suspension sections in degrees one and two. -/
 public structure CuspGeometricWangSections

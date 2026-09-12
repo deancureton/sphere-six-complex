@@ -6,7 +6,7 @@ public import SphereSixComplex.Paper.Topology.CuspPhaseSweepAtlas
 
 noncomputable section
 open Set Topology Matrix
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open InfiniteA2Toric InfiniteA2Toric.Construction
 open InfiniteA2Toric CuspToricPhaseAction
 open SphereSixComplex.Periods CuspPeriodExpansion CuspFilling CuspLocalPhaseAction
@@ -118,7 +118,7 @@ public theorem compactCircle_embedding (i : Fin 2) (z : UnitAddCircle) :
     simp [compactTorusEmbedding, constructedA2EffectivePhaseSection, cuspPeriodCompactCircle,
       phaseEmbedding, cuspPeriodPhaseCircle, CircleExponential.toUnits]
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem phaseSweepOrbit_eq_compact_of_carrier
@@ -210,4 +210,4 @@ public theorem phaseSweepOrbit_period
 
 
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

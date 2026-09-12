@@ -15,12 +15,12 @@ public def topologicalClosedPrismHomology {X Y : TopCat} {f : X ⟶ Y}
       (cwIntegralSingularChainComplexObj Y).homology (n + 2) :=
   closedPrismHomology (H.singularChainComplexFunctorObjMap (AddCommGrpCat.of ℤ)) n
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction
 open CuspPeriodExpansion
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem phaseSweepSkeletalPrism_toCentral
@@ -83,5 +83,5 @@ public theorem phaseSweepCentralPrism_relativeCoordinates
       (topologicalClosedPrismHomology (phaseSweepSkeletalHomotopy W i) 0 x)).trans
       (ConcreteCategory.congr_hom (phaseSweepSkeletalPrism_relative W i) x).symm)
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 end SphereSixComplex

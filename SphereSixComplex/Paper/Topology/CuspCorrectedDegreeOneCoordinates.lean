@@ -7,7 +7,7 @@ open AlgebraicTopology
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology
 open EllipticInteriorMarkedCycleData EllipticTwoDiscCoverData
-open EstablishedSectionSevenCuspTopology EllipticTwoDiscHomologyCoordinates
+open CuspAttachment EllipticTwoDiscHomologyCoordinates
 
 public theorem cuspDegreeOneMappingTorusCoordinates_of_fullIterate
     {A : AnalyticData} (R : A.AffineRadialCompletionInput)

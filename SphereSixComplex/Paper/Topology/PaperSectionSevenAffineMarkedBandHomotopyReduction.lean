@@ -21,8 +21,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.AnalyticData
 
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.EllipticFilling
 
 variable {A : AnalyticData}
 

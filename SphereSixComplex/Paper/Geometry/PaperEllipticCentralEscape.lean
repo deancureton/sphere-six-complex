@@ -82,10 +82,10 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 open TorusFamily AnalyticTorusFamily GlobalTorusFamily ComplexTorus
 open EllipticVaryingFamilyQuotient EllipticCayleyHomeomorph
-open EllipticLocalCoordinates EllipticHolomorphicLogCover
+open EllipticLocalCoordinates EllipticLogarithmicGauge
 open EllipticLocalTrivialization
 open EllipticLinearCollarGlobalDescent
-open EllipticPuncturedCollarGaugeHomeomorph EquivariantQuotientHomeomorph
+open EllipticLogarithmicGauge EquivariantQuotientHomeomorph
 open AnalyticData
 
 /-- The canonical projection from the regular torus family to the paper's central quotient. -/

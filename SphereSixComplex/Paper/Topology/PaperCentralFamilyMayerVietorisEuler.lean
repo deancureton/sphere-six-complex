@@ -94,7 +94,7 @@ public theorem centralAffineRegionsIntersection_integralHomologyFiniteSix :
       (A.affineOrderThreeCentralRegion ∩
         A.affineOrderFourCentralRegion :
           Set A.ellipticInterior) :=
-  (EstablishedFiniteCWTopology.additiveTorus_integralHomologyFiniteSix
+  (StandardTorusHomology.additiveTorus_integralHomologyFiniteSix
     A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank).homotopyEquiv
       A.centralAffineRegionsIntersectionHomotopyEquiv.symm
 
@@ -105,7 +105,7 @@ public theorem centralAffineRegionsIntersection_euler_eq_zero :
           Set A.ellipticInterior) = 0 :=
   (integralHomologyEulerCharacteristicSix_homotopyEquiv
     A.centralAffineRegionsIntersectionHomotopyEquiv).trans
-      (EstablishedFiniteCWTopology.additiveTorus_euler_eq_zero
+      (StandardTorusHomology.additiveTorus_euler_eq_zero
         A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank)
 
 public theorem centralAffineRegionsIntersection_subsingleton_homology_six :
@@ -115,7 +115,7 @@ public theorem centralAffineRegionsIntersection_subsingleton_homology_six :
           Set A.ellipticInterior)) :=
   subsingleton_homology_of_homotopyEquiv 6
     A.centralAffineRegionsIntersectionHomotopyEquiv
-      (EstablishedFiniteCWTopology.additiveTorus_subsingleton_homology_six
+      (StandardTorusHomology.additiveTorus_subsingleton_homology_six
         A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank)
 
 /-- The two affine half-plane regions are exactly the regular central image. -/

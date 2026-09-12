@@ -8,13 +8,13 @@ noncomputable section
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.ComplexTorus SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticFixedPointCriterion
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.LatticeData
 
-namespace SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+namespace SphereSixComplex.Geometry.RealPeriodTrivialization
 
 public theorem movingToFixedCover_scaled_period
     {U : TriangleUniformization} (F : PeriodFunctions U)
@@ -34,7 +34,7 @@ public theorem movingToFixedCover_scaled_period
     rw [map_add, map_smul, (fullRankDomain (parameterMap F z₀)).map_integer]
     rfl
 
-end SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+end SphereSixComplex.Geometry.RealPeriodTrivialization
 
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology

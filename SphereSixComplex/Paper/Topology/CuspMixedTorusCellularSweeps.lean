@@ -11,7 +11,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus GlobalTorusFamily
-open CuspPuncturedCollarBridge CuspRadialClutchingConstruction CuspPeriodExpansion
+open CuspCollar CuspRadialClutchingConstruction CuspPeriodExpansion
 open PositiveCircleCross CircleProductIdentityMappingTorus StandardCircleHomologyLiftDegree
 
 public def cuspMixedTorusIndex : Fin 3 → Fin 4 := ![1,2,3]

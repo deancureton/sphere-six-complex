@@ -16,7 +16,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Topology.EllipticThreeTorusAdditiveOrbitSweep
 
 open NormalizedFiniteOrderAdditiveCircleSweep
-open PaperAffineCyclicReducedFiberMappingTorus
+open EllipticReducedFiberMappingTorus
 open StandardTorusHomology
 
 /-- The order-three clutching as a continuous additive equivalence. -/

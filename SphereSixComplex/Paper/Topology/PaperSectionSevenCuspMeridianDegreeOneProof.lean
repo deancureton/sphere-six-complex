@@ -23,15 +23,15 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
-open CuspPuncturedCollarBridge
+open CuspCollar
 open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.EllipticFixedPointCriterion
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
+open CuspCollar.CuspFiberSpecializationNormalization
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Periods
 open SphereSixComplex.TriangleGroup
@@ -104,7 +104,7 @@ public theorem circleMappingTorusBaseCircleProjection_realMappingTorus_mk
   obtain ⟨p, hp⟩ := CyclicAngularFundamentalDomain.realMappingTorusIntervalProjection_surjective
     phi (Quotient.mk (CyclicAngularFundamentalDomain.realMappingTorusSetoid phi) (s, y))
   rw [← hp,
-    CuspPuncturedCollarBridge.realMappingTorusHomeomorph_intervalProjection,
+    CuspCollar.realMappingTorusHomeomorph_intervalProjection,
     circleMappingTorusBaseCircleProjection_cylinderProjection]
   obtain ⟨k, hk⟩ :=
     (CyclicAngularFundamentalDomain.realMappingTorusMk_eq_iff phi (s, y)

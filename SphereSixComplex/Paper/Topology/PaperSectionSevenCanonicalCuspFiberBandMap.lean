@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
 public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
-public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
+public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
 public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
 
 /-!
@@ -26,7 +26,7 @@ namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.EllipticFilling
 
 
 /-- The chosen radial clutching coordinates carry their defining period marking. -/
@@ -34,7 +34,7 @@ public theorem cuspFiberPeriodMarkingCompatibility (A : AnalyticData) :
     (let G := A.actualCuspRadialClutchingData
        let _ := G.fiberTopology
        ∀ x : IntegralSingularHomology 1 G.Fiber,
-         (EstablishedTorusHomology.additiveTorusHomologyBasis
+         (StandardTorusHomology.additiveTorusHomologyBasis
              G.fiberParameter G.fiberFullRank).degreeOne
              (integralSingularHomologyMap 1 G.fiberHomeomorph x) =
            G.monodromyCoordinates.degreeOne x) :=

@@ -27,7 +27,7 @@ namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.LatticeData
 open SphereSixComplex.LatticeWangAlgebra
-open SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
+open SphereSixComplex.CuspMonodromyCoinvariants
 open EllipticInteriorMarkedCycleData
 open EllipticTwoDiscHomologyCoordinates
 open EllipticTwoDiscCoverData
@@ -212,7 +212,7 @@ public theorem canonicalCuspFiberToBand_degreeTwoPeriodMarking
       IntegralSingularHomology 2 G.Fiber) :
     let G := A.actualCuspRadialClutchingData
     let _ := G.fiberTopology
-    (EstablishedTorusHomology.additiveTorusHomologyBasis
+    (StandardTorusHomology.additiveTorusHomologyBasis
       D.bandParameter D.bandFullRank).degreeTwo
         (integralSingularHomologyMap 2 D.canonicalCuspFiberToBandTorusHomeomorph x) =
       G.monodromyCoordinates.degreeTwo x := by
@@ -223,7 +223,7 @@ public theorem canonicalCuspFiberToBand_degreeTwoPeriodMarking
   let e := fullRankAdditiveTorusHomeomorph
     G.fiberParameter D.bandParameter G.fiberFullRank D.bandFullRank
   have hNatural :=
-    (EstablishedTorusHomology.fullRankAdditiveTorusHomeomorph_naturality
+    (StandardTorusHomology.fullRankAdditiveTorusHomeomorph_naturality
       G.fiberParameter D.bandParameter G.fiberFullRank D.bandFullRank).2 y
   have hComposite :
       integralSingularHomologyMap 2 D.canonicalCuspFiberToBandTorusHomeomorph x =

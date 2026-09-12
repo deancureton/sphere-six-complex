@@ -136,7 +136,7 @@ public theorem constructedA2BoundaryZeroZeroPhase_cancellation (u v : CompactTor
         ring
       _ = 1 := by simp
 
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open SphereSixComplex.Geometry.CuspCollar
 
 public theorem constructedA2CompactPhase_singleAxis_eq_self
     (a : ChartIndex) (j : Fin 3) (z : ℂ) (k : CompactTorus)

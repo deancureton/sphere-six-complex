@@ -24,19 +24,17 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticFixedPointCriterion
-open SphereSixComplex.Geometry.EllipticHolomorphicLogCover
+open SphereSixComplex.Geometry.EllipticLogarithmicGauge
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.Geometry.AnalyticTorusFamily
-open SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.EllipticLogarithmicGauge
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.GlobalTorusFamily
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.EllipticFilling
 
 /-- The order-three principal translation, expressed in the fixed real-period torus. -/
 public noncomputable def orderThreePrincipalRealPeriodGauge

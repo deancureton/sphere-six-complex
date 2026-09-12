@@ -5,11 +5,11 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2CentralCompactAction
 @[expose] public section
 noncomputable section
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods InfiniteA2Toric
 open InfiniteA2Toric.Construction InfiniteA2Toric
 open CuspCombinatorics CuspPeriodExpansion CuspLocalPhaseAction CuspFilling
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def cuspPeriodCompactCircle (i : Fin 2) (z : UnitAddCircle) : Fin 2 → Circle :=
@@ -102,4 +102,4 @@ public theorem thirdPhase_edgeTwo_fixed (z : UnitAddCircle) (x : Fin 1 → ℝ) 
   · rw [upperAxis_phase_action]
     simp [cuspPeriodPhaseCircle] <;> rfl
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

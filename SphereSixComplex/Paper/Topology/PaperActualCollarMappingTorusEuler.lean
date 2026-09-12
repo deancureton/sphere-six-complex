@@ -20,7 +20,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.AnalyticData
 
 open AnalyticTorusFamily EllipticFamilySpecialization
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 
 variable (A : AnalyticData)
@@ -39,7 +39,7 @@ public noncomputable def cuspCollarCircleMappingTorusModel :
       clutching := φ
       totalPathConnected := pathConnectedSpace_circleMappingTorus φ
       fiberHomology :=
-        EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel p.1
+        StandardTorusHomology.additiveTorusFourTorusHomologicalModel p.1
           (GlobalTorusFamily.fullRankDomain p)
       totalHomotopyEquiv :=
         (puncturedLocalCuspQuotientHomeomorph W s).toHomotopyEquiv.trans
@@ -61,7 +61,7 @@ public noncomputable def actualOrderThreeCollarCircleMappingTorusModel :
       clutching := φ
       totalPathConnected := pathConnectedSpace_circleMappingTorus φ
       fiberHomology :=
-        EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel p.1 hp
+        StandardTorusHomology.additiveTorusFourTorusHomologicalModel p.1 hp
       totalHomotopyEquiv :=
         A.orderThreeCollarRadialMappingTorusHomeomorph.toHomotopyEquiv.trans
           (openRadialIntervalProdHomotopyEquiv A.starSeparation.orderThree.radius_pos) }
@@ -92,7 +92,7 @@ public noncomputable def actualOrderFourCollarCircleMappingTorusModel :
       clutching := φ
       totalPathConnected := pathConnectedSpace_circleMappingTorus φ
       fiberHomology :=
-        EstablishedFiniteCWTopology.additiveTorusFourTorusHomologicalModel p.1 hp
+        StandardTorusHomology.additiveTorusFourTorusHomologicalModel p.1 hp
       totalHomotopyEquiv :=
         A.orderFourCollarRadialMappingTorusHomeomorph.toHomotopyEquiv.trans
           (openRadialIntervalProdHomotopyEquiv A.starSeparation.orderFour.radius_pos) }

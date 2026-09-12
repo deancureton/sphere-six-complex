@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
+public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
 public import SphereSixComplex.Paper.Topology.PaperCollarMappingTorusAdapters
 public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomainProof
 
@@ -68,7 +68,7 @@ public noncomputable def carrier : InvariantOpenCarrier D.action where
 
 end CyclicPuncturedProductData
 
-namespace EstablishedCyclicAngularFundamentalDomain
+namespace CyclicAngularFundamentalDomain
 
 /-- A free scalar cyclic action on a punctured disc, diagonal with a fibre homeomorphism, has
 quotient equal to the radial interval times the corresponding mapping torus, provided its
@@ -107,13 +107,13 @@ public noncomputable def quotientHomeomorphRadialMappingTorus
       D.multiplier D.multiplier_norm hmul D.generator_formula)
     D.action_continuous
 
-end EstablishedCyclicAngularFundamentalDomain
+end CyclicAngularFundamentalDomain
 
 namespace Geometry
 
 open AnalyticTorusFamily EllipticActualActionTopology EllipticFamilySpecialization
 open EllipticFixedPointCriterion EllipticLocalCoordinates
-open EllipticPuncturedCollarGaugeHomeomorph EllipticRealPeriodProductTrivialization
+open EllipticLogarithmicGauge RealPeriodTrivialization
 open EllipticVaryingFamilyQuotient
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
@@ -291,7 +291,7 @@ public noncomputable def orderThreeCollarRadialMappingTorusHomeomorph :
     A.modular.modularParameter.toTriangleUniformization_sourceAction
     A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
     A.starSeparation.orderThree.radius_lt_one).trans
-      (EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
+      (CyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
         CyclicAngularFundamentalDomain.orderThreeMultiplier_eq_standardMultiplier)
 
 /-- Correct radial-mapping-torus model of the actual order-four open collar. -/
@@ -308,7 +308,7 @@ public noncomputable def orderFourCollarRadialMappingTorusHomeomorph :
     A.modular.modularParameter.toTriangleUniformization_sourceAction
     A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
     A.starSeparation.orderFour.radius_lt_one).trans
-      (EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
+      (CyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
         CyclicAngularFundamentalDomain.orderFourMultiplier_eq_standardMultiplier)
 
 end AnalyticData

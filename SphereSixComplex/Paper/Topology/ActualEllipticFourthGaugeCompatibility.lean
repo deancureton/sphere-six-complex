@@ -7,9 +7,9 @@ namespace SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus TorusFamily AnalyticTorusFamily EllipticFamilySpecialization
 open SphereSixComplex.StandardTorusHomology
-open GlobalTorusFamily EllipticPuncturedCollarGaugeHomeomorph
-open EllipticRealPeriodProductTrivialization
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+open GlobalTorusFamily EllipticLogarithmicGauge
+open RealPeriodTrivialization
+open SphereSixComplex.EllipticFilling
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
 public def fourthPeriodFamilyTranslation (t : ℝ) :

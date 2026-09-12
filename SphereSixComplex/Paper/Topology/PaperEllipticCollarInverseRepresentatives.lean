@@ -16,7 +16,7 @@ open SphereSixComplex
 open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
-open SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
+open SphereSixComplex.Geometry.EllipticLogarithmicGauge
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.TriangleGroup
@@ -188,7 +188,7 @@ public theorem orderThreeCollarRadialMappingTorusHomeomorph_symm_apply_liftProje
     A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
     A.starSeparation.orderThree.radius_lt_one
   let hprod := restrictedOrbitQuotientHomeomorph e
-  let hang := EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
+  let hang := CyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
     orderThreeMultiplier_eq_standardMultiplier
   let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
       (ℝ × A.OrderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
@@ -223,7 +223,7 @@ public theorem orderFourCollarRadialMappingTorusHomeomorph_symm_apply_liftProjec
     A.starSeparation.orderFour.radius A.starSeparation.orderFour.radius_pos
     A.starSeparation.orderFour.radius_lt_one
   let hprod := restrictedOrbitQuotientHomeomorph e
-  let hang := EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
+  let hang := CyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
     orderFourMultiplier_eq_standardMultiplier
   let w : OpenRadialInterval A.starSeparation.orderFour.radius ×
       (ℝ × A.OrderFourTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)

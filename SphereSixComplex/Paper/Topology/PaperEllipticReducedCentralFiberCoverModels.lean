@@ -17,8 +17,8 @@ namespace SphereSixComplex
 
 namespace Geometry.AnalyticData.LocalEulerModels
 
-open CuspPuncturedCollarBridge
-open Topology.PaperEllipticFillingRealPeriodRadial
+open CuspCollar
+open EllipticFilling
 
 variable (A : AnalyticData)
 

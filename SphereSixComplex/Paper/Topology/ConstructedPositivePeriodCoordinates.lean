@@ -9,13 +9,13 @@ noncomputable section
 open Set Topology Matrix
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open ComplexTorus CuspToricPhaseAction
-open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
-open CuspPeriodExpansion CuspStraighteningRetraction CuspStraighteningAlgebra
-open CuspStraighteningExtension
-open CuspStraighteningHomeomorph InfiniteA2Toric.QuantitativeRegions
+open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
+open CuspPeriodExpansion CuspStraighteningRetraction CuspStraightening
+open CuspStraightening
+open CuspStraightening InfiniteA2Toric.QuantitativeRegions
 open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 open InfiniteA2Toric.Construction
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {r : ℝ}
 
 theorem constructedModulus_torusCoordinates_norm
@@ -74,7 +74,7 @@ theorem positiveInteriorLogProduct_straightened_modulus
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (p : PuncturedLocalCarrier W) :
     (positiveInteriorLogProduct W
       (constructedPuncturedModulus W (puncturedPointStraightening W p))).1 =
-      CuspStraighteningExtension.straighteningRealParameter W p := by
+      CuspStraightening.straighteningRealParameter W p := by
   rw [positiveInteriorLogProduct_modulus,
     inverseStraighteningRealParameter_puncturedPointStraightening]
 

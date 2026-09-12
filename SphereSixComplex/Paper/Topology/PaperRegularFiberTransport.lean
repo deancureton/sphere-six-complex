@@ -11,7 +11,7 @@ open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.AnalyticData

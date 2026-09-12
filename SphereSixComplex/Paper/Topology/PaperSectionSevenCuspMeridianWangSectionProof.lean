@@ -16,8 +16,8 @@ open SphereSixComplex
 open SphereSixComplex.Topology
 open Hurewicz
 open SphereSixComplex.StandardCircleHomologyLiftDegree
-open CuspPuncturedCollarBridge
-open CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
+open CuspCollar
+open CuspCollar.CuspFiberSpecializationNormalization
 
 variable (A : AnalyticData)
 

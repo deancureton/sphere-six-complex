@@ -18,9 +18,9 @@ open SphereSixComplex.LatticeData
 open SphereSixComplex.Periods
 open SphereSixComplex.Topology
 open SphereSixComplex.CyclicAngularFundamentalDomain
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 open _root_.SphereSixComplex.AffineCyclicQuotientHomology
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+open SphereSixComplex.EllipticFilling
 
 variable (A : AnalyticData)
 

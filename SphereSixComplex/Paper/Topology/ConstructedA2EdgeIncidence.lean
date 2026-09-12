@@ -6,7 +6,7 @@ public import SphereSixComplex.Prerequisites.Topology.CellularEdgeBoundary
 @[expose] public section
 noncomputable section
 open CategoryTheory Set
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
@@ -14,9 +14,8 @@ open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
-open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedCentralCellAtlas_edge_left
@@ -68,4 +67,4 @@ public theorem constructedCentralCellAtlas_edge_attachingDegree
   rw [h]
   fin_cases i <;> norm_num [Finsupp.sub_apply, Finsupp.single_apply]
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

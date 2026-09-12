@@ -11,7 +11,7 @@ open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
-open SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
+open SphereSixComplex.Geometry.EllipticLogarithmicGauge
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.EllipticLocalCoordinates

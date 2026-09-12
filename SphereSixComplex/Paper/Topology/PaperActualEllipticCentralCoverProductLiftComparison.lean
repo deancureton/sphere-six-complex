@@ -29,7 +29,7 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.TriangleGroup

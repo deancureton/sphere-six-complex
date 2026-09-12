@@ -14,13 +14,13 @@ namespace SphereSixComplex
 
 
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The actual cusp-collar inclusion is onto on first integral homology. -/
@@ -63,7 +63,7 @@ public theorem rawDegreeOneTotalSpecialization_surjective
 
 end CuspFiberSpecializationNormalization
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 
 end SphereSixComplex
 

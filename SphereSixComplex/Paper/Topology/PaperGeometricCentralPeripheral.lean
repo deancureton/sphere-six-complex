@@ -20,7 +20,7 @@ namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
-open CuspPuncturedCollarBridge
+open CuspCollar
 
 variable (A : AnalyticData)
 

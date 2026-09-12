@@ -15,7 +15,7 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 
 open SphereSixComplex
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -27,7 +27,7 @@ open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem rawHeight_a2CyclicRaw (upper : Bool) (z : RawCoordinates) :
@@ -253,6 +253,6 @@ public theorem constructedCentralPhaseFaceTwoOrbit_continuousOn_closedBall
     (constructedCentralPhaseFaceTwoPoint_continuousOn_closedBall W)
       (fun _ _ ↦ Set.mem_univ _)
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar
 
 end

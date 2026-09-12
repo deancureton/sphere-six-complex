@@ -5,9 +5,9 @@ public import SphereSixComplex.Paper.Topology.NormalizedPolarHoneycombAmbientPha
 noncomputable section
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspStraighteningRetraction
-open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
+open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
 open CuspPeriodExpansion InfiniteA2Toric
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
 
 public theorem polarModulus_frozenDeck
@@ -84,10 +84,10 @@ public theorem actualPositiveModulusProjection_central_compact
       (Quotient.mk _ (compactPhaseLocalAction M W.localWitness.radius k x)) =
       actualPositiveModulusProjection W P L hmod (Quotient.mk _ x) := by
   let _ := P.positiveDeckAction
-  change Quotient.mk _ (P.modulus (CuspStraighteningExtension.pointStraightening W _)) =
-    Quotient.mk _ (P.modulus (CuspStraighteningExtension.pointStraightening W x))
-  rw [CuspStraighteningExtension.pointStraightening_of_t_eq_zero W x hx,
-    CuspStraighteningExtension.pointStraightening_of_t_eq_zero W _ ?_,
+  change Quotient.mk _ (P.modulus (CuspStraightening.pointStraightening W _)) =
+    Quotient.mk _ (P.modulus (CuspStraightening.pointStraightening W x))
+  rw [CuspStraightening.pointStraightening_of_t_eq_zero W x hx,
+    CuspStraightening.pointStraightening_of_t_eq_zero W _ ?_,
     polarModulus_compactPhase P hmod]
   change M.t (M.torusAction _ x.1) = 0
   rw [M.t_torusAction, hx, mul_zero]

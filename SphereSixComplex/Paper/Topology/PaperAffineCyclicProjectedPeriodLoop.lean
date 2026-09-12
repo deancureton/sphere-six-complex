@@ -18,12 +18,11 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 open Geometry Geometry.ComplexTorus Geometry.EllipticFamilySpecialization
 open LatticeData Periods
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open EllipticFilling
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
@@ -96,10 +95,10 @@ private theorem additiveTorusStraightPeriodCoordinateLoop_eq
 
 private theorem additiveTorusStraightPeriodLoop_degreeOne
     (P : AffineCyclicCentralFiberPresentationData m p D) (x : Lattice) :
-    (EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne
+    (StandardTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne
       (StandardCircleHomologyLiftDegree.loopHomologyClass
         (additiveTorusStraightPeriodLoop (p := p) x)) = x := by
-  rw [EstablishedTorusHomology.additiveTorusHomologyBasis_degreeOne]
+  rw [StandardTorusHomology.additiveTorusHomologyBasis_degreeOne]
   change StandardTorusHomology.standardFourTorusCoordinateHom
     (integralSingularHomologyMap 1
       (StandardTorusHomology.additiveTorusStdHomeomorph p P.fullRank :
@@ -139,11 +138,11 @@ public theorem additiveTorusStraightPeriodLoop_homologyClass
     (P : AffineCyclicCentralFiberPresentationData m p D) (x : Lattice) :
     StandardCircleHomologyLiftDegree.loopHomologyClass
         (additiveTorusStraightPeriodLoop (p := p) x) =
-      (EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne.symm x := by
-  apply (EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne.injective
+      (StandardTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne.symm x := by
+  apply (StandardTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne.injective
   rw [additiveTorusStraightPeriodLoop_degreeOne]
   exact
-    (EstablishedTorusHomology.additiveTorusHomologyBasis p
+    (StandardTorusHomology.additiveTorusHomologyBasis p
       P.fullRank).degreeOne.apply_symm_apply x |>.symm
 
 /-- The straight period segment in `ℂ²`, projected to the reduced central fibre. -/
@@ -181,12 +180,12 @@ public theorem projectedStraightPeriodLoop_homologyClass_eq_coverProjectionLatti
       integralSingularHomologyMap 1
         ⟨(RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm,
           (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm.continuous⟩
-        ((EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne.symm x) by
+        ((StandardTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne.symm x) by
     rfl]
   exact (integralSingularHomologyMap_comp_wang 1
     ⟨(RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm,
       (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm.continuous⟩
     (RadialEllipticActionData.centralFiberCoverProjection D)
-    ((EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne.symm x)).symm
+    ((StandardTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeOne.symm x)).symm
 
 end SphereSixComplex.AffineCyclicQuotientHomology

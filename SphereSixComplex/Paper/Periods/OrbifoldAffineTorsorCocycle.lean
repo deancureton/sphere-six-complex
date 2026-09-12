@@ -30,14 +30,14 @@ public theorem affineTransport_frameZero_sub (P : OrbifoldAffineDescentData)
   induction g using delta_generator_induction generalizing z u with
   | one => simp
   | three =>
-      rw [P.affineTransport_one]
+      rw [P.affineTransport_g₁]
       change P.affineOne z (u + P.frameZero z * c) =
         P.affineOne z u + P.frameZero (fuchsianSourceAction g₁ • z) * c
       rw [P.frameZero_one]
       have h := P.affineOne_sub z (u + P.frameZero z * c) u
       linear_combination h
   | four =>
-      rw [P.affineTransport_two]
+      rw [P.affineTransport_g₂]
       change P.affineTwo z (u + P.frameZero z * c) =
         P.affineTwo z u + P.frameZero (fuchsianSourceAction g₂ • z) * c
       rw [P.frameZero_two]

@@ -22,7 +22,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Geometry.CuspPeriodExpansion
@@ -33,7 +33,7 @@ open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
 
 namespace ActualPuncturedCuspCollarWitness
-open _root_.SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open _root_.SphereSixComplex.Geometry.CuspCollar
 /-- Polar coordinates and a fundamental strip for the normalized cusp parameter give the radial
 mapping-torus quotient.  Period transport across the strip is the matrix `M₀`.
 
@@ -44,7 +44,7 @@ Producing the marking is the same real-period-coordinate construction used for t
 `PaperSectionSevenAffineMarkedBandTrivialization`: lift the contractible base through the
 covering, then read the period coordinate on the lifted sheet. -/
 public noncomputable def radialClutchingData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) : ActualCuspRadialClutchingData W :=
   SphereSixComplex.Geometry.CuspRadialClutchingConstruction.actualCuspRadialClutchingData W
@@ -52,9 +52,9 @@ public noncomputable def radialClutchingData
 end ActualPuncturedCuspCollarWitness
 namespace UnnormalizedCuspRadialClutchingData
 
-open LatticeData LatticeWangAlgebra Topology.PaperCuspSpecializationAlgebra
+open LatticeData LatticeWangAlgebra CuspMonodromyCoinvariants
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W] (G : UnnormalizedCuspRadialClutchingData W)
 
@@ -132,7 +132,7 @@ end UnnormalizedCuspRadialClutchingData
 
 namespace ActualCuspRadialClutchingData
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W] (G : ActualCuspRadialClutchingData W)
 
@@ -217,7 +217,7 @@ public noncomputable def geometricHomologyTwoEquiv :
 
 end ActualCuspRadialClutchingData
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 
 /-! ## The integral basis changes used by Section 7 -/
 
@@ -264,7 +264,7 @@ public theorem cuspSectionSevenTwoCoordinateChange_specialization (x : Fin 6 →
 
 namespace Geometry.AnalyticData
 
-open CuspPuncturedCollarBridge
+open CuspCollar
 open SphereSixComplex.CircleMappingTorusHomologyBases
 
 variable (A : AnalyticData)
@@ -273,7 +273,7 @@ variable (A : AnalyticData)
 cusp witness. -/
 public noncomputable def actualCuspRadialClutchingData :
     ActualCuspRadialClutchingData A.starCuspWitness :=
-  _root_.SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness.radialClutchingData A.starCuspWitness
+  _root_.SphereSixComplex.Geometry.CuspCollar.ActualPuncturedCuspCollarWitness.radialClutchingData A.starCuspWitness
 
 /-- The paper's selected radial clutching datum is the explicit additive-period construction. -/
 public theorem actualCuspRadialClutchingData_eq :
@@ -289,9 +289,9 @@ public theorem cuspCentralFiberRetractionData_eq_radial :
 
 end Geometry.AnalyticData
 
-namespace Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
+namespace CuspSpecialization
 
-open Geometry.AnalyticData
+open Geometry Geometry.CuspCollar Geometry.AnalyticData
 
 /-- Projection from the raw degree-one Wang basis to its two fibre coinvariants. -/
 public def degreeOneFiberProjection : (Fin 3 → ℤ) →+ (Fin 2 → ℤ) where
@@ -333,6 +333,6 @@ public structure FiniteBasisNaturality (A : AnalyticData)
 
 
 
-end Geometry.CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
+end CuspSpecialization
 
 end SphereSixComplex

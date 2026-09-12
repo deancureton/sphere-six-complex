@@ -19,7 +19,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.AnalyticData
 
-open CuspPuncturedCollarBridge
+open CuspCollar
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 

@@ -22,9 +22,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.AnalyticData
 
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.EllipticFilling
 
 /-- The fibre coordinate on the marked band obtained from a specified affine-strip lift. -/
 public noncomputable def affineBandFiberCoordinateOfLift
@@ -133,59 +131,22 @@ public noncomputable def affineOrderFourGaugeProjectionOfLift
           ((g.continuous.comp A.affineBandStripCoordinate.continuous).prodMk
             (A.affineBandFiberCoordinateOfLift L).continuous)⟩
 
-/-- The logarithmic-gauge endpoint interface.  The lift used to read the endpoint is not
-arbitrary: its value is pinned at the normalized midpoint.  The two formula fields are
-the point-set equalities saying that the explicit star endpoints preserve the fibre
-coordinate up to a translation depending only on the affine-strip coordinate. -/
-public structure AffinePinnedLiftEndpointGaugeCompatibility
-    (A : AnalyticData) where
-  stripLift : A.AffineStripLift
-  stripLift_apply_midpoint :
-    stripLift.lift affineStripMidpoint = A.affineNormalizedMidpoint
-  orderThreeGauge :
-    C(affineVerticalStrip,
-      AdditiveTorus A.duplicatedSectionSevenBandParameter)
-  orderThreeFormula :
-    (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.affineOrderThreeStarEndpoint =
-      A.affineOrderThreeGaugeProjectionOfLift stripLift orderThreeGauge
-  orderFourGauge :
-    C(affineVerticalStrip,
-      AdditiveTorus A.duplicatedSectionSevenBandParameter)
-  orderFourFormula :
-    (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.affineOrderFourStarEndpoint =
-      A.affineOrderFourGaugeProjectionOfLift stripLift orderFourGauge
-
-/-- The irreducible two-field proposition, with the pinned lift and the two continuous gauges
-made explicit parameters. -/
-public structure AffinePinnedLiftEndpointGaugeFormulas
-    (A : AnalyticData) (L : A.AffineStripLift)
-    (orderThreeGauge orderFourGauge :
-      C(affineVerticalStrip,
-        AdditiveTorus A.duplicatedSectionSevenBandParameter)) : Prop where
-  orderThree :
-    (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.affineOrderThreeStarEndpoint =
-      A.affineOrderThreeGaugeProjectionOfLift L orderThreeGauge
-  orderFour :
-    (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
-        A.affineOrderFourStarEndpoint =
-      A.affineOrderFourGaugeProjectionOfLift L orderFourGauge
-
-/-- The pinned-lift endpoint calculation supplies the existing marked gauge-translation
-interface. -/
-public noncomputable def
-    AffinePinnedLiftEndpointGaugeCompatibility.toGaugeTranslation
-    {A : AnalyticData}
-    (H : A.AffinePinnedLiftEndpointGaugeCompatibility) :
+/-- Midpoint-pinned endpoint formulas determine the marked gauge translations. -/
+public noncomputable def affineMarkedEndpointGaugeTranslationOfPinnedLift
+    {A : AnalyticData} (L : A.AffineStripLift)
+    (hL : L.lift affineStripMidpoint = A.affineNormalizedMidpoint)
+    (g₃ g₄ : C(affineVerticalStrip, AdditiveTorus A.duplicatedSectionSevenBandParameter))
+    (h₃ : (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
+      A.affineOrderThreeStarEndpoint = A.affineOrderThreeGaugeProjectionOfLift L g₃)
+    (h₄ : (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
+      A.affineOrderFourStarEndpoint = A.affineOrderFourGaugeProjectionOfLift L g₄) :
     A.AffineMarkedEndpointGaugeTranslation := by
   refine
-    { orderThreeGauge := H.orderThreeGauge
+    { orderThreeGauge := g₃
       orderThreeFormula := ?_
-      orderFourGauge := H.orderFourGauge
+      orderFourGauge := g₄
       orderFourFormula := ?_ }
-  · rw [H.orderThreeFormula]
+  · rw [h₃]
     unfold affineOrderThreeGaugeProjectionOfLift
     unfold affineOrderThreeGaugeTranslatedProjection
     apply ContinuousMap.ext
@@ -193,20 +154,20 @@ public noncomputable def
     have hcoordinate := congrArg
       (fun f : C(A.affineMarkedBand,
         AdditiveTorus A.duplicatedSectionSevenBandParameter) ↦ f x)
-      (A.affineBandFiberCoordinateOfLift_eq_marked H.stripLift
-        H.stripLift_apply_midpoint)
+      (A.affineBandFiberCoordinateOfLift_eq_marked L
+        hL)
     change RadialEllipticActionData.centralFiberCoverProjection
         (orderThreeRadialActionData A.periods)
           (A.duplicatedSectionSevenBandToOrderThreeCoverSource
-            (H.orderThreeGauge (A.affineBandStripCoordinate x) +
-              A.affineBandFiberCoordinateOfLift H.stripLift x)) =
+            (g₃ (A.affineBandStripCoordinate x) +
+              A.affineBandFiberCoordinateOfLift L x)) =
       RadialEllipticActionData.centralFiberCoverProjection
         (orderThreeRadialActionData A.periods)
           (A.duplicatedSectionSevenBandToOrderThreeCoverSource
-            (H.orderThreeGauge (A.affineBandStripCoordinate x) +
+            (g₃ (A.affineBandStripCoordinate x) +
               affineBandFiberCoordinate A x))
     rw [hcoordinate]
-  · rw [H.orderFourFormula]
+  · rw [h₄]
     unfold affineOrderFourGaugeProjectionOfLift
     unfold affineOrderFourGaugeTranslatedProjection
     apply ContinuousMap.ext
@@ -214,45 +175,31 @@ public noncomputable def
     have hcoordinate := congrArg
       (fun f : C(A.affineMarkedBand,
         AdditiveTorus A.duplicatedSectionSevenBandParameter) ↦ f x)
-      (A.affineBandFiberCoordinateOfLift_eq_marked H.stripLift
-        H.stripLift_apply_midpoint)
+      (A.affineBandFiberCoordinateOfLift_eq_marked L
+        hL)
     change RadialEllipticActionData.centralFiberCoverProjection
         (orderFourRadialActionData A.periods)
           (A.duplicatedSectionSevenBandToOrderFourCoverSource
-            (H.orderFourGauge (A.affineBandStripCoordinate x) +
-              A.affineBandFiberCoordinateOfLift H.stripLift x)) =
+            (g₄ (A.affineBandStripCoordinate x) +
+              A.affineBandFiberCoordinateOfLift L x)) =
       RadialEllipticActionData.centralFiberCoverProjection
         (orderFourRadialActionData A.periods)
           (A.duplicatedSectionSevenBandToOrderFourCoverSource
-            (H.orderFourGauge (A.affineBandStripCoordinate x) +
+            (g₄ (A.affineBandStripCoordinate x) +
               affineBandFiberCoordinate A x))
     rw [hcoordinate]
 
-/-- Midpoint pinning and the two gauge formulas supply the marked band homotopies. -/
-public theorem markedBandHomotopies_of_pinnedLiftEndpointGaugeCompatibility
-    (A : AnalyticData)
-    (H : A.AffinePinnedLiftEndpointGaugeCompatibility) :
-    A.AffineOverlapBandCompatibility :=
-  H.toGaugeTranslation.toBandCompatibility
-
-/-- A midpoint-pinned strip lift and precisely the two explicit endpoint gauge formulas imply the
-marked-band compatibility target. -/
+/-- Midpoint-pinned endpoint formulas give the marked band homotopies. -/
 public theorem markedBandHomotopies_of_pinnedLiftEndpointGaugeFormulas
-    (A : AnalyticData) (L : A.AffineStripLift)
+    {A : AnalyticData} (L : A.AffineStripLift)
     (hL : L.lift affineStripMidpoint = A.affineNormalizedMidpoint)
-    (orderThreeGauge orderFourGauge :
-      C(affineVerticalStrip,
-        AdditiveTorus A.duplicatedSectionSevenBandParameter))
-    (H : A.AffinePinnedLiftEndpointGaugeFormulas L
-      orderThreeGauge orderFourGauge) :
+    (g₃ g₄ : C(affineVerticalStrip, AdditiveTorus A.duplicatedSectionSevenBandParameter))
+    (h₃ : (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
+      A.affineOrderThreeStarEndpoint = A.affineOrderThreeGaugeProjectionOfLift L g₃)
+    (h₄ : (orderFourSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
+      A.affineOrderFourStarEndpoint = A.affineOrderFourGaugeProjectionOfLift L g₄) :
     A.AffineOverlapBandCompatibility :=
-  markedBandHomotopies_of_pinnedLiftEndpointGaugeCompatibility A
-    { stripLift := L
-      stripLift_apply_midpoint := hL
-      orderThreeGauge := orderThreeGauge
-      orderThreeFormula := H.orderThree
-      orderFourGauge := orderFourGauge
-      orderFourFormula := H.orderFour }
+  (affineMarkedEndpointGaugeTranslationOfPinnedLift L hL g₃ g₄ h₃ h₄).toBandCompatibility
 
 end SphereSixComplex.Geometry.AnalyticData
 

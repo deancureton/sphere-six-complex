@@ -22,8 +22,7 @@ open scoped ContinuousMap ContDiff Manifold
 namespace SphereSixComplex.Geometry.AnalyticData
 
 open BiholomorphicStarGluing
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.EllipticFilling
 
 variable (A : AnalyticData)
 
@@ -73,7 +72,7 @@ public theorem ellipticInteriorOpenSubspace_paracompact
   let _ : SecondCountableTopology
       A.openEmbeddingStarData.SectionSevenMayerVietorisSpace :=
     A.starUnion_secondCountable
-  let _ : T2Space A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := A.starGluedT2
+  let _ : T2Space A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := A.t2Space_starGlued
   infer_instance
 
 /-- Every open subspace of the elliptic interior is normal. -/
@@ -81,7 +80,7 @@ public theorem ellipticInteriorOpenSubspace_normal
     (U : Set A.ellipticInterior) (hU : IsOpen U) :
     NormalSpace U := by
   let _ : ParacompactSpace U := A.ellipticInteriorOpenSubspace_paracompact U hU
-  let _ : T2Space A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := A.starGluedT2
+  let _ : T2Space A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := A.t2Space_starGlued
   infer_instance
 
 variable {A : AnalyticData}

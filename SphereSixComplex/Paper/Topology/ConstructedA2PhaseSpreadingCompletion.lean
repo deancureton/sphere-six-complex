@@ -17,7 +17,7 @@ open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
@@ -33,7 +33,7 @@ public theorem constructedLocalPositivePart_contractible {r : ℝ}
   exact c.contractibleSpace hB
 
 public def constructedPolarHoneycombConstruction
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     NormalizedPolarHoneycombConstructionData N constructedModel W.localWitness.radius :=
@@ -41,7 +41,7 @@ public def constructedPolarHoneycombConstruction
     (constructedLocalPositivePart_contractible W.localWitness.radius_pos W.localWitness.radius_lt_one)
 
 public instance constructedHasCuspPhaseSpreading
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
     (W : ActualPuncturedCuspCollarWitness N constructedModel) : HasCuspPhaseSpreading W := by
   let Q := constructedPolarHoneycombConstruction W

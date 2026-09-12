@@ -18,19 +18,18 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex
 
-open Geometry Geometry.ComplexTorus Geometry.CuspPuncturedCollarBridge
+open Geometry Geometry.ComplexTorus Geometry.CuspCollar
 open Geometry.InfiniteA2Toric
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPeriodExpansion
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- A selected preimage in the normalized additive cover of a prescribed boundary base point. -/
@@ -77,7 +76,7 @@ public noncomputable def paperCuspUnwrappedFillingCover
     base := paperCuspBoundaryBasePreimage W b
   }
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 
 end SphereSixComplex
 

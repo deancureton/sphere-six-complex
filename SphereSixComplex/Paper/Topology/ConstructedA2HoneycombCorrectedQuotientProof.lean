@@ -107,7 +107,7 @@ public theorem constructedA2CorrectedPlaneSquareProjection_isQuotientMap
 public noncomputable def constructedA2CorrectedFiniteQuotientCellHomeomorph
     {r : ℝ} (hr : 0 < r) (v : ToricLattice) :
     constructedA2CorrectedPlaneCell v ≃ₜ constructedPositiveCentralCell r v :=
-  constructedA2HomeomorphOfQuotientMaps
+  _root_.Topology.IsQuotientMap.homeomorphOfSameFibers
     (constructedA2CorrectedPlaneSquareProjection_isQuotientMap v)
     (constructedA2CellSquareProjection_isQuotientMap hr v)
     (fun a b ↦ by
@@ -122,7 +122,7 @@ public theorem constructedA2CorrectedFiniteQuotientCellHomeomorph_apply
     constructedA2CorrectedFiniteQuotientCellHomeomorph hr v
         (constructedA2CorrectedPlaneSquareProjection v a) =
       constructedA2CellSquareProjection hr v a :=
-  constructedA2HomeomorphOfQuotientMaps_apply
+  _root_.Topology.IsQuotientMap.homeomorphOfSameFibers_apply
     (constructedA2CorrectedPlaneSquareProjection_isQuotientMap v)
     (constructedA2CellSquareProjection_isQuotientMap hr v)
     (fun x y ↦ by

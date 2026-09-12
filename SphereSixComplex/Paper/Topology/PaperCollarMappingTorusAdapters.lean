@@ -30,7 +30,7 @@ namespace Geometry
 open Matrix
 open AnalyticTorusFamily ComplexTorus EllipticActualActionTopology EllipticFamilySpecialization
 open EllipticFixedPointCriterion
-open EllipticLogarithmicGaugeDescent EllipticPuncturedCollarGaugeHomeomorph
+open EllipticLogarithmicGauge EllipticLogarithmicGauge
 open EllipticVaryingFamilyQuotient
 open EquivariantQuotientHomeomorph
 open FamilyEquivariance GlobalTorusFamily

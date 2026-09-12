@@ -45,7 +45,7 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.TriangleGroup
 

@@ -22,9 +22,9 @@ namespace SphereSixComplex
 open SphereSixComplex.Geometry SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open Topology.PaperEllipticFillingRadialRetraction
+open EllipticFilling
 open Topology.FiniteCoverPerfectPairing
-open Topology.PaperEllipticReducedCentralFiberCoverModels
+open EllipticFilling
 
 private theorem orderThreeCoverSourceDegreeTwo_symm_aux
     {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U)
@@ -44,7 +44,7 @@ private theorem orderThreeCoverSourceDegreeTwo_symm_aux
 namespace Geometry.AnalyticData
 
 open SphereSixComplex.LatticeData
-open SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra
+open SphereSixComplex.MultipleFiberCoinvariants
 open EllipticTwoDiscHomologyCoordinates
 
 variable {A : AnalyticData} {D : A.EllipticTwoDiscCoverData}
@@ -54,7 +54,7 @@ private theorem affineTwoDiscCover_degreeTwoBasis_aux
     (z : IntegralSingularHomology 2 (AdditiveTorus R.twoDiscCover.bandParameter)) :
     (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeTwo
         (integralSingularHomologyMap 2 R.twoDiscCover.bandToOrderThreeCoverSource z) =
-      (EstablishedTorusHomology.additiveTorusHomologyBasis
+      (StandardTorusHomology.additiveTorusHomologyBasis
         R.twoDiscCover.bandParameter R.twoDiscCover.bandFullRank).degreeTwo z :=
   orderThreeCoverSourceDegreeTwo_symm_aux A.periods z
 
@@ -230,7 +230,7 @@ public theorem affineActualHomologyCoordinates_bandTwo_canonicalCuspFiber
   rw [EllipticBandHomologyAlignment.bandTwo_apply]
   rw [R.twoDiscCover.bandHomologyEquiv_canonicalCuspFiberToBandHomologyTwo]
   calc
-    _ = (EstablishedTorusHomology.additiveTorusHomologyBasis
+    _ = (StandardTorusHomology.additiveTorusHomologyBasis
           R.twoDiscCover.bandParameter R.twoDiscCover.bandFullRank).degreeTwo
         (integralSingularHomologyMap 2
           R.twoDiscCover.canonicalCuspFiberToBandTorusHomeomorph x) :=

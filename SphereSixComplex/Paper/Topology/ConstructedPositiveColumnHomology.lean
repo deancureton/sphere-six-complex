@@ -25,7 +25,7 @@ def intervalProductSliceEquiv {X : Type*} [TopologicalSpace X] {r : ℝ}
   }⟩
 
 open SphereSixComplex.StandardTorusHomology
-open CuspPeriodExpansion CuspPuncturedCollarBridge CuspStraighteningRetraction
+open CuspPeriodExpansion CuspCollar CuspStraighteningRetraction
 open CuspRadialClutchingConstruction
 
 def constructedFirstTorusPositiveHomotopyEquiv (A : AnalyticData) :
@@ -81,7 +81,7 @@ theorem constructedPositiveHomologyTwoReadout_firstTorus (A : AnalyticData) :
 
 
 def constructedCuspHomologyTwoPositiveReadout (A : AnalyticData) :
-    IntegralSingularHomology 2 (CuspPuncturedCollarBridge.ActualLocalCuspFilling A.starCuspWitness) →+ ℤ :=
+    IntegralSingularHomology 2 (CuspCollar.ActualLocalCuspFilling A.starCuspWitness) →+ ℤ :=
   (constructedPositiveHomologyTwoReadout A).comp
     (integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness))
 

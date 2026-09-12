@@ -25,7 +25,7 @@ open EllipticTwoDiscCoverData
 
 variable {A : AnalyticData}
 
-namespace EstablishedSectionSevenCuspTopology
+namespace CuspAttachment
 
 /-- The geometric full-iterate relation left by the degree-one cusp calculation. -/
 public def ActualCuspDegreeOneIndexTwoFullIterateRelation
@@ -87,7 +87,7 @@ public theorem actualCuspDegreeOneIndexTwo_iff_fullIterateRelation
     change (12 : ℤ) * f x₂ = 12 at h
     omega
 
-end EstablishedSectionSevenCuspTopology
+end CuspAttachment
 
 end SphereSixComplex.Geometry.AnalyticData
 

@@ -5,21 +5,21 @@ public import SphereSixComplex.Paper.Topology.PaperAffineCyclicQuotientCovering
 
 open AlgebraicTopology MulOpposite Topology
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 
-open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex.Geometry
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Periods
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+open SphereSixComplex.EllipticFilling
 open Hurewicz
 
 noncomputable section
@@ -55,6 +55,6 @@ end
 
 end SphereSixComplex.AffineCyclicQuotientHomology
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
 
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+end SphereSixComplex.AffineCyclicQuotientHomology

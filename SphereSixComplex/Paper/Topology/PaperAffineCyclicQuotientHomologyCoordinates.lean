@@ -17,15 +17,15 @@ noncomputable section
 
 open AlgebraicTopology Matrix
 
-namespace SphereSixComplex.Topology.PaperAffineCyclicQuotientHomologyCoordinates
+namespace SphereSixComplex.AffineCyclicQuotientHomology
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
 open Geometry.EllipticFamilySpecialization Geometry.GlobalTorusFamily
-open LatticeData PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels PaperLemmaSevenThirteenAlgebra
-open PaperMultipleFiberHOneTopology
-open PaperFiniteCyclicQuotientDegreeTwoComparison
-open TwistObstruction
+open LatticeData EllipticFilling
+open EllipticFilling MultipleFiberCoinvariants
+open AffineCyclicQuotientHomology
+open FiniteCyclicQuotientHomology
+open SphereSixComplex.Topology.TwistObstruction
 
 
 /-- Coordinates of the canonical order-three lattice-to-presentation map. -/
@@ -57,7 +57,7 @@ variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
 public def affineCyclicCentralFiberCoverSourceHomologyBasis
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     FourTorusHomologyBasis (RadialEllipticActionData.CentralFiberCoverSource D) :=
-  (EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).homeomorph
+  (StandardTorusHomology.additiveTorusHomologyBasis p P.fullRank).homeomorph
     (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)
 
 variable {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U)
@@ -155,7 +155,7 @@ public theorem orderFourOne_projection
 /-- Coordinate formula for the order-three projection in degree two. -/
 public theorem orderThreeTwo_projection
     (R : EllipticFiniteCoverHomologyRealization F)
-    (x : PaperPropositionSevenFourteenDegreeTwoAlgebra.DegreeTwoLattice) :
+    (x : EllipticMayerVietorisCoordinates.DegreeTwoLattice) :
     orderThreeTwoBasis F R
         (orderThreeReducedCentralFiberCoverHomologyDegreeTwo F x) =
       ![(SphereSixComplex.alphaTwoMatrix *ᵥ x) 0,
@@ -165,7 +165,7 @@ public theorem orderThreeTwo_projection
 /-- Coordinate formula for the order-four projection in degree two. -/
 public theorem orderFourTwo_projection
     (R : EllipticFiniteCoverHomologyRealization F)
-    (x : PaperPropositionSevenFourteenDegreeTwoAlgebra.DegreeTwoLattice) :
+    (x : EllipticMayerVietorisCoordinates.DegreeTwoLattice) :
     orderFourTwoBasis F R
         (orderFourReducedCentralFiberCoverHomologyDegreeTwo F x) =
       ![-(SphereSixComplex.alphaTwoMatrix *ᵥ x) 2,
@@ -174,4 +174,4 @@ public theorem orderFourTwo_projection
 
 end EllipticFiniteCoverHomologyRealization
 
-end SphereSixComplex.Topology.PaperAffineCyclicQuotientHomologyCoordinates
+end SphereSixComplex.AffineCyclicQuotientHomology

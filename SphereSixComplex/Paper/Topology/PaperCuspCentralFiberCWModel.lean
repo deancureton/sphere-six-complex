@@ -12,7 +12,7 @@ open AlgebraicTopology CategoryTheory Set
 open scoped ContinuousMap
 namespace SphereSixComplex
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
@@ -21,7 +21,7 @@ open SphereSixComplex.Geometry.InfiniteA2Toric
 
 /-- Transport the explicit characteristic maps from the constructed toric model. -/
 public noncomputable def establishedStandardA2ToricCentralOrbitCellAtlas
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     StandardA2ToricCentralFiberCellAtlas (ActualLocalCuspCentralOrbitQuotient W) := by
@@ -34,7 +34,7 @@ public noncomputable def establishedStandardA2ToricCentralOrbitCellAtlas
 /-- Transport the orbit-quotient atlas to the radial retraction's concrete central-fibre
 subspace. -/
 public noncomputable def establishedStandardA2ToricCentralFiberCellAtlas
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -50,7 +50,7 @@ public noncomputable def establishedStandardA2ToricCentralFiberCellAtlas
 
 /-- The ten remaining higher-dimensional cellular-incidence entries. -/
 public theorem establishedStandardA2ToricCentralFiberHigherIncidenceResidual
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -97,7 +97,7 @@ public theorem establishedStandardA2ToricCentralFiberHigherIncidenceResidual
       (constructedA2FourCell_attachingDegree_zero W₁ _ i)
 
 public theorem establishedStandardA2ToricCentralFiberIndependentIncidenceResidual
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -146,7 +146,7 @@ public theorem establishedStandardA2ToricCentralFiberIndependentIncidenceResidua
 /-- The remaining combinatorial input: the twenty-eight scalar cellular-incidence entries in
 the atlas coordinates. -/
 public theorem establishedStandardA2ToricCentralFiberIncidenceResidual
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -164,7 +164,7 @@ public theorem establishedStandardA2ToricCentralFiberIncidenceResidual
 /-- The actual quotient carrier, equipped with the CW structure constructed from the residual
 characteristic maps and with the verified finite incidence table. -/
 public noncomputable def establishedStandardA2ToricCentralFiberFiniteCellularRealization
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -179,7 +179,7 @@ public noncomputable def establishedStandardA2ToricCentralFiberFiniteCellularRea
 /-- The compact periodic `A₂` central fibre has its standard labelled CW realization and exact
 attaching-incidence formula. -/
 public noncomputable def establishedStandardA2ToricCentralFiberCellularRealization
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -190,7 +190,7 @@ public noncomputable def establishedStandardA2ToricCentralFiberCellularRealizati
 fibre.  This is the exact general toric-topology boundary absent from Mathlib: it supplies a CW
 realization and labels its cells by the orbit strata, but asserts no homology or Euler value. -/
 public noncomputable def establishedStandardA2ToricCentralFiberCWDecomposition
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -203,7 +203,7 @@ public noncomputable def establishedStandardA2ToricCentralFiberCWDecomposition
 /-- The actual quotient central fibre has the cusp toric cell model required by the local Euler
 calculation. -/
 public noncomputable def actualCuspCentralFiberCellModel
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -211,6 +211,6 @@ public noncomputable def actualCuspCentralFiberCellModel
   (establishedStandardA2ToricCentralFiberCWDecomposition W R).toCuspToricCellModel
 
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 
 end SphereSixComplex

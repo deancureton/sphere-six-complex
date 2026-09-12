@@ -25,7 +25,7 @@ public theorem affineTransport_cusp (P : OrbifoldAffineDescentData)
     apply Prod.ext
     · rw [P.affineTransport_fst, ← mul_smul, ← map_mul, g₁_mul_g₂_mul_g₀]
       simp
-    · rw [map_mul, Equiv.Perm.mul_apply, P.affineTransport_one, P.affineTransport_two]
+    · rw [map_mul, Equiv.Perm.mul_apply, P.affineTransport_g₁, P.affineTransport_g₂]
       change P.affineOne (fuchsianSourceAction g₂ • (fuchsianSourceAction g₀ • z))
         (P.affineTwo (fuchsianSourceAction g₀ • z) (P.affineCusp z u)) = u
       simpa only [← mul_smul, ← map_mul] using P.cusp_product z u

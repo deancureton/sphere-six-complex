@@ -29,8 +29,8 @@ variable (P : AnalyticData)
   nonemptyCentralCollar := P.fourPieceStarGluingData_nonemptyCentralCollar
   biholomorphicStar := P.biholomorphicFourPieceStarData
   pieceSecondCountable := P.starPiece_secondCountable
-  gluedT2 := P.starGluedT2
-  gluedCompact := P.starGluedCompact
+  gluedT2 := P.t2Space_starGlued
+  gluedCompact := P.compactSpace_starGlued
 
 end AnalyticData
 

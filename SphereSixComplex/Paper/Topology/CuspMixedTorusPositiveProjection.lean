@@ -39,7 +39,7 @@ end SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
-open CuspPuncturedCollarBridge CuspStraighteningRetraction
+open CuspCollar CuspStraighteningRetraction
 open InfiniteA2Toric CircleProductIdentityMappingTorus
 open StandardCircleHomologyLiftDegree
 

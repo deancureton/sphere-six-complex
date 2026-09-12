@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationDefs
-public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
+public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
 
 /-!
 # The radial clutching datum of the actual cusp collar
@@ -92,9 +92,9 @@ public theorem integralMatrix_rhoLambda_gZero :
 
 public theorem exteriorSquareMatrix_rhoLambda_gZero :
     exteriorSquareMatrix (rhoLambda g₀) =
-      SphereSixComplex.Topology.PaperCuspSpecializationAlgebra.mZeroExteriorTwoMatrix := by
+      SphereSixComplex.CuspMonodromyCoinvariants.mZeroExteriorTwoMatrix := by
   rw [exteriorSquareMatrix, integralMatrix_rhoLambda_gZero,
-    SphereSixComplex.Topology.PaperCuspSpecializationAlgebra.mZeroExteriorTwoMatrix]
+    SphereSixComplex.CuspMonodromyCoinvariants.mZeroExteriorTwoMatrix]
 
 public theorem additiveTorusProjection_isOpenMap (p : Parameters) :
     IsOpenMap (additiveTorusProjection p) := by
@@ -113,9 +113,9 @@ public noncomputable def cuspMonodromyCoordinates (x : PeriodDomain) :
   letI := additiveTorus_pathConnected x.1
   refine
     { degreeZero := pathConnectedIntegralHomologyZeroEquivInteger (AdditiveTorus x.1)
-      degreeOne := (EstablishedTorusHomology.additiveTorusHomologyBasis x.1
+      degreeOne := (StandardTorusHomology.additiveTorusHomologyBasis x.1
         (fullRankDomain x)).degreeOne
-      degreeTwo := (EstablishedTorusHomology.additiveTorusHomologyBasis x.1
+      degreeTwo := (StandardTorusHomology.additiveTorusHomologyBasis x.1
         (fullRankDomain x)).degreeTwo
       degreeZero_monodromy := ?_
       degreeOne_monodromy := ?_
@@ -125,17 +125,17 @@ public noncomputable def cuspMonodromyCoordinates (x : PeriodDomain) :
       (X := AdditiveTorus x.1) (Y := AdditiveTorus x.1)
       ⟨cuspFiberClutching x, (cuspFiberClutching x).continuous⟩ y
   · intro y
-    have h := (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality x.1
+    have h := (StandardTorusHomology.additiveTorusHomologyBasis_naturality x.1
       (fullRankDomain x) (cuspDescendedAffineTorusAutomorphism x)).1 y
     rw [show (cuspDescendedAffineTorusAutomorphism x).latticeMap = rhoLambda g₀ from rfl,
       rhoLambda_g₀_apply] at h
     exact h
   · intro y
-    have h := (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality x.1
+    have h := (StandardTorusHomology.additiveTorusHomologyBasis_naturality x.1
       (fullRankDomain x) (cuspDescendedAffineTorusAutomorphism x)).2 y
     rw [show exteriorSquareMap (cuspDescendedAffineTorusAutomorphism x).latticeMap =
         (Matrix.toLin'
-          (SphereSixComplex.Topology.PaperCuspSpecializationAlgebra.mZeroExteriorTwoMatrix)).toAddHom by
+          (SphereSixComplex.CuspMonodromyCoinvariants.mZeroExteriorTwoMatrix)).toAddHom by
       rw [show (cuspDescendedAffineTorusAutomorphism x).latticeMap = rhoLambda g₀ from rfl,
         exteriorSquareMap, exteriorSquareMatrix_rhoLambda_gZero]] at h
     exact h
@@ -286,9 +286,9 @@ public theorem realMappingTorusChart_eq_iff (x : PeriodDomain) (w w' : ℝ × Co
 section Collar
 
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open SphereSixComplex.Geometry.CuspCollar
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   (N : NormalizedFuchsianCuspCoordinate E D)
 
 /-- The point of the period domain lying over the normalized cusp parameter `s`. -/
@@ -372,7 +372,7 @@ end Collar
 section Polar
 
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open SphereSixComplex.Geometry.CuspCollar
 
 /-- The normalized cusp parameter with prescribed cusp modulus and real part. -/
 public noncomputable def cuspParameterOfPolar (rho x : ℝ) : ℂ :=
@@ -425,14 +425,14 @@ end Polar
 section Trivialization
 
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
   {M : Model}
   (W : ActualPuncturedCuspCollarWitness N M) (s₀ : ℂ)
@@ -861,7 +861,7 @@ public noncomputable def actualCuspRadialClutchingData :
   fiberHomeomorph := Homeomorph.refl _
   fiberMarkingCompatibility := by
     intro _ x
-    change (EstablishedTorusHomology.additiveTorusHomologyBasis
+    change (StandardTorusHomology.additiveTorusHomologyBasis
         (cuspBasePoint N (markedCuspParameter W)).1
         (fullRankDomain (cuspBasePoint N (markedCuspParameter W)))).degreeOne
       (integralSingularHomologyMap 1 (ContinuousMap.id _) x) = _
@@ -869,7 +869,7 @@ public noncomputable def actualCuspRadialClutchingData :
     rfl
   fiberMarkingCompatibilityTwo := by
     intro _ x
-    change (EstablishedTorusHomology.additiveTorusHomologyBasis
+    change (StandardTorusHomology.additiveTorusHomologyBasis
         (cuspBasePoint N (markedCuspParameter W)).1
         (fullRankDomain (cuspBasePoint N (markedCuspParameter W)))).degreeTwo
       (integralSingularHomologyMap 2 (ContinuousMap.id _) x) = _

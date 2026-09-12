@@ -41,7 +41,7 @@ public noncomputable def integerPairToFinTwoAddEquiv : (ℤ × ℤ) ≃+ (Fin 2 
   right_inv f := by funext i; fin_cases i <;> rfl
   map_add' x y := by funext i; fin_cases i <;> rfl
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 
 open SphereSixComplex.Geometry
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -104,7 +104,7 @@ public theorem puncturedLocalCarrier_pathConnected
 
 /-- The actual phase-action quotient of the punctured local cusp carrier is path-connected. -/
 public theorem puncturedLocalCuspQuotient_pathConnected
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     PathConnectedSpace (PuncturedLocalCuspQuotient W) := by
@@ -114,7 +114,7 @@ public theorem puncturedLocalCuspQuotient_pathConnected
   change PathConnectedSpace (Quotient (puncturedPsiOrbitRel W))
   infer_instance
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 
 namespace Geometry.AnalyticData
 
@@ -141,8 +141,8 @@ public theorem starFilling_pathConnected (i : Fin 3) :
 public theorem starCuspCollarSource_pathConnected :
     PathConnectedSpace (A.openEmbeddingStarData.collarSource 0) := by
   change PathConnectedSpace
-    (CuspPuncturedCollarBridge.PuncturedLocalCuspQuotient A.starCuspWitness)
-  exact CuspPuncturedCollarBridge.puncturedLocalCuspQuotient_pathConnected A.starCuspWitness
+    (CuspCollar.PuncturedLocalCuspQuotient A.starCuspWitness)
+  exact CuspCollar.puncturedLocalCuspQuotient_pathConnected A.starCuspWitness
 
 /-- The penultimate Mayer--Vietoris stage is the union of the central, order-three, and
 order-four pieces. -/

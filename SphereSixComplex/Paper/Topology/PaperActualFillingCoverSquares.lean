@@ -20,7 +20,7 @@ open Set Topology
 
 namespace SphereSixComplex
 
-open Geometry Geometry.ComplexTorus Geometry.CuspPuncturedCollarBridge
+open Geometry Geometry.ComplexTorus Geometry.CuspCollar
 open Geometry.EllipticLocalCoordinates Geometry.EllipticVaryingFamilyQuotient
 
 /-- The normalized additive cover of the actual cusp collar is simply connected. -/

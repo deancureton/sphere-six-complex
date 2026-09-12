@@ -8,9 +8,9 @@ open AlgebraicTopology CategoryTheory TopologicalSpace
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology GlobalTorusFamily TriangleGroup
 open SphereSixComplex.StandardTorusHomology SphereSixComplex.Periods
-open ComplexTorus EllipticFamilySpecialization EllipticRealPeriodProductTrivialization
+open ComplexTorus EllipticFamilySpecialization RealPeriodTrivialization
 open EllipticTwoDiscHomologyCoordinates
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+open SphereSixComplex.EllipticFilling
 
 public theorem regularMovingToFixed_period_smul (A : AnalyticData)
     (b : RegularBase (U := A.paperTriangleUniformization)) (n : IntegerPeriods) (t : ℝ) :
@@ -98,7 +98,7 @@ public theorem normalizedMarkedPeriodBandCircle_bandOne {A : AnalyticData}
     EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
       (integralSingularHomologyMap 1 (normalizedMarkedPeriodBandCircle R n)
         standardCircleHomologyGenerator) = n := by
-  let e := PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverSourceHomeomorph
+  let e := EllipticFilling.RadialEllipticActionData.centralFiberCoverSourceHomeomorph
     (orderThreeRadialActionData A.periods)
   change additiveTorusHomologyDegreeOne A.duplicatedSectionSevenBandParameter
     A.duplicatedSectionSevenBandFullRank

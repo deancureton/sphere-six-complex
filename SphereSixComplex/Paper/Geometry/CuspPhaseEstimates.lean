@@ -80,7 +80,7 @@ namespace CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 open SphereSixComplex.Periods
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D)
 
 
@@ -257,7 +257,7 @@ namespace CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 
 open SphereSixComplex.Periods
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D)
 
 /-- A fixed point away from the central fibre satisfies the logarithmic equation

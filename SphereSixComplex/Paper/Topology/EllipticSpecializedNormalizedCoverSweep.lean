@@ -27,7 +27,7 @@ open FixedLoopSweepWangBoundary
 open NormalizedAffineMappingTorusCover
 open CyclicMappingTorus.Cross
 open CyclicMappingTorus.CircleSweep
-open PaperAffineCyclicReducedFiberMappingTorus
+open EllipticReducedFiberMappingTorus
 open PositiveCircleCross
 open StandardTorusHomology
 

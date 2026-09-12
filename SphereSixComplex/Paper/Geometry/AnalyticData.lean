@@ -26,23 +26,14 @@ noncomputable section
 
 /-- The coherent analytic choices used by all four pieces of the completed family. -/
 public structure AnalyticData where
-  modular : NormalizedFuchsianModularParameter
+  modular : FuchsianModularLift
   localPeriods : FuchsianPeriodLocalData modular
   cuspCoordinate : CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate modular localPeriods
 
-/-- Every analytic package in this development uses the explicitly constructed standard
-infinite `A₂` toric model. -/
-public abbrev AnalyticData.toricModel (_A : AnalyticData) :
-    InfiniteA2Toric.Model :=
-  InfiniteA2Toric.Construction.constructedModel
-
-
-
-
 /-- A coherent choice of the analytic data supplied by concrete affine-descent certificates. -/
 @[expose] public noncomputable def AnalyticData.ofDescent
-    (E : NormalizedFuchsianModularParameter)
-    (F : ExactLiftedModularNegOneFrame E)
+    (E : FuchsianModularLift)
+    (F : ModularNegOneFrame E)
     (Amu : (FuchsianAffineDescent.muDescentData E F).AnalyticDescentData)
     (Abeta : FuchsianAffineDescent.BetaDescentData E F Amu) :
     AnalyticData := by
@@ -53,16 +44,16 @@ public abbrev AnalyticData.toricModel (_A : AnalyticData) :
 
 /-- A coherent production choice requiring only the exact modular parameter and modular frame. -/
 @[expose] public noncomputable def AnalyticData.ofFrame
-    (E : NormalizedFuchsianModularParameter)
-    (F : ExactLiftedModularNegOneFrame E) : AnalyticData :=
+    (E : FuchsianModularLift)
+    (F : ModularNegOneFrame E) : AnalyticData :=
   AnalyticData.ofDescent E F
     (FuchsianAffineDescent.muAnalyticDescentData E F)
     (FuchsianAffineDescent.betaAnalyticDescentData E F)
 
 /-- A coherent production choice of all analytic inputs. -/
 @[expose] public noncomputable def analyticData : AnalyticData :=
-  let E := Classical.choice nonempty_normalizedFuchsianModularParameter
-  let F := Classical.choice (nonempty_exactLiftedModularNegOneFrame E)
+  let E := Classical.choice nonempty_fuchsianModularLift
+  let F := Classical.choice (nonempty_modularNegOneFrame E)
   AnalyticData.ofFrame E F
 
 

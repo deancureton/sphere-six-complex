@@ -23,9 +23,9 @@ namespace SphereSixComplex.Geometry.AnalyticData
 open EllipticTwoDiscHomologyCoordinates
 open EllipticInteriorMarkedCycleData
 open SphereSixComplex.CircleMappingTorusHomologyBases
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.LatticeData SphereSixComplex.LatticeWangAlgebra
-open SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
+open SphereSixComplex.CuspMonodromyCoinvariants
 
 variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
 

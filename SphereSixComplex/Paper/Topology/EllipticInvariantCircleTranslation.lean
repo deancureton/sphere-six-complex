@@ -5,7 +5,7 @@ public import SphereSixComplex.Paper.Topology.IntegerPeriodCircle
 @[expose] public section
 noncomputable section
 open scoped ContinuousMap
-namespace SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+namespace SphereSixComplex.EllipticFilling
 open SphereSixComplex.Geometry SphereSixComplex.TriangleGroup
 open EllipticLocalCoordinates EquivariantQuotientHomeomorph
 namespace RadialEllipticActionData
@@ -60,4 +60,4 @@ public def circleTranslate : C(UnitAddCircle × D.FillingQuotient, D.FillingQuot
 
 
 end RadialEllipticActionData
-end SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+end SphereSixComplex.EllipticFilling

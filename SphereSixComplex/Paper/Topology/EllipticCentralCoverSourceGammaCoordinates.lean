@@ -19,9 +19,8 @@ namespace SphereSixComplex.Topology.EllipticCentralCoverSourceGammaCoordinates
 open Geometry Geometry.ComplexTorus Geometry.EllipticFamilySpecialization
 open Geometry.AnalyticTorusFamily Geometry.GlobalTorusFamily
 open StandardTorusHomology
-open PaperAffineCyclicReducedFiberMappingTorus
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
+open EllipticReducedFiberMappingTorus
+open EllipticFilling
 open EllipticGammaShearDegreeTwoCoordinates
 
 variable {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U)
@@ -117,7 +116,7 @@ private theorem orderThreeTorusBasis_afterStandardHomeomorph (x : Fin 6 → ℤ)
         (fullRankDomain (parameterMap F U.zOne)))
       ((orderThreeTorusHomologyBasis F).degreeTwo.symm x) = _
   rw [orderThreeTorusHomologyBasis,
-    EstablishedTorusHomology.additiveTorusHomologyBasis_degreeTwo,
+    StandardTorusHomology.additiveTorusHomologyBasis_degreeTwo,
     StandardTorusHomology.additiveTorusHomologyDegreeTwo,
     StandardTorusHomology.stdTorusFourHomologyTwo]
   exact (integralSingularHomologyEquiv 2
@@ -135,7 +134,7 @@ private theorem orderFourTorusBasis_afterStandardHomeomorph (x : Fin 6 → ℤ) 
         (fullRankDomain (parameterMap F U.zTwo)))
       ((orderFourTorusHomologyBasis F).degreeTwo.symm x) = _
   rw [orderFourTorusHomologyBasis,
-    EstablishedTorusHomology.additiveTorusHomologyBasis_degreeTwo,
+    StandardTorusHomology.additiveTorusHomologyBasis_degreeTwo,
     StandardTorusHomology.additiveTorusHomologyDegreeTwo,
     StandardTorusHomology.stdTorusFourHomologyTwo]
   exact (integralSingularHomologyEquiv 2

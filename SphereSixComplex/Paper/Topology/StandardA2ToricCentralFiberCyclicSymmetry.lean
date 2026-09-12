@@ -16,7 +16,7 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 
 open SphereSixComplex
 open SphereSixComplex.Geometry.CuspCombinatorics
@@ -372,6 +372,6 @@ public theorem constructedCentralPhaseFaceTwoCarrier_injOn :
   exact constructedCentralPhaseFaceZeroCarrier_injOn hx hy
     (a2CyclicCarrierHomeomorph.injective (a2CyclicCarrierHomeomorph.injective hxy))
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar
 
 end

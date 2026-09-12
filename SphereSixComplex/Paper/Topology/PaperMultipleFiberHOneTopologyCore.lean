@@ -17,28 +17,26 @@ open AlgebraicTopology
 
 noncomputable section
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
 open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
 open LatticeData Periods TriangleGroup
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperLemmaSevenThirteenAlgebra TwistObstruction
+open EllipticFilling
+open MultipleFiberCoinvariants SphereSixComplex.Topology.TwistObstruction
 
 
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
 open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
 open LatticeData Periods TriangleGroup
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperLemmaSevenThirteenAlgebra TwistObstruction
-open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open EllipticFilling
+open MultipleFiberCoinvariants SphereSixComplex.Topology.TwistObstruction
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
 
@@ -396,72 +394,55 @@ private theorem affineCyclicBoundaryDegree_eq_one_iff
     rw [affineCyclicTranslation_right]
     simp
 
-public structure CanonicalAffineCyclicFillingExtensionData
-    (P : AffineCyclicCentralFiberPresentationData m p D) :
-    Type where
-  extension : SphereSixComplex.Topology.CyclicExtension.Data m Lattice
-    (affineCyclicBoundaryDeckData P).FillingDeck
-  action_eq : extension.act = P.affine.latticeMap
-  twist_eq : extension.twist = P.twist
-  kernelToAbelianization : ∀ x,
-    extension.kernelToAbelianization x =
-      Additive.ofMul (Abelianization.of (affineCyclicKernelIncl P x))
-
-public noncomputable def canonicalAffineCyclicFillingExtensionData
-    (P : AffineCyclicCentralFiberPresentationData m p D) :
-    CanonicalAffineCyclicFillingExtensionData P where
-  extension := {
-    incl := affineCyclicKernelIncl P
-    incl_add := affineCyclicKernelIncl_add P
-    incl_injective := affineCyclicKernelIncl_injective P
-    proj := affineCyclicBoundaryDegree P
-    proj_eq_one_iff := affineCyclicBoundaryDegree_eq_one_iff P
-    gen := (affineCyclicBoundaryDeckData P).fillingDeckMap
-      (affineCyclicBoundaryDeckData P).meridian
-    proj_gen := by
-      change Multiplicative.ofAdd ((1 : ℤ) : ZMod m) = Multiplicative.ofAdd 1
-      simp
-    act := P.affine.latticeMap
-    conj_incl := by
-      intro x
-      have h := congrArg (affineCyclicBoundaryDeckData P).fillingDeckMap
-        ((affineCyclicBoundaryDeckData P).conjugate x)
-      rw [map_mul, map_mul, map_inv] at h
-      change (affineCyclicBoundaryDeckData P).fillingDeckMap
-            (affineCyclicBoundaryDeckData P).meridian *
-          affineCyclicKernelIncl P x *
-            ((affineCyclicBoundaryDeckData P).fillingDeckMap
-              (affineCyclicBoundaryDeckData P).meridian)⁻¹ =
-        affineCyclicKernelIncl P (P.affine.latticeMap x)
-      simpa [affineCyclicKernelIncl, affineCyclicBoundaryDeckData,
-        canonicalCyclicAffineBoundaryDeckData] using h
-    twist := P.twist
-    gen_pow := affineCyclicGenerator_pow P }
-  action_eq := rfl
-  twist_eq := rfl
-  kernelToAbelianization _ := rfl
-
-@[expose] public noncomputable def canonicalAffineCyclicFillingExtension
+public noncomputable def canonicalAffineCyclicFillingExtension
     (P : AffineCyclicCentralFiberPresentationData m p D) :
     SphereSixComplex.Topology.CyclicExtension.Data m Lattice
-      (affineCyclicBoundaryDeckData P).FillingDeck :=
-  (canonicalAffineCyclicFillingExtensionData P).extension
+      (affineCyclicBoundaryDeckData P).FillingDeck where
+  incl := affineCyclicKernelIncl P
+  incl_add := affineCyclicKernelIncl_add P
+  incl_injective := affineCyclicKernelIncl_injective P
+  proj := affineCyclicBoundaryDegree P
+  proj_eq_one_iff := affineCyclicBoundaryDegree_eq_one_iff P
+  gen := (affineCyclicBoundaryDeckData P).fillingDeckMap
+    (affineCyclicBoundaryDeckData P).meridian
+  proj_gen := by
+    change Multiplicative.ofAdd ((1 : ℤ) : ZMod m) = Multiplicative.ofAdd 1
+    simp
+  act := P.affine.latticeMap
+  conj_incl := by
+    intro x
+    have h := congrArg (affineCyclicBoundaryDeckData P).fillingDeckMap
+      ((affineCyclicBoundaryDeckData P).conjugate x)
+    rw [map_mul, map_mul, map_inv] at h
+    change (affineCyclicBoundaryDeckData P).fillingDeckMap
+          (affineCyclicBoundaryDeckData P).meridian *
+        affineCyclicKernelIncl P x *
+          ((affineCyclicBoundaryDeckData P).fillingDeckMap
+            (affineCyclicBoundaryDeckData P).meridian)⁻¹ =
+      affineCyclicKernelIncl P (P.affine.latticeMap x)
+    simpa [affineCyclicKernelIncl, affineCyclicBoundaryDeckData,
+      canonicalCyclicAffineBoundaryDeckData] using h
+  twist := P.twist
+  gen_pow := affineCyclicGenerator_pow P
 
 public theorem canonicalAffineCyclicFillingExtension_action_eq
     (P : AffineCyclicCentralFiberPresentationData m p D) :
-    (canonicalAffineCyclicFillingExtension P).act = P.affine.latticeMap :=
-  (canonicalAffineCyclicFillingExtensionData P).action_eq
+    (canonicalAffineCyclicFillingExtension P).act = P.affine.latticeMap := by
+  unfold canonicalAffineCyclicFillingExtension
+  rfl
 
 public theorem canonicalAffineCyclicFillingExtension_twist_eq
     (P : AffineCyclicCentralFiberPresentationData m p D) :
-    (canonicalAffineCyclicFillingExtension P).twist = P.twist :=
-  (canonicalAffineCyclicFillingExtensionData P).twist_eq
+    (canonicalAffineCyclicFillingExtension P).twist = P.twist := by
+  unfold canonicalAffineCyclicFillingExtension
+  rfl
 
 public theorem canonicalAffineCyclicFillingExtension_kernelToAbelianization
     (P : AffineCyclicCentralFiberPresentationData m p D) (x : Lattice) :
     (canonicalAffineCyclicFillingExtension P).kernelToAbelianization x =
-      Additive.ofMul (Abelianization.of (affineCyclicKernelIncl P x)) :=
-  (canonicalAffineCyclicFillingExtensionData P).kernelToAbelianization x
+      Additive.ofMul (Abelianization.of (affineCyclicKernelIncl P x)) := by
+  unfold canonicalAffineCyclicFillingExtension
+  rfl
 
 /-- The exact input left by the degree-one Hurewicz comparison for the affine cyclic deck
 extension.
@@ -491,13 +472,12 @@ public structure AffineCyclicDeckHurewiczComparison
 
 end SphereSixComplex.AffineCyclicQuotientHomology
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
 open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
 open LatticeData Periods TriangleGroup
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperLemmaSevenThirteenAlgebra TwistObstruction
+open EllipticFilling
+open MultipleFiberCoinvariants SphereSixComplex.Topology.TwistObstruction
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
 private theorem orderThreeLiftTranslation_fixed :
@@ -599,6 +579,6 @@ quotient calculation. -/
     simp
   free := orderFourAction_free F
 
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
 end

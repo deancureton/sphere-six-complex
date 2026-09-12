@@ -3,7 +3,7 @@ module
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.EstablishedExactFuchsianOrbifoldCoordinate
 public import Mathlib.Topology.ContinuousMap.Basic
 public import Mathlib.Analysis.Complex.RemovableSingularity
-import all SphereSixComplex.Paper.Periods.ExactFuchsianRamification
+import all SphereSixComplex.Paper.Periods.FuchsianModularLift.Ramification
 
 /-!
 # Holomorphic descent through the exact Fuchsian quotient

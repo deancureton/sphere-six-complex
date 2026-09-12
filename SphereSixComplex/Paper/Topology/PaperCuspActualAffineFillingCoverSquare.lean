@@ -23,20 +23,21 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
+
 namespace SphereSixComplex
 
-open Geometry Geometry.ComplexTorus Geometry.CuspPuncturedCollarBridge
+open Geometry Geometry.ComplexTorus Geometry.CuspCollar
 open Geometry.InfiniteA2Toric
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPeriodExpansion
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The explicit additive cover mapped to the punctured local carrier before the
@@ -96,11 +97,11 @@ public theorem actualCuspFillingProjection_isQuotientCoveringMap
       (Multiplicative ParameterLattice) := by
   exact W.localWitness.quotient_isQuotientCoveringMap
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 
 namespace Geometry.AnalyticData
 
-open CuspPuncturedCollarBridge
+open CuspCollar
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
@@ -161,7 +162,7 @@ public noncomputable def cuspBoundaryProjection :
 
 /-- The full local-carrier projection transported to the exact cusp piece of the glued star. -/
 public noncomputable def cuspFillingProjectionToStar :
-    C(localCarrier A.toricModel A.starCuspWitness.localWitness.radius,
+    C(localCarrier constructedModel A.starCuspWitness.localWitness.radius,
       (sectionSevenStarOpenCover
         A.openEmbeddingStarData.toFourPieceStarGluingData).piece 1) :=
   (⟨A.cuspFillingToStarPieceHomeomorph,

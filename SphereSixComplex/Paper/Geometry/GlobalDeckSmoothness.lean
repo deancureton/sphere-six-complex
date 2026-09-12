@@ -116,7 +116,7 @@ public theorem periodTransport_gZero (x : PeriodDomain) : periodTransport g₀ x
         ((fullRankDomain x).realEquiv (integerToReal (integralBasisVector i))) =
       (fullRankDomain x).realEquiv (integerToReal (integralBasisVector i))
     rw [(fullRankDomain x).map_integer, periodTransport_periodVector]
-    rw [rhoParameters_g₀_apply, rhoLambda_g0]
+    rw [rhoParameters_g₀_apply, rhoLambda_g₀]
     change periodVector (transformCusp x.1) (m₀ (integralBasisVector i)) = _
     exact cusp_periodVector x.1 (integralBasisVector i)
   apply LinearEquiv.ext

@@ -20,11 +20,9 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.AnalyticTorusFamily
-open SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.Geometry.EllipticLogarithmicGauge
+open SphereSixComplex.Geometry.RealPeriodTrivialization
+open SphereSixComplex.EllipticFilling
 
 public theorem orderThreeSelectedFilling_toFun_starToFilling_mk
     (A : AnalyticData)

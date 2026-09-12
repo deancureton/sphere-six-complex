@@ -20,8 +20,8 @@ namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
-open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
+open SphereSixComplex.Geometry.RealPeriodTrivialization
+open SphereSixComplex.EllipticFilling
 
 variable (A : AnalyticData) (r : ℝ)
 

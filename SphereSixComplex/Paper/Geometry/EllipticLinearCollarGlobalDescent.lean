@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.EllipticPuncturedCollarGaugeHomeomorph
+public import SphereSixComplex.Paper.Geometry.EllipticLogarithmicGauge.Homeomorph
 public import SphereSixComplex.Paper.Geometry.EllipticAffineGlobalSeparation
 public import SphereSixComplex.Paper.Geometry.RegularTorusFamily
 import all SphereSixComplex.Paper.TriangleGroup.Representation
@@ -27,8 +27,7 @@ open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
-open SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
-open SphereSixComplex.Geometry.EllipticLogarithmicGaugeDescent
+open SphereSixComplex.Geometry.EllipticLogarithmicGauge
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
 open SphereSixComplex.Geometry.EllipticAffineGlobalSeparation
 open SphereSixComplex.TriangleGroup.FuchsianProperFreeness

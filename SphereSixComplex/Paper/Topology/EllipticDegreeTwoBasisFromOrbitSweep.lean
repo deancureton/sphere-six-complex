@@ -37,9 +37,8 @@ open Geometry Geometry.EllipticFamilySpecialization
 open NormalizedAffineMappingTorusCover
 open NormalizedFiniteOrderAdditiveCircleSweep
 open CyclicMappingTorus.CircleSweep
-open PaperAffineCyclicReducedFiberMappingTorus
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
+open EllipticReducedFiberMappingTorus
+open EllipticFilling
 open PositiveCircleCross
 open StandardThreeTorusProductWangBoundary
 open StandardTorusHomology

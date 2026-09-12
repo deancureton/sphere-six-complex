@@ -14,9 +14,11 @@ which Lemma 7.5 transports to the actual cusp action.
 
 noncomputable section
 
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
+
 namespace SphereSixComplex.Geometry.AnalyticData
 
-open SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
@@ -24,8 +26,8 @@ variable (A : AnalyticData)
 
 /-- The jointly selected positive-part and phase-spreading package for the paper cusp. -/
 public noncomputable def cuspPhaseSpreadingPackage :
-    Σ P : PolarHoneycombData A.toricModel A.starCuspWitness.localWitness.radius,
-      FrozenLocalCuspPhaseSpreadingData A.cuspCoordinate A.toricModel
+    Σ P : PolarHoneycombData constructedModel A.starCuspWitness.localWitness.radius,
+      FrozenLocalCuspPhaseSpreadingData A.cuspCoordinate constructedModel
         A.starCuspWitness.localWitness.radius P :=
   cuspPhaseSpreadingData A.starCuspWitness
 

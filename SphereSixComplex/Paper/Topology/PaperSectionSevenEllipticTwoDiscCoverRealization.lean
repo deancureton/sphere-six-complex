@@ -28,9 +28,7 @@ open SphereSixComplex.Periods
 
 namespace Geometry.AnalyticData
 
-open Topology.PaperEllipticFillingRealPeriodRadial
-open Topology.PaperEllipticFillingRadialRetraction
-open Topology.PaperEllipticReducedCentralFiberCoverModels
+open EllipticFilling
 
 variable (A : AnalyticData)
 

@@ -17,7 +17,7 @@ noncomputable section
 
 open Matrix
 
-namespace SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
+namespace SphereSixComplex.CuspMonodromyCoinvariants
 
 open LatticeData
 open SphereSixComplex.LatticeWangAlgebra
@@ -144,4 +144,4 @@ public theorem mZeroExteriorTwoCoinvariantsEquivIntFourth_mk (x : ExteriorTwoLat
 
 
 
-end SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
+end SphereSixComplex.CuspMonodromyCoinvariants

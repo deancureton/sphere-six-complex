@@ -10,7 +10,7 @@ namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex SphereSixComplex.Topology SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.GlobalTorusFamily
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 

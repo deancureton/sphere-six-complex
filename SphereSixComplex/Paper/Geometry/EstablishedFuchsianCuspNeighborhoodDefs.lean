@@ -21,13 +21,13 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 
 /-- The open source horodisc selected by the normalized coordinate and a strict `q`-radius. -/
 public def normalizedCuspRegion
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (r : ℝ) : Set UpperHalfPlane :=
   N.lift '' {s : ℂ | s ∈ cuspHalfPlane N.height ∧ ‖cuspQ s‖ < r}
 
 /-- Exact classical data for a sufficiently deep horodisc at the parabolic end. -/
 public structure Data
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (upperRadius : ℝ) where
   radius : ℝ
   radius_pos : 0 < radius
@@ -52,7 +52,7 @@ public structure Data
 /-- A compact set of source representatives for the complement of a selected normalized
 horodisc. -/
 public structure CompactTruncationData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {upperRadius : ℝ}
     (H : Data N upperRadius) where
   core : Set UpperHalfPlane

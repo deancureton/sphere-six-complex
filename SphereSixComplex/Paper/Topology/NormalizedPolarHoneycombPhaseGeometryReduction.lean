@@ -24,7 +24,7 @@ open SphereSixComplex.Geometry.CuspStraighteningRetraction
 
 /-- The polar modulus is constant on compact-phase orbits. -/
 public def CompactPhaseInvariantModulus
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r) : Prop :=
   ∀ k p, Q.modulus (compactPhaseOrbit M r Q.positivePart (k, p)) = Q.modulus p
@@ -54,7 +54,7 @@ public def CompactPhaseFundamentalDomain
 /-- A phase-invariant modulus makes the positive part a section of the compact-phase orbit
 map. -/
 public theorem compactPhaseOrbit_modulus
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hmodulus : CompactPhaseInvariantModulus Q) (k : CompactTorus)
@@ -64,7 +64,7 @@ public theorem compactPhaseOrbit_modulus
 
 /-- Phase invariance of the modulus proves uniqueness of positive orbit representatives. -/
 public theorem compactPhaseFundamentalDomain_of_invariantModulus
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hmodulus : CompactPhaseInvariantModulus Q) :
@@ -106,7 +106,7 @@ public theorem compactPhaseOrbit_fiberwise_iff_stabilizerMonotone_of_fundamental
 /-- A positive fundamental domain and stabilizer-monotone retraction imply the full phase
 geometric core. -/
 public theorem polarPhaseGeometricCore_of_fundamentalDomain
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hfundamental : CompactPhaseFundamentalDomain Q.toPolarHoneycombData)

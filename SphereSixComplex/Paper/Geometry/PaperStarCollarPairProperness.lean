@@ -98,9 +98,9 @@ end OpenEmbeddingStarData
 namespace Geometry
 
 open Set Topology SphereSixComplex.Periods SphereSixComplex.TriangleGroup
-open CuspPuncturedCollarBridge CuspPhaseEstimates CuspPeriodExpansion
+open CuspCollar CuspPhaseEstimates CuspPeriodExpansion
 open CuspFilling CuspLocalPhaseAction InfiniteA2Toric
-open EllipticVaryingFamilyQuotient EllipticPuncturedCollarGaugeHomeomorph
+open EllipticVaryingFamilyQuotient EllipticLogarithmicGauge
 open EllipticWholeFiberCompactCover
 open EllipticCayleyHomeomorph TorusFamily
 open EllipticLocalCoordinates
@@ -180,7 +180,7 @@ public theorem orderFourCayleyRadiusBand_isCompact
 
 /-- Absolute value of the height coordinate on the actual local cusp filling. -/
 @[expose] public noncomputable def actualLocalCuspFillingRadius
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     ActualLocalCuspFilling W → ℝ :=
@@ -199,7 +199,7 @@ public theorem orderFourCayleyRadiusBand_isCompact
       (C.toCuspActionData.preserves_t gamma q))
 
 public theorem actualLocalCuspFillingRadius_continuous
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (actualLocalCuspFillingRadius W) := by
@@ -208,7 +208,7 @@ public theorem actualLocalCuspFillingRadius_continuous
     (M.t_holomorphic.continuous.comp continuous_subtype_val)
 
 public theorem actualLocalCuspFillingRadius_lt
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (y : ActualLocalCuspFilling W) :

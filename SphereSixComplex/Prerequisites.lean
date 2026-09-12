@@ -464,3 +464,8 @@ public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianTwoFixedCommu
 public import SphereSixComplex.Prerequisites.TriangleGroup.ModularParameter
 public import SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 public import SphereSixComplex.Prerequisites.Topology.ToricPhaseSpreading
+public import SphereSixComplex.Prerequisites.Topology.LocallyFiniteClosedCover
+
+public import SphereSixComplex.Prerequisites.Topology.WangDimensionVanishing
+
+public import SphereSixComplex.Prerequisites.Geometry.CayleyManifold

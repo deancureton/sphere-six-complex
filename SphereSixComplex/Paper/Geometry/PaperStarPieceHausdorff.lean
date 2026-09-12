@@ -19,7 +19,7 @@ open Set Topology SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 open TorusFamily AnalyticTorusFamily GlobalTorusFamily ComplexTorus
 open EllipticVaryingFamilyQuotient
-open CuspPuncturedCollarBridge CuspPhaseEstimates CuspPeriodExpansion
+open CuspCollar CuspPhaseEstimates CuspPeriodExpansion
 open CuspFilling CuspLocalPhaseAction InfiniteA2Toric
 
 noncomputable section
@@ -61,7 +61,7 @@ public theorem centralFamily_t2 : T2Space A.CentralFamily := by
 
 /-- The actual phase-corrected local cusp filling quotient is Hausdorff. -/
 public theorem actualLocalCuspFilling_t2
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     T2Space (ActualLocalCuspFilling W) := by

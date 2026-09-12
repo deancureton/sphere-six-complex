@@ -6,7 +6,7 @@ public import SphereSixComplex.Paper.Topology.CuspFourthSweepFiberParity
 noncomputable section
 open AlgebraicTopology
 namespace SphereSixComplex.Geometry.AnalyticData
-open SphereSixComplex.Topology CuspPuncturedCollarBridge
+open SphereSixComplex.Topology CuspCollar
 open EllipticTwoDiscCoverData
 
 public theorem cuspFourthSweepClass_raw_fiber_zero_of_projection

@@ -140,7 +140,7 @@ variable {p : SphereSixComplex.Periods.Parameters} {X : Type} [TopologicalSpace 
 
 end FourTorusHomologyBasis
 
-namespace EstablishedTorusHomology
+namespace StandardTorusHomology
 
 /-- The linear part of a descended affine automorphism in standard real torus coordinates. -/
 @[expose] public def standardCoordinateMap
@@ -281,7 +281,7 @@ public theorem additiveTorusHomologyBasis_naturality
     (integralSingularHomologyMap_eq_of_homotopy k D.linearPartMapHomotopy).symm
   simpa only [hmaps] using additiveTorusHomologyBasis_linearPart_naturality p hfull D
 
-end EstablishedTorusHomology
+end StandardTorusHomology
 
 namespace Geometry.EllipticFamilySpecialization
 
@@ -330,13 +330,13 @@ variable {U : TriangleUniformization} (F : PeriodFunctions U)
 /-- Standard homology bases of the actual order-three central four-torus. -/
 @[expose] public def orderThreeTorusHomologyBasis :
     AdditiveTorusHomologyBasis (parameterMap F U.zOne).1 :=
-  EstablishedTorusHomology.additiveTorusHomologyBasis _
+  StandardTorusHomology.additiveTorusHomologyBasis _
     (fullRankDomain (parameterMap F U.zOne))
 
 /-- Standard homology bases of the actual order-four central four-torus. -/
 @[expose] public def orderFourTorusHomologyBasis :
     AdditiveTorusHomologyBasis (parameterMap F U.zTwo).1 :=
-  EstablishedTorusHomology.additiveTorusHomologyBasis _
+  StandardTorusHomology.additiveTorusHomologyBasis _
     (fullRankDomain (parameterMap F U.zTwo))
 
 
@@ -345,10 +345,10 @@ variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
 end Geometry.EllipticFamilySpecialization
 
-namespace Topology.PaperEllipticReducedCentralFiberCoverModels
+namespace EllipticFilling
 
 open Geometry.EllipticFamilySpecialization
-open Topology.PaperEllipticFillingRadialRetraction
+open EllipticFilling
 
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
@@ -406,7 +406,7 @@ degree-two period coordinates. -/
       (orderFourRadialActionData F))).comp
     (orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm.toAddHom
 
-end Topology.PaperEllipticReducedCentralFiberCoverModels
+end EllipticFilling
 
 end
 

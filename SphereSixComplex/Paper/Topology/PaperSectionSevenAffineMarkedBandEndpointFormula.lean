@@ -21,9 +21,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.AnalyticData
 
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.EllipticFilling
 open SphereSixComplex.Geometry.GlobalTorusFamily
 
 variable {A : AnalyticData}

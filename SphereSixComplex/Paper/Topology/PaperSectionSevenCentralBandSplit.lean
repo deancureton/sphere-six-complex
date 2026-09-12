@@ -19,8 +19,7 @@ open AlgebraicTopology Set Topology
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.EllipticFilling
 open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.AnalyticData

@@ -8,10 +8,10 @@ public import Mathlib.Topology.Instances.AddCircle.Real
 noncomputable section
 open Set Topology
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
-open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
+open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
 open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 open CuspPeriodExpansion InfiniteA2Toric.Construction
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 def positiveLogTorusProjection (r : ℝ) :

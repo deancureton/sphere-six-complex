@@ -106,3 +106,16 @@ fixing its value. Equivariant roots extend the same root object. Cellular incide
 endpoint period identities, and degree-one homology coordinate comparisons state their equations
 directly. A proposition already proved about elliptic relators is used directly without
 `Nonempty` or a choice operation.
+
+
+## Mathematical ownership
+
+Cusp straightening, elliptic logarithmic gauges, and real-period trivializations use a shared
+namespace for each construction, with separate files for its algebra, descent, and continuity
+proofs. Integral multiple-fiber calculations live under `MultipleFiberCoinvariants` and
+`AffineCyclicQuotientHomology`, rather than namespaces named after paper sections or proof status.
+The modular lift, its Eisenstein root, and its modular frame share the same selected root.
+
+Locally finite closed-cover gluing and the Cayley manifold construction belong to prerequisites.
+The quotient comparison uses Mathlib's `IsQuotientMap.lift`. The constructed toric model is named
+directly where it is used; it no longer appears to depend on an unused analytic-data argument.

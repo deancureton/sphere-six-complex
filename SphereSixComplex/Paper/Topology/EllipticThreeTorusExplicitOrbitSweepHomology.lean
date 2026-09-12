@@ -30,7 +30,7 @@ open FiniteCyclicThreeTorusWangNaturality
 open Geometry.ComplexTorus
 open NormalizedAffineMappingTorusCover
 open NormalizedFiniteOrderAdditiveCircleSweep
-open PaperAffineCyclicReducedFiberMappingTorus
+open EllipticReducedFiberMappingTorus
 open PositiveCircleCross
 open StandardTorusHomology
 

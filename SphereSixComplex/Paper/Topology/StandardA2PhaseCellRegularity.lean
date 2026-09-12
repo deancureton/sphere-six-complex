@@ -5,7 +5,7 @@ public import SphereSixComplex.Paper.Topology.StandardA2PhaseCellDisjointness
 @[expose] public section
 noncomputable section
 open Set Matrix Topology
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
@@ -15,7 +15,7 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open SphereSixComplex.Geometry.InfiniteA2Toric
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 private theorem isEmbedding_restrict_of_compact_boundary_separation
@@ -163,4 +163,4 @@ public theorem constructedCentralPhaseTwoCell_continuousOn_symm
   change Continuous (fun q : e.target ↦ (lift q : Fin 2 → ℝ))
   exact continuous_subtype_val.comp hlift
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

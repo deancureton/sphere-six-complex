@@ -18,9 +18,8 @@ open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Topology
 open SphereSixComplex.TriangleGroup
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.EllipticFilling
+open SphereSixComplex.AffineCyclicQuotientHomology
 open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 
 variable (A : AnalyticData)

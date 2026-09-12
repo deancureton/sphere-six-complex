@@ -8,11 +8,11 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveInteriorContr
 noncomputable section
 open Set Topology Matrix
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
-open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
-open CuspPeriodExpansion CuspStraighteningRetraction CuspStraighteningAlgebra
-open CuspStraighteningHomeomorph InfiniteA2Toric.QuantitativeRegions
+open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
+open CuspPeriodExpansion CuspStraighteningRetraction CuspStraightening
+open CuspStraightening InfiniteA2Toric.QuantitativeRegions
 open CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
 
 theorem positiveDeck_preserves_height (lambda : ParameterLattice) (p : localCarrier M r) :

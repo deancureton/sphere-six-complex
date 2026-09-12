@@ -69,8 +69,8 @@ end WangHomologyPresentation
 
 namespace Geometry.AnalyticData
 
-open CuspPuncturedCollarBridge
-open CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
+open CuspCollar
+open CuspCollar.CuspFiberSpecializationNormalization
 open EllipticInteriorMarkedCycleData
 open EllipticTwoDiscCoverData
 

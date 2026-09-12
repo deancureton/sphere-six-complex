@@ -142,7 +142,7 @@ normalized modular invariant supplies the quotient coordinate, and explicit addi
 plus a compact quotient core gives the nondegenerate period family.
 :::
 
-:::definition "normalized-fuchsian-modular-lift-obligation" (parent := "fuchsian-uniformization-bridge") (lean := "SphereSixComplex.Periods.ExactFuchsianOrbifoldCoordinate, SphereSixComplex.Periods.ExactNormalizedModularJUniformization, SphereSixComplex.Periods.NormalizedFuchsianModularJLiftingExistence, SphereSixComplex.Periods.ExactFuchsianOrbifoldCoordinate.nonempty, SphereSixComplex.Periods.ExactNormalizedModularJUniformization.nonempty, SphereSixComplex.Periods.normalizedFuchsianModularJLiftingExistence, SphereSixComplex.Periods.nonempty_normalizedFuchsianModularParameter")
+:::definition "normalized-fuchsian-modular-lift-obligation" (parent := "fuchsian-uniformization-bridge") (lean := "SphereSixComplex.Periods.ExactFuchsianOrbifoldCoordinate, SphereSixComplex.Periods.ExactNormalizedModularJUniformization, SphereSixComplex.Periods.NormalizedFuchsianModularJLiftingExistence, SphereSixComplex.Periods.ExactFuchsianOrbifoldCoordinate.nonempty, SphereSixComplex.Periods.ExactNormalizedModularJUniformization.nonempty, SphereSixComplex.Periods.normalizedFuchsianModularJLiftingExistence, SphereSixComplex.Periods.nonempty_fuchsianModularLift")
 Exact source and modular quotient uniformization, together with compatible branched lifting, are
 proved in Lean. Their contracts track orbit fibres, special values, exact elliptic branching,
 ordinary covering away from the branch values, and a simple completed cusp. These results construct
@@ -166,7 +166,7 @@ the explicit local primitives used to build the two analytic torsors.
 Holomorphic overlap cocycles on the standard two-chart cover of the projective line split for both $`\mathcal O(-1)` and $`\mathcal O`. These analytic Čech splittings are proved in Lean.
 :::
 
-:::theorem "fuchsian-modular-neg-one-frame" (parent := "projective-line-cech-splitting") (lean := "SphereSixComplex.Periods.AnalyticSquareRoot.exists_analyticOnNhd_sq_eq, SphereSixComplex.Periods.exists_exactFuchsianEisensteinSixRoot, SphereSixComplex.Periods.exists_exactFuchsianCuspFrameGerm, SphereSixComplex.Periods.ExactLiftedModularNegOneFrame, SphereSixComplex.Periods.nonempty_exactLiftedModularNegOneFrame, SphereSixComplex.Periods.FuchsianAffineDescent.liftedNegOneInfinityFrame, SphereSixComplex.Periods.FuchsianAffineDescent.cycleRelations")
+:::theorem "fuchsian-modular-neg-one-frame" (parent := "projective-line-cech-splitting") (lean := "SphereSixComplex.Periods.AnalyticSquareRoot.exists_analyticOnNhd_sq_eq, SphereSixComplex.Periods.nonempty_eisensteinSixRoot, SphereSixComplex.Periods.nonempty_modularFrameCuspGerm, SphereSixComplex.Periods.ModularNegOneFrame, SphereSixComplex.Periods.nonempty_modularNegOneFrame, SphereSixComplex.Periods.FuchsianAffineDescent.liftedNegOneInfinityFrame, SphereSixComplex.Periods.muAffineOne_closes, SphereSixComplex.Periods.muAffineTwo_closes, SphereSixComplex.Periods.betaCocycleOne_cycle, SphereSixComplex.Periods.betaCocycleTwo_cycle")
 The divisor, ramification, and cusp calculations for $`E_4^2\sqrt{E_6}/\Delta` construct the exact
 two-chart frame for the pulled-back $`\mathcal O(-1)` bundle, including its elliptic orders and cusp
 factorization. The modular uniformization and frame constructions are proved results.
@@ -312,7 +312,7 @@ conjugate the source generators to rotations of orders three and four. The remai
 data then gives the free logarithmic-transform quotient manifolds.
 :::
 
-:::theorem "elliptic-local-trivialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.Geometry.EllipticLocalTrivialization.cayleyDiffeomorph")
+:::theorem "elliptic-local-trivialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.UpperHalfPlane.cayleyDiffeomorph")
 The Cayley map gives a complex diffeomorphism from the upper half-plane to the unit disc.
 :::
 
@@ -437,7 +437,7 @@ unions in the four-piece cover gives the Mayer--Vietoris sequences used in the c
 The actual inclusion maps and their coordinate comparisons are computed separately.
 :::
 
-:::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderOneRelationMap_eq_ker, SphereSixComplex.Topology.PaperLemmaSevenThirteenAlgebra.range_orderTwoRelationMap_eq_ker")
+:::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.MultipleFiberCoinvariants.range_orderOneRelationMap_eq_ker, SphereSixComplex.MultipleFiberCoinvariants.range_orderTwoRelationMap_eq_ker")
 The two integral relation maps in Lemma 7.13 have images equal to the kernels of their respective coordinate classifiers. These identities give the required exact integral presentations.
 :::
 
@@ -448,14 +448,14 @@ compatibility squares. Its fields describe the actual maps; none assumes the com
 homology.
 :::
 
-:::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.CellularHomology.normalizedModel, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCWDecomposition, SphereSixComplex.Geometry.CuspPuncturedCollarBridge.establishedStandardA2ToricCentralFiberCellularIncidence, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyTwoEquiv")
+:::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.CellularHomology.normalizedModel, SphereSixComplex.Geometry.CuspCollar.establishedStandardA2ToricCentralFiberCWDecomposition, SphereSixComplex.Geometry.CuspCollar.establishedStandardA2ToricCentralFiberCellularIncidence, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyTwoEquiv")
 The cusp filling has homology $`\mathbb Z^2,\mathbb Z^4,\mathbb Z^2,\mathbb Z` in degrees one
 through four. The standard $`A_2` CW decomposition and its incidence formula are proved. The
 retained general cellular-to-singular comparison transfers this cellular calculation to singular
 homology.
 :::
 
-:::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderFourReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticDegreeTwoPullbackBases, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization")
+:::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.AffineCyclicQuotientHomology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.AffineCyclicQuotientHomology.orderFourReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticDegreeTwoPullbackBases, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization")
 The order-three and order-four reduced central fibres have explicit first-homology presentations,
 and the fixed bases satisfy the required covering-projection coordinate formulas. The affine
 cyclic-quotient abelianization and degree-one naturality statements are proved.
@@ -483,7 +483,7 @@ interval is contractible because it is convex and nonempty.
 Each collar is realized as a radial interval times a mapping torus. For the two elliptic collars the
 fibre is the additive four-torus of the period family, and for the cusp collar the fibre is
 identified with a full-rank additive four-torus by the corresponding field of
-`_root_.SphereSixComplex.Geometry.CuspPuncturedCollarBridge.ActualPuncturedCuspCollarWitness.radialClutchingData`. In every case the four-torus cell model then gives the
+`_root_.SphereSixComplex.Geometry.CuspCollar.ActualPuncturedCuspCollarWitness.radialClutchingData`. In every case the four-torus cell model then gives the
 fibre nothing in degrees five and six.
 
 This deduction uses the retained general cellular-to-singular comparison. The Wang sequence,

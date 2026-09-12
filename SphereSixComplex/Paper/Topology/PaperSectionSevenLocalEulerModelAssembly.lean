@@ -17,7 +17,7 @@ noncomputable section
 
 namespace SphereSixComplex.Geometry.AnalyticData
 
-open CuspPuncturedCollarBridge
+open CuspCollar
 
 variable (A : AnalyticData)
 

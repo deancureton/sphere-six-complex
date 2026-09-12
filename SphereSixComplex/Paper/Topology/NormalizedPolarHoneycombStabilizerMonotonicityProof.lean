@@ -70,7 +70,7 @@ public theorem compactPhaseStabilizerMonotone_of_retraction
 /-- On a positive compact-phase fundamental domain, no additional stabilizer hypothesis is
 needed for the phase-geometric core. -/
 public theorem polarPhaseGeometricCore_of_fundamentalDomain_only
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hfundamental : CompactPhaseFundamentalDomain Q.toPolarHoneycombData) :
@@ -82,7 +82,7 @@ public theorem polarPhaseGeometricCore_of_fundamentalDomain_only
 /-- Phase invariance of the polar modulus is the sole extra phase condition needed after the
 normalized polar-honeycomb construction has been supplied. -/
 public theorem polarPhaseGeometricCore_of_invariantModulus_only
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
     (Q : NormalizedPolarHoneycombConstructionData N M r)
     (hmodulus : CompactPhaseInvariantModulus Q) :

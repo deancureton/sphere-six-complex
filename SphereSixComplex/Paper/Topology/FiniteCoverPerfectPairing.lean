@@ -21,13 +21,13 @@ namespace SphereSixComplex.Topology.FiniteCoverPerfectPairing
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
 open Geometry.EllipticFamilySpecialization Geometry.GlobalTorusFamily
-open LatticeData PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels PaperLemmaSevenThirteenAlgebra
-open PaperMultipleFiberHOneTopology
-open PaperFiniteCyclicQuotientDegreeTwoComparison
-open PaperAffineCyclicQuotientHomologyCoordinates
+open LatticeData EllipticFilling
+open EllipticFilling MultipleFiberCoinvariants
+open AffineCyclicQuotientHomology
+open FiniteCyclicQuotientHomology
+open AffineCyclicQuotientHomology
 open AffineCyclicCoverDegreeTwoInvariance
-open PaperPropositionSevenFourteenDegreeTwoAlgebra TriangleGroup TwistObstruction
+open EllipticMayerVietorisCoordinates TriangleGroup SphereSixComplex.Topology.TwistObstruction
 
 /-- An actual basis of quotient degree-two cohomology whose pullback is a displayed family of
 covectors on the covering space.  `reflexive` is the exact torsion-freeness/perfect-pairing input

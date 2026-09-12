@@ -1,7 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Periods.ExactFuchsianModularFrameData
-public import SphereSixComplex.Paper.Periods.ExactFuchsianModularFrameConstruction
+public import SphereSixComplex.Paper.Periods.ModularFrame.Basic
+public import SphereSixComplex.Paper.Periods.ModularFrame.Construction
 public import SphereSixComplex.Paper.Periods.EstablishedOrbifoldAffineTorsorAnalyticDescent
 import all SphereSixComplex.Paper.Periods.Functions
 import all SphereSixComplex.Prerequisites.Periods.FuchsianModularParameterExistence
@@ -27,14 +27,14 @@ open SphereSixComplex.TriangleGroup.FuchsianTessellation
 open SphereSixComplex.TriangleGroup.FuchsianFundamentalDomain
 open Filter Set Metric
 
-variable (E : NormalizedFuchsianModularParameter)
+variable (E : FuchsianModularLift)
 
-variable (F : ExactLiftedModularNegOneFrame E)
+variable (F : ModularNegOneFrame E)
 
 /-- Every entire coefficient evaluated in the completed infinity coordinate is bounded on the
 fixed distinguished cusp component. -/
-public theorem _root_.SphereSixComplex.Periods.ExactLiftedModularNegOneFrame.infinity_coordinate_cusp_bounded
-    (_F : ExactLiftedModularNegOneFrame E) (f : ℂ → ℂ) (hf : MDiff f) :
+public theorem _root_.SphereSixComplex.Periods.ModularNegOneFrame.infinity_coordinate_cusp_bounded
+    (_F : ModularNegOneFrame E) (f : ℂ → ℂ) (hf : MDiff f) :
     BoundedOn (fun z ↦ f ((E.sourceCoordinate.coordinate z)⁻¹))
       fuchsianCuspRegion := by
   obtain ⟨B, hB, hqB⟩ :=
@@ -64,14 +64,14 @@ public theorem liftedNegOneInfinityFrame_one (z : UpperHalfPlane) :
     liftedNegOneInfinityFrame E F (fuchsianSourceAction g₁ • z) =
       -liftedNegOneInfinityFrame E F z / E.modularParameter.tau z := by
   rw [liftedNegOneInfinityFrame, liftedNegOneInfinityFrame,
-    E.sourceCoordinate.coordinate_invariant, ExactLiftedModularNegOneFrame.frame, F.frame_one]
+    E.sourceCoordinate.coordinate_invariant, ModularNegOneFrame.frame, F.frame_one]
   ring
 
 public theorem liftedNegOneInfinityFrame_two (z : UpperHalfPlane) :
     liftedNegOneInfinityFrame E F (fuchsianSourceAction g₂ • z) =
       liftedNegOneInfinityFrame E F z / E.modularParameter.tau z := by
   rw [liftedNegOneInfinityFrame, liftedNegOneInfinityFrame,
-    E.sourceCoordinate.coordinate_invariant, ExactLiftedModularNegOneFrame.frame, F.frame_two]
+    E.sourceCoordinate.coordinate_invariant, ModularNegOneFrame.frame, F.frame_two]
   ring
 
 /-- The two finite-generator laws imply invariance of the infinity frame under the positive cusp
@@ -170,7 +170,7 @@ private theorem boundedOn_cusp_of_eventually_bounded
 
 /-- The eventual completed-cusp factorization and parabolic invariance imply boundedness on the
 whole distinguished cusp component. -/
-public theorem _root_.SphereSixComplex.Periods.ExactLiftedModularNegOneFrame.infinity_frame_cusp_bounded :
+public theorem _root_.SphereSixComplex.Periods.ModularNegOneFrame.infinity_frame_cusp_bounded :
     BoundedOn (liftedNegOneInfinityFrame E F) fuchsianCuspRegion := by
   let K : Set ℂ := Metric.closedBall 0 (F.cuspRadius / 2)
   have hK : IsCompact K := isCompact_closedBall 0 (F.cuspRadius / 2)
@@ -187,7 +187,7 @@ public theorem _root_.SphereSixComplex.Periods.ExactLiftedModularNegOneFrame.inf
       ‖liftedNegOneInfinityFrame E F z‖ ≤ max B 0 := by
     filter_upwards [F.inverse_coordinate_eventually_mem_closedBall,
       F.cusp_factorization_eventually] with z hzmem hzfactor
-    rw [liftedNegOneInfinityFrame, ExactLiftedModularNegOneFrame.frame, hzfactor]
+    rw [liftedNegOneInfinityFrame, ModularNegOneFrame.frame, hzfactor]
     exact (hBound ⟨_, hzmem, rfl⟩).trans (le_max_left B 0)
   apply boundedOn_cusp_of_eventually_bounded
     (liftedNegOneInfinityFrame E F)
@@ -220,7 +220,7 @@ private theorem bounded_comp_mul_of_bounded
 
 /-- The local cusp-unit theorem implies boundedness of every entire Cech correction on the fixed
 distinguished cusp component. -/
-public theorem _root_.SphereSixComplex.Periods.ExactLiftedModularNegOneFrame.cusp_correction_bounded
+public theorem _root_.SphereSixComplex.Periods.ModularNegOneFrame.cusp_correction_bounded
     (f : ℂ → ℂ) (hf : MDiff f) :
     BoundedOn
       (fun z ↦ f ((E.sourceCoordinate.coordinate z)⁻¹) *
@@ -244,7 +244,7 @@ public theorem liftedInfinityRegion_invariant (g : Delta) (z : UpperHalfPlane) :
   rw [E.sourceCoordinate.coordinate_invariant]
 
 public theorem fuchsianCuspRegion_subset_liftedInfinityRegion
-    (_F : ExactLiftedModularNegOneFrame E) :
+    (_F : ModularNegOneFrame E) :
     fuchsianCuspRegion ⊆ liftedInfinityRegion E := by
   intro z hz
   exact E.sourceCoordinate.coordinate_ne_zero_on_cusp z hz
@@ -274,42 +274,6 @@ public theorem cuspLocalBeta_properties :
   · convert (cuspLocalMu_properties E).2.2 using 1
     funext z
     simp [cuspLocalBeta, cuspLocalMu]
-
-/-- All finite cyclic algebraic consistency checks needed before applying affine-torsor descent.
-These are the computations in Propositions 3.11 and 3.13, independent of sheaf cohomology. -/
-public structure CycleRelations where
-  mu_one_closes : ∀ z mu,
-    muAffineOne
-        (tauOneStep (tauOneStep (E.modularParameter.tau z)))
-        (muAffineOne (tauOneStep (E.modularParameter.tau z))
-          (muAffineOne (E.modularParameter.tau z) mu)) = mu
-  mu_two_closes : ∀ z mu,
-    muAffineTwo
-        (tauTwoStep (tauTwoStep (tauTwoStep (E.modularParameter.tau z))))
-        (muAffineTwo (tauTwoStep (tauTwoStep (E.modularParameter.tau z)))
-          (muAffineTwo (tauTwoStep (E.modularParameter.tau z))
-            (muAffineTwo (E.modularParameter.tau z) mu))) = mu
-  beta_one_cycle : ∀ z mu,
-    let x : Parameters := ⟨E.modularParameter.tau z, mu, 0⟩
-    betaCocycleOne x + betaCocycleOne (transformOne x) +
-      betaCocycleOne (transformOne (transformOne x)) = 0
-  beta_two_cycle : ∀ z mu,
-    let x : Parameters := ⟨E.modularParameter.tau z, mu, 0⟩
-    betaCocycleTwo x + betaCocycleTwo (transformTwo x) +
-        betaCocycleTwo (transformTwo (transformTwo x)) +
-      betaCocycleTwo (transformTwo (transformTwo (transformTwo x))) = 0
-
-/-- The explicit substitutions supply the complete finite-cycle certificate. -/
-public theorem cycleRelations :
-    CycleRelations E where
-  mu_one_closes := muAffineOne_closes E
-  mu_two_closes := muAffineTwo_closes E
-  beta_one_cycle := by
-    intro z mu
-    exact betaCocycleOne_cycle _ (E.modularParameter.tau z).ne_zero (tau_coe_ne_one E z)
-  beta_two_cycle := by
-    intro z mu
-    exact betaCocycleTwo_cycle _ (E.modularParameter.tau z).ne_zero
 
 @[expose] public def muAffineMapOne (z : UpperHalfPlane) (mu : ℂ) : ℂ :=
   (1 - mu) / E.modularParameter.tau z
@@ -398,12 +362,12 @@ general orbifold affine-torsor descent theorem. -/
     intro z mu
     rw [muAffineMapOne, muAffineMapOne, muAffineMapOne,
       tau_one_coe E, tau_one_sq_coe E]
-    exact (cycleRelations E).mu_one_closes z mu
+    exact muAffineOne_closes E z mu
   affineTwo_cycle := by
     intro z mu
     rw [muAffineMapTwo, muAffineMapTwo, muAffineMapTwo,
       muAffineMapTwo, tau_two_coe E, tau_two_sq_coe E, tau_two_cube_coe E]
-    exact (cycleRelations E).mu_two_closes z mu
+    exact muAffineTwo_closes E z mu
   product_cusp := by
     intro z mu
     exact fuchsianMuAffine_product E z mu
@@ -417,13 +381,13 @@ general orbifold affine-torsor descent theorem. -/
     liftedNegOneInfinityFrame_holomorphicAt E F hz
   frameZero_one := by
     intro z
-    simp only [ExactLiftedModularNegOneFrame.frame]
+    simp only [ModularNegOneFrame.frame]
     rw [F.frame_one]
     simp only [muLinearOne]
     ring
   frameZero_two := by
     intro z
-    simp only [ExactLiftedModularNegOneFrame.frame]
+    simp only [ModularNegOneFrame.frame]
     rw [F.frame_two]
     simp only [muLinearTwo]
     ring
@@ -447,7 +411,7 @@ general orbifold affine-torsor descent theorem. -/
     unit_holomorphic := F.frame_branch_one.unit_holomorphic
     unit_ne_zero := F.frame_branch_one.unit_ne_zero
     factorization := by
-      simpa [ExactLiftedModularNegOneFrame.frame] using F.frame_branch_one.factorization }
+      simpa [ModularNegOneFrame.frame] using F.frame_branch_one.factorization }
   frameZero_branch_two := {
     uniformizer := F.frame_branch_two.uniformizer
     uniformizer_center := F.frame_branch_two.uniformizer_center
@@ -456,10 +420,10 @@ general orbifold affine-torsor descent theorem. -/
     unit_holomorphic := F.frame_branch_two.unit_holomorphic
     unit_ne_zero := F.frame_branch_two.unit_ne_zero
     factorization := by
-      simpa [ExactLiftedModularNegOneFrame.frame] using F.frame_branch_two.factorization }
+      simpa [ModularNegOneFrame.frame] using F.frame_branch_two.factorization }
   frameZero_zero_iff := by
     intro z
-    simpa [ExactLiftedModularNegOneFrame.frame] using F.frame_zero_iff z
+    simpa [ModularNegOneFrame.frame] using F.frame_zero_iff z
   frameTransition := fun q ↦ q⁻¹
   frameTransition_holomorphic := by
     intro q hq
@@ -882,8 +846,8 @@ public theorem fuchsianBetaAffineOne_cycle
   simp only [betaAffineMapOne]
   rw [betaCocycleOne_fuchsian_step E hmuOne z,
     betaCocycleOne_fuchsian_sq E hmuOne z]
-  have hcycle := (cycleRelations E).beta_one_cycle z (mu z)
-  dsimp only at hcycle
+  have hcycle := betaCocycleOne_cycle (⟨E.modularParameter.tau z, mu z, 0⟩ : Parameters)
+    (E.modularParameter.tau z).ne_zero (tau_coe_ne_one E z)
   have hcycle' :
       betaCocycleOne (betaParameter E mu z) +
           betaCocycleOne (transformOne (betaParameter E mu z)) +
@@ -903,8 +867,8 @@ public theorem fuchsianBetaAffineTwo_cycle
   rw [betaCocycleTwo_fuchsian_step E hmuTwo z,
     betaCocycleTwo_fuchsian_sq E hmuTwo z,
     betaCocycleTwo_fuchsian_cube E hmuTwo z]
-  have hcycle := (cycleRelations E).beta_two_cycle z (mu z)
-  dsimp only at hcycle
+  have hcycle := betaCocycleTwo_cycle (⟨E.modularParameter.tau z, mu z, 0⟩ : Parameters)
+    (E.modularParameter.tau z).ne_zero
   have hcycle' :
       betaCocycleTwo (betaParameter E mu z) +
             betaCocycleTwo (transformTwo (betaParameter E mu z)) +
@@ -931,7 +895,7 @@ public theorem fuchsianBetaAffine_product
 paper-specific algebra and local primitives are discharged before the general descent theorem is
 invoked. -/
 @[expose] public noncomputable def betaDescentData
-    (F : ExactLiftedModularNegOneFrame E) (Dmu : MuTorsorCechLocalData E) :
+    (F : ModularNegOneFrame E) (Dmu : MuTorsorCechLocalData E) :
     OrbifoldAffineDescentData := by
   let mu := descendedFuchsianMu E Dmu
   have hmu := descendedFuchsianMu_spec E Dmu
@@ -1047,7 +1011,7 @@ invoked. -/
 /-- General orbifold affine-torsor descent supplies the exact local structure-sheaf data for
 `beta` once the descended `mu` has been selected. -/
 public theorem exists_betaAffineCechSections
-    (F : ExactLiftedModularNegOneFrame E) (Dmu : MuTorsorCechLocalData E)
+    (F : ModularNegOneFrame E) (Dmu : MuTorsorCechLocalData E)
     (A : (betaDescentData E F Dmu).AnalyticDescentData) :
     Nonempty (BetaTorsorCechLocalData E (descendedFuchsianMu E Dmu)) := by
   obtain ⟨S⟩ := OrbifoldAffineDescentData.nonempty_twoChartSections
@@ -1155,7 +1119,7 @@ public theorem hasLocalTrivializations
 /-- One concrete modular frame and its two explicit analytic descent certificates construct the
 complete local period package used by the paper. -/
 public theorem exists_fuchsianPeriodLocalData
-    (F : ExactLiftedModularNegOneFrame E)
+    (F : ModularNegOneFrame E)
     (Amu : (muDescentData E F).AnalyticDescentData)
     (Abeta : BetaDescentData E F Amu) :
     Nonempty (FuchsianPeriodLocalData E) := by

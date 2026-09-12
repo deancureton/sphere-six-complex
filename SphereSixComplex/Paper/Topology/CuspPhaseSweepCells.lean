@@ -5,11 +5,11 @@ public import SphereSixComplex.Paper.Topology.CuspPhaseSweepCharacteristic
 @[expose] public section
 noncomputable section
 open Set Topology Matrix
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric.Construction
 open InfiniteA2Toric CuspLocalPhaseAction CuspFilling CuspPeriodExpansion
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepRotation (i : Fin 3) : Carrier ≃ₜ Carrier :=
@@ -245,4 +245,4 @@ public theorem phaseSweepCell_continuousOn_symm
   rw [continuousOn_iff_continuous_domRestrict]
   exact continuous_subtype_val.comp hlift
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

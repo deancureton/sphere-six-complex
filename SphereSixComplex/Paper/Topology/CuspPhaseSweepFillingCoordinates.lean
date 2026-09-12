@@ -5,11 +5,11 @@ public import SphereSixComplex.Paper.Topology.CuspCentralFillingHomologyComparis
 
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open CuspFilling CuspPeriodExpansion InfiniteA2Toric
 open InfiniteA2Toric.Construction
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepFillingHomologyTwoEquiv
@@ -35,4 +35,4 @@ public theorem phaseSweepFillingHomologyTwoEquiv_central
   exact congrArg (phaseSweepHomologyTwoCellEquiv W T)
     ((actualCuspCentralOrbitFillingHomologyEquiv W R 2).symm_apply_apply x)
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

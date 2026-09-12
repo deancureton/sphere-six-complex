@@ -8,7 +8,7 @@ public import SphereSixComplex.Paper.Topology.CuspMixedTorusIntegralColumns
 @[expose] public section
 noncomputable section
 namespace SphereSixComplex.Geometry.AnalyticData
-open CuspPuncturedCollarBridge CuspRadialClutchingConstruction
+open CuspCollar CuspRadialClutchingConstruction
 open InfiniteA2Toric
 open CircleMappingTorusHomologyBases
 

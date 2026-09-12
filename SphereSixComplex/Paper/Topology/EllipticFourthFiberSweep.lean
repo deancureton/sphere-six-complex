@@ -9,7 +9,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus GlobalTorusFamily EllipticFamilySpecialization
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+open SphereSixComplex.EllipticFilling
 open PositiveCircleCross CircleProductIdentityMappingTorus
 
 public def fourthFirstCoordinateTorus : C(StdTorus 2, StdTorus 4) :=
@@ -172,7 +172,7 @@ private theorem bandTwo_fixedCoordinates {A : AnalyticData}
     EllipticBandHomologyAlignment.bandTwo (D := R.twoDiscCover) x =
     additiveTorusHomologyDegreeTwo A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank
       (integralSingularHomologyMap 2 R.twoDiscCover.bandHomotopyEquiv.toFun x) := by
-  let e := PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverSourceHomeomorph
+  let e := EllipticFilling.RadialEllipticActionData.centralFiberCoverSourceHomeomorph
     (orderThreeRadialActionData A.periods)
   change additiveTorusHomologyDegreeTwo A.duplicatedSectionSevenBandParameter
     A.duplicatedSectionSevenBandFullRank

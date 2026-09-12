@@ -21,9 +21,9 @@ namespace SphereSixComplex.Geometry.AnalyticData
 
 open SphereSixComplex
 open SphereSixComplex.CircleMappingTorusHomologyBases
-open CuspPuncturedCollarBridge
-open CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
-open CuspPuncturedCollarBridge.EstablishedStandardA2CuspSpecialization
+open CuspCollar
+open CuspCollar.CuspFiberSpecializationNormalization
+open CuspSpecialization
 
 /-- The selected positive Wang-section generator lies in the cusp-filling kernel. -/
 public theorem rawDegreeOneTotalSpecialization_selectedPositiveMeridianClass

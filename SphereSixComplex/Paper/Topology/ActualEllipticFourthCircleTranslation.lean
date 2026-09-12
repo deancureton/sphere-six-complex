@@ -7,7 +7,7 @@ import all SphereSixComplex.Paper.Periods.Matrix
 @[expose] public section
 noncomputable section
 open scoped ContinuousMap
-namespace SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+namespace SphereSixComplex.EllipticFilling
 open SphereSixComplex.Geometry SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open ComplexTorus AnalyticTorusFamily EllipticFamilySpecialization EllipticFixedPointCriterion
 open CuspRadialClutchingConstruction GlobalTorusFamily FamilyEquivariance
@@ -64,4 +64,4 @@ public def orderFourFourthCircleTranslation :
 
 
 
-end SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+end SphereSixComplex.EllipticFilling

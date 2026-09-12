@@ -18,7 +18,7 @@ noncomputable section
 
 open Set
 
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 
 open SphereSixComplex
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -28,7 +28,7 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The prequotient central fibre as an invariant subspace of the actual cusp action. -/
@@ -167,6 +167,6 @@ public noncomputable def actualLocalCuspCentralOrbitCoreHomeomorph
       (actualLocalCuspCentralOrbitMap_mem_quotientCentralFiber W R)
     |>.toHomeomorphOfSurjective (actualLocalCuspCentralOrbitCoreMap_surjective W R)
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar
 
 end

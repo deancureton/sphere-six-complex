@@ -113,11 +113,11 @@ public def affineTransport (P : OrbifoldAffineDescentData) :
     (cyclicRepresentation 3 P.affineOnePerm P.affineOnePerm_pow_three)
     (cyclicRepresentation 4 P.affineTwoPerm P.affineTwoPerm_pow_four)
 
-@[simp] public theorem affineTransport_one (P : OrbifoldAffineDescentData) :
+@[simp] public theorem affineTransport_g₁ (P : OrbifoldAffineDescentData) :
     P.affineTransport g₁ = P.affineOnePerm := by
   simp [affineTransport, g₁, cyclicRepresentation_generator]
 
-@[simp] public theorem affineTransport_two (P : OrbifoldAffineDescentData) :
+@[simp] public theorem affineTransport_g₂ (P : OrbifoldAffineDescentData) :
     P.affineTransport g₂ = P.affineTwoPerm := by
   simp [affineTransport, g₂, cyclicRepresentation_generator]
 

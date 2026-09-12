@@ -6,10 +6,10 @@ public import SphereSixComplex.Paper.Topology.ConstructedA2PhaseSpreadingComplet
 noncomputable section
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspStraighteningRetraction
-open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
+open SphereSixComplex.Periods CuspFilling CuspLocalPhaseAction CuspCollar
 open CuspPeriodExpansion InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def constructedCuspPolarData

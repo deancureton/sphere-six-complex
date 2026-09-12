@@ -31,7 +31,7 @@ open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.EllipticFixedPointCriterion
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 
 variable (A : AnalyticData)
 

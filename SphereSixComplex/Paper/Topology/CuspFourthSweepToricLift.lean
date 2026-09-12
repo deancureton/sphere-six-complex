@@ -7,9 +7,11 @@ public import SphereSixComplex.Prerequisites.Topology.UnitCircleExponential
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
+
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
-open CuspPuncturedCollarBridge CuspRadialClutchingConstruction
+open CuspCollar CuspRadialClutchingConstruction
 open CuspLocalPhaseAction InfiniteA2Toric
 
 public def fourthToricCircle : C(UnitAddCircle, DenseTorus) where
@@ -52,31 +54,31 @@ public theorem cuspAngularDenseLoop_real (A : AnalyticData) (t : ℝ) :
     ring
 
 public def cuspAngularLocalLoop (A : AnalyticData) :
-    C(UnitAddCircle, localCarrier A.toricModel A.starCuspWitness.localWitness.radius) where
-  toFun z := ⟨A.toricModel.torusEmbedding (cuspAngularDenseLoop A z), by
+    C(UnitAddCircle, localCarrier constructedModel A.starCuspWitness.localWitness.radius) where
+  toFun z := ⟨constructedModel.torusEmbedding (cuspAngularDenseLoop A z), by
     obtain ⟨t, rfl⟩ := QuotientAddGroup.mk_surjective z
-    change A.toricModel.t (A.toricModel.torusEmbedding _) ∈ Metric.ball 0 _
+    change constructedModel.t (constructedModel.torusEmbedding _) ∈ Metric.ball 0 _
     rw [mem_ball_zero_iff]
-    rw [cuspAngularDenseLoop_real, A.toricModel.t_torus,
+    rw [cuspAngularDenseLoop_real, constructedModel.t_torus,
       denseCuspExponential_last,
       norm_cuspQ_cuspParameterOfPolar _ _ (by
         have := A.starCuspWitness.localWitness.radius_pos; linarith)]
     have := A.starCuspWitness.localWitness.radius_pos
     linarith⟩
-  continuous_toFun := (A.toricModel.torus_openEmbedding.continuous.comp
+  continuous_toFun := (constructedModel.torus_openEmbedding.continuous.comp
     (cuspAngularDenseLoop A).continuous).subtype_mk _
 
 public def fourthSweepToricFactor (A : AnalyticData) :
     C(UnitAddCircle × StdTorus 1,
-      UnitAddCircle × localCarrier A.toricModel A.starCuspWitness.localWitness.radius) where
+      UnitAddCircle × localCarrier constructedModel A.starCuspWitness.localWitness.radius) where
   toFun z := (z.2 0, cuspAngularLocalLoop A z.1)
   continuous_toFun := ((continuous_apply 0).comp continuous_snd).prodMk
     ((cuspAngularLocalLoop A).continuous.comp continuous_fst)
 
 public def fourthSweepToricLift (A : AnalyticData) :
     C(UnitAddCircle × StdTorus 1,
-      localCarrier A.toricModel A.starCuspWitness.localWitness.radius) :=
-  (localHeightPreservingCircleAction A.toricModel A.starCuspWitness.localWitness.radius
+      localCarrier constructedModel A.starCuspWitness.localWitness.radius) :=
+  (localHeightPreservingCircleAction constructedModel A.starCuspWitness.localWitness.radius
     fourthToricCircle fourthToricCircle_last).comp (fourthSweepToricFactor A)
 
 public theorem fourthSweepToricLift_homology_zero (A : AnalyticData)
@@ -102,10 +104,10 @@ public theorem fourthSweepToricLift_real (A : AnalyticData) (r t : ℝ) :
   change _ = (additiveToPuncturedLocalHomeomorph _ _ (Quotient.mk _ _)).1
   rw [additiveToPuncturedLocalHomeomorph_mk]
   apply Subtype.ext
-  change A.toricModel.torusAction (fourthToricCircle (t : UnitAddCircle))
-    (A.toricModel.torusEmbedding (cuspAngularDenseLoop A (r : UnitAddCircle))) = _
-  rw [A.toricModel.torusAction_torus]
-  apply congrArg A.toricModel.torusEmbedding
+  change constructedModel.torusAction (fourthToricCircle (t : UnitAddCircle))
+    (constructedModel.torusEmbedding (cuspAngularDenseLoop A (r : UnitAddCircle))) = _
+  rw [constructedModel.torusAction_torus]
+  apply congrArg constructedModel.torusEmbedding
   rw [cuspAngularDenseLoop_real]
   ext i
   fin_cases i <;>

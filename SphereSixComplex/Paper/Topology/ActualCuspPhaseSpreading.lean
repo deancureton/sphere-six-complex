@@ -23,14 +23,13 @@ namespace SphereSixComplex.Geometry.CuspStraighteningRetraction
 
 open SphereSixComplex
 open SphereSixComplex.Periods
-open CuspFilling CuspLocalPhaseAction CuspPeriodExpansion CuspPuncturedCollarBridge
-open CuspStraighteningExtension
-open CuspStraighteningHomeomorph
+open CuspFilling CuspLocalPhaseAction CuspPeriodExpansion CuspCollar
+open CuspStraightening
 open InfiniteA2Toric
 
 namespace FrozenLocalCuspPhaseSpreadingData
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model} {r : ℝ}
   {P : PolarHoneycombData M r} (F : FrozenLocalCuspPhaseSpreadingData N M r P)
 
@@ -70,7 +69,7 @@ end FrozenLocalCuspPhaseSpreadingData
 /-- Transport the phase-spread frozen retraction through the point-level straightening
 homeomorphism. -/
 public noncomputable def actualLocalCuspCentralFiberRetractionData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (P : PolarHoneycombData M W.localWitness.radius)

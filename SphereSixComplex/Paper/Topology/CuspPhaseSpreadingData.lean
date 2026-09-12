@@ -56,7 +56,7 @@ public theorem continuous_compactPhaseOrbit (M : Model) (r : ℝ)
 /-- The exact orbit-stratum and deck-action compatibility still required from the standard
 toric cellular contraction. -/
 public structure FrozenLocalCuspPhaseSpreadingData
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D) (M : Model) (r : ℝ)
     (P : PolarHoneycombData M r) where
   positiveRetraction :

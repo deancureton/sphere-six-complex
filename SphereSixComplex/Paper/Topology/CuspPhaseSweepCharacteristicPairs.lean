@@ -6,11 +6,11 @@ public import SphereSixComplex.Prerequisites.Topology.OrientedIntervalCylinderPr
 @[expose] public section
 noncomputable section
 open Set Topology Matrix CategoryTheory HomologicalComplex
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction CuspFilling CuspPeriodExpansion
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepCellIndex (i : Fin 3) : Fin 4 := i.succ
@@ -129,4 +129,4 @@ public theorem phaseSweepOrientedPrism_images
     rw [h, map_neg, phaseSweepCylinderGenerator_image]
     exact (neg_one_zsmul _).symm
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

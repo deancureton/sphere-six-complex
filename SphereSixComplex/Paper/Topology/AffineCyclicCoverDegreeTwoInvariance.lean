@@ -20,10 +20,8 @@ namespace SphereSixComplex.Topology.AffineCyclicCoverDegreeTwoInvariance
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
 open Geometry.EllipticFamilySpecialization
 open LatticeData Periods
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperMultipleFiberHOneTopology
-open PaperAffineCyclicQuotientHomologyCoordinates
+open EllipticFilling
+open AffineCyclicQuotientHomology
 
 private theorem homologyMap_comp {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y]
     [TopologicalSpace Z] (k : ℕ) (f : C(X, Y)) (g : C(Y, Z))
@@ -56,9 +54,9 @@ public theorem centralFiberCoverSourceDegreeTwoBasis_generator
           (_root_.SphereSixComplex.AffineCyclicQuotientHomology.centralFiberCoverGenerator P) z) =
       exteriorSquareMap P.affine.latticeMap
         ((affineCyclicCentralFiberCoverSourceHomologyBasis P).degreeTwo z) := by
-  have hnat := (EstablishedTorusHomology.additiveTorusHomologyBasis_naturality p P.fullRank
+  have hnat := (StandardTorusHomology.additiveTorusHomologyBasis_naturality p P.fullRank
     P.affine).2
-  change (EstablishedTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeTwo
+  change (StandardTorusHomology.additiveTorusHomologyBasis p P.fullRank).degreeTwo
       (integralSingularHomologyEquiv 2
         (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)
         (integralSingularHomologyMap 2
@@ -91,7 +89,7 @@ public theorem coverProjection_degreeTwo_invariant
       (affineCyclicCentralFiberCoverSourceHomologyBasis P).degreeTwo.symm_apply_apply]
   rw [hsymm, ← homologyMap_comp,
     _root_.SphereSixComplex.AffineCyclicQuotientHomology.centralFiberCoverProjection_comp_generator
-      _root_.SphereSixComplex.AffineCyclicQuotientHomology.isCentralFiberCoverSourceCoordinate P]
+      P]
 
 end SphereSixComplex.Topology.AffineCyclicCoverDegreeTwoInvariance
 

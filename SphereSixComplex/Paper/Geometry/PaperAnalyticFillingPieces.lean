@@ -3,7 +3,7 @@ module
 public import SphereSixComplex.Paper.Geometry.ComplexModelRechart
 public import SphereSixComplex.Paper.Geometry.AnalyticData
 public import SphereSixComplex.Paper.Geometry.EllipticLinearCollarGlobalDescent
-public import SphereSixComplex.Paper.Geometry.EllipticAnalyticCollarDescent
+public import SphereSixComplex.Paper.Geometry.EllipticLogarithmicGauge.Collar
 
 /-!
 # Elliptic filling pieces for the paper data
@@ -19,7 +19,7 @@ open TorusFamily AnalyticTorusFamily GlobalTorusFamily ComplexTorus
 open EllipticFamilySpecialization EllipticFixedPointCriterion
 open EllipticLocalCoordinates EllipticCayleyHomeomorph
 open EllipticWholeFiberCompactCover
-open EllipticVaryingFamilyQuotient EllipticPuncturedCollarGaugeHomeomorph
+open EllipticVaryingFamilyQuotient EllipticLogarithmicGauge
 open EllipticLinearCollarGlobalDescent EquivariantQuotientHomeomorph
 
 noncomputable section

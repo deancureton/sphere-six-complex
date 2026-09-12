@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.EllipticPuncturedCollarGaugeHomeomorph
+public import SphereSixComplex.Paper.Geometry.EllipticLogarithmicGauge.Homeomorph
 import all SphereSixComplex.Prerequisites.Geometry.Quotient
 import all SphereSixComplex.Paper.Geometry.TorusFamily
 
@@ -11,15 +11,15 @@ noncomputable section
 open Set
 open scoped ContDiff Manifold
 
-namespace SphereSixComplex.Geometry.EllipticAnalyticCollarDescent
+namespace SphereSixComplex.Geometry.EllipticLogarithmicGauge
 
 open SphereSixComplex LatticeData Periods TriangleGroup
 open ComplexTorus TorusFamily GlobalTorusFamily AnalyticTorusFamily
 open EllipticLocalCoordinates EllipticLocalTrivialization EllipticCayleyHomeomorph
 open EllipticWholeFiberCompactCover
 open EllipticVaryingFamilyQuotient EllipticLogarithmicGauge
-open EllipticLogarithmicGaugeDescent
-open EllipticHolomorphicLogCover EllipticPuncturedCollarGaugeHomeomorph
+open EllipticLogarithmicGauge
+open EllipticLogarithmicGauge EllipticLogarithmicGauge
 open EquivariantQuotientHomeomorph
 
 universe u v w
@@ -49,7 +49,7 @@ public theorem logarithmicGaugeSection_contMDiffAt
   have hcayley : ContMDiff (modelWithCornersSelf ℂ ℂ)
       (modelWithCornersSelf ℂ ℂ) ω
       (fun x : UpperHalfPlane => (cayley x : ℂ)) :=
-    (contMDiff_isOpenEmbedding discValIsOpenEmbedding).comp cayley.contMDiff
+    (contMDiff_isOpenEmbedding ComplexUnitDisc.isOpenEmbedding_coe).comp cayley.contMDiff
   have hcomp : ContMDiffAt (modelWithCornersSelf ℂ ℂ)
       (modelWithCornersSelf ℂ ℂ) ω
       (fun x : UpperHalfPlane => B.log (cayley x : ℂ)) z :=
@@ -420,4 +420,4 @@ public noncomputable def orderFourPuncturedCollarGaugeDiffeomorph
 
 
 
-end SphereSixComplex.Geometry.EllipticAnalyticCollarDescent
+end SphereSixComplex.Geometry.EllipticLogarithmicGauge

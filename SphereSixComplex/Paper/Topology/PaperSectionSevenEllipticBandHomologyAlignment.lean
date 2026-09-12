@@ -21,8 +21,7 @@ namespace SphereSixComplex
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus
 open Geometry.EllipticFamilySpecialization
-open Topology.PaperEllipticFillingRadialRetraction
-open Topology.PaperEllipticReducedCentralFiberCoverModels
+open EllipticFilling
 
 private theorem homologyEquiv_map_symm
     {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
@@ -45,7 +44,7 @@ private theorem homologyEquiv_map_trans_symm
   rw [Geometry.AnalyticData.EllipticBandHomologyAlignment.integralHomologyMap_comp]
   exact (integralSingularHomologyEquiv k e).apply_symm_apply _
 
-namespace EstablishedTorusHomology
+namespace StandardTorusHomology
 
 /-- The real-period-coordinate homeomorphism between full-rank period tori preserves the
 standard integral period bases in degrees one and two.  Both bases are transports of the
@@ -66,7 +65,7 @@ public theorem fullRankAdditiveTorusHomeomorph_naturality
     fun z ↦ StandardTorusHomology.additiveTorusHomologyDegreeTwo_naturality x y hx hy
       (Geometry.AnalyticData.fullRankAdditiveTorusHomeomorph x y hx hy) he z⟩
 
-end EstablishedTorusHomology
+end StandardTorusHomology
 
 namespace Geometry.AnalyticData
 
@@ -84,7 +83,7 @@ public theorem CentralHeightSplit.RadialHomotopyData.bandHomologyAlignment
     change IntegralSingularHomology 1
       (AdditiveTorus (AnalyticTorusFamily.parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zOne).1) at z
-    have h := (EstablishedTorusHomology.fullRankAdditiveTorusHomeomorph_naturality
+    have h := (StandardTorusHomology.fullRankAdditiveTorusHomeomorph_naturality
       A.duplicatedSectionSevenBandParameter
       (AnalyticTorusFamily.parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zTwo).1
@@ -133,7 +132,7 @@ public theorem CentralHeightSplit.RadialHomotopyData.bandHomologyAlignment
     change IntegralSingularHomology 2
       (AdditiveTorus (AnalyticTorusFamily.parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zOne).1) at z
-    have h := (EstablishedTorusHomology.fullRankAdditiveTorusHomeomorph_naturality
+    have h := (StandardTorusHomology.fullRankAdditiveTorusHomeomorph_naturality
       A.duplicatedSectionSevenBandParameter
       (AnalyticTorusFamily.parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zTwo).1

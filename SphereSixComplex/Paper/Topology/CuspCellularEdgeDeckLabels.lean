@@ -5,7 +5,7 @@ import all SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberOneCells
 
 @[expose] public section
 noncomputable section
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods SphereSixComplex.LatticeData
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
@@ -13,7 +13,7 @@ open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def centralEdgeEndpointDeck : Fin 3 → ParameterLattice :=
@@ -99,4 +99,4 @@ public theorem constructedCentralEdgeLift_projects
   let _ := (constructedCentralCellAtlas W).cwComplex
   fin_cases j <;> rfl
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

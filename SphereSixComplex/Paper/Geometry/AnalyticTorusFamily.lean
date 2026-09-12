@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.TorusFamily
+public import SphereSixComplex.Prerequisites.Geometry.CayleyManifold
 public import SphereSixComplex.Paper.Periods.Functions
 
 /-!
@@ -13,7 +14,7 @@ open scoped Manifold
 
 namespace SphereSixComplex.Geometry.AnalyticTorusFamily
 
-open Matrix Topology UpperHalfPlane SphereSixComplex.Geometry.ComplexTorus
+open Matrix Topology _root_.UpperHalfPlane SphereSixComplex.Geometry.ComplexTorus
   SphereSixComplex.Geometry.TorusFamily SphereSixComplex.Periods
 
 public noncomputable section
@@ -41,23 +42,11 @@ public theorem parameterMap_val (z : UpperHalfPlane) :
   rfl
 
 
-/-- A holomorphic scalar-valued function on the upper half-plane is complex smooth of every
-finite or infinite order. -/
-public theorem contMDiff_of_mdifferentiable {f : UpperHalfPlane → ℂ} (hf : MDiff f)
-    (n : WithTop ℕ∞) :
-    ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n f := by
-  intro z
-  rw [UpperHalfPlane.contMDiffAt_iff]
-  have hd : DifferentiableOn ℂ (f ∘ UpperHalfPlane.ofComplex) upperHalfPlaneSet :=
-    UpperHalfPlane.mdifferentiable_iff.mp hf
-  exact (hd.contDiffOn isOpen_upperHalfPlaneSet).contDiffAt
-    (isOpen_upperHalfPlaneSet.mem_nhds z.im_pos)
-
 /-- The upper-half-plane-valued period `tau`, viewed in `ℂ`, is complex smooth. -/
 public theorem tau_contMDiff (n : WithTop ℕ∞) :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n
       (fun z ↦ (F.tau z : ℂ)) :=
-  contMDiff_of_mdifferentiable (by
+  SphereSixComplex.UpperHalfPlane.contMDiff_of_mdifferentiable (by
     intro z
     exact MDifferentiableAt.comp z (UpperHalfPlane.mdifferentiable_coe (F.tau z))
       (F.tau_holomorphic z)) n
@@ -65,12 +54,12 @@ public theorem tau_contMDiff (n : WithTop ℕ∞) :
 /-- The period `mu` is complex smooth. -/
 public theorem mu_contMDiff (n : WithTop ℕ∞) :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n F.mu :=
-  contMDiff_of_mdifferentiable F.mu_holomorphic n
+  SphereSixComplex.UpperHalfPlane.contMDiff_of_mdifferentiable F.mu_holomorphic n
 
 /-- The period `beta` is complex smooth. -/
 public theorem beta_contMDiff (n : WithTop ℕ∞) :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n F.beta :=
-  contMDiff_of_mdifferentiable F.beta_holomorphic n
+  SphereSixComplex.UpperHalfPlane.contMDiff_of_mdifferentiable F.beta_holomorphic n
 
 
 

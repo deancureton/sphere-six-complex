@@ -25,8 +25,7 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Periods
 open SphereSixComplex.TriangleGroup
-open Topology.PaperEllipticFillingRadialRetraction
-open Topology.PaperEllipticReducedCentralFiberCoverModels
+open EllipticFilling
 
 private theorem orderThreeCoverSourceDegreeOne_symm
     {U : SphereSixComplex.Periods.TriangleUniformization} (F : PeriodFunctions U)
@@ -76,7 +75,7 @@ private theorem affineTwoDiscCover_degreeOneBasis
     (z : IntegralSingularHomology 1 (AdditiveTorus R.twoDiscCover.bandParameter)) :
     (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeOne
         (integralSingularHomologyMap 1 R.twoDiscCover.bandToOrderThreeCoverSource z) =
-      (EstablishedTorusHomology.additiveTorusHomologyBasis
+      (StandardTorusHomology.additiveTorusHomologyBasis
         R.twoDiscCover.bandParameter R.twoDiscCover.bandFullRank).degreeOne z := by
   exact orderThreeCoverSourceDegreeOne_symm A.periods z
 
@@ -87,7 +86,7 @@ public theorem AffineRadialCompletionInput.canonicalCuspFiberOrderThreePeriodMar
     (hCusp : (let G := A.actualCuspRadialClutchingData
                 let _ := G.fiberTopology
                 ∀ x : IntegralSingularHomology 1 G.Fiber,
-                  (EstablishedTorusHomology.additiveTorusHomologyBasis
+                  (StandardTorusHomology.additiveTorusHomologyBasis
                       G.fiberParameter G.fiberFullRank).degreeOne
                       (integralSingularHomologyMap 1 G.fiberHomeomorph x) =
                     G.monodromyCoordinates.degreeOne x)) :
@@ -107,7 +106,7 @@ public theorem AffineRadialCompletionInput.canonicalCuspFiberOrderThreePeriodMar
     G.fiberParameter R.twoDiscCover.bandParameter
     G.fiberFullRank R.twoDiscCover.bandFullRank
   have hNatural :=
-    (EstablishedTorusHomology.fullRankAdditiveTorusHomeomorph_naturality
+    (StandardTorusHomology.fullRankAdditiveTorusHomeomorph_naturality
       G.fiberParameter R.twoDiscCover.bandParameter
       G.fiberFullRank R.twoDiscCover.bandFullRank).1 y
   have hComposite :
@@ -117,7 +116,7 @@ public theorem AffineRadialCompletionInput.canonicalCuspFiberOrderThreePeriodMar
       (canonicalCuspFiberToBandTorusHomologyOne_eq_comp R.twoDiscCover) x
   rw [hComposite]
   calc
-    _ = (EstablishedTorusHomology.additiveTorusHomologyBasis
+    _ = (StandardTorusHomology.additiveTorusHomologyBasis
           R.twoDiscCover.bandParameter R.twoDiscCover.bandFullRank).degreeOne
         (integralSingularHomologyMap 1 e y) := by
       exact affineTwoDiscCover_degreeOneBasis R _

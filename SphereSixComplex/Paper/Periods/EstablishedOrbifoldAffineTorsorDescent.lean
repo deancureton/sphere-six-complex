@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Periods.EstablishedModularUniformization
+public import SphereSixComplex.Paper.Periods.FuchsianModularLift
 public import SphereSixComplex.Prerequisites.Periods.EstablishedProjectiveLineCohomology
 import all SphereSixComplex.Paper.Periods.Functions
 

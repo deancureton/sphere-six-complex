@@ -19,9 +19,11 @@ noncomputable section
 open Set Topology
 open scoped ContinuousMap
 
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
+
 namespace SphereSixComplex.Geometry.AnalyticData
 
-open SphereSixComplex ComplexTorus CuspPuncturedCollarBridge
+open SphereSixComplex ComplexTorus CuspCollar
 open InfiniteA2Toric CuspFilling CuspLocalPhaseAction
 open CuspPeriodExpansion
 open SphereSixComplex.LatticeData SphereSixComplex.Topology
@@ -61,7 +63,7 @@ public noncomputable def cuspStarUnwrappedFillingCover :
     letI := paperCuspFillingDeckAction A.starCuspWitness
     UnwrappedToricFillingCover Lattice paperToricSubgroup PaperCuspBoundaryDeck
       (additiveCuspRadiusCover A.starCuspWitness.localWitness.radius)
-      (localCarrier A.toricModel A.starCuspWitness.localWitness.radius)
+      (localCarrier constructedModel A.starCuspWitness.localWitness.radius)
       (A.actualVanKampenFourPieceCover.core ∩ A.actualVanKampenFourPieceCover.cusp :
         Set A.VanKampenSpace)
       A.actualVanKampenFourPieceCover.cusp paperCuspBoundaryDeckData := by
@@ -79,7 +81,7 @@ public noncomputable def cuspStarUnwrappedFillingCover :
         A.cuspFillingToStarPieceHomeomorph
     boundarySimplyConnected := additiveCuspBoundaryCover_simplyConnected W
     fillingSimplyConnected :=
-      A.toricModel.localCarrierSimplyConnected W.localWitness.radius
+      constructedModel.localCarrierSimplyConnected W.localWitness.radius
         W.localWitness.radius_pos
     lift := additiveCuspFillingLift W
     baseMap := A.cuspOverlapToFillingPiece
@@ -97,7 +99,7 @@ public noncomputable def cuspChosenAffineFillingCover :
   BoundaryDeck := PaperCuspBoundaryDeck
   FillingDeck := paperCuspBoundaryDeckData.FillingDeck
   BoundaryCover := additiveCuspRadiusCover A.starCuspWitness.localWitness.radius
-  FillingCover := localCarrier A.toricModel A.starCuspWitness.localWitness.radius
+  FillingCover := localCarrier constructedModel A.starCuspWitness.localWitness.radius
   boundaryDeckGroup := inferInstance
   fillingDeckGroup := inferInstance
   boundaryCoverTopology := inferInstance

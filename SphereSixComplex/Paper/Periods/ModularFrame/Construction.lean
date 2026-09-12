@@ -1,10 +1,10 @@
 module
 
-public import SphereSixComplex.Paper.Periods.ExactFuchsianModularFrameData
+public import SphereSixComplex.Paper.Periods.ModularFrame.Basic
 import SphereSixComplex.Paper.Periods.FuchsianCuspNormalization
-import SphereSixComplex.Paper.Periods.ExactFuchsianCuspFrameGerm
-import SphereSixComplex.Paper.Periods.ExactFuchsianEisensteinSixRoot
-import SphereSixComplex.Paper.Periods.ExactFuchsianRamification
+import SphereSixComplex.Paper.Periods.ModularFrame.Cusp
+import SphereSixComplex.Paper.Periods.ModularFrame.EisensteinSixRoot
+import SphereSixComplex.Paper.Periods.FuchsianModularLift.Ramification
 import all SphereSixComplex.Paper.Periods.FuchsianUniformizationBridge
 import Mathlib.NumberTheory.ModularForms.Derivative
 import Mathlib.Analysis.Complex.BranchLogRoot
@@ -18,7 +18,7 @@ namespace SphereSixComplex.Periods
 
 open SphereSixComplex.TriangleGroup
 
-variable (E : NormalizedFuchsianModularParameter)
+variable (E : FuchsianModularLift)
 
 /-!
 # Construction of the exact lifted modular frame
@@ -189,7 +189,7 @@ private lemma liftedEisensteinSix_analyticOrderAt_two :
   exact horder
 
 /-- A holomorphic square root with its two elliptic automorphy laws. -/
-structure EquivariantEisensteinSixRoot extends ExactFuchsianEisensteinSixRoot E where
+structure EquivariantEisensteinSixRoot extends EisensteinSixRoot E where
   root_one : ∀ z, root (fuchsianSourceAction g₁ • z) =
     -(E.modularParameter.tau z : ℂ) ^ 3 * root z
   root_two : ∀ z, root (fuchsianSourceAction g₂ • z) =
@@ -509,13 +509,13 @@ private lemma modularNegOneFrame_two (z : UpperHalfPlane) :
   field_simp [htau]
   simp [modularNegOneFrame, div_eq_mul_inv]
 
-lemma ExactFuchsianEisensteinSixRoot.root_zero_iff (R : ExactFuchsianEisensteinSixRoot E)
+lemma EisensteinSixRoot.root_zero_iff (R : EisensteinSixRoot E)
     (z : UpperHalfPlane) :
     R.root z = 0 ↔ E.sourceCoordinate.coordinate z = 1 := by
   rw [← liftedEisensteinSix_zero_iff E z, ← R.root_sq z]
   simp
 
-lemma ExactFuchsianEisensteinSixRoot.root_analyticOrderAt_two (R : ExactFuchsianEisensteinSixRoot E) :
+lemma EisensteinSixRoot.root_analyticOrderAt_two (R : EisensteinSixRoot E) :
     analyticOrderAt (R.root ∘ UpperHalfPlane.ofComplex)
       fuchsianTwoFixedPoint = (1 : ℕ∞) := by
   let r : ℂ → ℂ := R.root ∘ UpperHalfPlane.ofComplex
@@ -535,7 +535,7 @@ lemma ExactFuchsianEisensteinSixRoot.root_analyticOrderAt_two (R : ExactFuchsian
   apply (ENat.mul_right_strictMono (a := (2 : ℕ∞)) (by norm_num) (by simp)).injective
   simpa using hord
 
-lemma ExactFuchsianEisensteinSixRoot.root_one (R : ExactFuchsianEisensteinSixRoot E) (z : UpperHalfPlane) :
+lemma EisensteinSixRoot.root_one (R : EisensteinSixRoot E) (z : UpperHalfPlane) :
     R.root (fuchsianSourceAction g₁ • z) =
       -(E.modularParameter.tau z : ℂ) ^ 3 * R.root z := by
   let a : UpperHalfPlane → ℂ := fun w ↦ R.root (fuchsianSourceAction g₁ • w)
@@ -594,7 +594,7 @@ lemma ExactFuchsianEisensteinSixRoot.root_one (R : ExactFuchsianEisensteinSixRoo
     exfalso
     exact hrootne ((mul_eq_zero.mp hzero).resolve_left (by norm_num))
 
-lemma ExactFuchsianEisensteinSixRoot.root_two (R : ExactFuchsianEisensteinSixRoot E) (z : UpperHalfPlane) :
+lemma EisensteinSixRoot.root_two (R : EisensteinSixRoot E) (z : UpperHalfPlane) :
     R.root (fuchsianSourceAction g₂ • z) =
       (E.modularParameter.tau z : ℂ) ^ 3 * R.root z := by
   let a : UpperHalfPlane → ℂ := fun w ↦ R.root (fuchsianSourceAction g₂ • w)
@@ -747,9 +747,9 @@ lemma ExactFuchsianEisensteinSixRoot.root_two (R : ExactFuchsianEisensteinSixRoo
 
 /-- The generator signs of a holomorphic square root are forced by its square identity and the
 normalizations at the two elliptic fixed points. -/
-def ExactFuchsianEisensteinSixRoot.toEquivariant (R : ExactFuchsianEisensteinSixRoot E) :
+def EisensteinSixRoot.toEquivariant (R : EisensteinSixRoot E) :
     EquivariantEisensteinSixRoot E where
-  toExactFuchsianEisensteinSixRoot := R
+  toEisensteinSixRoot := R
   root_one := R.root_one E
   root_two := R.root_two E
 
@@ -776,17 +776,15 @@ lemma EquivariantEisensteinSixRoot.root_cusp (S : EquivariantEisensteinSixRoot E
 
 /-- A holomorphic square root determines the complete lifted modular frame. -/
 theorem exists_exactLiftedModularNegOneFrame_of_root
-    (R : ExactFuchsianEisensteinSixRoot E) :
-    Nonempty (ExactLiftedModularNegOneFrame E) := by
+    (R : EisensteinSixRoot E) :
+    Nonempty (ModularNegOneFrame E) := by
   let S : EquivariantEisensteinSixRoot E := R.toEquivariant E
-  obtain ⟨C⟩ := exists_exactFuchsianCuspFrameGerm E S.root
+  obtain ⟨C⟩ := nonempty_modularFrameCuspGerm E S.root
     S.root_holomorphic (by
       intro z
       simpa only [liftedEisensteinSix] using S.root_sq z) (S.root_cusp E)
   refine ⟨{
-    sqrtEisensteinSix := S.root
-    sqrtEisensteinSix_holomorphic := S.root_holomorphic
-    sqrtEisensteinSix_sq := S.root_sq
+    toEisensteinSixRoot := S.toEisensteinSixRoot
     frame_holomorphic := modularNegOneFrame_holomorphic E S
     frame_branch_one := modularNegOneFrame_branch_one E S
     frame_branch_two := modularNegOneFrame_branch_two E S
@@ -805,10 +803,10 @@ theorem exists_exactLiftedModularNegOneFrame_of_root
     liftedModularDiscriminant] using C.cusp_factorization_eventually
 
 /-- The established uniformization carries a fully genuine exact lifted modular frame. -/
-public theorem nonempty_exactLiftedModularNegOneFrame
-    (E : NormalizedFuchsianModularParameter) :
-    Nonempty (ExactLiftedModularNegOneFrame E) := by
-  obtain ⟨R⟩ := exists_exactFuchsianEisensteinSixRoot E
+public theorem nonempty_modularNegOneFrame
+    (E : FuchsianModularLift) :
+    Nonempty (ModularNegOneFrame E) := by
+  obtain ⟨R⟩ := nonempty_eisensteinSixRoot E
   exact exists_exactLiftedModularNegOneFrame_of_root E R
 
 end SphereSixComplex.Periods

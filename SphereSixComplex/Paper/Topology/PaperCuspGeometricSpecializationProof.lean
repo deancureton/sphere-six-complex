@@ -6,7 +6,7 @@ public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecialization
 # Regression test: the cusp clutching datum must be normalized
 
 The Section 7 specialization equations
-`EstablishedStandardA2CuspSpecialization.degreeOne` and `.degreeTwo` have a left-hand side that
+`CuspSpecialization.degreeOne` and `.degreeTwo` have a left-hand side that
 does not mention the clutching datum at all.  They are therefore only sound if the datum is
 *rigid*.  This file proves that the un-normalized shape of the datum,
 `UnnormalizedCuspRadialClutchingData`, is **not** rigid, so that quantifying either equation over
@@ -60,7 +60,7 @@ namespace SphereSixComplex
 
 namespace CircleMappingTorusHomologyBases
 
-open LatticeData LatticeWangAlgebra Topology.PaperCuspSpecializationAlgebra
+open LatticeData LatticeWangAlgebra CuspMonodromyCoinvariants
 
 variable {F : Type} [TopologicalSpace F] {phi : F ≃ₜ F}
 

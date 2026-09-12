@@ -25,7 +25,7 @@ open SphereSixComplex.LatticeData SphereSixComplex.Topology
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.GlobalTorusFamily
-open CuspPuncturedCollarBridge
+open CuspCollar
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 variable (A : AnalyticData)

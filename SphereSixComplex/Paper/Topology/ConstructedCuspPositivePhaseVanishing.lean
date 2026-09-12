@@ -8,10 +8,10 @@ noncomputable section
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.CuspStraighteningRetraction
 open SphereSixComplex.Periods SphereSixComplex.Topology
-open CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge CuspPeriodExpansion
+open CuspFilling CuspLocalPhaseAction CuspCollar CuspPeriodExpansion
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction CircleProductIdentityMappingTorus
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedCuspPositiveProjection_central_action

@@ -33,11 +33,11 @@ open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticAffineGlobalSeparation
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
-open SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.EllipticLogarithmicGauge
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+open SphereSixComplex.EllipticFilling
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
 variable (A : AnalyticData)

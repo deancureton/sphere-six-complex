@@ -15,8 +15,8 @@ open CategoryTheory TopologicalSpace Topology
 namespace SphereSixComplex.Geometry
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
-open CuspPuncturedCollarBridge EllipticPuncturedCollarGaugeHomeomorph
-open EllipticVaryingFamilyQuotient EllipticLogarithmicGaugeDescent
+open CuspCollar EllipticLogarithmicGauge
+open EllipticVaryingFamilyQuotient EllipticLogarithmicGauge
 open EllipticLinearCollarGlobalDescent
 open EquivariantQuotientHomeomorph
 

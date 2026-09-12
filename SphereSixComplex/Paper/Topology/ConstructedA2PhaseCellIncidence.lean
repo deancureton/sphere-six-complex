@@ -7,12 +7,12 @@ public import SphereSixComplex.Prerequisites.Topology.CellularContractibleAttach
 noncomputable section
 open Set Topology CategoryTheory
 
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedCentralOneCell_injOn_closedBall
@@ -63,4 +63,4 @@ public theorem constructedCentralPhaseTwoCell_attachingDegree_zero
     change constructedCentralOneCell W i t = constructedCentralCellMap W 2 i.succ x.1
     fin_cases i <;> exact he
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

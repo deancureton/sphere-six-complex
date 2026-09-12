@@ -13,7 +13,7 @@ namespace SphereSixComplex.Geometry
 
 open scoped ContDiff Manifold
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
-open CuspPuncturedCollarBridge CuspPhaseEstimates CuspPeriodExpansion
+open CuspCollar CuspPhaseEstimates CuspPeriodExpansion
 open CuspFilling CuspLocalPhaseAction
 open InfiniteA2Toric
 
@@ -21,7 +21,7 @@ noncomputable section
 
 /-- The actual local cusp quotient is second countable. -/
 public theorem actualLocalCuspFilling_secondCountable
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     SecondCountableTopology (ActualLocalCuspFilling W) := by

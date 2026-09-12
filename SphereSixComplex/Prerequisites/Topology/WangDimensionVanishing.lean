@@ -1,7 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
-public import SphereSixComplex.Paper.Topology.CuspToricCellularHomologyBridge
+public import SphereSixComplex.Prerequisites.Topology.WangHomologyPresentationProof
 
 /-!
 # Vanishing homology of a mapping torus above its fibre's dimension

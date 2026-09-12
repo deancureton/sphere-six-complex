@@ -9,9 +9,9 @@ open Set Topology
 open scoped NNReal
 namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex SphereSixComplex.Periods
-open CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge CuspPeriodExpansion
+open CuspFilling CuspLocalPhaseAction CuspCollar CuspPeriodExpansion
 open CuspStraighteningRetraction InfiniteA2Toric.Construction
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedPositiveQuotientCore_locallyCollared

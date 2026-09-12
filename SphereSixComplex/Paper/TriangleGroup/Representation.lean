@@ -144,7 +144,6 @@ public theorem rhoLambda_g₀_apply (x : DualLattice) : rhoLambda g₀ x = M₀ 
 
 
 
-public theorem rhoLambda_g0 : rhoLambda g₀ = m₀ := rhoLambda_g₀
 
 
 end SphereSixComplex.TriangleGroup

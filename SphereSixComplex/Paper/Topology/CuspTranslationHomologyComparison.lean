@@ -122,7 +122,7 @@ public theorem cuspTranslation_homology_image
     rw [hh]
     apply Eq.trans ?_ (cuspToEllipticInteriorMap_eq_central D q).symm
     apply congrArg A.centralToEllipticInterior
-    change CuspPuncturedCollarBridge.puncturedLocalCuspQuotientMap A.starCuspWitness
+    change CuspCollar.puncturedLocalCuspQuotientMap A.starCuspWitness
       (A.cuspCollarToStarOverlapHomeomorph.symm (A.cuspCollarToStarOverlapHomeomorph q)) = _
     rw [Homeomorph.symm_apply_apply]
     rfl
@@ -174,9 +174,9 @@ public theorem cuspTranslation_ellipticCoordinate
 
 public theorem cuspDegreeOneFullIterateRelation_proved
     (R : A.AffineRadialCompletionInput) :
-    EstablishedSectionSevenCuspTopology.ActualCuspDegreeOneIndexTwoFullIterateRelation R := by
+    CuspAttachment.ActualCuspDegreeOneIndexTwoFullIterateRelation R := by
   let _ := A.actualCuspRadialClutchingData.fiberTopology
-  apply (EstablishedSectionSevenCuspTopology.actualCuspDegreeOneIndexTwo_iff_fullIterateRelation R).mp
+  apply (CuspAttachment.actualCuspDegreeOneIndexTwo_iff_fullIterateRelation R).mp
   let f := R.twoDiscCover.ellipticInteriorDegreeOneCoordinateHom R.homologyAlignment
   let y := integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
     (hurewiczFunction A.cuspOverlapBase

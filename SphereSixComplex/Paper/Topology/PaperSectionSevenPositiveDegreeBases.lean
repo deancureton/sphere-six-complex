@@ -84,8 +84,8 @@ public structure CollarInteriorHomologyBases where
       (Fin 2 → ℤ)
 
   cuspFillingTwo :
-    (R : CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) →
-      IntegralSingularHomology 2 (CuspPuncturedCollarBridge.ActualLocalCuspFilling A.starCuspWitness) ≃+
+    (R : CuspCollar.ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) →
+      IntegralSingularHomology 2 (CuspCollar.ActualLocalCuspFilling A.starCuspWitness) ≃+
         (Fin 4 → ℤ) := A.cuspFillingHomologyTwoEquiv
 
 /-- The six separate source/side bases used by the final positive-degree calculation. -/
@@ -146,7 +146,7 @@ end CuspAttachmentHomologyBases
 /-- Transport the actual cusp-filling homology calculations and the four remaining local bases
 to all six spaces in the final Mayer--Vietoris attachment. -/
 public noncomputable def cuspAttachmentHomologyBases
-    (R : CuspPuncturedCollarBridge.ActualLocalCuspCentralFiberRetractionData
+    (R : CuspCollar.ActualLocalCuspCentralFiberRetractionData
       A.starCuspWitness)
     (B : A.CollarInteriorHomologyBases) :
     A.CuspAttachmentHomologyBases where

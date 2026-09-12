@@ -6,11 +6,11 @@ public import SphereSixComplex.Prerequisites.Topology.RelativeSingularHomotopy
 @[expose] public section
 noncomputable section
 open Set Topology CategoryTheory
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction CuspFilling CuspPeriodExpansion
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepOneSkeletonInclusion
@@ -126,4 +126,4 @@ public def phaseSweepSkeletalRelativeHomotopy
       apply Subtype.ext
       exact phaseSweepCompactAction_zeroSkeleton W (constructedA2CircleSweepParameter i p.2.down) p.1)
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

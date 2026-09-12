@@ -7,7 +7,7 @@ public import SphereSixComplex.Paper.Topology.CuspMixedTorusPositiveProjection
 noncomputable section
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.StandardTorusHomology
-open CuspPuncturedCollarBridge CuspStraighteningRetraction
+open CuspCollar CuspStraighteningRetraction
 open InfiniteA2Toric
 
 def cuspFiberSpecializationColumn (A : AnalyticData) (j : Fin 4) :

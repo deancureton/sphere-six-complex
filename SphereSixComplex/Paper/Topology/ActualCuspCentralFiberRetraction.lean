@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.CuspPuncturedCollarBridge
+public import SphereSixComplex.Paper.Geometry.CuspCollar.Basic
 public import SphereSixComplex.Prerequisites.Topology.EquivariantStrongDeformationRetraction
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris
 
@@ -23,7 +23,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.CuspCombinatorics
@@ -34,7 +34,7 @@ open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   (W : ActualPuncturedCuspCollarWitness N M)
 
@@ -151,6 +151,6 @@ public noncomputable def specializationHomologyEquiv (k : ℕ) :
 
 end ActualLocalCuspCentralFiberRetractionData
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 
 end SphereSixComplex

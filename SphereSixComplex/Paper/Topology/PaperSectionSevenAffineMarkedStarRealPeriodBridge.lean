@@ -45,9 +45,8 @@ namespace AnalyticData
 
 open TorusFamily AnalyticTorusFamily
 open EllipticFixedPointCriterion EllipticVaryingFamilyQuotient
-open EquivariantQuotientHomeomorph EllipticRealPeriodProductTrivialization
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open EquivariantQuotientHomeomorph RealPeriodTrivialization
+open SphereSixComplex.EllipticFilling
 
 public theorem orderThreeRealPeriodCentralProjection_action
     (A : AnalyticData) (g : FiniteCyclic 3)
@@ -181,12 +180,12 @@ end SphereSixComplex.Geometry
 
 open scoped ContinuousMap
 
-namespace SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+namespace SphereSixComplex.EllipticFilling
 
 open SphereSixComplex.Geometry
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+open SphereSixComplex.EllipticFilling
 
 variable {m : ℕ} [NeZero m] {p : SphereSixComplex.Periods.Parameters}
   {D : RadialEllipticActionData m (AdditiveTorus p)}
@@ -233,16 +232,14 @@ public theorem continuousMap_comp_add_homotopic_of_contractible
       have hH : H (1, x) = g (b x) := H.map_one_left x
       rw [hH] }⟩
 
-end SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+end SphereSixComplex.EllipticFilling
 
 namespace SphereSixComplex.Geometry.AnalyticData
 
 open AnalyticTorusFamily
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
-open SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels
+open SphereSixComplex.EllipticFilling
 
 /-- The strip coordinate of the marked affine band. -/
 public noncomputable def affineBandStripCoordinate (A : AnalyticData) :
@@ -310,23 +307,14 @@ public structure AffineMarkedEndpointGaugeTranslation
         A.affineOrderFourStarEndpoint =
       A.affineOrderFourGaugeTranslatedProjection orderFourGauge
 
-/-- The endpoint-level homotopy statement left after removing the logarithmic gauge. -/
-public structure AffineMarkedDiscEndpointHomotopyCompatibility
-    (A : AnalyticData) where
-  orderThree :
-    ((A.orderThreeFillingImageHomotopyEquiv.toFun.comp
-      A.affineOrderThreeDiscFillingEndpoint)).Homotopic
-        (affineBandOrderThreeMarkedProjection A)
-  orderFour :
-    ((A.orderFourFillingImageHomotopyEquiv.toFun.comp
-      A.affineOrderFourDiscFillingEndpoint)).Homotopic
-        (affineBandOrderFourMarkedProjection A)
-
 /-- Homotopic disc endpoints suffice for the original marked-band compatibility; literal
 endpoint equality is unnecessary. -/
-public theorem AffineMarkedDiscEndpointHomotopyCompatibility.toBandCompatibility
+public theorem markedBandHomotopies_of_discEndpointHomotopies
     {A : AnalyticData}
-    (H : A.AffineMarkedDiscEndpointHomotopyCompatibility) :
+    (h₃ : (A.orderThreeFillingImageHomotopyEquiv.toFun.comp
+      A.affineOrderThreeDiscFillingEndpoint).Homotopic (affineBandOrderThreeMarkedProjection A))
+    (h₄ : (A.orderFourFillingImageHomotopyEquiv.toFun.comp
+      A.affineOrderFourDiscFillingEndpoint).Homotopic (affineBandOrderFourMarkedProjection A)) :
     A.AffineOverlapBandCompatibility := by
   apply markedBandHomotopies_of_sideContractions A
   refine { orderThree := ?_, orderFour := ?_ }
@@ -338,7 +326,7 @@ public theorem AffineMarkedDiscEndpointHomotopyCompatibility.toBandCompatibility
         ContinuousMap.Homotopic.comp g.left_inv (.refl q)
     have hright : (g.invFun.comp (g.toFun.comp q)).Homotopic
         (g.invFun.comp p) :=
-      ContinuousMap.Homotopic.comp (.refl g.invFun) H.orderThree
+      ContinuousMap.Homotopic.comp (.refl g.invFun) h₃
     have hfill : q.Homotopic (g.invFun.comp p) := hleft.symm.trans hright
     have hside := ContinuousMap.Homotopic.comp
       (.refl A.affineOrderThreeFillingImageToSide) hfill
@@ -374,7 +362,7 @@ public theorem AffineMarkedDiscEndpointHomotopyCompatibility.toBandCompatibility
         ContinuousMap.Homotopic.comp g.left_inv (.refl q)
     have hright : (g.invFun.comp (g.toFun.comp q)).Homotopic
         (g.invFun.comp p) :=
-      ContinuousMap.Homotopic.comp (.refl g.invFun) H.orderFour
+      ContinuousMap.Homotopic.comp (.refl g.invFun) h₄
     have hfill : q.Homotopic (g.invFun.comp p) := hleft.symm.trans hright
     have hside := ContinuousMap.Homotopic.comp
       (.refl A.affineOrderFourFillingImageToSide) hfill
@@ -496,8 +484,7 @@ compatibility. -/
 public theorem AffineMarkedEndpointGaugeTranslation.toBandCompatibility
     {A : AnalyticData} (G : A.AffineMarkedEndpointGaugeTranslation) :
     A.AffineOverlapBandCompatibility := by
-  apply AffineMarkedDiscEndpointHomotopyCompatibility.toBandCompatibility
-  refine { orderThree := ?_, orderFour := ?_ }
+  apply markedBandHomotopies_of_discEndpointHomotopies
   · rw [affineOrderThreeDiscEndpoint_toFun_eq_starEndpoint]
     exact G.orderThreeEndpointHomotopy
   · rw [affineOrderFourDiscEndpoint_toFun_eq_starEndpoint]

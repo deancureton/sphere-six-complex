@@ -22,7 +22,7 @@ namespace CircleMappingTorusHomologyBases
 
 open LatticeData
 open LatticeWangAlgebra
-open Topology.PaperCuspSpecializationAlgebra
+open CuspMonodromyCoinvariants
 
 /-- Fiber coordinates through degree two that identify monodromy with the cusp matrices. -/
 public structure CuspMonodromyCoordinates

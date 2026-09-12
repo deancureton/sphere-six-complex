@@ -16,7 +16,7 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 
 open SphereSixComplex
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -29,7 +29,7 @@ open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 /-- The affine origin of a lower or upper chart, regarded as a point of the local carrier. -/
@@ -194,6 +194,6 @@ public theorem constructedCentralZeroCell_pairwiseDisjoint
     exact constructedCentralOriginOrbit_ne W (hbx.trans hax.symm)
   · exact (hij rfl).elim
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar
 
 end

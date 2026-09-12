@@ -20,7 +20,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Geometry.ComplexTorus
@@ -28,10 +28,10 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.LatticeWangAlgebra
-open SphereSixComplex.Topology.PaperCuspSpecializationAlgebra
+open SphereSixComplex.CuspMonodromyCoinvariants
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M} [HasCuspPhaseSpreading W]
 
@@ -273,7 +273,7 @@ public theorem degreeTwoCoinvariantsEquiv_symm_single
 
 end ActualCuspRadialClutchingData
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 
 end SphereSixComplex
 

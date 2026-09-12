@@ -8,7 +8,7 @@ noncomputable section
 open AlgebraicTopology
 namespace SphereSixComplex
 
-namespace EstablishedFiniteCWTopology
+namespace StandardTorusHomology
 
 open Geometry Geometry.ComplexTorus Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Periods
@@ -35,7 +35,7 @@ public theorem additiveTorus_euler_eq_zero (p : Parameters) (h : FullRank p) :
     integralHomologyEulerCharacteristicSix (AdditiveTorus p) = 0 :=
   (additiveTorusFourTorusHomologicalModel p h).euler_eq_zero
 
-end EstablishedFiniteCWTopology
+end StandardTorusHomology
 
 end SphereSixComplex
 

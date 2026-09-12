@@ -5,7 +5,7 @@ public import SphereSixComplex.Paper.Topology.CuspFourthSweepNormalizationOfProj
 noncomputable section
 open AlgebraicTopology
 namespace SphereSixComplex.Geometry.AnalyticData
-open SphereSixComplex.Topology CuspPuncturedCollarBridge
+open SphereSixComplex.Topology CuspCollar
 
 
 public theorem cuspFourthSweepClass_eq_rawFive (A : AnalyticData) :
@@ -13,6 +13,6 @@ public theorem cuspFourthSweepClass_eq_rawFive (A : AnalyticData) :
       A.cuspRawHomologyTwoEquiv.symm (Pi.single (5 : Fin 6) 1) :=
   cuspFourthSweepClass_eq_rawFive_of_projection A
     A.actualCuspFillingHomologyTwoEquiv.toAddMonoidHom
-    (EstablishedStandardA2CuspSpecialization.degreeTwo A)
+    (CuspSpecialization.degreeTwo A)
 
 end SphereSixComplex.Geometry.AnalyticData

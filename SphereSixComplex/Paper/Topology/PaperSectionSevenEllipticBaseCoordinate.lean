@@ -23,7 +23,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
-open SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
+open SphereSixComplex.Geometry.EllipticLogarithmicGauge
 open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.EllipticWholeFiberCompactCover
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination

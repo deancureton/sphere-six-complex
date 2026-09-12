@@ -17,7 +17,7 @@ open scoped ContDiff Manifold
 namespace SphereSixComplex.Geometry
 
 open CuspAnalyticFillingCollar CuspAnalyticFillingCollar.AnalyticData
-open CuspPuncturedCollarBridge
+open CuspCollar
 
 noncomputable section
 

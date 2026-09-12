@@ -14,13 +14,13 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.AnalyticData
 
-open CuspPuncturedCollarBridge
+open CuspCollar
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.Geometry.TorusFamily
 

@@ -8,9 +8,9 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 
-open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex.Geometry
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.ComplexTorus
@@ -18,7 +18,7 @@ open SphereSixComplex.Geometry.GlobalTorusFamily
 open SphereSixComplex.CyclicAngularFundamentalDomain
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+open SphereSixComplex.EllipticFilling
 
 variable {m : ℕ} [NeZero m]
 variable {p : SphereSixComplex.Periods.Parameters}
@@ -261,12 +261,11 @@ public theorem complexTwoReducedCentralFiberProjection_affineEquiv
     complexTwoReducedCentralFiberProjection (D := D)
         (affineEquiv P.affine.lift P.liftTranslation z) =
       complexTwoReducedCentralFiberProjection (D := D) z := by
-  let h := SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D
-  let s : SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.CentralFiberCoverSource D :=
+  let h := SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D
+  let s : SphereSixComplex.EllipticFilling.RadialEllipticActionData.CentralFiberCoverSource D :=
     h.symm (torusProjection p z)
   have hgen := congrArg (fun f ↦ f s)
-    (centralFiberCoverProjection_comp_generator
-      (isCentralFiberCoverSourceCoordinate (D := D)) P)
+    (centralFiberCoverProjection_comp_generator P)
   have hs : centralFiberCoverGenerator P s =
       h.symm (torusProjection p
         (affineEquiv P.affine.lift P.liftTranslation z)) := by
@@ -275,16 +274,16 @@ public theorem complexTwoReducedCentralFiberProjection_affineEquiv
       torusProjection p (affineEquiv P.affine.lift P.liftTranslation z)
     exact (torusProjection_affineEquiv P z).symm
   change
-    SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverProjection D
+    SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverProjection D
         (centralFiberCoverGenerator P s) =
-      SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverProjection D s
+      SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverProjection D s
     at hgen
   rw [hs] at hgen
   change
-    SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverProjection D
+    SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverProjection D
         (h.symm (torusProjection p
           (affineEquiv P.affine.lift P.liftTranslation z))) =
-      SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverProjection D
+      SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverProjection D
         (h.symm (torusProjection p z))
   exact hgen
 
@@ -301,11 +300,11 @@ public theorem complexTwoReducedCentralFiberProjection_period_add
     complexTwoReducedCentralFiberProjection (D := D) (periodVector p x + z) =
       complexTwoReducedCentralFiberProjection (D := D) z := by
   change
-    SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverProjection D
-        ((SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
+    SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverProjection D
+        ((SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
           (torusProjection p (periodVector p x + z))) =
-      SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverProjection D
-        ((SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
+      SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverProjection D
+        ((SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
           (torusProjection p z))
   rw [torusProjection_period_add]
 
@@ -684,18 +683,18 @@ public theorem complexTwoReducedCentralFiberProjection_eq_implies_fiberGenerator
     ∃ k : ℕ, torusProjection p z =
       (D.actionData.fiberGenerator ^ k) (torusProjection p w) := by
   change
-    SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverProjection D
-        ((SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
+    SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverProjection D
+        ((SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
           (torusProjection p z)) =
-      SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverProjection D
-        ((SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
+      SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverProjection D
+        ((SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
           (torusProjection p w)) at hq
   let _ := D.actionData.diagonalAction
   have horbit := Quotient.exact (congrArg Subtype.val hq)
   change ∃ g : FiniteCyclic m,
-    g • ((SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
+    g • ((SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
         (torusProjection p w)).1 =
-      ((SphereSixComplex.Topology.PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
+      ((SphereSixComplex.EllipticFilling.RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm
         (torusProjection p z)).1 at horbit
   obtain ⟨g, hg⟩ := horbit
   refine ⟨(Multiplicative.toAdd g).val, ?_⟩

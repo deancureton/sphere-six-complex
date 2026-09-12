@@ -42,7 +42,7 @@ public theorem normalizedFuchsianModularJLiftingExistence :
   NormalizedModularJLiftingExistence.normalizedFuchsianModularJLiftingExistence
 
 /-- A normalized modular parameter together with the exact source quotient coordinate it lifts. -/
-public structure NormalizedFuchsianModularParameter where
+public structure FuchsianModularLift where
   /-- The exact source orbifold quotient coordinate. -/
   sourceCoordinate : ExactFuchsianOrbifoldCoordinate
   /-- The resulting holomorphic equivariant modular parameter. -/
@@ -59,8 +59,8 @@ public structure NormalizedFuchsianModularParameter where
 
 /-- The three classical uniformization inputs produce the normalized Fuchsian modular parameter
 and its exact source quotient coordinate. -/
-public theorem nonempty_normalizedFuchsianModularParameter :
-    Nonempty NormalizedFuchsianModularParameter := by
+public theorem nonempty_fuchsianModularLift :
+    Nonempty FuchsianModularLift := by
   obtain ⟨C⟩ := ExactFuchsianOrbifoldCoordinate.nonempty
   obtain ⟨J⟩ := ExactNormalizedModularJUniformization.nonempty
   obtain ⟨P, hOne, hTwo, hCoordinate⟩ :=

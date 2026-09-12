@@ -23,7 +23,7 @@ open AlgebraicTopology
 
 namespace SphereSixComplex
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
@@ -43,7 +43,7 @@ private theorem standardA2ToricCellularBoundary_eq (n : ℕ)
 incidence formula encoded by `cuspToricCellularBoundary`: the three oriented one-cells run from
 the first vertex to the second, and every higher cellular boundary is zero. -/
 public theorem establishedStandardA2ToricCentralFiberCellularIncidence
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -74,7 +74,7 @@ public theorem establishedStandardA2ToricCentralFiberCellularIncidence
 
 /-- The actual quotient cusp central fibre has second integral homology `ℤ⁴`. -/
 public noncomputable def actualCuspCentralFiberHomologyTwoEquiv
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -89,7 +89,7 @@ public noncomputable def actualCuspCentralFiberHomologyTwoEquiv
 
 
 public noncomputable def actualLocalCuspFillingHomologyOneEquiv
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (_R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -99,7 +99,7 @@ public noncomputable def actualLocalCuspFillingHomologyOneEquiv
 
 /-- The actual local cusp filling has second integral homology `ℤ⁴`. -/
 public noncomputable def actualLocalCuspFillingHomologyTwoEquiv
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
@@ -108,11 +108,11 @@ public noncomputable def actualLocalCuspFillingHomologyTwoEquiv
 
 
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 
 namespace Geometry.AnalyticData
 
-open CuspPuncturedCollarBridge
+open CuspCollar
 
 variable (A : AnalyticData)
 

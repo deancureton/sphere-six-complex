@@ -16,7 +16,7 @@ noncomputable section
 
 open Matrix Set
 
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 
 open SphereSixComplex
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -29,7 +29,7 @@ open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem transitionMatrix_lower_to_upper_same (v : ToricLattice) :
@@ -2628,6 +2628,6 @@ public theorem constructedCentralPhaseTwoCellZero_continuousOn
   constructedCentralPhaseFaceZeroOrbit_continuousOn_closedBall W
 
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar
 
 end

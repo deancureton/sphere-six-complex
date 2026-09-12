@@ -22,7 +22,7 @@ namespace SphereSixComplex.Topology.EllipticThreeTorusClutchingDegreeTwo
 
 open StandardTorusHomology
 open Geometry.ComplexTorus
-open PaperAffineCyclicReducedFiberMappingTorus
+open EllipticReducedFiberMappingTorus
 
 private def orderThreeExtension : StdTorus 4 ≃ₜ StdTorus 4 where
   toFun u := Fin.cons (u 0) (orderThreeThreeTorusClutching (Fin.tail u))

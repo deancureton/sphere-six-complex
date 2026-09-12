@@ -6,9 +6,8 @@ public import SphereSixComplex.Paper.Topology.PaperEllipticFillingRealPeriodRadi
 noncomputable section
 open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.AnalyticData
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
-open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
-open EllipticVaryingFamilyQuotient EllipticRealPeriodProductTrivialization
+open SphereSixComplex.EllipticFilling
+open EllipticVaryingFamilyQuotient RealPeriodTrivialization
 
 public def orderThreeFourthFillingHomeomorph (A : AnalyticData) :
     A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius ≃ₜ

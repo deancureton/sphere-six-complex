@@ -15,7 +15,7 @@ the covering-space comparison square.
 
 noncomputable section
 
-namespace SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
+namespace SphereSixComplex.Geometry.EllipticLogarithmicGauge
 
 open SphereSixComplex.TriangleGroup SphereSixComplex.Periods
 open TorusFamily GlobalTorusFamily AnalyticTorusFamily
@@ -41,13 +41,13 @@ public theorem familyTotalSpaceBase_orderFourPrincipalGauge
   | _ p =>
     rfl
 
-end SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
+end SphereSixComplex.Geometry.EllipticLogarithmicGauge
 
 namespace SphereSixComplex.Geometry
 
 open SphereSixComplex.TriangleGroup SphereSixComplex.Periods
 open TorusFamily GlobalTorusFamily AnalyticTorusFamily
-open EllipticPuncturedCollarGaugeHomeomorph EllipticVaryingFamilyQuotient
+open EllipticLogarithmicGauge EllipticVaryingFamilyQuotient
 open EllipticLinearCollarGlobalDescent EllipticWholeFiberCompactCover
 open AnalyticData
 

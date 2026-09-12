@@ -165,8 +165,8 @@ open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
-open SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
+open SphereSixComplex.Geometry.RealPeriodTrivialization
+open SphereSixComplex.EllipticFilling
 
 variable (A : AnalyticData)
 
@@ -411,7 +411,7 @@ public theorem orderThreeAngularQuotientHomeomorph_apply
       A.starSeparation.orderThree.radius_lt_one
     let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
         (ℝ × A.OrderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)
-  EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
+  CyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
         CyclicAngularFundamentalDomain.orderThreeMultiplier_eq_standardMultiplier
         (angularQuotientMap D.action D.radius_lt_one.le D.carrier rfl w) =
       (q.1, orderThreeAffineMappingTorusLiftProjection A.periods q.2) := by
@@ -479,7 +479,7 @@ public theorem ellipticThreeRadialFillingLift_commutes
     A.starSeparation.orderThree.radius A.starSeparation.orderThree.radius_pos
     A.starSeparation.orderThree.radius_lt_one
   let hprod := EquivariantQuotientHomeomorph.restrictedOrbitQuotientHomeomorph e
-  let hang := EstablishedCyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
+  let hang := CyclicAngularFundamentalDomain.quotientHomeomorphRadialMappingTorus D
     CyclicAngularFundamentalDomain.orderThreeMultiplier_eq_standardMultiplier
   let w : OpenRadialInterval A.starSeparation.orderThree.radius ×
       (ℝ × A.OrderThreeTorus) := (q.1, q.2.1, Quotient.mk _ q.2.2)

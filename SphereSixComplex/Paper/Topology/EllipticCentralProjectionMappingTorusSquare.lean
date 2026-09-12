@@ -25,11 +25,10 @@ open Geometry Geometry.EllipticFamilySpecialization
 open Geometry.ComplexTorus Geometry.EquivariantQuotientHomeomorph
 open Geometry.EllipticFixedPointCriterion Geometry.EllipticLocalCoordinates
 open Geometry.AnalyticTorusFamily Geometry.GlobalTorusFamily
-open PaperAffineCyclicReducedFiberMappingTorus
+open EllipticReducedFiberMappingTorus
 open NormalizedAffineMappingTorusCover
-open PaperEllipticFillingRadialRetraction
-open PaperEllipticReducedCentralFiberCoverModels
-open PaperEllipticReducedCentralFiberCoverModels.RadialEllipticActionData
+open EllipticFilling
+open EllipticFilling.RadialEllipticActionData
 
 variable {m : ℕ} [NeZero m] {F : Type} [TopologicalSpace F]
 

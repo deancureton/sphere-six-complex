@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Periods.EstablishedModularUniformization
+public import SphereSixComplex.Paper.Periods.FuchsianModularLift
 public import SphereSixComplex.Prerequisites.Periods.EstablishedProjectiveLineCohomology
 public import SphereSixComplex.Paper.Periods.TorsorAlgebra
 import all SphereSixComplex.Paper.Periods.FuchsianUniformizationBridge
@@ -22,7 +22,7 @@ namespace SphereSixComplex.Periods
 
 open SphereSixComplex.TriangleGroup
 
-variable (E : NormalizedFuchsianModularParameter)
+variable (E : FuchsianModularLift)
 
 /-- The explicit local affine-torsor section at the order-three point. -/
 @[expose] public def ellipticMuOne (z : UpperHalfPlane) : ℂ :=
@@ -34,7 +34,7 @@ variable (E : NormalizedFuchsianModularParameter)
 
 /-- The distinguished local section at the cusp. -/
 @[expose] public def cuspLocalMu
-    (_E : NormalizedFuchsianModularParameter) (_z : UpperHalfPlane) : ℂ := 0
+    (_E : FuchsianModularLift) (_z : UpperHalfPlane) : ℂ := 0
 
 public theorem tau_coe_ne_one (z : UpperHalfPlane) :
     (E.modularParameter.tau z : ℂ) ≠ 1 := by

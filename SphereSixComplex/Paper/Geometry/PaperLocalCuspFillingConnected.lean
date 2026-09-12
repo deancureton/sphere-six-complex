@@ -17,7 +17,7 @@ namespace SphereSixComplex.Geometry
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open InfiniteA2Toric CuspCombinatorics CuspFilling CuspLocalPhaseAction
-open CuspPuncturedCollarBridge CuspPhaseEstimates CuspPeriodExpansion
+open CuspCollar CuspPhaseEstimates CuspPeriodExpansion
 
 noncomputable section
 
@@ -168,7 +168,7 @@ public theorem localCarrier_connected (M : Model) {r : ℝ} (hr : 0 < r) :
 
 /-- The actual phase-corrected local cusp quotient is connected. -/
 public theorem actualLocalCuspFilling_connected
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     ConnectedSpace (ActualLocalCuspFilling W) := by

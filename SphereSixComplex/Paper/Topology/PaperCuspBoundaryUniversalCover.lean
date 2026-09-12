@@ -20,7 +20,7 @@ open Matrix Set Topology
 
 namespace SphereSixComplex
 
-open Geometry Geometry.ComplexTorus Geometry.CuspPuncturedCollarBridge
+open Geometry Geometry.ComplexTorus Geometry.CuspCollar
 open Geometry.InfiniteA2Toric
 
 namespace Topology
@@ -61,17 +61,16 @@ public theorem paperCuspMonodromy_apply (v : Lattice) :
 
 end Topology
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.FamilyEquivariance
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- Translation of normalized additive coordinates by a rank-four period vector. -/
@@ -260,7 +259,7 @@ public theorem additiveCuspBoundaryProjection_angularTranslate
     puncturedLocalCuspQuotientMap_additiveCuspBoundaryProjection,
     additiveCuspCoverToGlobal_angularTranslate]
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 
 end SphereSixComplex
 

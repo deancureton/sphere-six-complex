@@ -21,7 +21,7 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Geometry.AnalyticData
 
-open CuspPuncturedCollarBridge
+open CuspCollar
 
 /-- A loop with a logarithmic lift gaining `2πi` has a point on the imaginary axis. -/
 public theorem exists_exp_re_eq_zero_of_log_turn

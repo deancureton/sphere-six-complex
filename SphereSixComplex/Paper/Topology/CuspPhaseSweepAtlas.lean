@@ -7,12 +7,12 @@ public import SphereSixComplex.Paper.Topology.ToricCellAtlasRechart
 @[expose] public section
 noncomputable section
 open Set Topology Matrix
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Periods
 open InfiniteA2Toric InfiniteA2Toric
 open InfiniteA2Toric.Construction
 open CuspFilling CuspPeriodExpansion
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public def phaseSweepCellMap (W : ActualPuncturedCuspCollarWitness N constructedModel) :
@@ -114,4 +114,4 @@ public def phaseSweepCellAtlas (W : ActualPuncturedCuspCollarWitness N construct
     (phaseSweepCellMap_continuousOn_symm W) (phaseSweepCellMap_openImage W)
     (phaseSweepCellMap_closedImage W) (phaseSweepCellMap_boundary W)
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

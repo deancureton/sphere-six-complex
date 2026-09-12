@@ -22,12 +22,12 @@ namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.LatticeData
 open SphereSixComplex.Topology
 open SphereSixComplex.CyclicAngularFundamentalDomain
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 
 variable (A : AnalyticData)
@@ -56,7 +56,7 @@ private theorem orderThreeAffineEquiv_inv_three (z : ComplexTwoSpace) :
       z - periodVector
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zOne).1 epsilon := by
-  let P := SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderThreeCentralFiberPresentationData
+  let P := SphereSixComplex.AffineCyclicQuotientHomology.orderThreeCentralFiberPresentationData
     A.periods
   let E := affineEquiv (orderThreeDescendedAffineTorusAutomorphism A.periods).lift
     ((3 : ℂ)⁻¹ • periodVector
@@ -188,7 +188,7 @@ private theorem orderFourAffineEquiv_inv_four (z : ComplexTwoSpace) :
       z - periodVector
         (parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).1 (-epsilon') := by
-  let P := SphereSixComplex.Topology.PaperMultipleFiberHOneTopology.orderFourCentralFiberPresentationData
+  let P := SphereSixComplex.AffineCyclicQuotientHomology.orderFourCentralFiberPresentationData
     A.periods
   let E := affineEquiv (orderFourDescendedAffineTorusAutomorphism A.periods).lift
     ((4 : ℂ)⁻¹ • periodVector

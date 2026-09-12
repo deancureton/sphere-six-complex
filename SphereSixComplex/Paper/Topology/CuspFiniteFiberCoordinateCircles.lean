@@ -7,10 +7,12 @@ public import SphereSixComplex.Paper.Topology.CuspPeriodLoopDeckComparison
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
+
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus TorusFamily GlobalTorusFamily
-open CuspPuncturedCollarBridge CuspRadialClutchingConstruction CuspPeriodExpansion
+open CuspCollar CuspRadialClutchingConstruction CuspPeriodExpansion
 open StandardCircleHomologyLiftDegree EllipticFamilySpecialization
 
 public def cuspFiniteFiberCoordinateCircle (A : AnalyticData) (j : Fin 2) :
@@ -117,12 +119,12 @@ public theorem cuspFiniteFiberGenerator_deckCoordinates (A : AnalyticData) (j : 
     A.cuspFiniteFiberCircleToFilling_loop j]
   let W := A.starCuspWitness
   let _ := actualLocalCuspQuotientAction W
-  let _ : SimplyConnectedSpace (CuspLocalPhaseAction.localCarrier A.toricModel W.localWitness.radius) :=
-    A.toricModel.localCarrierSimplyConnected W.localWitness.radius W.localWitness.radius_pos
+  let _ : SimplyConnectedSpace (CuspLocalPhaseAction.localCarrier constructedModel W.localWitness.radius) :=
+    constructedModel.localCarrierSimplyConnected W.localWitness.radius W.localWitness.radius_pos
   let hp := actualCuspFillingProjection_isQuotientCoveringMap W
   let _ : PathConnectedSpace (ActualLocalCuspFilling W) :=
     hp.surjective.pathConnectedSpace hp.continuous
-  let e : CuspLocalPhaseAction.localCarrier A.toricModel W.localWitness.radius := Classical.arbitrary _
+  let e : CuspLocalPhaseAction.localCarrier constructedModel W.localWitness.radius := Classical.arbitrary _
   have h := localCuspPeriodLoop_homology W _ A.cuspMarkedParameter_halfPlane
     (by simpa only [Metric.mem_ball, dist_zero_right] using markedCuspParameter_mem W)
     e (Pi.single j 1)

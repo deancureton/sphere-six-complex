@@ -113,7 +113,7 @@ open SphereSixComplex
 open SphereSixComplex.Topology
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.GlobalTorusFamily
-open CuspPeriodExpansion CuspPuncturedCollarBridge
+open CuspPeriodExpansion CuspCollar
 
 variable (A : AnalyticData)
 

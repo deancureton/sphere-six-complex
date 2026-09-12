@@ -8,14 +8,14 @@ noncomputable section
 
 open Set Topology
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
-open SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open SphereSixComplex.AffineCyclicQuotientHomology
 
-open _root_.SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+open _root_.SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex.Geometry
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
@@ -23,7 +23,7 @@ open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
 open SphereSixComplex.LatticeData
 open SphereSixComplex.TriangleGroup
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+open SphereSixComplex.EllipticFilling
 
 /-- Pull an action back through a homeomorphism of its underlying space. -/
 @[instance_reducible]
@@ -446,9 +446,9 @@ public theorem affineCyclicRadialFilling_isQuotientCoveringMap
 
 end SphereSixComplex.AffineCyclicQuotientHomology
 
-namespace SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+namespace SphereSixComplex.AffineCyclicQuotientHomology
 
-end SphereSixComplex.Topology.PaperMultipleFiberHOneTopology
+end SphereSixComplex.AffineCyclicQuotientHomology
 
 end
 

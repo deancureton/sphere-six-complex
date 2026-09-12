@@ -8,10 +8,10 @@ public import SphereSixComplex.Paper.Topology.PaperCuspActualAffineFillingCoverS
 noncomputable section
 open Set Topology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open ComplexTorus SphereSixComplex.Periods InfiniteA2Toric CuspLocalPhaseAction CuspFilling
 open CuspPeriodExpansion CuspToricPhaseAction CuspPhaseEstimates
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public theorem localPhaseActionEquiv_psiMap
@@ -130,4 +130,4 @@ public theorem cuspFillingPeriodCircle_periodPoint
   change cuspFillingPeriodCircle W i (_,Quotient.mk _ _) = Quotient.mk _ _
   rw [cuspFillingPeriodCircle_mk, localCuspPeriodCircle_fillingLift]
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar

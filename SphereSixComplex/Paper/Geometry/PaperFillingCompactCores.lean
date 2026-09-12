@@ -13,13 +13,15 @@ end records the exact filling-side coverage condition needed by `OpenEmbeddingSt
 
 open CategoryTheory TopologicalSpace Topology
 
+open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
+
 namespace SphereSixComplex.Geometry
 
 open Set SphereSixComplex.Periods SphereSixComplex.TriangleGroup
-open CuspFilling CuspLocalPhaseAction CuspPuncturedCollarBridge
+open CuspFilling CuspLocalPhaseAction CuspCollar
 open EllipticCayleyHomeomorph EllipticVaryingFamilyQuotient
 open EllipticLinearCollarGlobalDescent
-open EllipticPuncturedCollarGaugeHomeomorph
+open EllipticLogarithmicGauge
 open EllipticWholeFiberCompactCover TorusFamily
 
 noncomputable section
@@ -182,15 +184,15 @@ public theorem starFilling_mem_radialCore_or_exists_collar
     · right
       induction y using Quotient.inductionOn with
       | _ q =>
-          have hqnorm : a 0 < ‖P.toricModel.t q‖ := by
-            change ¬ ‖P.toricModel.t q‖ ≤ a 0 at hy
+          have hqnorm : a 0 < ‖constructedModel.t q‖ := by
+            change ¬ ‖constructedModel.t q‖ ≤ a 0 at hy
             exact lt_of_not_ge hy
-          have hqt : P.toricModel.t q ≠ 0 := by
+          have hqt : constructedModel.t q ≠ 0 := by
             exact norm_ne_zero_iff.mp (ne_of_gt ((ha 0).trans_lt hqnorm))
           let s : PuncturedLocalCuspQuotient P.starCuspWitness := Quotient.mk _
-            (⟨q, hqt⟩ : {p : localCarrier P.toricModel
+            (⟨q, hqt⟩ : {p : localCarrier constructedModel
               P.starCuspWitness.localWitness.radius //
-                P.toricModel.t p ≠ 0})
+                constructedModel.t p ≠ 0})
           refine ⟨s, ?_, ?_⟩
           · exact puncturedLocalCuspToFilling_mk P.starCuspWitness _
           · exact hqnorm

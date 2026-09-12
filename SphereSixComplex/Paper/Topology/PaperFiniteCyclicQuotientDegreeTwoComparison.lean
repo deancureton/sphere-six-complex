@@ -17,12 +17,12 @@ noncomputable section
 
 open AlgebraicTopology Matrix
 
-namespace SphereSixComplex.Topology.PaperFiniteCyclicQuotientDegreeTwoComparison
+namespace SphereSixComplex.FiniteCyclicQuotientHomology
 
 open Geometry Geometry.AnalyticTorusFamily Geometry.EllipticFamilySpecialization
 open Geometry.GlobalTorusFamily
-open PaperEllipticFillingRadialRetraction PaperEllipticReducedCentralFiberCoverModels
-open PaperPropositionSevenFourteenDegreeTwoAlgebra
+open EllipticFilling EllipticFilling
+open EllipticMayerVietorisCoordinates
 
 /-- Evaluation of a degree-two covector in the standard exterior-square coordinates. -/
 public def degreeTwoEvaluation (a x : DegreeTwoLattice) : ℤ :=
@@ -175,4 +175,4 @@ public theorem orderFour_projection_coordinates
       rw [R.projection_coordinates, AddEquiv.apply_symm_apply]
     _ = _ := orderFourEvaluation_eq_negAlphaTwoRows x
 
-end SphereSixComplex.Topology.PaperFiniteCyclicQuotientDegreeTwoComparison
+end SphereSixComplex.FiniteCyclicQuotientHomology

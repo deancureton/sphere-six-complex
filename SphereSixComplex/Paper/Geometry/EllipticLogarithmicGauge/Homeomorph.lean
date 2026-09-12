@@ -1,7 +1,7 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.EllipticHolomorphicLogCover
-public import SphereSixComplex.Paper.Geometry.EllipticLogarithmicGaugeDescent
+public import SphereSixComplex.Paper.Geometry.EllipticLogarithmicGauge.Cover
+public import SphereSixComplex.Paper.Geometry.EllipticLogarithmicGauge.Descent
 import all SphereSixComplex.Paper.Geometry.EllipticVaryingFamilyQuotient
 
 /-!
@@ -13,7 +13,7 @@ the torus quotient.  The explicit holomorphic logarithm cover therefore proves l
 and identifies the global gauge with every branch formula on overlaps.
 -/
 
-namespace SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
+namespace SphereSixComplex.Geometry.EllipticLogarithmicGauge
 
 open Filter Set
 open scoped Manifold ContDiff
@@ -29,8 +29,6 @@ open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLogarithmicGauge
-open SphereSixComplex.Geometry.EllipticHolomorphicLogCover
-open SphereSixComplex.Geometry.EllipticLogarithmicGaugeDescent
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
 
 noncomputable section
@@ -841,4 +839,4 @@ corresponding restricted linear cyclic quotient. -/
 
 end
 
-end SphereSixComplex.Geometry.EllipticPuncturedCollarGaugeHomeomorph
+end SphereSixComplex.Geometry.EllipticLogarithmicGauge

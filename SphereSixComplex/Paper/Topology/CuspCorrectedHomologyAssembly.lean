@@ -37,7 +37,7 @@ public theorem cuspCorrectedSectionSevenTwoCoordinateChange_specialization (x : 
 namespace Geometry.AnalyticData
 open SphereSixComplex.Topology
 open EllipticTwoDiscHomologyCoordinates
-open CuspPuncturedCollarBridge
+open CuspCollar
 
 public def cuspCorrectedHomologyTwoEquiv (A : AnalyticData) :
     IntegralSingularHomology 2 (A.openEmbeddingStarData.collarSource 0) ≃+ (Fin 6 → ℤ) :=
@@ -60,7 +60,7 @@ public theorem correctedCuspFillingInclusionCoordinates (A : AnalyticData)
           (integralSingularHomologyMap 2
             ⟨puncturedLocalCuspToFilling A.starCuspWitness,
               puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) = _
-    exact (EstablishedStandardA2CuspSpecialization.degreeTwo A x).trans
+    exact (CuspSpecialization.degreeTwo A x).trans
       (cuspCorrectedSectionSevenTwoCoordinateChange_specialization
         (A.cuspRawHomologyTwoEquiv x))
 

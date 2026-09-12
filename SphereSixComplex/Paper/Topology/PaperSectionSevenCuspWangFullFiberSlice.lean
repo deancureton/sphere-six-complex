@@ -22,7 +22,7 @@ open SphereSixComplex.CyclicAngularFundamentalDomain
 
 namespace SphereSixComplex.Geometry.AnalyticData
 
-open CuspPuncturedCollarBridge
+open CuspCollar
 open SphereSixComplex.Geometry.ComplexTorus
 open SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 open SphereSixComplex.Geometry.CuspPeriodExpansion

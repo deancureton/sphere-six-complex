@@ -20,10 +20,10 @@ open scoped ContDiff Manifold
 
 namespace SphereSixComplex
 
-open Geometry Geometry.ComplexTorus Geometry.CuspPuncturedCollarBridge
+open Geometry Geometry.ComplexTorus Geometry.CuspCollar
 open Geometry.InfiniteA2Toric
 
-namespace Geometry.CuspPuncturedCollarBridge
+namespace Geometry.CuspCollar
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 open SphereSixComplex.LatticeData
@@ -39,7 +39,7 @@ open SphereSixComplex.Geometry.FamilyEquivariance
 open FuchsianCuspNeighborhood
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
 variable {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 /-- The inverse angular turn conjugates a lattice translation by inverse cusp monodromy. -/
@@ -449,7 +449,7 @@ public theorem additiveCuspBoundaryProjection_isQuotientCoveringMap
     disjoint := paperCuspBoundaryDeckAction_locally_disjoint W
   }
 
-end Geometry.CuspPuncturedCollarBridge
+end Geometry.CuspCollar
 
 end SphereSixComplex
 

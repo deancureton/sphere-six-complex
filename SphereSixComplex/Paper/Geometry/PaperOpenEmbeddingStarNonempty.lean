@@ -12,9 +12,9 @@ the nonempty collar hypotheses needed by the four-piece gluing construction.
 namespace SphereSixComplex.Geometry
 
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
-open TorusFamily AnalyticTorusFamily CuspPuncturedCollarBridge
+open TorusFamily AnalyticTorusFamily CuspCollar
 open EllipticLocalCoordinates EllipticCayleyHomeomorph EllipticWholeFiberCompactCover
-open EllipticVaryingFamilyQuotient EllipticPuncturedCollarGaugeHomeomorph
+open EllipticVaryingFamilyQuotient EllipticLogarithmicGauge
 open EquivariantQuotientHomeomorph
 
 noncomputable section

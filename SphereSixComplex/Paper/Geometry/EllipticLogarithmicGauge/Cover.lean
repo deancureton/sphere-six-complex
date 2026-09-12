@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.EllipticLogarithmicGauge
+public import SphereSixComplex.Paper.Geometry.EllipticLogarithmicGauge.Basic
 public import Mathlib.Analysis.SpecialFunctions.Complex.LogDeriv
 
 /-!
@@ -17,7 +17,7 @@ noncomputable section
 
 open Set
 
-namespace SphereSixComplex.Geometry.EllipticHolomorphicLogCover
+namespace SphereSixComplex.Geometry.EllipticLogarithmicGauge
 
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
@@ -177,4 +177,4 @@ public theorem mem_orderFourBranchesAt
     (w : ℂ) ∈ (orderFourBranchesAt w hw).source.carrier :=
   mem_centeredLogBranch w (coe_ne_zero_of_ne_center hw)
 
-end SphereSixComplex.Geometry.EllipticHolomorphicLogCover
+end SphereSixComplex.Geometry.EllipticLogarithmicGauge

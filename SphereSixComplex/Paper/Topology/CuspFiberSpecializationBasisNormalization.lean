@@ -82,14 +82,14 @@ public theorem coinvariantsRestriction_bijective_of_surjective_of_section_eq_zer
 
 end WangHomologyPresentation
 
-namespace Geometry.CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
+namespace Geometry.CuspCollar.CuspFiberSpecializationNormalization
 
 open SphereSixComplex.CircleMappingTorusHomologyBases
 open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
   {W : ActualPuncturedCuspCollarWitness N M}
 
@@ -136,7 +136,7 @@ public noncomputable def rawDegreeOneFiberSpecialization
 
 
 
-end Geometry.CuspPuncturedCollarBridge.CuspFiberSpecializationNormalization
+end Geometry.CuspCollar.CuspFiberSpecializationNormalization
 
 end SphereSixComplex
 

@@ -20,7 +20,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.AnalyticData
 
 open GlobalTorusFamily
-open EllipticLinearCollarGlobalDescent EllipticPuncturedCollarGaugeHomeomorph
+open EllipticLinearCollarGlobalDescent EllipticLogarithmicGauge
 open EllipticWholeFiberCompactCover
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.CuspStraighteningExtension
+public import SphereSixComplex.Paper.Geometry.CuspStraightening.Extension
 import Mathlib.Topology.ContinuousMap.Units
 
 /-!
@@ -18,12 +18,12 @@ noncomputable section
 open Matrix
 open scoped Topology
 
-namespace SphereSixComplex.Geometry.CuspStraighteningHomeomorph
+namespace SphereSixComplex.Geometry.CuspStraightening
 
 open SphereSixComplex.Periods
 open CuspFilling CuspFillingRadialCompactness CuspLocalPhaseAction
-open CuspPeriodExpansion CuspPuncturedCollarBridge
-open CuspStraighteningAlgebra CuspStraighteningExtension
+open CuspPeriodExpansion CuspCollar
+open CuspStraightening CuspStraightening
 open CuspToricPhaseAction
 open InfiniteA2Toric InfiniteA2Toric.QuantitativeRegions
 open CuspPeriodExpansion
@@ -50,7 +50,7 @@ private theorem exists_centralLocalCarrier (M : Model) {r : ℝ} (hr : 0 < r) :
 
 /-- The witness's uniform phase-log bound also applies to the matrix frozen at zero. -/
 public theorem frozenPhaseLogMatrix_entry_bound
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (i j : Fin 2) :
     |NormalizedFuchsianCuspCoordinate.phaseLogMatrix N 0 i j| ≤ W.localWitness.phaseBound := by
@@ -59,7 +59,7 @@ public theorem frozenPhaseLogMatrix_entry_bound
 
 /-- The frozen correction is at most one quarter of the input in each coordinate. -/
 public theorem frozenEffectiveFanDisplacement_correction_coord_le
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0)
@@ -81,7 +81,7 @@ public theorem frozenEffectiveFanDisplacement_correction_coord_le
 
 /-- The frozen displacement differs from the identity by at most one half in `ℓ¹`. -/
 public theorem frozenEffectiveFanDisplacement_correction_l1_le
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0)
@@ -98,7 +98,7 @@ public theorem frozenEffectiveFanDisplacement_correction_l1_le
 
 /-- On the punctured collar, the frozen displacement matrix is nonsingular. -/
 public theorem frozenDisplacementMatrix_det_ne_zero
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     (frozenDisplacementMatrix N (M.t p.1)).det ≠ 0 := by
@@ -122,7 +122,7 @@ public theorem frozenDisplacementMatrix_det_ne_zero
 
 /-- The explicit inverse of the frozen displacement. -/
 public noncomputable def puncturedFrozenInverseDisplacement
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (x : Fin 2 → ℝ) : Fin 2 → ℝ :=
@@ -130,7 +130,7 @@ public noncomputable def puncturedFrozenInverseDisplacement
 
 /-- Matrix inversion gives a right inverse to the frozen displacement. -/
 public theorem frozenEffectiveFanDisplacement_puncturedFrozenInverseDisplacement
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (x : Fin 2 → ℝ) :
@@ -146,7 +146,7 @@ public theorem frozenEffectiveFanDisplacement_puncturedFrozenInverseDisplacement
 
 /-- The inverse frozen displacement has operator norm at most two in coordinate `ℓ¹`. -/
 public theorem realL1_puncturedFrozenInverseDisplacement_le
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (y : Fin 2 → ℝ) :
@@ -174,7 +174,7 @@ public theorem realL1_puncturedFrozenInverseDisplacement_le
 /-- The logarithmic modulus of the straightening multiplier is the difference of the actual and
 frozen phase-log matrices. -/
 public theorem log_norm_straighteningPhase
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (i : Fin 2) :
@@ -190,7 +190,7 @@ public theorem log_norm_straighteningPhase
 
 /-- The punctured point formula has exactly the straightened rescaled position. -/
 public theorem rescaledPosition_puncturedPointStraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     rescaledPosition M (puncturedPointStraightening W p).1 =
@@ -239,7 +239,7 @@ public theorem rescaledPosition_puncturedPointStraightening
 
 /-- Matrix inversion is continuous along the nonsingular frozen displacement family. -/
 public theorem continuous_frozenDisplacementMatrix_inv
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (fun p : PuncturedLocalCarrier W ↦
@@ -259,7 +259,7 @@ public theorem continuous_frozenDisplacementMatrix_inv
 
 /-- The real parameter in the inverse formula, namely `B₀,t⁻¹ y`. -/
 public noncomputable def inverseStraighteningRealParameter
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) : Fin 2 → ℝ :=
   realFanShearInverse
@@ -267,7 +267,7 @@ public noncomputable def inverseStraighteningRealParameter
 
 /-- The exponent in the paper's inverse formula. -/
 public noncomputable def inverseStraighteningExponent
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) : Fin 2 → ℂ :=
   fun i ↦ 2 * Real.pi * Complex.I *
@@ -276,7 +276,7 @@ public noncomputable def inverseStraighteningExponent
 
 /-- The inverse point-level torus multiplier. -/
 public noncomputable def inverseStraighteningPhase
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) : Phase :=
   fun i ↦ CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate.exponentialUnit
@@ -284,7 +284,7 @@ public noncomputable def inverseStraighteningPhase
 
 /-- The inverse formula on the punctured carrier. -/
 public noncomputable def puncturedPointUnstraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     PuncturedLocalCarrier W :=
@@ -304,7 +304,7 @@ public noncomputable def puncturedPointUnstraightening
 
 /-- The inverse real parameter is continuous away from the central fibre. -/
 public theorem continuous_inverseStraighteningRealParameter
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (inverseStraighteningRealParameter W) := by
@@ -324,7 +324,7 @@ public theorem continuous_inverseStraighteningRealParameter
 
 /-- The inverse multiplier is continuous away from the central fibre. -/
 public theorem continuous_inverseStraighteningPhase
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (inverseStraighteningPhase W) := by
@@ -364,7 +364,7 @@ public theorem continuous_inverseStraighteningPhase
 
 /-- On every shrunken affine chart, the inverse real parameter is uniformly bounded. -/
 public theorem inverseStraighteningRealParameter_bounded_on_region
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     let R := standardBoundedPolydiscRegions M W.localWitness.radius
@@ -383,7 +383,7 @@ public theorem inverseStraighteningRealParameter_bounded_on_region
 
 /-- The inverse exponent extended by zero on the central fibre. -/
 public noncomputable def extendedInverseStraighteningExponent
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) : Fin 2 → ℂ :=
@@ -391,7 +391,7 @@ public noncomputable def extendedInverseStraighteningExponent
 
 /-- The inverse multiplier extended by the identity on the central fibre. -/
 public noncomputable def extendedInverseStraighteningPhase
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) : Phase :=
@@ -400,7 +400,7 @@ public noncomputable def extendedInverseStraighteningPhase
 
 @[simp]
 public theorem extendedInverseStraighteningPhase_of_t_eq_zero
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p = 0) :
@@ -411,7 +411,7 @@ public theorem extendedInverseStraighteningPhase_of_t_eq_zero
 
 @[simp]
 public theorem extendedInverseStraighteningPhase_of_t_ne_zero
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
@@ -422,7 +422,7 @@ public theorem extendedInverseStraighteningPhase_of_t_ne_zero
 
 /-- On a standard chart, the inverse exponent tends to zero at every central point. -/
 public theorem continuousAt_extendedInverseStraighteningExponent_of_mem_region
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a : CuspPhaseEstimates.ToricRegionIndex)
@@ -495,7 +495,7 @@ public theorem continuousAt_extendedInverseStraighteningExponent_of_mem_region
 
 /-- On a standard chart, the inverse multiplier tends to one at the central fibre. -/
 public theorem continuousAt_extendedInverseStraighteningPhase_of_mem_region
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (a : CuspPhaseEstimates.ToricRegionIndex)
@@ -511,7 +511,7 @@ public theorem continuousAt_extendedInverseStraighteningPhase_of_mem_region
       (continuousAt_extendedInverseStraighteningExponent_of_mem_region W a p₀ hp₀ hregion))
 
 private noncomputable def inversePuncturedLiftAt
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p₀ : localCarrier M W.localWitness.radius) (hp₀ : M.t p₀ ≠ 0)
@@ -519,7 +519,7 @@ private noncomputable def inversePuncturedLiftAt
   if hp : M.t p ≠ 0 then ⟨p, hp⟩ else ⟨p₀, hp₀⟩
 
 private theorem continuousAt_inversePuncturedLiftAt
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p₀ : localCarrier M W.localWitness.radius) (hp₀ : M.t p₀ ≠ 0) :
@@ -538,7 +538,7 @@ private theorem continuousAt_inversePuncturedLiftAt
 
 /-- The extended inverse multiplier is continuous everywhere. -/
 public theorem continuous_extendedInverseStraighteningPhase
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) :
     Continuous (extendedInverseStraighteningPhase W) := by
@@ -566,7 +566,7 @@ public theorem continuous_extendedInverseStraighteningPhase
 
 /-- The inverse point formula on the entire local carrier. -/
 public noncomputable def pointUnstraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) : localCarrier M W.localWitness.radius :=
@@ -581,7 +581,7 @@ public noncomputable def pointUnstraightening
 
 @[simp]
 public theorem pointUnstraightening_of_t_eq_zero
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p = 0) :
@@ -591,7 +591,7 @@ public theorem pointUnstraightening_of_t_eq_zero
 
 /-- Under joint continuity of the standard torus action, the inverse point formula is continuous. -/
 public theorem continuous_pointUnstraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (J : Continuous (fun z : DenseTorus × M.Carrier ↦ M.torusAction z.1 z.2))
     (W : ActualPuncturedCuspCollarWitness N M) :
@@ -615,7 +615,7 @@ public theorem continuous_pointUnstraightening
 
 /-- The reconstructed inverse point has the prescribed dense-torus coordinates. -/
 public theorem torusCoordinates_puncturedPointUnstraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     torusCoordinates M (puncturedPointUnstraightening W p).1 =
@@ -625,7 +625,7 @@ public theorem torusCoordinates_puncturedPointUnstraightening
 
 /-- The logarithmic modulus of the inverse multiplier has the opposite matrix difference. -/
 public theorem log_norm_inverseStraighteningPhase
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : PuncturedLocalCarrier W) (i : Fin 2) :
@@ -642,7 +642,7 @@ public theorem log_norm_inverseStraighteningPhase
 /-- Applying the inverse point formula changes rescaled position from `y` to
 `B_t B₀,t⁻¹ y`. -/
 public theorem rescaledPosition_puncturedPointUnstraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     rescaledPosition M (puncturedPointUnstraightening W p).1 =
@@ -691,7 +691,7 @@ public theorem rescaledPosition_puncturedPointUnstraightening
 
 /-- The inverse formula recovers the same real parameter after the forward straightening. -/
 public theorem inverseStraighteningRealParameter_puncturedPointStraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     inverseStraighteningRealParameter W (puncturedPointStraightening W p) =
@@ -716,7 +716,7 @@ public theorem inverseStraighteningRealParameter_puncturedPointStraightening
 
 /-- The forward formula recovers the same real parameter after the inverse straightening. -/
 public theorem straighteningRealParameter_puncturedPointUnstraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     straighteningRealParameter W (puncturedPointUnstraightening W p) =
@@ -741,7 +741,7 @@ public theorem straighteningRealParameter_puncturedPointUnstraightening
 
 /-- Forward and inverse multipliers cancel after forward straightening. -/
 public theorem inverseStraighteningPhase_puncturedPointStraightening_mul
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     inverseStraighteningPhase W (puncturedPointStraightening W p) *
@@ -764,7 +764,7 @@ public theorem inverseStraighteningPhase_puncturedPointStraightening_mul
 
 /-- Forward and inverse multipliers cancel after inverse straightening. -/
 public theorem straighteningPhase_puncturedPointUnstraightening_mul
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     straighteningPhase W (puncturedPointUnstraightening W p) *
@@ -787,7 +787,7 @@ public theorem straighteningPhase_puncturedPointUnstraightening_mul
 
 /-- On the punctured carrier, inverse after forward straightening is the identity. -/
 public theorem puncturedPointUnstraightening_puncturedPointStraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     puncturedPointUnstraightening W (puncturedPointStraightening W p) = p := by
@@ -804,7 +804,7 @@ public theorem puncturedPointUnstraightening_puncturedPointStraightening
 
 /-- On the punctured carrier, forward after inverse straightening is the identity. -/
 public theorem puncturedPointStraightening_puncturedPointUnstraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (p : PuncturedLocalCarrier W) :
     puncturedPointStraightening W (puncturedPointUnstraightening W p) = p := by
@@ -821,7 +821,7 @@ public theorem puncturedPointStraightening_puncturedPointUnstraightening
 
 /-- Off the central fibre, the whole-carrier inverse agrees with the punctured formula. -/
 public theorem pointUnstraightening_of_t_ne_zero
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
@@ -840,7 +840,7 @@ public theorem pointUnstraightening_of_t_ne_zero
 
 /-- The whole-carrier forward and inverse maps are mutual inverses. -/
 public theorem pointUnstraightening_pointStraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) :
@@ -864,7 +864,7 @@ public theorem pointUnstraightening_pointStraightening
 
 /-- The whole-carrier inverse and forward maps are mutual inverses. -/
 public theorem pointStraightening_pointUnstraightening
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) :
@@ -889,7 +889,7 @@ public theorem pointStraightening_pointUnstraightening
 /-- Lemma 7.5's point-level homeomorphism, conditional only on the separate standard joint
 continuity interface for the algebraic torus action. -/
 public noncomputable def pointStraighteningHomeomorph
-    {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (J : Continuous (fun z : DenseTorus × M.Carrier ↦ M.torusAction z.1 z.2))
     (W : ActualPuncturedCuspCollarWitness N M) :
@@ -901,4 +901,4 @@ public noncomputable def pointStraighteningHomeomorph
   continuous_toFun := continuous_pointStraightening J W
   continuous_invFun := continuous_pointUnstraightening J W
 
-end SphereSixComplex.Geometry.CuspStraighteningHomeomorph
+end SphereSixComplex.Geometry.CuspStraightening

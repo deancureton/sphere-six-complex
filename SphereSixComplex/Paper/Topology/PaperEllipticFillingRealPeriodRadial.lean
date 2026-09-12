@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Geometry.EllipticRealPeriodProductTrivialization
+public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
 public import SphereSixComplex.Paper.Geometry.PaperOpenEmbeddingStar
 public import SphereSixComplex.Paper.Topology.PaperEllipticFillingRadialRetraction
 
@@ -12,7 +12,7 @@ with image exactly the corresponding radial product ball. Its affine equivarianc
 fixed-product radial deformation retraction to the actual order-three and order-four fillings.
 -/
 
-namespace SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
+namespace SphereSixComplex.EllipticFilling
 
 open scoped ContinuousMap
 open Set SphereSixComplex.Geometry SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -22,11 +22,11 @@ open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticFixedPointCriterion
 open SphereSixComplex.Geometry.EllipticFamilySpecialization
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
-open SphereSixComplex.Geometry.EllipticRealPeriodProductTrivialization
+open SphereSixComplex.Geometry.RealPeriodTrivialization
 open SphereSixComplex.Geometry.EllipticVaryingFamilyQuotient
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
 open SphereSixComplex.Geometry.AnalyticData
-open SphereSixComplex.Topology.PaperEllipticFillingRadialRetraction
+open SphereSixComplex.EllipticFilling
 
 noncomputable section
 
@@ -302,4 +302,4 @@ bielliptic fibre. -/
 
 end
 
-end SphereSixComplex.Topology.PaperEllipticFillingRealPeriodRadial
+end SphereSixComplex.EllipticFilling

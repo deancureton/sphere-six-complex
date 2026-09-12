@@ -85,7 +85,7 @@ open InfiniteA2Toric.QuantitativeRegions
 
 open SphereSixComplex.Periods
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     (N : NormalizedFuchsianCuspCoordinate E D)
 
 /-- Dense-torus coordinates transform by the actual phase correction and integral fan shear. -/
@@ -558,7 +558,7 @@ public def toQuantitativeToricRegionCover
 
 open SphereSixComplex.Periods
 
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
 
 
 

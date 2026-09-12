@@ -18,10 +18,10 @@ noncomputable section
 
 open Matrix
 
-namespace SphereSixComplex.Topology.PaperPropositionSevenFourteenDegreeTwoAlgebra
+namespace SphereSixComplex.EllipticMayerVietorisCoordinates
 
 open LatticeData
-open PaperLemmaSevenThirteenAlgebra
+open MultipleFiberCoinvariants
 
 public abbrev DegreeTwoLattice := Fin 6 → ℤ
 
@@ -193,4 +193,4 @@ public theorem mem_orderFourDegreeTwoPullbackCandidate_iff
       (x.1 0 : ZMod 2) = (x.1 3 : ZMod 2) := by
   simp [orderFourDegreeTwoPullbackCandidate, orderFourParity, sub_eq_zero]
 
-end SphereSixComplex.Topology.PaperPropositionSevenFourteenDegreeTwoAlgebra
+end SphereSixComplex.EllipticMayerVietorisCoordinates

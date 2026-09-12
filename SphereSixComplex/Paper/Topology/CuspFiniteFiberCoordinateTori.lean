@@ -8,7 +8,7 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Geometry.AnalyticData
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus TorusFamily GlobalTorusFamily EllipticFamilySpecialization
-open CuspPuncturedCollarBridge CuspRadialClutchingConstruction CuspPeriodExpansion
+open CuspCollar CuspRadialClutchingConstruction CuspPeriodExpansion
 
 public def cuspFiniteFiberPairIndex : Fin 4 → Fin 6 := ![0,2,3,1]
 

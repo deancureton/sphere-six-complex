@@ -8,14 +8,14 @@ public import SphereSixComplex.Paper.Topology.CuspCellularLoopDeckComparison
 @[expose] public section
 noncomputable section
 open CategoryTheory AlgebraicTopology MonoidalCategory
-namespace SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+namespace SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex SphereSixComplex.Periods
 open CuspFilling CuspPeriodExpansion InfiniteA2Toric
 open InfiniteA2Toric.Construction InfiniteA2Toric
 open SphereSixComplex.StandardCircleHomologyLiftDegree
 open SphereSixComplex.Topology.CircleProductIdentityMappingTorus
 open SphereSixComplex.StandardTorusHomology
-variable {E : NormalizedFuchsianModularParameter} {D : FuchsianPeriodLocalData E}
+variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
 public theorem constructedA2CircleSweepParameter_period (i : Fin 2) (t : unitInterval) :
@@ -102,4 +102,4 @@ public theorem constructedA2GraphPrism_normalized_of_sign
   exact h
 
 
-end SphereSixComplex.Geometry.CuspPuncturedCollarBridge
+end SphereSixComplex.Geometry.CuspCollar
