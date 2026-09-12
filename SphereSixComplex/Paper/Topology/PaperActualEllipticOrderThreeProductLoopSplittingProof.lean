@@ -1,4 +1,0 @@
-module
-
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreePrincipalGaugeStraighteningProof
-public import SphereSixComplex.Prerequisites.Topology.FreeLoopProductHomotopy

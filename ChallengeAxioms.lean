@@ -4,7 +4,6 @@ public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenAffine
 public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenCuspCompletion
 public import SphereSixComplex.Prerequisites.Topology.HomologySphereRecognition
 public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCover
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorNormalClosure
 
 /-!
 # Comparator trusted-axiom imports

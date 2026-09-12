@@ -1,5 +1,10 @@
 module
-public import SphereSixComplex.Paper.Topology.PaperEllipticSynchronizedEnteringSheet
+public import SphereSixComplex.Paper.Topology.PaperEllipticSynchronizedBaseMarking
+public import Mathlib.GroupTheory.FreeGroup.CyclicallyReduced
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourZeroSectionComparisonProof
+import all SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourZeroSectionComparisonProof
+import all SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeZeroSectionHomotopyProof
+import all SphereSixComplex.Paper.TriangleGroup.Representation
 public import SphereSixComplex.Paper.Geometry.GlobalTorusFiberFundamentalGroup
 
 @[expose] public section
@@ -147,24 +152,6 @@ public theorem orderFourMappedActualStraightPeriod_eq_actualBasedStraightFiber :
   rw [A.ellipticFourStraightCoverPoint_period_projects]
   rfl
 
-public theorem ellipticFourStraightCoverPoint_projects :
-    letI := A.ellipticFourBoundaryAction
-    regularFamilyCoverProjection A.periods A.ellipticFourStraightCoverPoint =
-      A.orderFourCollarRegularRepresentativeMap A.ellipticFourBoundaryBase := by
-  let _ := A.ellipticFourBoundaryAction
-  have h := A.ellipticFourStraightCoverPoint_period_projects 0
-  rw [(regularFamilyPeriodLiftPath A.periods A.ellipticFourStraightCoverPoint (-epsilon')).source] at h
-  rw [h]
-  have hzero : A.orderFourPrincipalGaugeStraightLoop 0 =
-      A.orderFourFillingRelationPrincipalGaugeLoop 0 := by
-    rw [A.orderFourPrincipalGaugeStraightLoop.source]
-    rfl
-  rw [hzero]
-  have hreal := A.orderFourRegularLoop_eq_puncturedProductRealization 0
-  rw [A.orderFourFillingRelationCayleyPuncturedLoop.source,
-    A.orderFourPrincipalGaugeWithOffsetPath.source,
-    A.orderFourFillingRelationRegularLoop.source] at hreal
-  exact hreal
 
 public def orderThreeCentralActualBasedStraightFiberPath :
     letI := A.ellipticThreeBoundaryAction
@@ -288,24 +275,6 @@ public theorem orderThreeMappedActualStraightPeriod_eq_actualBasedStraightFiber 
   rw [A.ellipticThreeStraightCoverPoint_period_projects]
   rfl
 
-public theorem ellipticThreeStraightCoverPoint_projects :
-    letI := A.ellipticThreeBoundaryAction
-    regularFamilyCoverProjection A.periods A.ellipticThreeStraightCoverPoint =
-      A.orderThreeCollarRegularRepresentativeMap A.ellipticThreeBoundaryBase := by
-  let _ := A.ellipticThreeBoundaryAction
-  have h := A.ellipticThreeStraightCoverPoint_period_projects 0
-  rw [(regularFamilyPeriodLiftPath A.periods A.ellipticThreeStraightCoverPoint epsilon).source] at h
-  rw [h]
-  have hzero : A.orderThreePrincipalGaugeStraightLoop 0 =
-      A.orderThreeFillingRelationPrincipalGaugeLoop 0 := by
-    rw [A.orderThreePrincipalGaugeStraightLoop.source]
-    rfl
-  rw [hzero]
-  have hreal := A.orderThreeRegularLoop_eq_puncturedProductRealization 0
-  rw [A.orderThreeFillingRelationCayleyPuncturedLoop.source,
-    A.orderThreePrincipalGaugeWithOffsetPath.source,
-    A.orderThreeFillingRelationRegularLoop.source] at hreal
-  exact hreal
 
 public theorem orderThreeLocalOffsetFiberCentralPath_homotopic_actualBasedStraight :
     letI := A.ellipticThreeBoundaryAction

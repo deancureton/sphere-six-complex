@@ -114,3 +114,48 @@ The subsequent naming and shared-homotopy cleanup was audited again. It retained
 elaboration helpers and introduced no new candidate ranges: 25,473 compiled project constants,
 21,024 in the endpoints' term closure. Both original fiber slices and both complete homotopies
 were compared with the shared prerequisite definitions by four kernel-checked `rfl` proofs.
+
+## Direct homology route
+
+The final topology now uses cusp relations to prove that the fundamental group is abelian,
+then applies first Hurewicz to its vanishing first homology. The elliptic full-iterate equation
+is proved directly in first homology: the fiber and base factors can be transported independently,
+because conjugation and basepoint transport preserve their homology classes.
+
+A fresh compiled audit found 248 newly unused source ranges. Neither
+`ellipticRelatorMembership` nor `actualStarHasVanKampenData` remained in either the endpoint term
+closure or its resolved-source elaboration closure. The same 19 previously reviewed elaboration
+helpers were retained. Review covered the complete records behind overlapping generated ranges,
+attributes, syntax, and surviving source references before deletion.
+
+The deletion removed 19 complete proof modules. Two further modules contained only base-point
+lemmas, which were moved beside their chart definitions. Ten preexisting modules contained only
+imports and empty scopes; their consumers now import the actual owners. Four new modules provide
+the shorter argument and its general Hurewicz/free-loop prerequisites, for a net reduction of
+27 modules. The old construction-audit presentation root and Blueprint presentation branch were
+removed. `ChallengeAxioms` only lost its import of an obsolete module; its generated signatures
+are byte-identical. The Comparator theorem statements, permitted axioms, and dependency pins
+are unchanged.
+
+| Library inventory | Before | After |
+|---|---:|---:|
+| Lean modules, including the root import | 952 | 925 |
+| Source lines | 210,884 | 206,815 |
+
+This is a net reduction of 4,069 lines, including the new proofs. No clean A/B build benchmark
+was run, so these structural reductions are not presented as a measured speedup.
+
+The post-deletion audit has 25,095 compiled project constants, with exactly the same 20,730
+constants in the endpoint term closure as immediately before deletion. It reports only the
+same 19 elaboration-helper ranges, no missing `.ilean` files, and the two known linter-option
+metadata references. The new proof route, rather than the deletion itself, reduced the
+endpoint closure from its original 21,024 constants.
+Every live declaration also retains the same direct dependency list across deletion, including
+references to external libraries.
+
+Validation passed: the full root build (9,953 jobs), all 276 Blueprint declaration checks, the
+Blueprint build (10,306 jobs), the post-Blueprint root build, import/layer and placeholder checks,
+and the strict recursive axiom audit. Comparator reported “Lean default kernel accepts the
+solution” and “Your solution is okay!” against the unchanged permitted-axiom list. The final
+boundary remains three Lean axioms plus ten classical assumptions; the construction still uses
+three Lean axioms plus seven classical assumptions. Existing linter/docstring warnings remain.

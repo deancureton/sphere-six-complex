@@ -1,8 +1,9 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourGeometricRelatorRepresentativeProof
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeProductLoopSplittingProof
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorFreeHomotopyReduction
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreePrincipalGaugeStraighteningProof
+public import SphereSixComplex.Prerequisites.Topology.FreeLoopProductHomotopy
+public import SphereSixComplex.Paper.Topology.PaperEllipticCollarLoopClassProof
 
 @[expose] public section
 

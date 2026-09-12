@@ -12,8 +12,7 @@ run_cmd do
       `SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere_of_positiveDegree,
       `SphereSixComplex.Geometry.AnalyticData.star_simplyConnectedSpace,
       `SphereSixComplex.Geometry.AnalyticData.compactComplexStar,
-      `SphereSixComplex.exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere,
-      `SphereSixComplex.Geometry.AnalyticData.actualStarHasVanKampenData]
+      `SphereSixComplex.exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere]
   let mut checked : Std.HashSet Name := {}
   let mut axioms : Std.HashSet Name := {}
   while !worklist.isEmpty do

@@ -1,16 +1,10 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeRelatorComparison
-public import SphereSixComplex.Prerequisites.Topology.GroupPairConjugacy
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticCanonicalFiniteMarking
+public import Mathlib.Algebra.Group.Opposite
+public import Mathlib.Algebra.Group.Equiv.Basic
 
-/-!
-# The invariant order-three common-gauge comparison
-
-The two marked order-three generators must be compared with one common change of basepoint.
-This module moves that comparison back through the marked central-to-core equivalence.  The
-result is an equality of diagonal conjugacy orbits of ordered pairs in the central fundamental
-group.  It is independent of the connector used to transport the elliptic overlap into the core.
--/
+/-! # The order-three overlap in the central family -/
 
 @[expose] public section
 
@@ -168,29 +162,10 @@ public noncomputable def ellipticThreeCentralBase : A.CentralFamily :=
       A.ellipticThreeBoundaryBase)
 
 
-
-
-
-/-- A common path from the displayed affine base to the order-three overlap base in the central
-family. -/
-public noncomputable def orderThreeCentralBaseWhisker :
-    Path A.centralAffineBase A.ellipticThreeCentralBase := by
-  let _ : PathConnectedSpace A.CentralFamily := A.starCentral_pathConnected
-  exact PathConnectedSpace.somePath _ _
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+public theorem ellipticThreeCentralBase_eq_overlapCentralBase :
+    A.ellipticThreeCentralBase = A.ellipticThreeOverlapCentralBase := by
+  exact congrArg A.ellipticThreeOverlapToCentral
+    A.ellipticThreeBoundaryProjection_base
 
 end SphereSixComplex.Geometry.AnalyticData
 

@@ -1,5 +1,5 @@
 module
-public import SphereSixComplex.Paper.Topology.CuspEllipticInteriorRelators
+public import SphereSixComplex.Paper.Topology.EllipticFillingHomology
 
 @[expose] public section
 noncomputable section
@@ -38,7 +38,7 @@ public theorem cuspOverlap_homology_fullIterate :
         (hurewiczFunction A.cuspOverlapBase
           (Additive.toMul (A.cuspAffineBridgeTranslation
             (Pi.single (0 : Fin 4) 1)))) := by
-  have h := A.ellipticInterior_cuspMeridian_twelfth_abelian (hurewiczPi1 _)
+  have h := A.ellipticInterior_cuspMeridian_twelfth_homology
   rw [map_inv, map_inv] at h
   change (12 : ℕ) • (-hurewiczFunction _
     (A.actualCoreToEllipticInteriorPiOne

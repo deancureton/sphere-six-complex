@@ -25,11 +25,6 @@ namespace SphereSixComplex
 /-! ## Mapping-torus fundamental groups -/
 
 
-
-
-
-
-
 /-! ## Affine torus-family quotient covers -/
 
 /-- An equivariant map between two regular quotient covers. -/
@@ -131,9 +126,6 @@ public theorem QuotientCoverMapData.fundamentalGroupEquiv_natural_of_lift_eq
   exact QuotientCoverMapData.fundamentalGroupEquiv_natural hp hq D e γ
 
 
-
-
-
 /-! ## Algebraic output of an affine torus core -/
 
 /-- The based fundamental-group presentation of an affine torus bundle over a bouquet of two
@@ -152,19 +144,6 @@ public structure AffineTorusCorePiOneData
       Additive.toMul (translation (monodromyTwo a))
   generators_generate : Subgroup.closure
     (Set.range (fun a ↦ Additive.toMul (translation a)) ∪ {rhoOne, rhoTwo}) = ⊤
-
-/-- Filling relations imposed on an affine torus core, stated independently of any particular
-lattice, monodromy matrices, or filling orders. -/
-public structure AffineTorusStarFillingRelations
-    {G Λ : Type*} [Group G] [AddCommGroup Λ]
-    {monodromyOne monodromyTwo : Λ →+ Λ}
-    (C : AffineTorusCorePiOneData G Λ monodromyOne monodromyTwo)
-    (orderOne orderTwo : ℕ) (twistOne twistTwo cuspTwist : Λ)
-    (toricSubgroup : AddSubgroup Λ) : Prop where
-  elliptic_one : C.rhoOne ^ orderOne = Additive.toMul (C.translation twistOne)
-  elliptic_two : C.rhoTwo ^ orderTwo = Additive.toMul (C.translation twistTwo)
-  cusp : C.rhoOne * C.rhoTwo = Additive.toMul (C.translation cuspTwist)
-  toric_vanishes : ∀ a ∈ toricSubgroup, Additive.toMul (C.translation a) = 1
 
 
 /-! ## Filling maps from quotient-cover squares -/

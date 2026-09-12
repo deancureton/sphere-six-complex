@@ -1,7 +1,18 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperOrderThreeBasedChartLoopIdentities
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourCentralConnectorCoherence
+public import Mathlib.Algebra.Group.Opposite
+public import Mathlib.Algebra.Group.Equiv.Basic
+public import Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup
+public import Mathlib.Topology.Homotopy.Lifting
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticFillingDeckTransport
+public import SphereSixComplex.Paper.Topology.EstablishedEquivariantUniversalCover
+public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeCommonGaugeGeometry
+public import SphereSixComplex.Prerequisites.Topology.EstablishedAffineVanKampen
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourCommonGaugeGeometry
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorNormalClosureTypes
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticCanonicalFiniteMarking
 
 /-!
 # Local marked-loop inputs for the actual elliptic collars

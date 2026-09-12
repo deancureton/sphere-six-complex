@@ -52,22 +52,6 @@ public theorem fundamentalGroupToMulOpposite_change_sheet
   rw [← hp.unop_fundamentalGroupToMulOpposite_smul]
   simp only [mul_smul, inv_smul_smul]
 
-public theorem fundamentalGroupToMulOpposite_transport_of_endpoint_sheet
-    {E X G : Type*} [TopologicalSpace E] [TopologicalSpace X]
-    [Group G] [MulAction G E] {p : C(E, X)}
-    (hp : IsQuotientCoveringMap p G) {x y : X}
-    (W : Path x y) (ex : p ⁻¹' {x}) (ey : p ⁻¹' {y}) (g : G)
-    (hW : hp.isCoveringMap.monodromy (Path.Homotopic.Quotient.mk W) ex =
-      hp.toPermFiber y g ey) (gamma : FundamentalGroup X x) :
-    (hp.fundamentalGroupToMulOpposite ey
-      (FundamentalGroup.fundamentalGroupMulEquivOfPath W gamma)).unop =
-      g⁻¹ * (hp.fundamentalGroupToMulOpposite ex gamma).unop * g := by
-  have h := fundamentalGroupToMulOpposite_transport_endpoint hp W ex gamma
-  rw [hW, fundamentalGroupToMulOpposite_change_sheet] at h
-  have hu := congrArg MulOpposite.unop h
-  change g * _ * g⁻¹ = _ at hu
-  rw [← hu]
-  group
 
 public theorem quotientCover_fundamentalGroupToMulOpposite_naturality
     {E E' X X' G H : Type*}

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperFiniteCyclicQuotientDegreeTwoComparison
-public import SphereSixComplex.Paper.Topology.PaperMultipleFiberHOneTopology
+public import SphereSixComplex.Paper.Topology.PaperMultipleFiberHOneTopologyDerived
 
 /-!
 # Homology coordinates for affine cyclic torus quotients

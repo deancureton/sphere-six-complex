@@ -21,15 +21,6 @@ public def pathHomotopyToFreeHomotopy
   map_zero_left t := H.map_zero_left t
   map_one_left t := H.map_one_left t
 
-/-- A free homotopy obtained from an endpoint-relative loop homotopy has equal endpoint traces. -/
-public theorem pathHomotopyToFreeHomotopy_trace
-    {X : Type*} [TopologicalSpace X] {x : X}
-    {p q : Path x x} (H : Path.Homotopy p q) :
-    ((pathHomotopyToFreeHomotopy H).evalAt 0).cast p.source.symm q.source.symm =
-      ((pathHomotopyToFreeHomotopy H).evalAt 1).cast p.target.symm q.target.symm := by
-  apply Path.ext
-  funext s
-  exact (H.source s).trans (H.target s).symm
 
 /-- A loop in a product is based-homotopic to its fibre coordinate followed by its base
 coordinate.  This formulation fixes both endpoints throughout the homotopy, so its two endpoint

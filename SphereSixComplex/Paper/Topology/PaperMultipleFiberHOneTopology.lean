@@ -1,3 +1,0 @@
-module
-
-public import SphereSixComplex.Paper.Topology.PaperMultipleFiberHOneTopologyDerived

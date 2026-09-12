@@ -59,15 +59,15 @@ are not part of that certificate. The canonical affine band specializes one radi
 record; it does not copy the same four fields into a second record. The side inverses and
 marked compatibility homotopies are retained. Boundary comparisons display equalities of the
 actual homomorphisms. The production coordinates use raw four for the cusp boundary and
-normalized raw five for the fourth-period sweep. Alternative marking conventions must not be
-substituted into those equalities.
+normalized raw five for the fourth-period sweep. A change of marking must update these
+comparisons coherently.
 
 ## Homotopies and cycles
 
-The elliptic relator results display the connector path and fundamental-group equality.
-Synchronized factor homotopies retain both equations at the common moving basepoint.
-`ContinuousMap.Homotopy.hcompLoop` supplies their reusable concatenation in the prerequisite
-library; two unrelated homotopy-existence statements would lose the required synchronization.
+The elliptic filling argument compares the fiber and base factors in first homology.
+Free homotopies preserve their loop classes, so independent transports suffice. The stronger
+nonabelian comparison, its synchronized moving basepoints, and its loop-homotopy concatenation
+helpers have been removed.
 
 The band comparison theorems state the two marked `Homotopic` assertions as a conjunction.
 Phase spreading takes a chosen equivariant strong deformation retraction and the explicit
@@ -113,8 +113,7 @@ cell bases and comparison maps: its compatibility equations must remain synchron
 The modular frame is computed from its Eisenstein root, rather than stored alongside an equation
 fixing its value. Equivariant roots extend the same root object. Cellular incidence, elliptic
 endpoint period identities, and degree-one homology coordinate comparisons state their equations
-directly. A proposition already proved about elliptic relators is used directly without
-`Nonempty` or a choice operation.
+directly. The elliptic filling calculation uses actual loop homology classes.
 
 
 ## Mathematical ownership
@@ -156,3 +155,17 @@ Existence results use `nonempty_` names, and definitions returning comparison da
 data rather than bijectivity claims. The real mapping-torus fiber slice and its explicit homotopy
 are shared prerequisites. Circle parametrization lemmas live with their parametrization; complex
 units use Mathlib's `Units.mk0` directly.
+
+## Shorter topological argument
+
+Simple connectedness follows from the cusp relations and vanishing first homology. The cusp
+kills two lattice directions, and monodromy kills a third. The surviving translation is central,
+and the two meridians are inverse, so the whole fundamental group is abelian. The general first
+Hurewicz criterion then identifies this group with the already computed first homology. The
+nonabelian presentation of the completed star is no longer an intermediate contract.
+
+The elliptic filling relations are proved directly in first homology. Free homotopies and
+basepoint transport preserve loop classes there, so the period and meridian factors are
+transported independently. Their order-three and order-four equations give the same integral
+full-iterate equation without a synchronized nonabelian relator calculation. General loop-class
+and Hurewicz transport lemmas belong to prerequisites.

@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Prerequisites.Geometry.FourPieceStarGluing
 public import SphereSixComplex.Prerequisites.Geometry.GluingCompatibility
-public import SphereSixComplex.Prerequisites.ComplexStructure
+public import ChallengeDefs
 
 /-!
 # Biholomorphic star gluing

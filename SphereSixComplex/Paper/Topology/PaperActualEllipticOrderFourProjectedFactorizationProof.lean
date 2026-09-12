@@ -46,32 +46,6 @@ public theorem orderFourProjectedRegularLoop_homotopic_fiberThenBase :
   exact ⟨pathHomotopy_castEndpoints
     A.orderFourCollarRegularRepresentative_base_projects.symm Hmap⟩
 
-/-- The projected factorization supplies exactly the free homotopy and equal endpoint traces
-required by the final order-four free-loop reduction. -/
-public theorem orderFourProjectedRegularLoop_freeHomotopy_fiberThenBase_with_trace :
-    letI := A.ellipticFourBoundaryAction
-    ∃ H : ContinuousMap.Homotopy
-        ((A.orderFourFillingRelationRegularLoop.map
-          A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-            A.orderFourCollarRegularRepresentative_base_projects.symm
-            A.orderFourCollarRegularRepresentative_base_projects.symm).toContinuousMap
-        A.orderFourCentralFiberThenBaseLoop.toContinuousMap,
-      (H.evalAt 0).cast
-          ((A.orderFourFillingRelationRegularLoop.map
-            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-              A.orderFourCollarRegularRepresentative_base_projects.symm
-              A.orderFourCollarRegularRepresentative_base_projects.symm).source.symm
-          A.orderFourCentralFiberThenBaseLoop.source.symm =
-        (H.evalAt 1).cast
-          ((A.orderFourFillingRelationRegularLoop.map
-            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-              A.orderFourCollarRegularRepresentative_base_projects.symm
-              A.orderFourCollarRegularRepresentative_base_projects.symm).target.symm
-          A.orderFourCentralFiberThenBaseLoop.target.symm := by
-  let _ := A.ellipticFourBoundaryAction
-  rcases A.orderFourProjectedRegularLoop_homotopic_fiberThenBase with ⟨Hpath⟩
-  let H := pathHomotopyToFreeHomotopy Hpath
-  exact ⟨H, pathHomotopyToFreeHomotopy_trace Hpath⟩
 
 end SphereSixComplex.Geometry.AnalyticData
 

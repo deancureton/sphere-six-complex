@@ -1,6 +1,6 @@
 module
 public import SphereSixComplex.Paper.Topology.AffinePeripheralAbelianization
-public import SphereSixComplex.Paper.Topology.PaperEllipticSynchronizedPeriodTransport
+public import SphereSixComplex.Paper.Topology.PaperEllipticActualStraightPeriod
 
 @[expose] public section
 noncomputable section
@@ -82,73 +82,6 @@ public theorem actualFourRelator_ellipticInterior_killed :
     (D.ellipticFourOverlapFundamentalGroupMap
       A.ellipticFourCanonicalRelator) = 1
   rw [A.ellipticFourCanonicalRelator_killed, map_one]
-
-public theorem ellipticInterior_orderThree_fullIterate :
-    let C := A.coreDataOf A.cuspCentralNaturality
-    A.actualCoreToEllipticInteriorPiOne C.rhoOne ^ 3 =
-      A.actualCoreToEllipticInteriorPiOne (Additive.toMul (C.translation (-epsilon))) := by
-  have hn : Subgroup.normalClosure
-      {A.ellipticThreeOverlapToCore A.ellipticThreeCanonicalRelator} ≤
-      A.actualCoreToEllipticInteriorPiOne.ker := by
-    apply Subgroup.normalClosure_le_normal
-    rw [Set.singleton_subset_iff]
-    exact A.actualThreeRelator_ellipticInterior_killed
-  have h := hn A.ellipticRelatorMembership.orderThree
-  rw [MonoidHom.mem_ker, map_mul, map_pow, map_inv] at h
-  exact mul_inv_eq_one.mp h
-
-public theorem ellipticInterior_orderFour_fullIterate :
-    let C := A.coreDataOf A.cuspCentralNaturality
-    A.actualCoreToEllipticInteriorPiOne C.rhoTwo ^ 4 =
-      A.actualCoreToEllipticInteriorPiOne (Additive.toMul (C.translation epsilon')) := by
-  have hn : Subgroup.normalClosure
-      {A.ellipticFourOverlapToCore A.ellipticFourCanonicalRelator} ≤
-      A.actualCoreToEllipticInteriorPiOne.ker := by
-    apply Subgroup.normalClosure_le_normal
-    rw [Set.singleton_subset_iff]
-    exact A.actualFourRelator_ellipticInterior_killed
-  have h := hn A.ellipticRelatorMembership.orderFour
-  rw [MonoidHom.mem_ker, map_mul, map_pow, map_inv] at h
-  exact mul_inv_eq_one.mp h
-
-public theorem ellipticInterior_peripheral_twelfth_abelian
-    {H : Type*} [AddCommGroup H]
-    (f : FundamentalGroup A.ellipticInterior
-      (A.actualCoreToEllipticInterior
-        ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩) →*
-        Multiplicative H) :
-    let C := A.coreDataOf A.cuspCentralNaturality
-    f (A.actualCoreToEllipticInteriorPiOne ((C.rhoOne * C.rhoTwo)⁻¹)) ^ 12 =
-      f (A.actualCoreToEllipticInteriorPiOne
-        (Additive.toMul (C.translation (Pi.single (0 : Fin 4) 1)))) := by
-  apply affineCore_peripheral_twelfth_abelian
-    (A.coreDataOf A.cuspCentralNaturality)
-    (f.comp A.actualCoreToEllipticInteriorPiOne)
-  · simpa only [map_pow, MonoidHom.comp_apply] using
-      congrArg f A.ellipticInterior_orderThree_fullIterate
-  · simpa only [map_pow, MonoidHom.comp_apply] using
-      congrArg f A.ellipticInterior_orderFour_fullIterate
-
-public theorem ellipticInterior_cuspMeridian_twelfth_abelian
-    {H : Type*} [AddCommGroup H]
-    (f : FundamentalGroup A.ellipticInterior
-      (A.actualCoreToEllipticInterior
-        ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩) →*
-        Multiplicative H) :
-    f (A.actualCoreToEllipticInteriorPiOne
-      (A.cuspOverlapToCore A.cuspAffineBridgeMeridian)⁻¹) ^ 12 =
-      f (A.actualCoreToEllipticInteriorPiOne
-        (A.cuspOverlapToCore (Additive.toMul
-          (A.cuspAffineBridgeTranslation (Pi.single (0 : Fin 4) 1))))) := by
-  rw [A.cuspBridge_translation_core A.cuspCentralNaturality,
-    A.cuspBridge_meridian_core A.cuspCentralNaturality]
-  have hz : Additive.toMul
-      ((A.coreDataOf A.cuspCentralNaturality).translation 0) = 1 :=
-    congrArg Additive.toMul (map_zero
-      (A.coreDataOf A.cuspCentralNaturality).translation)
-  rw [hz]
-  simp only [inv_one, mul_one]
-  exact A.ellipticInterior_peripheral_twelfth_abelian f
 
 end SphereSixComplex.Geometry.AnalyticData
 end

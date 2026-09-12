@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.CuspFilling
-public import SphereSixComplex.Prerequisites.ComplexStructure
+public import ChallengeDefs
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 import Mathlib.Topology.Algebra.IsOpenUnits
 import Mathlib.Geometry.Manifold.Algebra.Structures

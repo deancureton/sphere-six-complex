@@ -1,6 +1,8 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeCorrectedFiberRepresentativeProof
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreePrincipalGaugeStraighteningProof
+public import SphereSixComplex.Prerequisites.Topology.FreeLoopProductHomotopy
+public import SphereSixComplex.Paper.Topology.PaperEllipticCollarLoopClassProof
 
 @[expose] public section
 
@@ -267,7 +269,6 @@ public noncomputable def orderThreePuncturedProductToCentralMap :
     A.orderThreePuncturedProductCarrierMap)
 
 
-
 /-- Splitting before removing the collar offset is endpoint-relative and therefore preserves
 the endpoint-trace condition required by the final free-homotopy criterion. -/
 public theorem orderThreePuncturedProductWithOffset_homotopic_fiberThenBase :
@@ -384,29 +385,6 @@ public theorem orderThreeProjectedRegularLoop_pathHomotopic_localFiberThenBase :
   exact ⟨H'.cast
     A.orderThreePuncturedProductCentralPath_eq_projectedRegularLoop rfl⟩
 
-public theorem orderThreeProjectedRegularLoop_freeHomotopy_localFiberThenBase_trace :
-    letI := A.ellipticThreeBoundaryAction
-    ∃ H : ContinuousMap.Homotopy
-      ((A.orderThreeFillingRelationRegularLoop.map
-        A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-          A.orderThreeCollarRegularRepresentative_base_projects.symm
-          A.orderThreeCollarRegularRepresentative_base_projects.symm).toContinuousMap
-      A.orderThreeLocalFiberThenBaseCentralPath.toContinuousMap,
-      (H.evalAt 0).cast
-          ((A.orderThreeFillingRelationRegularLoop.map
-            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-              A.orderThreeCollarRegularRepresentative_base_projects.symm
-              A.orderThreeCollarRegularRepresentative_base_projects.symm).source.symm
-          A.orderThreeLocalFiberThenBaseCentralPath.source.symm =
-        (H.evalAt 1).cast
-          ((A.orderThreeFillingRelationRegularLoop.map
-            A.centralQuotientProjection_isLocalHomeomorph.continuous).cast
-              A.orderThreeCollarRegularRepresentative_base_projects.symm
-              A.orderThreeCollarRegularRepresentative_base_projects.symm).target.symm
-          A.orderThreeLocalFiberThenBaseCentralPath.target.symm := by
-  let _ := A.ellipticThreeBoundaryAction
-  rcases A.orderThreeProjectedRegularLoop_pathHomotopic_localFiberThenBase with ⟨H⟩
-  exact ⟨pathHomotopyToFreeHomotopy H, pathHomotopyToFreeHomotopy_trace H⟩
 
 end SphereSixComplex.Geometry.AnalyticData
 

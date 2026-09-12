@@ -5,7 +5,8 @@ Authors: Paul Lezeau
 -/
 module
 
-public import SphereSixComplex.Paper.Topology.FundamentalGroupComputation
+public import SphereSixComplex.Paper.Topology.TwistObstruction
+public import SphereSixComplex.Prerequisites.Topology.FundamentalGroupSimplyConnected
 
 /-!
 # Geometric input for the paper's van Kampen computation

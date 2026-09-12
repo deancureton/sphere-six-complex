@@ -88,7 +88,7 @@ public import SphereSixComplex.Prerequisites.Analysis.CauchyGreenInfinity
 public import SphereSixComplex.Prerequisites.Analysis.CocycleForcing
 public import SphereSixComplex.Prerequisites.Analysis.HolomorphicCocycle
 public import SphereSixComplex.Prerequisites.Analysis.NormalizedCocycle
-public import SphereSixComplex.Prerequisites.ComplexStructure
+
 public import SphereSixComplex.Prerequisites.Geometry.AtlasTransport
 public import SphereSixComplex.Prerequisites.Geometry.CayleyManifold
 public import SphereSixComplex.Prerequisites.Geometry.ClosedRelationGluing
@@ -299,13 +299,14 @@ public import SphereSixComplex.Prerequisites.Topology.FirstQuadrantSingleColumnT
 public import SphereSixComplex.Prerequisites.Topology.FirstQuadrantTotalComplex
 public import SphereSixComplex.Prerequisites.Topology.FixedLoopSweepWangBoundary
 public import SphereSixComplex.Prerequisites.Topology.FreeLoopChangeBasepointHomotopy
-public import SphereSixComplex.Prerequisites.Topology.FreeLoopHomotopyComposition
+
 public import SphereSixComplex.Prerequisites.Topology.FreeLoopProductHomotopy
-public import SphereSixComplex.Prerequisites.Topology.FundamentalGroupConnectorConjugacy
+
 public import SphereSixComplex.Prerequisites.Topology.FundamentalGroupCoverLifting
 public import SphereSixComplex.Prerequisites.Topology.FundamentalGroupSimplyConnected
+public import SphereSixComplex.Prerequisites.Topology.FirstHurewiczSimplyConnected
 public import SphereSixComplex.Prerequisites.Topology.GeometricWangSection
-public import SphereSixComplex.Prerequisites.Topology.GroupPairConjugacy
+
 public import SphereSixComplex.Prerequisites.Topology.HexagonBoundaryPathHomology
 public import SphereSixComplex.Prerequisites.Topology.HigherHurewicz
 public import SphereSixComplex.Prerequisites.Topology.HomeomorphHomotopyEquivalence
@@ -470,3 +471,4 @@ public import SphereSixComplex.Prerequisites.TriangleGroup.ModularParameter
 public import SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 public import TauCeti.Analysis.Complex.Conformal.Reflection.Arc
 public import TauCeti.Analysis.Complex.Conformal.Reflection.Injective
+public import SphereSixComplex.Prerequisites.Topology.FreeLoopHomology

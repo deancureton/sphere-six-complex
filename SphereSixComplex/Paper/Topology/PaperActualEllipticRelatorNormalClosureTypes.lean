@@ -1,13 +1,14 @@
 module
 
-public import SphereSixComplex.Paper.Topology.AffineStarRelatorNormalClosureBridge
+public import SphereSixComplex.Paper.Topology.AffineVanKampenTransport
+public import SphereSixComplex.Paper.Topology.EstablishedBasedVanKampen
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticCanonicalFiniteMarking
 
 /-!
-# Connector-invariant elliptic relators for the actual paper star
+# Elliptic filling relators and overlap surjectivity
 
-The two elliptic filling relations are compared with the central affine presentation only up to
-normal closure.  This is invariant under changing the connector paths in the four-piece cover.
+The chosen cyclic covers identify the physical filling relators and show that the filling maps
+kill them. Surjectivity of the deck homomorphisms gives surjectivity on fundamental groups.
 -/
 
 @[expose] public section
@@ -127,72 +128,6 @@ public theorem ellipticFourOverlapFundamentalGroupMap_surjective :
     A.ellipticFourCanonicalChosenCover.fundamentalGroupMap
     A.ellipticFourCanonicalChosenCover.fundamentalGroupMap_surjective
 
-/-- The only remaining connector-invariant elliptic input: each expected central relator is in
-the normal closure of the corresponding actual transported local relator. -/
-public structure EllipticRelatorMembership
-    (N : A.CuspCentralNaturality) : Prop where
-  orderThree :
-    (A.coreDataOf N).rhoOne ^ 3 *
-        (Additive.toMul ((A.coreDataOf N).translation (-epsilon)))⁻¹ ∈
-      Subgroup.normalClosure
-        {A.ellipticThreeOverlapToCore
-          A.ellipticThreeCanonicalRelator}
-  orderFour :
-    (A.coreDataOf N).rhoTwo ^ 4 *
-        (Additive.toMul ((A.coreDataOf N).translation epsilon'))⁻¹ ∈
-      Subgroup.normalClosure
-        {A.ellipticFourOverlapToCore
-          A.ellipticFourCanonicalRelator}
-
-namespace EllipticRelatorMembership
-
-variable {A : AnalyticData} {N : A.CuspCentralNaturality}
-
-/-- Assemble the connector-invariant affine filling bridge for the actual four-piece star. -/
-public noncomputable def bridge
-    (R : EllipticRelatorMembership A N) :
-    AffineTorusStarRelatorNormalClosureBridge
-      A.actualVanKampenFourPieceCover (A.coreDataOf N)
-      3 4 (-epsilon) epsilon' 0 paperToricSubgroup where
-  cuspSurjective := A.cuspOverlapFundamentalGroupMap_surjective
-  oneSurjective := A.ellipticThreeOverlapFundamentalGroupMap_surjective
-  twoSurjective := A.ellipticFourOverlapFundamentalGroupMap_surjective
-  cuspToCore := A.cuspOverlapToCore
-  oneToCore := A.ellipticThreeOverlapToCore
-  twoToCore := A.ellipticFourOverlapToCore
-  cuspSquare := A.cuspAffineBridge_cuspSquare
-  oneSquare := A.ellipticThreeAffineBridge_square
-  twoSquare := A.ellipticFourAffineBridge_square
-  cuspTranslation := A.cuspAffineBridgeTranslation
-  cuspMeridian := A.cuspAffineBridgeMeridian
-  cuspTranslation_core := A.cuspBridge_translation_core N
-  cuspMeridian_core := A.cuspBridge_meridian_core N
-  cuspMeridian_killed := A.cuspAffineBridge_meridian_killed
-  cuspToric_killed := A.cuspAffineBridge_toric_killed
-  oneRelator := A.ellipticThreeCanonicalRelator
-  oneRelator_killed := A.ellipticThreeCanonicalRelator_killed
-  oneExpected_mem_normalClosure := R.orderThree
-  twoRelator := A.ellipticFourCanonicalRelator
-  twoRelator_killed := A.ellipticFourCanonicalRelator_killed
-  twoExpected_mem_normalClosure := R.orderFour
-
-/-- The two connector-invariant elliptic relator comparisons imply the paper's complete van
-Kampen presentation for the actual analytic star. -/
-public theorem hasVanKampenData
-    (R : EllipticRelatorMembership A N) :
-    HasVanKampenData A.VanKampenSpace 0 1 (-1) := by
-  let _ := A.vanKampenCharts
-  have _ : StronglyLocallyContractibleSpace A.VanKampenSpace := A.vanKampen_locallyNice
-  have _ : PathConnectedSpace A.VanKampenSpace := A.vanKampen_pathConnected
-  have _ : TauCeti.SemilocallySimplyConnectedSpace A.VanKampenSpace :=
-    A.vanKampen_semilocallySimplyConnected
-  obtain ⟨hcore, relations⟩ := R.bridge.relationsAndCoreSurjective
-  exact hasVanKampenData_of_correctedAffineData _
-    ((A.coreDataOf N).mapSurjective
-      A.actualVanKampenFourPieceCover.coreFundamentalGroupMap hcore)
-    relations
-
-end EllipticRelatorMembership
 
 end SphereSixComplex.Geometry.AnalyticData
 

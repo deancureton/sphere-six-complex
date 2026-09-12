@@ -11,26 +11,11 @@ public import SphereSixComplex.Paper.Geometry.GlobalTorusFiberFundamentalGroup
 public import SphereSixComplex.Prerequisites.Topology.QuotientCoverEquivarianceExtension
 
 /-!
-# Reduction of the actual affine filling-cover squares to the two elliptic inputs
+# Elliptic filling covers and the marked cusp core
 
-`ActualAffineFillingCoverSquares` bundles the three regular cover squares of the four-piece star
-together with the based affine filling bridge.  The cusp square, its marked central naturality
-and the whole cusp half of the bridge are already available:
-`PaperCuspChosenAffineFilling` and `PaperCuspAffineFillingBridge`.
-
-This module supplies the two purely formal pieces that were still missing on the elliptic side —
-the based gluing squares of the two elliptic overlaps, and the transported cyclic filling
-relations — and isolates the remaining geometric content in a single structure,
-`ActualEllipticCentralNaturality`.  That structure is the exact elliptic counterpart of
-`CuspCentralNaturality`, extended by the two chosen cyclic regular-cover models.
-
-The reduction theorem, `nonempty_actualAffineFillingCoverSquares_of_ellipticNaturality`, shows
-that any marked cusp naturality together with such an elliptic package produces
-`Nonempty A.ActualAffineFillingCoverSquares`.  It uses no van Kampen conclusion and, in
-particular, not `establishedActualAffineFillingCoverSquares`.
-
-The two naturalities are then bundled as `ActualStarPeripheralNaturality`, and the single
-remaining geometric input is `establishedActualStarPeripheralNaturality`.
+The radial elliptic models give the boundary and filling quotient covers, their chosen
+basepoints, and equivariant extensions. The affine core presentation is transported through
+cusp naturality, with explicit cusp translation and meridian equations.
 -/
 
 @[expose] public section
@@ -44,40 +29,6 @@ namespace PaperVanKampenFourPieceCover
 
 variable {Y : Type*} [TopologicalSpace Y] {base : Y}
 
-/-- The based gluing square for an arbitrary overlap of the core with a piece, transported to the
-base point along a connector that stays inside the core. -/
-public theorem coreSquare_apply
-    (D : PaperVanKampenFourPieceCover base) (P : Set Y) {pt : Y}
-    (hpt : pt ∈ D.core ∩ P) (conn : Path base pt) (hconn : ∀ t, conn t ∈ D.core)
-    (γ : FundamentalGroup (D.core ∩ P : Set Y) ⟨pt, hpt⟩) :
-    D.coreFundamentalGroupMap
-        ((FundamentalGroup.fundamentalGroupMulEquivOfPath
-            (D.connectorInCore conn hconn hpt.1).symm)
-          (FundamentalGroup.map (D.overlapToCore P) ⟨pt, hpt⟩ γ)) =
-      (FundamentalGroup.fundamentalGroupMulEquivOfPath conn.symm)
-        (FundamentalGroup.map (CoveringSpace.subsetInclusion P) ⟨pt, hpt.2⟩
-          (FundamentalGroup.map
-            (⟨fun z : (D.core ∩ P : Set Y) ↦ (⟨z.1, z.2.2⟩ : P), by fun_prop⟩ :
-              C((D.core ∩ P : Set Y), P)) ⟨pt, hpt⟩ γ)) := by
-  set connCore := D.connectorInCore conn hconn hpt.1
-  have hnat := CoveringSpace.map_fundamentalGroupMulEquivOfPath (CoveringSpace.subsetInclusion D.core) connCore.symm
-    (FundamentalGroup.map (D.overlapToCore P) ⟨pt, hpt⟩ γ)
-  have hpath : connCore.symm.map (CoveringSpace.subsetInclusion D.core).continuous = conn.symm := by
-    ext t
-    rfl
-  change FundamentalGroup.map (CoveringSpace.subsetInclusion D.core) _
-      ((FundamentalGroup.fundamentalGroupMulEquivOfPath connCore.symm) _) =
-    (FundamentalGroup.fundamentalGroupMulEquivOfPath conn.symm) _
-  apply Eq.trans hnat
-  rw [hpath]
-  congr 1
-  have h1 := CoveringSpace.map_map (D.overlapToCore P) (CoveringSpace.subsetInclusion D.core) ⟨pt, hpt⟩ γ
-  have h2 := CoveringSpace.map_map
-    (⟨fun z : (D.core ∩ P : Set Y) ↦ (⟨z.1, z.2.2⟩ : P), by fun_prop⟩ :
-      C((D.core ∩ P : Set Y), P)) (CoveringSpace.subsetInclusion P) ⟨pt, hpt⟩ γ
-  apply Eq.trans h1
-  apply Eq.trans ?_ h2.symm
-  rfl
 
 end PaperVanKampenFourPieceCover
 end SphereSixComplex.Topology
@@ -301,7 +252,6 @@ public noncomputable def ellipticFourFillingProjection :
     (A.ellipticFourFillingCoverProjection A.starSeparation.orderFour.radius q)
   continuous_toFun := A.orderFourFillingToActualPieceHomeomorph.continuous.comp
     (A.ellipticFourFillingCoverProjection A.starSeparation.orderFour.radius).continuous
-
 
 
 /-- The explicit order-three lift from radial universal-cover coordinates to the vector-bundle
@@ -1020,31 +970,7 @@ public noncomputable def ellipticFourOverlapToCore :
       ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
         A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩)
 
-/-- The actual overlap-to-core map gives the order-three square of the affine star bridge. -/
-public theorem ellipticThreeAffineBridge_square :
-    A.actualVanKampenFourPieceCover.coreFundamentalGroupMap.comp
-        A.ellipticThreeOverlapToCore =
-      A.actualVanKampenFourPieceCover.ellipticThreeFundamentalGroupMap.comp
-        A.actualVanKampenFourPieceCover.ellipticThreeOverlapFundamentalGroupMap := by
-  ext γ
-  exact coreSquare_apply A.actualVanKampenFourPieceCover
-    A.actualVanKampenFourPieceCover.ellipticThree
-    A.actualVanKampenFourPieceCover.ellipticThreePoint_mem
-    A.actualVanKampenFourPieceCover.ellipticThreeConnector
-    A.actualVanKampenFourPieceCover.ellipticThreeConnector_mem γ
 
-/-- The actual overlap-to-core map gives the order-four square of the affine star bridge. -/
-public theorem ellipticFourAffineBridge_square :
-    A.actualVanKampenFourPieceCover.coreFundamentalGroupMap.comp
-        A.ellipticFourOverlapToCore =
-      A.actualVanKampenFourPieceCover.ellipticFourFundamentalGroupMap.comp
-        A.actualVanKampenFourPieceCover.ellipticFourOverlapFundamentalGroupMap := by
-  ext γ
-  exact coreSquare_apply A.actualVanKampenFourPieceCover
-    A.actualVanKampenFourPieceCover.ellipticFour
-    A.actualVanKampenFourPieceCover.ellipticFourPoint_mem
-    A.actualVanKampenFourPieceCover.ellipticFourConnector
-    A.actualVanKampenFourPieceCover.ellipticFourConnector_mem γ
 /-- The central affine presentation transported through a marked cusp naturality equivalence. -/
 public noncomputable def coreDataOf (N : A.CuspCentralNaturality) :
     AffineTorusCorePiOneData
@@ -1078,28 +1004,6 @@ public theorem cuspBridge_meridian_core (N : A.CuspCentralNaturality) :
     rw [map_zero]
     rfl
   rw [hz, map_one, inv_one, mul_one]
-
-
-
-
-
-
-
-
-
-
-
-/-- The central-family translations, transported to the central core. -/
-public noncomputable def actualCentralTranslationToCore
-    (N : A.CuspCentralNaturality) :
-    Lattice →+ Additive
-      (FundamentalGroup A.actualVanKampenFourPieceCover.core
-        ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩) :=
-  N.centralToCore.toMonoidHom.toAdditive.comp A.centralAffineCorePiOneData.translation
-
-
-
-
 
 
 end SphereSixComplex.Geometry.AnalyticData

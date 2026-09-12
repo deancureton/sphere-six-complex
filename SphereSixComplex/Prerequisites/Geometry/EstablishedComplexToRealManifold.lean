@@ -1,7 +1,7 @@
 module
 
-public import SphereSixComplex.Prerequisites.ComplexStructure
-import all SphereSixComplex.Prerequisites.ComplexStructure
+public import ChallengeDefs
+
 import all ChallengeDefs
 
 /-!

@@ -30,7 +30,6 @@ open SphereSixComplex.TriangleGroup
 open SphereSixComplex.OpenUnionHomotopy
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.AnalyticTorusFamily
-open SphereSixComplex.Geometry.EllipticAffineGlobalSeparation
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EllipticLinearCollarGlobalDescent
 open SphereSixComplex.Geometry.EllipticLogarithmicGauge

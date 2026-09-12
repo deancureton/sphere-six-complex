@@ -1,6 +1,7 @@
 module
 import all SphereSixComplex.Paper.LatticeData
 public import SphereSixComplex.Paper.Topology.PaperVanKampenAlgebraAdapter
+public import SphereSixComplex.Prerequisites.Topology.EstablishedAffineVanKampen
 
 @[expose] public section
 noncomputable section

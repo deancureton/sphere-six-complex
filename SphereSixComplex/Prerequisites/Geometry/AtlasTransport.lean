@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.ComplexStructure
+public import ChallengeDefs
 
 /-!
 # Transporting manifold atlases

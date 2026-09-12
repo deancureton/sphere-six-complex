@@ -1,20 +1,9 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderFourRelatorComparison
+public import SphereSixComplex.Paper.Topology.PaperActualEllipticCanonicalFiniteMarking
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeCommonGaugeGeometry
 
-/-!
-# The invariant order-four common-gauge comparison
-
-The two marked order-four generators must be compared with one common change of basepoint.
-This module moves that comparison back through the marked central-to-core equivalence.  The
-result is an equality of diagonal conjugacy orbits of ordered pairs in the central fundamental
-group.  It is independent of the connector used to transport the elliptic overlap into the core.
-
-The marked physical meridian is used with its covering-space orientation, without inversion.
-The paired lattice translation is `epsilon'`; the `-epsilon'` occurring in the analytic collar
-formula is the affine lift convention and is not the marked deck translation in the relator.
--/
+/-! # The order-four overlap in the central family -/
 
 @[expose] public section
 
@@ -172,29 +161,10 @@ public noncomputable def ellipticFourCentralBase : A.CentralFamily :=
       A.ellipticFourBoundaryBase)
 
 
-
-
-
-/-- A common path from the displayed affine base to the order-four overlap base in the central
-family. -/
-public noncomputable def orderFourCentralBaseWhisker :
-    Path A.centralAffineBase A.ellipticFourCentralBase := by
-  let _ : PathConnectedSpace A.CentralFamily := A.starCentral_pathConnected
-  exact PathConnectedSpace.somePath _ _
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+public theorem ellipticFourCentralBase_eq_overlapCentralBase :
+    A.ellipticFourCentralBase = A.ellipticFourOverlapCentralBase := by
+  exact congrArg A.ellipticFourOverlapToCentral
+    A.ellipticFourBoundaryProjection_base
 
 end SphereSixComplex.Geometry.AnalyticData
 

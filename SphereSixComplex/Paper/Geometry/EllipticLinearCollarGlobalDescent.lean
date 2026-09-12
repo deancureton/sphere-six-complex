@@ -1,9 +1,14 @@
 module
 
 public import SphereSixComplex.Paper.Geometry.EllipticLogarithmicGauge.Homeomorph
-public import SphereSixComplex.Paper.Geometry.EllipticAffineGlobalSeparation
-public import SphereSixComplex.Paper.Geometry.RegularTorusFamily
+public import SphereSixComplex.Paper.Geometry.EllipticVaryingFamilyQuotient
+public import SphereSixComplex.Prerequisites.TriangleGroup.EstablishedFuchsianEllipticStabilizers
+public import SphereSixComplex.Paper.TriangleGroup.FuchsianProperFreeness
+public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianSmoothAction
 import all SphereSixComplex.Paper.TriangleGroup.Representation
+import all SphereSixComplex.Paper.Geometry.TorusFamily
+public import SphereSixComplex.Paper.Geometry.RegularTorusFamily
+
 import all SphereSixComplex.Paper.Geometry.GlobalTorusFamily
 
 /-!
@@ -29,7 +34,6 @@ open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
 open SphereSixComplex.Geometry.EllipticLogarithmicGauge
 open SphereSixComplex.Geometry.EquivariantQuotientHomeomorph
-open SphereSixComplex.Geometry.EllipticAffineGlobalSeparation
 open SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 
 noncomputable section
