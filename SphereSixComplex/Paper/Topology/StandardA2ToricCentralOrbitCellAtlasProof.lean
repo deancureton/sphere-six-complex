@@ -156,11 +156,11 @@ private theorem centralOrbitRel_coe_eq_of_same_componentSupport'
       constructedModel.Carrier)) hg
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
   have hphase := hcarrier
-  change ((C.toCuspActionData.psiMap lambda
+  change (((C.toCuspActionData (M := constructedModel)).psiMap lambda
     (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :
@@ -197,7 +197,7 @@ private theorem centralOrbitRel_coe_eq_of_same_componentSupport'
     rw [hshear]
     ext i
     simp [shearVector, Matrix.mulVec]
-  change ((C.toCuspActionData.psiMap lambda
+  change (((C.toCuspActionData (M := constructedModel)).psiMap lambda
     (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :

@@ -31,10 +31,10 @@ public theorem actualCentral_support_smul
   let _ := actualLocalCuspQuotientAction W
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   change componentSupport constructedModel
-    ((C.toCuspActionData.psiMap g.toAdd p.1).1) = _
+    (((C.toCuspActionData (M := constructedModel)).psiMap g.toAdd p.1).1) = _
   rw [← C.psiMap_eq_generic, C.psiMap_coe]
   exact componentSupport_phase_fanShear _ _ _
 

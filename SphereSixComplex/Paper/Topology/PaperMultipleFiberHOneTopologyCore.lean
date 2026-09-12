@@ -511,11 +511,11 @@ quotient calculation. -/
     (periodTransport g₁ (parameterMap F U.zOne)).toLinearMap
   lift_symm_continuous := LinearMap.continuous_of_finiteDimensional
     (periodTransport g₁ (parameterMap F U.zOne)).symm.toLinearMap
-  latticeDifference := orderOneDifference
+  latticeDifference := orderThreeDifference
   latticeDifference_eq := by
     apply LinearMap.ext
     intro x
-    rw [LinearMap.sub_apply, LinearMap.id_apply, orderOneDifference_apply]
+    rw [LinearMap.sub_apply, LinearMap.id_apply, orderThreeDifference_apply]
     exact (congrArg (fun y ↦ y - x) (rhoLambda_g₁_apply x)).symm
   twist := epsilon
   translationVector_eq := rfl
@@ -550,11 +550,11 @@ quotient calculation. -/
     (periodTransport g₂ (parameterMap F U.zTwo)).toLinearMap
   lift_symm_continuous := LinearMap.continuous_of_finiteDimensional
     (periodTransport g₂ (parameterMap F U.zTwo)).symm.toLinearMap
-  latticeDifference := orderTwoDifference
+  latticeDifference := orderFourDifference
   latticeDifference_eq := by
     apply LinearMap.ext
     intro x
-    rw [LinearMap.sub_apply, LinearMap.id_apply, orderTwoDifference_apply]
+    rw [LinearMap.sub_apply, LinearMap.id_apply, orderFourDifference_apply]
     exact (congrArg (fun y ↦ y - x) (rhoLambda_g₂_apply x)).symm
   twist := -epsilon'
   translationVector_eq := rfl

@@ -10,9 +10,9 @@ public import SphereSixComplex.Paper.Geometry.PaperStarPieceHausdorff
 # The finite CW model of the cusp central fibre
 
 The quotient of the standard periodic `A₂` toric central fibre has the cell orbits described in
-Section 7: two vertices, three edges, four two-cells, two three-cells, and one four-cell.  This file
-isolates the precise standard toric-CW realization theorem missing from Mathlib, then derives the
-`CuspToricCellModel` and the Euler calculation used by the analytic cusp filling.
+Section 7: two vertices, three edges, four two-cells, two three-cells, and one four-cell.
+This file defines its cell atlas, CW realization, and cellular boundary, and derives the
+`CuspToricCellModel` and Euler calculation used by the cusp filling.
 -/
 
 @[expose] public section

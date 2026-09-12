@@ -111,9 +111,6 @@ public theorem integralHomologyFiniteSix (M : FourTorusHomologicalModel X) :
   finite_homology := M.finiteHomology
   subsingleton_homology_of_six_lt k hk := M.subsingleton_homology_of_four_lt k (by omega)
 
-public theorem subsingleton_homology_five (M : FourTorusHomologicalModel X) :
-    Subsingleton (IntegralSingularHomology 5 X) :=
-  M.subsingleton_homology_of_four_lt 5 (by omega)
 
 public theorem subsingleton_homology_six (M : FourTorusHomologicalModel X) :
     Subsingleton (IntegralSingularHomology 6 X) :=

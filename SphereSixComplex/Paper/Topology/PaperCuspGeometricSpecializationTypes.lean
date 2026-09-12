@@ -78,7 +78,7 @@ public noncomputable def specializationHomologyOneMap :
     let _ := G.fiberTopology
     IntegralSingularHomology 1 (CircleMappingTorus G.clutching) →ₗ[ℤ] (Fin 2 → ℤ) := by
   let _ := G.fiberTopology
-  exact ((actualLocalCuspFillingHomologyOneEquiv W (radialCentralFiberRetractionData W)).toAddMonoidHom.comp
+  exact ((actualCuspDeckHomologyOneEquiv W).toAddMonoidHom.comp
     ((integralSingularHomologyMap 1
       ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩).comp
         (integralSingularHomologyEquivOfHomotopyEquiv 1
@@ -311,8 +311,7 @@ not an arbitrary clutching datum. -/
 public structure FiniteBasisNaturality (A : AnalyticData)
     (K : (Fin 4 → ℤ) ≃+ (Fin 4 → ℤ) := AddEquiv.refl _) : Prop where
   degreeOne :
-    (actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
-      A.cuspCentralFiberRetractionData).toAddMonoidHom.comp
+    (actualCuspDeckHomologyOneEquiv A.starCuspWitness).toAddMonoidHom.comp
         (integralSingularHomologyMap 1
           ⟨puncturedLocalCuspToFilling A.starCuspWitness,
             puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩) =

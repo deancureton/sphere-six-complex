@@ -171,9 +171,7 @@ public theorem cuspRawDegreeOneFiberSpecialization_bijective
   exact WangHomologyPresentation.coinvariantsRestriction_bijective_of_surjective_of_section_eq_zero
     P S (rawDegreeOneTotalSpecialization G)
     (rawDegreeOneTotalSpecialization_surjective G b) hS G.degreeOneCoinvariantsEquiv
-    (actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
-      (UnnormalizedCuspRadialClutchingData.radialCentralFiberRetractionData
-        A.starCuspWitness)).toIntLinearEquiv
+    (actualCuspDeckHomologyOneEquiv A.starCuspWitness).toIntLinearEquiv
 
 /-- Once the explicit angular meridian has the negative Wang orientation and the selected section
 is killed by specialization, uniqueness in the specialization kernel identifies the selected

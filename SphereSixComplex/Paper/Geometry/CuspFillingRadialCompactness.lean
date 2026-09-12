@@ -157,34 +157,34 @@ public theorem exists_upper_barycentric_perturbation_lower
 
 /-- The orbit quotient of the phase-corrected lattice action. -/
 public noncomputable abbrev PhaseCorrectedToricQuotient
-    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) :=
-  letI := C.toCuspActionData.psiAction
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients r) :=
+  letI := (C.toCuspActionData (M := M)).psiAction
   MulAction.orbitRel.Quotient (Multiplicative ParameterLattice) (localCarrier M r)
 
 /-- The height radius descended to a phase-corrected toric quotient. -/
 @[expose] public noncomputable def phaseCorrectedQuotientRadius
-    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) :
-    PhaseCorrectedToricQuotient C → ℝ := by
-  let _ := C.toCuspActionData.psiAction
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients r) :
+    PhaseCorrectedToricQuotient (M := M) C → ℝ := by
+  let _ := (C.toCuspActionData (M := M)).psiAction
   exact Quotient.lift (fun p : localCarrier M r ↦ ‖M.t p‖) (by
     intro p q hpq
     change MulAction.orbitRel (Multiplicative ParameterLattice) _ p q at hpq
     rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hpq
     obtain ⟨lambda, rfl⟩ := hpq
-    exact congrArg norm (C.toCuspActionData.preserves_t lambda q))
+    exact congrArg norm ((C.toCuspActionData (M := M)).preserves_t lambda q))
 
 @[simp]
 public theorem phaseCorrectedQuotientRadius_mk
-    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients r)
     (p : localCarrier M r) :
-    phaseCorrectedQuotientRadius C (Quotient.mk _ p) = ‖M.t p‖ :=
+    phaseCorrectedQuotientRadius (M := M) C (Quotient.mk _ p) = ‖M.t p‖ :=
   rfl
 
 /-- Exact cocompactness datum for a polarized toric degeneration over every closed smaller
 height disc.  This is the usual compact fundamental-domain assertion for the lattice action;
 it is independent of the six-sphere gluing and does not assume compactness of the quotient. -/
 public structure RadialSublevelCocompactness
-    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) : Prop where
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients r) : Prop where
   compact_fundamental_domain : ∀ a : ℝ, 0 ≤ a → a < r →
     ∃ K : Set (localCarrier M r), IsCompact K ∧
       K ⊆ {p | ‖M.t p‖ ≤ a} ∧
@@ -195,7 +195,7 @@ public structure RadialSublevelCocompactness
 Modulo the phase-corrected fan lattice, every point over a closed smaller height disc has a
 representative in one of the two fixed affine polydiscs based at the zero vertex. -/
 public structure A2TwoChartRadialSublevelRepresentatives
-    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) : Prop where
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients r) : Prop where
   bounded_representative : ∀ a : ℝ, 0 ≤ a → a < r →
     ∃ S : ℝ, ∀ p : localCarrier M r, ‖M.t p‖ ≤ a →
       ∃ lambda : ParameterLattice, ∃ upper : Bool,
@@ -205,9 +205,9 @@ public structure A2TwoChartRadialSublevelRepresentatives
 /-- Bounded representatives in the two fixed affine `A₂` charts supply compact radial
 fundamental domains. -/
 public theorem radialSublevelCocompactness_of_twoChartRepresentatives
-    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
-    (H : A2TwoChartRadialSublevelRepresentatives C) :
-    RadialSublevelCocompactness C := by
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients r)
+    (H : A2TwoChartRadialSublevelRepresentatives (M := M) C) :
+    RadialSublevelCocompactness (M := M) C := by
   constructor
   intro a ha har
   obtain ⟨S, hS⟩ := H.bounded_representative a ha har
@@ -252,12 +252,12 @@ public theorem radialSublevelCocompactness_of_twoChartRepresentatives
 
 /-- A compact fundamental domain makes each closed radial sublevel of the quotient compact. -/
 public theorem phaseCorrectedQuotientRadiusSublevel_isCompact
-    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
-    (H : RadialSublevelCocompactness C)
+    {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients r)
+    (H : RadialSublevelCocompactness (M := M) C)
     (a : ℝ) (ha : 0 ≤ a) (har : a < r) :
-    IsCompact {y : PhaseCorrectedToricQuotient C |
-      phaseCorrectedQuotientRadius C y ≤ a} := by
-  let _ := C.toCuspActionData.psiAction
+    IsCompact {y : PhaseCorrectedToricQuotient (M := M) C |
+      phaseCorrectedQuotientRadius (M := M) C y ≤ a} := by
+  let _ := (C.toCuspActionData (M := M)).psiAction
   obtain ⟨K, hK, hKsub, hcover⟩ := H.compact_fundamental_domain a ha har
   let R : Setoid (localCarrier M r) :=
     MulAction.orbitRel (Multiplicative ParameterLattice) _
@@ -276,10 +276,10 @@ public theorem phaseCorrectedQuotientRadiusSublevel_isCompact
         (C.psiMap lambda p) p
       rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
       refine ⟨Multiplicative.ofAdd lambda, ?_⟩
-      change C.toCuspActionData.psiMap lambda p = C.psiMap lambda p
+      change (C.toCuspActionData (M := M)).psiMap lambda p = C.psiMap lambda p
       exact (C.psiMap_eq_generic lambda p).symm
     · rintro ⟨q, hq, hqp⟩
-      change phaseCorrectedQuotientRadius C (Quotient.mk _ p) ≤ a
+      change phaseCorrectedQuotientRadius (M := M) C (Quotient.mk _ p) ≤ a
       rw [← hqp, phaseCorrectedQuotientRadius_mk]
       exact hKsub hq
 
@@ -289,9 +289,9 @@ public def ActualCuspRadialSublevelCocompactness
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) : Prop :=
-  RadialSublevelCocompactness
+  RadialSublevelCocompactness (M := M)
     (NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N M W.localWitness.radius
+      N W.localWitness.radius
         W.localWitness.radius_pos W.localWitness.radius_le)
 
 /-- The concrete two-chart bounded-orbit statement for the actual `A₂` cusp action. -/
@@ -299,9 +299,9 @@ public def ActualA2TwoChartRadialSublevelRepresentatives
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) : Prop :=
-  A2TwoChartRadialSublevelRepresentatives
+  A2TwoChartRadialSublevelRepresentatives (M := M)
     (NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N M W.localWitness.radius
+      N W.localWitness.radius
         W.localWitness.radius_pos W.localWitness.radius_le)
 
 public theorem actual_effectiveFanDisplacement_correction_coord_le
@@ -384,14 +384,14 @@ public theorem actual_exists_reduced_rescaledPosition
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     ∃ lambda : ParameterLattice, ∃ u e : Fin 2 → ℝ,
       (∀ i, 0 ≤ u i ∧ u i < 1) ∧
       (∀ i, |e i| ≤
         2 * W.localWitness.phaseBound / |Real.log ‖M.t p‖|) ∧
       rescaledPosition M (C.psiMap lambda p) = u + e := by
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let L := actualEffectiveFanDisplacementEquiv W p hp
   let x : Fin 2 → ℝ := L.symm (rescaledPosition M p)
@@ -462,12 +462,12 @@ public theorem actual_exists_twoChart_bounded_representative_of_ne_zero
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     ∃ lambda : ParameterLattice, ∃ upper : Bool,
       (C.psiMap lambda p : M.Carrier) ∈ closedToricPolydisc M upper (fun _ ↦ 0)
         (Real.exp (4 * W.localWitness.phaseBound)) := by
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   obtain ⟨lambda, u, e, hu, he, hy⟩ := actual_exists_reduced_rescaledPosition W p hp
   have hnorm_pos : 0 < ‖M.t p‖ := norm_pos_iff.mpr hp
@@ -530,15 +530,15 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p = 0) :
-    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     ∃ lambda : ParameterLattice, ∃ upper : Bool,
       (C.psiMap lambda p : M.Carrier) ∈ closedToricPolydisc M upper (fun _ ↦ 0)
         (Real.exp (4 * W.localWitness.phaseBound)) := by
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let F := W.localWitness.fixedPoint
-  let _ := C.toCuspActionData.psiAction
+  let _ := (C.toCuspActionData (M := M)).psiAction
   let b := W.localWitness.radius / 2
   have hbpos : 0 < b := div_pos W.localWitness.radius_pos (by norm_num)
   have hbr : b < W.localWitness.radius := by
@@ -590,7 +590,7 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
     convert (C.genericPsiMap_holomorphic
       (Multiplicative.toAdd gamma)).continuous using 1
     funext q
-    exact C.toCuspActionData.psi_smul (Multiplicative.toAdd gamma) q
+    exact (C.toCuspActionData (M := M)).psi_smul (Multiplicative.toAdd gamma) q
   let _ : T2Space (Quotient R) := by infer_instance
   have hquotientCoreCompact : IsCompact quotientCore :=
     hK.image continuous_quot_mk
@@ -621,7 +621,7 @@ public theorem actual_exists_twoChart_bounded_representative_of_eq_zero
       (C.psiMap lambda q) q
     rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
     refine ⟨Multiplicative.ofAdd lambda, ?_⟩
-    change C.toCuspActionData.psiMap lambda q = C.psiMap lambda q
+    change (C.toCuspActionData (M := M)).psiMap lambda q = C.psiMap lambda q
     exact (C.psiMap_eq_generic lambda q).symm
   have htorus : Dense {q : M.Carrier | M.t q ≠ 0} := by
     rw [← M.torus_range]
@@ -684,10 +684,10 @@ public theorem actualLocalCuspFillingRadiusSublevel_isCompact
       actualLocalCuspFillingRadius W y ≤ a} := by
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N M W.localWitness.radius
+      N W.localWitness.radius
         W.localWitness.radius_pos W.localWitness.radius_le
-  change IsCompact {y : PhaseCorrectedToricQuotient C |
-    phaseCorrectedQuotientRadius C y ≤ a}
+  change IsCompact {y : PhaseCorrectedToricQuotient (M := M) C |
+    phaseCorrectedQuotientRadius (M := M) C y ≤ a}
   exact phaseCorrectedQuotientRadiusSublevel_isCompact C H a ha har
 
 

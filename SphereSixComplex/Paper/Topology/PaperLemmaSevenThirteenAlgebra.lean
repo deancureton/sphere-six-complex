@@ -37,21 +37,21 @@ public theorem vTwo_eq_explicit : v₂ = ![-1, -3, 3, 0] := by
   fin_cases i <;> norm_num [v₂, epsilon']
 
 /-- The integral endomorphism `A₁ - I` on the dual lattice. -/
-public def orderOneDifference : Lattice →ₗ[ℤ] Lattice :=
+public def orderThreeDifference : Lattice →ₗ[ℤ] Lattice :=
   A₁.mulVecLin - LinearMap.id
 
 /-- The integral endomorphism `A₂ - I` on the dual lattice. -/
-public def orderTwoDifference : Lattice →ₗ[ℤ] Lattice :=
+public def orderFourDifference : Lattice →ₗ[ℤ] Lattice :=
   A₂.mulVecLin - LinearMap.id
 
 @[simp]
-public theorem orderOneDifference_apply (x : Lattice) :
-    orderOneDifference x = A₁ *ᵥ x - x := by
+public theorem orderThreeDifference_apply (x : Lattice) :
+    orderThreeDifference x = A₁ *ᵥ x - x := by
   rfl
 
 @[simp]
-public theorem orderTwoDifference_apply (x : Lattice) :
-    orderTwoDifference x = A₂ *ᵥ x - x := by
+public theorem orderFourDifference_apply (x : Lattice) :
+    orderFourDifference x = A₂ *ᵥ x - x := by
   rfl
 
 /-- The second quotient coordinate for the order-three monodromy. -/
@@ -67,7 +67,7 @@ public def psiTwo : Lattice →ₗ[ℤ] ℤ where
   map_smul' n x := by simp; ring
 
 /-- The two quotient coordinates `(gamma, psiOne)`. -/
-public def orderOneCoordinates : Lattice →ₗ[ℤ] IntSquared where
+public def orderThreeCoordinates : Lattice →ₗ[ℤ] IntSquared where
   toFun x := ![gamma x, psiOne x]
   map_add' x y := by
     funext i
@@ -81,7 +81,7 @@ public def orderOneCoordinates : Lattice →ₗ[ℤ] IntSquared where
       exact psiOne.map_smul n x
 
 /-- The two quotient coordinates `(gamma, psiTwo)`. -/
-public def orderTwoCoordinates : Lattice →ₗ[ℤ] IntSquared where
+public def orderFourCoordinates : Lattice →ₗ[ℤ] IntSquared where
   toFun x := ![gamma x, psiTwo x]
   map_add' x y := by
     funext i
@@ -95,121 +95,121 @@ public def orderTwoCoordinates : Lattice →ₗ[ℤ] IntSquared where
       exact psiTwo.map_smul n x
 
 /-- Explicit description of the image of `A₁ - I`. -/
-public theorem range_orderOneDifference :
-    LinearMap.range orderOneDifference =
+public theorem range_orderThreeDifference :
+    LinearMap.range orderThreeDifference =
       {x : Lattice | x 0 = 0 ∧ 2 * x 1 + x 2 + 3 * x 3 = 0} := by
   ext x
   constructor
   · rintro ⟨y, rfl⟩
     constructor
-    · simp [orderOneDifference, A₁, dotProduct,
+    · simp [orderThreeDifference, A₁, dotProduct,
         Fin.sum_univ_succ]
-    · simp [orderOneDifference, A₁, dotProduct,
+    · simp [orderThreeDifference, A₁, dotProduct,
         Fin.sum_univ_succ]
       ring
   · rintro ⟨h0, hpsi⟩
     refine ⟨![0, x 3, x 1 + x 3, 0], ?_⟩
     funext i
-    fin_cases i <;> simp [orderOneDifference, A₁, h0]
+    fin_cases i <;> simp [orderThreeDifference, A₁, h0]
     all_goals omega
 
 /-- Explicit description of the image of `A₂ - I`. -/
-public theorem range_orderTwoDifference :
-    LinearMap.range orderTwoDifference =
+public theorem range_orderFourDifference :
+    LinearMap.range orderFourDifference =
       {x : Lattice | x 0 = 0 ∧ x 1 + x 2 + 2 * x 3 = 0} := by
   ext x
   constructor
   · rintro ⟨y, rfl⟩
     constructor
-    · simp [orderTwoDifference, A₂, dotProduct,
+    · simp [orderFourDifference, A₂, dotProduct,
         Fin.sum_univ_succ]
-    · simp [orderTwoDifference, A₂, dotProduct,
+    · simp [orderFourDifference, A₂, dotProduct,
         Fin.sum_univ_succ]
       ring
   · rintro ⟨h0, hpsi⟩
     refine ⟨![0, -x 1 - x 3, x 3, 0], ?_⟩
     funext i
-    fin_cases i <;> simp [orderTwoDifference, A₂, h0]
+    fin_cases i <;> simp [orderFourDifference, A₂, h0]
     all_goals omega
 
-public theorem ker_orderOneCoordinates :
-    LinearMap.ker orderOneCoordinates = LinearMap.range orderOneDifference := by
+public theorem ker_orderThreeCoordinates :
+    LinearMap.ker orderThreeCoordinates = LinearMap.range orderThreeDifference := by
   ext x
   constructor
   · intro hx
     have h := LinearMap.mem_ker.mp hx
     have h0 := congrFun h (0 : Fin 2)
     have h1 := congrFun h (1 : Fin 2)
-    change x ∈ (↑(LinearMap.range orderOneDifference) : Set Lattice)
-    rw [range_orderOneDifference]
-    simpa [orderOneCoordinates, psiOne] using And.intro h0 h1
+    change x ∈ (↑(LinearMap.range orderThreeDifference) : Set Lattice)
+    rw [range_orderThreeDifference]
+    simpa [orderThreeCoordinates, psiOne] using And.intro h0 h1
   · intro hx
-    have hx' : x ∈ (↑(LinearMap.range orderOneDifference) : Set Lattice) := hx
-    rw [range_orderOneDifference] at hx'
+    have hx' : x ∈ (↑(LinearMap.range orderThreeDifference) : Set Lattice) := hx
+    rw [range_orderThreeDifference] at hx'
     apply LinearMap.mem_ker.mpr
     funext i
-    fin_cases i <;> simp [orderOneCoordinates, psiOne, hx'.1, hx'.2]
+    fin_cases i <;> simp [orderThreeCoordinates, psiOne, hx'.1, hx'.2]
 
-public theorem ker_orderTwoCoordinates :
-    LinearMap.ker orderTwoCoordinates = LinearMap.range orderTwoDifference := by
+public theorem ker_orderFourCoordinates :
+    LinearMap.ker orderFourCoordinates = LinearMap.range orderFourDifference := by
   ext x
   constructor
   · intro hx
     have h := LinearMap.mem_ker.mp hx
     have h0 := congrFun h (0 : Fin 2)
     have h1 := congrFun h (1 : Fin 2)
-    change x ∈ (↑(LinearMap.range orderTwoDifference) : Set Lattice)
-    rw [range_orderTwoDifference]
-    simpa [orderTwoCoordinates, psiTwo] using And.intro h0 h1
+    change x ∈ (↑(LinearMap.range orderFourDifference) : Set Lattice)
+    rw [range_orderFourDifference]
+    simpa [orderFourCoordinates, psiTwo] using And.intro h0 h1
   · intro hx
-    have hx' : x ∈ (↑(LinearMap.range orderTwoDifference) : Set Lattice) := hx
-    rw [range_orderTwoDifference] at hx'
+    have hx' : x ∈ (↑(LinearMap.range orderFourDifference) : Set Lattice) := hx
+    rw [range_orderFourDifference] at hx'
     apply LinearMap.mem_ker.mpr
     funext i
-    fin_cases i <;> simp [orderTwoCoordinates, psiTwo, hx'.1, hx'.2]
+    fin_cases i <;> simp [orderFourCoordinates, psiTwo, hx'.1, hx'.2]
 
-public theorem orderOneCoordinates_surjective :
-    Function.Surjective orderOneCoordinates := by
+public theorem surjective_orderThreeCoordinates :
+    Function.Surjective orderThreeCoordinates := by
   intro y
   refine ⟨![y 0, 0, y 1, 0], ?_⟩
   funext i
-  fin_cases i <;> simp [orderOneCoordinates, psiOne]
+  fin_cases i <;> simp [orderThreeCoordinates, psiOne]
 
-public theorem orderTwoCoordinates_surjective :
-    Function.Surjective orderTwoCoordinates := by
+public theorem surjective_orderFourCoordinates :
+    Function.Surjective orderFourCoordinates := by
   intro y
   refine ⟨![y 0, 0, y 1, 0], ?_⟩
   funext i
-  fin_cases i <;> simp [orderTwoCoordinates, psiTwo]
+  fin_cases i <;> simp [orderFourCoordinates, psiTwo]
 
-public abbrev OrderOneCoinvariants :=
-  LatticeData.Lattice ⧸ LinearMap.range orderOneDifference
+public abbrev OrderThreeCoinvariants :=
+  LatticeData.Lattice ⧸ LinearMap.range orderThreeDifference
 
-public abbrev OrderTwoCoinvariants :=
-  LatticeData.Lattice ⧸ LinearMap.range orderTwoDifference
+public abbrev OrderFourCoinvariants :=
+  LatticeData.Lattice ⧸ LinearMap.range orderFourDifference
 
 /-- The order-three coinvariants, in the basis `(gamma, psiOne)`. -/
-public noncomputable def orderOneCoinvariantsEquivIntSquared :
-    OrderOneCoinvariants ≃ₗ[ℤ] IntSquared :=
-  (Submodule.quotEquivOfEq _ _ ker_orderOneCoordinates.symm).trans
-    (orderOneCoordinates.quotKerEquivOfSurjective orderOneCoordinates_surjective)
+public noncomputable def orderThreeCoinvariantsEquivIntSquared :
+    OrderThreeCoinvariants ≃ₗ[ℤ] IntSquared :=
+  (Submodule.quotEquivOfEq _ _ ker_orderThreeCoordinates.symm).trans
+    (orderThreeCoordinates.quotKerEquivOfSurjective surjective_orderThreeCoordinates)
 
 /-- The order-four coinvariants, in the basis `(gamma, psiTwo)`. -/
-public noncomputable def orderTwoCoinvariantsEquivIntSquared :
-    OrderTwoCoinvariants ≃ₗ[ℤ] IntSquared :=
-  (Submodule.quotEquivOfEq _ _ ker_orderTwoCoordinates.symm).trans
-    (orderTwoCoordinates.quotKerEquivOfSurjective orderTwoCoordinates_surjective)
+public noncomputable def orderFourCoinvariantsEquivIntSquared :
+    OrderFourCoinvariants ≃ₗ[ℤ] IntSquared :=
+  (Submodule.quotEquivOfEq _ _ ker_orderFourCoordinates.symm).trans
+    (orderFourCoordinates.quotKerEquivOfSurjective surjective_orderFourCoordinates)
 
 @[simp]
-public theorem orderOneCoinvariantsEquivIntSquared_mk (x : Lattice) :
-    orderOneCoinvariantsEquivIntSquared (Submodule.Quotient.mk x) =
-      orderOneCoordinates x := by
+public theorem orderThreeCoinvariantsEquivIntSquared_mk (x : Lattice) :
+    orderThreeCoinvariantsEquivIntSquared (Submodule.Quotient.mk x) =
+      orderThreeCoordinates x := by
   rfl
 
 @[simp]
-public theorem orderTwoCoinvariantsEquivIntSquared_mk (x : Lattice) :
-    orderTwoCoinvariantsEquivIntSquared (Submodule.Quotient.mk x) =
-      orderTwoCoordinates x := by
+public theorem orderFourCoinvariantsEquivIntSquared_mk (x : Lattice) :
+    orderFourCoinvariantsEquivIntSquared (Submodule.Quotient.mk x) =
+      orderFourCoordinates x := by
   rfl
 
 
@@ -219,30 +219,30 @@ public theorem orderTwoCoinvariantsEquivIntSquared_mk (x : Lattice) :
 
 
 
-public abbrev OrderOneSelectedPresentation :=
-  CyclicCoinvariants.Presentation orderOneDifference v₁ 3
+public abbrev OrderThreeSelectedPresentation :=
+  CyclicCoinvariants.Presentation orderThreeDifference v₁ 3
 
-public abbrev OrderTwoSelectedPresentation :=
-  CyclicCoinvariants.Presentation orderTwoDifference v₂ 4
-
-@[simp]
-public theorem orderOne_selected_twist_coordinates :
-    orderOneCoinvariantsEquivIntSquared (Submodule.Quotient.mk v₁) = ![1, 0] := by
-  rw [orderOneCoinvariantsEquivIntSquared_mk]
-  funext i
-  fin_cases i <;> simp [vOne_eq_explicit, orderOneCoordinates, psiOne]
+public abbrev OrderFourSelectedPresentation :=
+  CyclicCoinvariants.Presentation orderFourDifference v₂ 4
 
 @[simp]
-public theorem orderTwo_selected_twist_coordinates :
-    orderTwoCoinvariantsEquivIntSquared (Submodule.Quotient.mk v₂) = ![-1, 0] := by
-  rw [orderTwoCoinvariantsEquivIntSquared_mk]
+public theorem orderThree_selected_twist_coordinates :
+    orderThreeCoinvariantsEquivIntSquared (Submodule.Quotient.mk v₁) = ![1, 0] := by
+  rw [orderThreeCoinvariantsEquivIntSquared_mk]
   funext i
-  fin_cases i <;> simp [vTwo_eq_explicit, orderTwoCoordinates, psiTwo]
+  fin_cases i <;> simp [vOne_eq_explicit, orderThreeCoordinates, psiOne]
+
+@[simp]
+public theorem orderFour_selected_twist_coordinates :
+    orderFourCoinvariantsEquivIntSquared (Submodule.Quotient.mk v₂) = ![-1, 0] := by
+  rw [orderFourCoinvariantsEquivIntSquared_mk]
+  funext i
+  fin_cases i <;> simp [vTwo_eq_explicit, orderFourCoordinates, psiTwo]
 
 /-- Coordinates on the order-three presentation before imposing the meridian relation. -/
-public def orderOnePresentationCoordinates : (OrderOneCoinvariants × ℤ) →ₗ[ℤ] IntSquared where
-  toFun x := ![3 * (orderOneCoinvariantsEquivIntSquared x.1) 0 + x.2,
-    (orderOneCoinvariantsEquivIntSquared x.1) 1]
+public def orderThreePresentationCoordinates : (OrderThreeCoinvariants × ℤ) →ₗ[ℤ] IntSquared where
+  toFun x := ![3 * (orderThreeCoinvariantsEquivIntSquared x.1) 0 + x.2,
+    (orderThreeCoinvariantsEquivIntSquared x.1) 1]
   map_add' x y := by
     funext i
     fin_cases i <;> simp
@@ -253,9 +253,9 @@ public def orderOnePresentationCoordinates : (OrderOneCoinvariants × ℤ) →�
     ring
 
 /-- Coordinates on the order-four presentation before imposing the meridian relation. -/
-public def orderTwoPresentationCoordinates : (OrderTwoCoinvariants × ℤ) →ₗ[ℤ] IntSquared where
-  toFun x := ![4 * (orderTwoCoinvariantsEquivIntSquared x.1) 0 - x.2,
-    (orderTwoCoinvariantsEquivIntSquared x.1) 1]
+public def orderFourPresentationCoordinates : (OrderFourCoinvariants × ℤ) →ₗ[ℤ] IntSquared where
+  toFun x := ![4 * (orderFourCoinvariantsEquivIntSquared x.1) 0 - x.2,
+    (orderFourCoinvariantsEquivIntSquared x.1) 1]
   map_add' x y := by
     funext i
     fin_cases i <;> simp
@@ -265,102 +265,102 @@ public def orderTwoPresentationCoordinates : (OrderTwoCoinvariants × ℤ) →�
     fin_cases i <;> simp
     ring
 
-public theorem orderOnePresentationCoordinates_surjective :
-    Function.Surjective orderOnePresentationCoordinates := by
+public theorem surjective_orderThreePresentationCoordinates :
+    Function.Surjective orderThreePresentationCoordinates := by
   intro y
-  refine ⟨(orderOneCoinvariantsEquivIntSquared.symm ![0, y 1], y 0), ?_⟩
+  refine ⟨(orderThreeCoinvariantsEquivIntSquared.symm ![0, y 1], y 0), ?_⟩
   funext i
-  fin_cases i <;> simp [orderOnePresentationCoordinates]
+  fin_cases i <;> simp [orderThreePresentationCoordinates]
 
-public theorem orderTwoPresentationCoordinates_surjective :
-    Function.Surjective orderTwoPresentationCoordinates := by
+public theorem surjective_orderFourPresentationCoordinates :
+    Function.Surjective orderFourPresentationCoordinates := by
   intro y
-  refine ⟨(orderTwoCoinvariantsEquivIntSquared.symm ![0, y 1], -y 0), ?_⟩
+  refine ⟨(orderFourCoinvariantsEquivIntSquared.symm ![0, y 1], -y 0), ?_⟩
   funext i
-  fin_cases i <;> simp [orderTwoPresentationCoordinates]
+  fin_cases i <;> simp [orderFourPresentationCoordinates]
 
-public theorem range_orderOneRelationMap_eq_ker :
-    LinearMap.range (CyclicCoinvariants.relationMap orderOneDifference v₁ 3) =
-      LinearMap.ker orderOnePresentationCoordinates := by
-  have hv : orderOneCoordinates v₁ = ![1, 0] := by
-    simpa only [orderOneCoinvariantsEquivIntSquared_mk] using
-      orderOne_selected_twist_coordinates
+public theorem range_orderThreeRelationMap_eq_ker :
+    LinearMap.range (CyclicCoinvariants.relationMap orderThreeDifference v₁ 3) =
+      LinearMap.ker orderThreePresentationCoordinates := by
+  have hv : orderThreeCoordinates v₁ = ![1, 0] := by
+    simpa only [orderThreeCoinvariantsEquivIntSquared_mk] using
+      orderThree_selected_twist_coordinates
   ext x
   constructor
   · rintro ⟨k, rfl⟩
     apply LinearMap.mem_ker.mpr
     funext i
-    fin_cases i <;> simp [CyclicCoinvariants.relationMap, orderOnePresentationCoordinates, hv]
+    fin_cases i <;> simp [CyclicCoinvariants.relationMap, orderThreePresentationCoordinates, hv]
     ring
   · intro hx
     have h := LinearMap.mem_ker.mp hx
     have h0 := congrFun h (0 : Fin 2)
     have h1 := congrFun h (1 : Fin 2)
-    let a := (orderOneCoinvariantsEquivIntSquared x.1) 0
+    let a := (orderThreeCoinvariantsEquivIntSquared x.1) 0
     refine ⟨-a, ?_⟩
     apply Prod.ext
-    · apply orderOneCoinvariantsEquivIntSquared.injective
+    · apply orderThreeCoinvariantsEquivIntSquared.injective
       funext i
       fin_cases i
       · simp [CyclicCoinvariants.relationMap, a, hv]
-      · simpa [CyclicCoinvariants.relationMap, orderOnePresentationCoordinates, hv] using h1.symm
-    · simp [CyclicCoinvariants.relationMap, orderOnePresentationCoordinates, a] at h0 ⊢
+      · simpa [CyclicCoinvariants.relationMap, orderThreePresentationCoordinates, hv] using h1.symm
+    · simp [CyclicCoinvariants.relationMap, orderThreePresentationCoordinates, a] at h0 ⊢
       omega
 
-public theorem range_orderTwoRelationMap_eq_ker :
-    LinearMap.range (CyclicCoinvariants.relationMap orderTwoDifference v₂ 4) =
-      LinearMap.ker orderTwoPresentationCoordinates := by
-  have hv : orderTwoCoordinates v₂ = ![-1, 0] := by
-    simpa only [orderTwoCoinvariantsEquivIntSquared_mk] using
-      orderTwo_selected_twist_coordinates
+public theorem range_orderFourRelationMap_eq_ker :
+    LinearMap.range (CyclicCoinvariants.relationMap orderFourDifference v₂ 4) =
+      LinearMap.ker orderFourPresentationCoordinates := by
+  have hv : orderFourCoordinates v₂ = ![-1, 0] := by
+    simpa only [orderFourCoinvariantsEquivIntSquared_mk] using
+      orderFour_selected_twist_coordinates
   ext x
   constructor
   · rintro ⟨k, rfl⟩
     apply LinearMap.mem_ker.mpr
     funext i
-    fin_cases i <;> simp [CyclicCoinvariants.relationMap, orderTwoPresentationCoordinates, hv]
+    fin_cases i <;> simp [CyclicCoinvariants.relationMap, orderFourPresentationCoordinates, hv]
     ring
   · intro hx
     have h := LinearMap.mem_ker.mp hx
     have h0 := congrFun h (0 : Fin 2)
     have h1 := congrFun h (1 : Fin 2)
-    let a := (orderTwoCoinvariantsEquivIntSquared x.1) 0
+    let a := (orderFourCoinvariantsEquivIntSquared x.1) 0
     refine ⟨a, ?_⟩
     apply Prod.ext
-    · apply orderTwoCoinvariantsEquivIntSquared.injective
+    · apply orderFourCoinvariantsEquivIntSquared.injective
       funext i
       fin_cases i
       · simp [CyclicCoinvariants.relationMap, a, hv]
-      · simpa [CyclicCoinvariants.relationMap, orderTwoPresentationCoordinates, hv] using h1.symm
-    · simp [CyclicCoinvariants.relationMap, orderTwoPresentationCoordinates, a] at h0 ⊢
+      · simpa [CyclicCoinvariants.relationMap, orderFourPresentationCoordinates, hv] using h1.symm
+    · simp [CyclicCoinvariants.relationMap, orderFourPresentationCoordinates, a] at h0 ⊢
       omega
 
 /-- For the selected twist `v₁ = epsilon`, the order-three presentation is free of rank two. -/
-public noncomputable def orderOneSelectedPresentationEquivIntSquared :
-    OrderOneSelectedPresentation ≃ₗ[ℤ] IntSquared :=
-  (Submodule.quotEquivOfEq _ _ range_orderOneRelationMap_eq_ker).trans
-    (orderOnePresentationCoordinates.quotKerEquivOfSurjective
-      orderOnePresentationCoordinates_surjective)
+public noncomputable def orderThreeSelectedPresentationEquivIntSquared :
+    OrderThreeSelectedPresentation ≃ₗ[ℤ] IntSquared :=
+  (Submodule.quotEquivOfEq _ _ range_orderThreeRelationMap_eq_ker).trans
+    (orderThreePresentationCoordinates.quotKerEquivOfSurjective
+      surjective_orderThreePresentationCoordinates)
 
 /-- For the selected twist `v₂ = -epsilon'`, the order-four presentation is free of rank two. -/
-public noncomputable def orderTwoSelectedPresentationEquivIntSquared :
-    OrderTwoSelectedPresentation ≃ₗ[ℤ] IntSquared :=
-  (Submodule.quotEquivOfEq _ _ range_orderTwoRelationMap_eq_ker).trans
-    (orderTwoPresentationCoordinates.quotKerEquivOfSurjective
-      orderTwoPresentationCoordinates_surjective)
+public noncomputable def orderFourSelectedPresentationEquivIntSquared :
+    OrderFourSelectedPresentation ≃ₗ[ℤ] IntSquared :=
+  (Submodule.quotEquivOfEq _ _ range_orderFourRelationMap_eq_ker).trans
+    (orderFourPresentationCoordinates.quotKerEquivOfSurjective
+      surjective_orderFourPresentationCoordinates)
 
 @[simp]
-public theorem orderOneSelectedPresentationEquivIntSquared_mk
-    (x : OrderOneCoinvariants × ℤ) :
-    orderOneSelectedPresentationEquivIntSquared (Submodule.Quotient.mk x) =
-      orderOnePresentationCoordinates x := by
+public theorem orderThreeSelectedPresentationEquivIntSquared_mk
+    (x : OrderThreeCoinvariants × ℤ) :
+    orderThreeSelectedPresentationEquivIntSquared (Submodule.Quotient.mk x) =
+      orderThreePresentationCoordinates x := by
   rfl
 
 @[simp]
-public theorem orderTwoSelectedPresentationEquivIntSquared_mk
-    (x : OrderTwoCoinvariants × ℤ) :
-    orderTwoSelectedPresentationEquivIntSquared (Submodule.Quotient.mk x) =
-      orderTwoPresentationCoordinates x := by
+public theorem orderFourSelectedPresentationEquivIntSquared_mk
+    (x : OrderFourCoinvariants × ℤ) :
+    orderFourSelectedPresentationEquivIntSquared (Submodule.Quotient.mk x) =
+      orderFourPresentationCoordinates x := by
   rfl
 
 

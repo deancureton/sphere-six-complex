@@ -11,7 +11,7 @@ smooth-compatible complex structure theorem; the second forgets the additional s
 compatibility. README and Blueprint references, historical notes, and aggregate imports do not
 add mathematical roots.
 
-## Method
+## Initial pruning pass
 
 Starting from the compiled baseline `309b081`, the audit follows constants occurring in both
 types and proof or definition bodies. Opaque values are read with `allowOpaque := true`.
@@ -62,7 +62,7 @@ distinct declaration links (301 occurrences) are checked against the retained en
 reduction notes remain explicitly historical. Documentation and aggregate imports do not retain
 otherwise unused mathematics.
 
-## Validation
+## Initial validation
 
 The final tree passed:
 
@@ -82,3 +82,29 @@ toolchain, and dependency manifest match their baseline hashes.
 Comparator ran with the repository's macOS functionality wrapper; Linux Landrun isolation was
 not tested by this run. Existing lint and missing-docstring warnings remain. Tactic modernization,
 linter cleanup, and clean-build performance benchmarking were outside this pass.
+
+## Follow-up after interface cleanup
+
+The later API cleanup made the separate intermediate-union vanishing branch unused. A fresh
+compiled audit, again rooted only at the two Comparator theorems, found 37 candidate source ranges.
+Eighteen declarations were removed, including five now-empty modules. The remaining 19 are the
+previously established simp/elaboration helpers; their retained clients still need them. The live
+Mayer–Vietoris union-vanishing lemma was moved unchanged into prerequisites. Its obsolete paper
+module and the unused Blueprint branch were removed.
+
+| Follow-up inventory | Before deletion | After deletion |
+|---|---:|---:|
+| Compiled project constants | 25,502 | 25,483 |
+| Constants in the two endpoints' term closure | 21,031 | 21,031 |
+| Library modules | 955 | 950 |
+
+The live sets differ only in one generated proof helper after Lean re-elaborated the owner of
+the removed predicate. Named mathematical dependencies are unchanged. The new resolved-source
+audit has no missing `.ilean` files and only the same two linter-option metadata references.
+No further deletion is justified by this audit without changing the retained proofs' elaboration
+strategy. The library contains 210,895 lines, and the Blueprint has 278 distinct declaration links.
+
+The follow-up passed the full root and Blueprint builds, all 278 declaration-link checks, the
+import/layer and placeholder checks, and the strict axiom audit. Comparator's default kernel
+accepted the solution with the same permitted axioms. The construction audit no longer lists
+the deleted helper as an extra root; its axiom closure is unchanged.

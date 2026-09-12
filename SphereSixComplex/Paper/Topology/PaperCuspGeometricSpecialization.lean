@@ -187,8 +187,7 @@ public theorem finiteBasisNaturality (A : AnalyticData) :
     let e := integralSingularHomologyEquivOfHomotopyEquiv 1 G.totalHomotopyEquiv
     have h := DFunLike.congr_fun (specializationHomologyOneMap_eq_projection A)
       (e x)
-    change actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
-        (UnnormalizedCuspRadialClutchingData.radialCentralFiberRetractionData A.starCuspWitness)
+    change actualCuspDeckHomologyOneEquiv A.starCuspWitness
         (integralSingularHomologyMap 1
           ⟨puncturedLocalCuspToFilling A.starCuspWitness,
             puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ (e.symm (e x))) =
@@ -227,8 +226,7 @@ kept as a permanent regression test in `PaperCuspGeometricSpecializationProof`. 
 public theorem degreeOne
     (A : AnalyticData)
     (x : IntegralSingularHomology 1 (A.openEmbeddingStarData.collarSource 0)) :
-    actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
-        A.cuspCentralFiberRetractionData
+    actualCuspDeckHomologyOneEquiv A.starCuspWitness
         (integralSingularHomologyMap 1
           ⟨puncturedLocalCuspToFilling A.starCuspWitness,
             puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) =
@@ -307,8 +305,7 @@ public theorem cuspFillingInclusionCoordinates
     (B : A.CollarInteriorHomologyBases) :
     A.CuspFillingInclusionCoordinates (A.withActualGeometricCuspBases B) where
   degreeOne x := by
-    change actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
-        A.cuspCentralFiberRetractionData
+    change actualCuspDeckHomologyOneEquiv A.starCuspWitness
           (integralSingularHomologyMap 1
             ⟨puncturedLocalCuspToFilling A.starCuspWitness,
               puncturedLocalCuspToFilling_continuous A.starCuspWitness⟩ x) = _

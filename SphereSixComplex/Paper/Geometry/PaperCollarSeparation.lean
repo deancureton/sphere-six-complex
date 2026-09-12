@@ -451,9 +451,9 @@ public theorem exists_collarSeparationData
     rw [A.modular.sourceCoordinate.coordinate_at_two]
     norm_num
   obtain ⟨s₃, hs₃, hs₃one, hs₃S⟩ :=
-    exists_cayleyRadius_subset fuchsianOneFixedPoint hS'open hOneS'
+    SphereSixComplex.UpperHalfPlane.exists_cayleyRadius_subset fuchsianOneFixedPoint hS'open hOneS'
   obtain ⟨s₄, hs₄, hs₄one, hs₄T⟩ :=
-    exists_cayleyRadius_subset fuchsianTwoFixedPoint hT'open hTwoT'
+    SphereSixComplex.UpperHalfPlane.exists_cayleyRadius_subset fuchsianTwoFixedPoint hT'open hTwoT'
   obtain ⟨P₃⟩ := A.exists_orderThreeFillingPiece
   obtain ⟨P₄⟩ := A.exists_orderFourFillingPiece
   let r₃ := min P₃.radius s₃

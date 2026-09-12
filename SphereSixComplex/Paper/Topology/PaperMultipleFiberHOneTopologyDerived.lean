@@ -252,7 +252,7 @@ variable {U : TriangleUniformization} (F : PeriodFunctions U)
 multiple-fibre presentation from Lemma 7.13. -/
 public noncomputable def orderThreeReducedCentralFiberHOneEquivPresentation :
     IntegralSingularHomology 1 (orderThreeReducedCentralFiber F) ≃ₗ[ℤ]
-      OrderOneSelectedPresentation := by
+      OrderThreeSelectedPresentation := by
   exact _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation
     (orderThreeCentralFiberPresentationData F)
 
@@ -260,7 +260,7 @@ public noncomputable def orderThreeReducedCentralFiberHOneEquivPresentation :
 multiple-fibre presentation from Lemma 7.13. -/
 public noncomputable def orderFourReducedCentralFiberHOneEquivPresentation :
     IntegralSingularHomology 1 (orderFourReducedCentralFiber F) ≃ₗ[ℤ]
-      OrderTwoSelectedPresentation := by
+      OrderFourSelectedPresentation := by
   exact _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation
     (orderFourCentralFiberPresentationData F)
 
@@ -269,14 +269,14 @@ rank two. -/
 public noncomputable def orderThreeReducedCentralFiberHOneEquivIntSquared :
     IntegralSingularHomology 1 (orderThreeReducedCentralFiber F) ≃ₗ[ℤ] IntSquared :=
   (orderThreeReducedCentralFiberHOneEquivPresentation F).trans
-    orderOneSelectedPresentationEquivIntSquared
+    orderThreeSelectedPresentationEquivIntSquared
 
 /-- In particular, first integral homology of the actual order-four reduced fibre is free of
 rank two. -/
 public noncomputable def orderFourReducedCentralFiberHOneEquivIntSquared :
     IntegralSingularHomology 1 (orderFourReducedCentralFiber F) ≃ₗ[ℤ] IntSquared :=
   (orderFourReducedCentralFiberHOneEquivPresentation F).trans
-    orderTwoSelectedPresentationEquivIntSquared
+    orderFourSelectedPresentationEquivIntSquared
 
 /-- The fixed order-three coordinates of the covering projection, before evaluating the explicit
 presentation-coordinate map. -/
@@ -286,7 +286,7 @@ public theorem orderThreeReducedCentralFiberHOneEquivIntSquared_projection_raw (
           (RadialEllipticActionData.centralFiberCoverProjection
             (orderThreeRadialActionData F))
           ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
-      orderOneSelectedPresentationEquivIntSquared
+      orderThreeSelectedPresentationEquivIntSquared
         (Submodule.Quotient.mk (Submodule.Quotient.mk x, 0)) := by
   have h :=
     _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection
@@ -298,8 +298,8 @@ public theorem orderThreeReducedCentralFiberHOneEquivIntSquared_projection_raw (
         ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
       _root_.SphereSixComplex.AffineCyclicQuotientHomology.latticeProjection
         (orderThreeCentralFiberPresentationData F) x at h
-  have hc := congrArg orderOneSelectedPresentationEquivIntSquared h
-  change orderOneSelectedPresentationEquivIntSquared
+  have hc := congrArg orderThreeSelectedPresentationEquivIntSquared h
+  change orderThreeSelectedPresentationEquivIntSquared
       (orderThreeReducedCentralFiberHOneEquivPresentation F
         (integralSingularHomologyMap 1
           (RadialEllipticActionData.centralFiberCoverProjection
@@ -315,7 +315,7 @@ public theorem orderFourReducedCentralFiberHOneEquivIntSquared_projection_raw (x
           (RadialEllipticActionData.centralFiberCoverProjection
             (orderFourRadialActionData F))
           ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
-      orderTwoSelectedPresentationEquivIntSquared
+      orderFourSelectedPresentationEquivIntSquared
         (Submodule.Quotient.mk (Submodule.Quotient.mk x, 0)) := by
   have h :=
     _root_.SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation_projection
@@ -327,8 +327,8 @@ public theorem orderFourReducedCentralFiberHOneEquivIntSquared_projection_raw (x
         ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
       _root_.SphereSixComplex.AffineCyclicQuotientHomology.latticeProjection
         (orderFourCentralFiberPresentationData F) x at h
-  have hc := congrArg orderTwoSelectedPresentationEquivIntSquared h
-  change orderTwoSelectedPresentationEquivIntSquared
+  have hc := congrArg orderFourSelectedPresentationEquivIntSquared h
+  change orderFourSelectedPresentationEquivIntSquared
       (orderFourReducedCentralFiberHOneEquivPresentation F
         (integralSingularHomologyMap 1
           (RadialEllipticActionData.centralFiberCoverProjection

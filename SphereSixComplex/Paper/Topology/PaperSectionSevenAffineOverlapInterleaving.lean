@@ -871,7 +871,7 @@ public theorem exists_orderThreeCayleyRadius_coordinate_lt {a : ℝ} (ha : 0 < a
     rw [A.modular.sourceCoordinate.coordinate_at_one]
     simpa using ha
   obtain ⟨t, ht, -, hsub⟩ :=
-    exists_cayleyRadius_subset SphereSixComplex.TriangleGroup.fuchsianOneFixedPoint hopen hmem
+    SphereSixComplex.UpperHalfPlane.exists_cayleyRadius_subset SphereSixComplex.TriangleGroup.fuchsianOneFixedPoint hopen hmem
   exact ⟨t, ht, fun z hz ↦ hsub z hz⟩
 
 
@@ -1305,7 +1305,7 @@ public theorem exists_orderFourCayleyRadius_coordinate_lt {a : ℝ} (ha : 0 < a)
     rw [A.modular.sourceCoordinate.coordinate_at_two]
     simpa using ha
   obtain ⟨t, ht, -, hsub⟩ :=
-    exists_cayleyRadius_subset SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint hopen hmem
+    SphereSixComplex.UpperHalfPlane.exists_cayleyRadius_subset SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint hopen hmem
   exact ⟨t, ht, fun z hz ↦ hsub z hz⟩
 
 /-- Shrinking preserves the selected order-four collar carrier. -/

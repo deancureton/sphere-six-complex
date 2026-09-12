@@ -149,12 +149,12 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
       pointUnstraightening_of_t_eq_zero W x hx]
   · intro g x
     let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+      N W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
     change pointUnstraightening W
         (rfRetract (pointStraightening W
-          (C.toCuspActionData.psiMap
+          ((C.toCuspActionData (M := M)).psiMap
             (Multiplicative.toAdd g) x))) =
-      C.toCuspActionData.psiMap
+      (C.toCuspActionData (M := M)).psiMap
         (Multiplicative.toAdd g)
           (pointUnstraightening W (rfRetract (pointStraightening W x)))
     rw [pointStraightening_genericPsiMap W, hRf_retract]
@@ -162,12 +162,12 @@ public noncomputable def actualLocalCuspCentralFiberRetractionData
     exact (actualPsiMap_pointUnstraightening W _ _).symm
   · intro g s x
     let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+      N W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
     change pointUnstraightening W
         (rfHomotopy (s, pointStraightening W
-          (C.toCuspActionData.psiMap
+          ((C.toCuspActionData (M := M)).psiMap
             (Multiplicative.toAdd g) x))) =
-      C.toCuspActionData.psiMap
+      (C.toCuspActionData (M := M)).psiMap
         (Multiplicative.toAdd g)
           (pointUnstraightening W (rfHomotopy (s, pointStraightening W x)))
     rw [pointStraightening_genericPsiMap W, hRf_homotopy]

@@ -708,48 +708,6 @@ public theorem ellipticFourBoundaryCover_simplyConnected :
     apply (rhoLambda g₂).injective
     rw [(rhoLambda g₂).apply_symm_apply, rhoLambda_g₂_apply, A₂_epsilon']
 
-/-- The remaining order-three filling geometry after fixing the explicit collar cover and deck
-presentation. -/
-public structure OrderThreeActualEllipticFillingExtension where
-  fillingAction : MulAction A.ellipticThreeBoundaryDeckData.FillingDeck
-    (ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace)
-  fillingQuotient : @IsQuotientCoveringMap
-    (ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace)
-    A.actualVanKampenFourPieceCover.ellipticThree _ _
-    A.ellipticThreeFillingProjection
-    A.ellipticThreeBoundaryDeckData.FillingDeck _ fillingAction
-  lift : C(OpenRadialInterval A.starSeparation.orderThree.radius × (ℝ × ComplexTwoSpace),
-    ComplexDiscBall A.starSeparation.orderThree.radius × ComplexTwoSpace)
-  commutes : ∀ z,
-    A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
-        (A.ellipticThreeBoundaryProjection z) =
-      A.ellipticThreeFillingProjection (lift z)
-  equivariant : ∀ g z,
-    lift (@SMul.smul _ _ A.ellipticThreeBoundaryAction.toSMul g z) =
-      @SMul.smul _ _ fillingAction.toSMul
-        (A.ellipticThreeBoundaryDeckData.fillingDeckMap g) (lift z)
-
-/-- The remaining order-four filling geometry after fixing the explicit collar cover and deck
-presentation. -/
-public structure OrderFourActualEllipticFillingExtension where
-  fillingAction : MulAction A.ellipticFourBoundaryDeckData.FillingDeck
-    (ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace)
-  fillingQuotient : @IsQuotientCoveringMap
-    (ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace)
-    A.actualVanKampenFourPieceCover.ellipticFour _ _
-    A.ellipticFourFillingProjection
-    A.ellipticFourBoundaryDeckData.FillingDeck _ fillingAction
-  lift : C(OpenRadialInterval A.starSeparation.orderFour.radius × (ℝ × ComplexTwoSpace),
-    ComplexDiscBall A.starSeparation.orderFour.radius × ComplexTwoSpace)
-  commutes : ∀ z,
-    A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
-        (A.ellipticFourBoundaryProjection z) =
-      A.ellipticFourFillingProjection (lift z)
-  equivariant : ∀ g z,
-    lift (@SMul.smul _ _ A.ellipticFourBoundaryAction.toSMul g z) =
-      @SMul.smul _ _ fillingAction.toSMul
-        (A.ellipticFourBoundaryDeckData.fillingDeckMap g) (lift z)
-
 /-- Order-three filling geometry with lift equivariance specified only at the marked lift. -/
 public structure OrderThreeActualEllipticFillingExtensionAtBase where
   fillingAction : MulAction A.ellipticThreeBoundaryDeckData.FillingDeck
@@ -834,66 +792,62 @@ end OrderThreeActualEllipticFillingMarkedDeckData
 
 namespace OrderThreeActualEllipticFillingExtensionAtBase
 
-/-- Extend marked-point equivariance over the connected order-three collar cover. -/
-public noncomputable def toFillingExtension
+/-- Equivariance at the marked point extends over the connected collar cover. -/
+public theorem lift_equivariant
     (E : A.OrderThreeActualEllipticFillingExtensionAtBase) :
-    A.OrderThreeActualEllipticFillingExtension := by
+    ∀ g z,
+      E.lift (@SMul.smul _ _ A.ellipticThreeBoundaryAction.toSMul g z) =
+        @SMul.smul _ _ E.fillingAction.toSMul
+          (A.ellipticThreeBoundaryDeckData.fillingDeckMap g) (E.lift z) := by
   letI := A.ellipticThreeBoundaryAction
   letI := E.fillingAction
   letI := A.ellipticThreeBoundaryCover_simplyConnected
-  exact
-    { fillingAction := E.fillingAction
-      fillingQuotient := E.fillingQuotient
-      lift := E.lift
-      commutes := E.commutes
-      equivariant := SphereSixComplex.Topology.quotientCover_equivariant_of_eq_at
-        A.ellipticThreeBoundaryProjection
-        A.ellipticThreeFillingProjection
-        A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
-        E.fillingQuotient
-        A.ellipticThreeBoundaryDeckData.fillingDeckMap
-        E.lift
-        A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
-        E.commutes
-        A.ellipticThreeBoundaryBase
-        E.equivariant_at_boundaryBase }
+  exact SphereSixComplex.Topology.quotientCover_equivariant_of_eq_at
+    A.ellipticThreeBoundaryProjection
+    A.ellipticThreeFillingProjection
+    A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
+    E.fillingQuotient
+    A.ellipticThreeBoundaryDeckData.fillingDeckMap
+    E.lift
+    A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
+    E.commutes
+    A.ellipticThreeBoundaryBase
+    E.equivariant_at_boundaryBase
 
 end OrderThreeActualEllipticFillingExtensionAtBase
 
 namespace OrderFourActualEllipticFillingExtensionAtBase
 
-/-- Extend marked-point equivariance over the connected order-four collar cover. -/
-public noncomputable def toFillingExtension
+/-- Equivariance at the marked point extends over the connected collar cover. -/
+public theorem lift_equivariant
     (E : A.OrderFourActualEllipticFillingExtensionAtBase) :
-    A.OrderFourActualEllipticFillingExtension := by
+    ∀ g z,
+      E.lift (@SMul.smul _ _ A.ellipticFourBoundaryAction.toSMul g z) =
+        @SMul.smul _ _ E.fillingAction.toSMul
+          (A.ellipticFourBoundaryDeckData.fillingDeckMap g) (E.lift z) := by
   letI := A.ellipticFourBoundaryAction
   letI := E.fillingAction
   letI := A.ellipticFourBoundaryCover_simplyConnected
-  exact
-    { fillingAction := E.fillingAction
-      fillingQuotient := E.fillingQuotient
-      lift := E.lift
-      commutes := E.commutes
-      equivariant := SphereSixComplex.Topology.quotientCover_equivariant_of_eq_at
-        A.ellipticFourBoundaryProjection
-        A.ellipticFourFillingProjection
-        A.ellipticFourBoundaryProjection_isQuotientCoveringMap
-        E.fillingQuotient
-        A.ellipticFourBoundaryDeckData.fillingDeckMap
-        E.lift
-        A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
-        E.commutes
-        A.ellipticFourBoundaryBase
-        E.equivariant_at_boundaryBase }
+  exact SphereSixComplex.Topology.quotientCover_equivariant_of_eq_at
+    A.ellipticFourBoundaryProjection
+    A.ellipticFourFillingProjection
+    A.ellipticFourBoundaryProjection_isQuotientCoveringMap
+    E.fillingQuotient
+    A.ellipticFourBoundaryDeckData.fillingDeckMap
+    E.lift
+    A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
+    E.commutes
+    A.ellipticFourBoundaryBase
+    E.equivariant_at_boundaryBase
 
 end OrderFourActualEllipticFillingExtensionAtBase
 
-namespace OrderThreeActualEllipticFillingExtension
+namespace OrderThreeActualEllipticFillingExtensionAtBase
 
 /-- Assemble the complete chosen order-three filling-cover model from only the filling
 extension. -/
 public noncomputable def toChosenCover
-    (E : A.OrderThreeActualEllipticFillingExtension) :
+    (E : A.OrderThreeActualEllipticFillingExtensionAtBase) :
     ChosenCyclicAffineFillingCoverModel 3 Lattice
       (A.actualVanKampenFourPieceCover.core ∩
         A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)
@@ -918,7 +872,7 @@ public noncomputable def toChosenCover
     lift := E.lift
     baseMap := A.actualVanKampenFourPieceCover.ellipticThreeOverlapToPiece
     commutes := E.commutes
-    equivariant := E.equivariant
+    equivariant := E.lift_equivariant
     base := A.ellipticThreeBoundaryBase }
   exact
     { BoundaryDeck := OrderThreeAffineMappingTorusDeck A.periods
@@ -936,7 +890,7 @@ public noncomputable def toChosenCover
 
 /-- The chosen order-three cover is based at the marked overlap point. -/
 public theorem toChosenCover_boundaryBase_eq
-    (E : A.OrderThreeActualEllipticFillingExtension) :
+    (E : A.OrderThreeActualEllipticFillingExtensionAtBase) :
     E.toChosenCover.boundaryBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
         A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩ :=
@@ -944,7 +898,7 @@ public theorem toChosenCover_boundaryBase_eq
 
 /-- The chosen order-three filling base is the marked filling point. -/
 public theorem toChosenCover_fillingBase_eq
-    (E : A.OrderThreeActualEllipticFillingExtension) :
+    (E : A.OrderThreeActualEllipticFillingExtensionAtBase) :
     E.toChosenCover.fillingBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
         A.actualVanKampenFourPieceCover.ellipticThreePoint_mem.2⟩ := by
@@ -954,14 +908,14 @@ public theorem toChosenCover_fillingBase_eq
   rw [A.ellipticThreeBoundaryProjection_base]
   rfl
 
-end OrderThreeActualEllipticFillingExtension
+end OrderThreeActualEllipticFillingExtensionAtBase
 
-namespace OrderFourActualEllipticFillingExtension
+namespace OrderFourActualEllipticFillingExtensionAtBase
 
 /-- Assemble the complete chosen order-four filling-cover model from only the filling
 extension. -/
 public noncomputable def toChosenCover
-    (E : A.OrderFourActualEllipticFillingExtension) :
+    (E : A.OrderFourActualEllipticFillingExtensionAtBase) :
     ChosenCyclicAffineFillingCoverModel 4 Lattice
       (A.actualVanKampenFourPieceCover.core ∩
         A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)
@@ -986,7 +940,7 @@ public noncomputable def toChosenCover
     lift := E.lift
     baseMap := A.actualVanKampenFourPieceCover.ellipticFourOverlapToPiece
     commutes := E.commutes
-    equivariant := E.equivariant
+    equivariant := E.lift_equivariant
     base := A.ellipticFourBoundaryBase }
   exact
     { BoundaryDeck := OrderFourAffineMappingTorusDeck A.periods
@@ -1004,7 +958,7 @@ public noncomputable def toChosenCover
 
 /-- The chosen order-four cover is based at the marked overlap point. -/
 public theorem toChosenCover_boundaryBase_eq
-    (E : A.OrderFourActualEllipticFillingExtension) :
+    (E : A.OrderFourActualEllipticFillingExtensionAtBase) :
     E.toChosenCover.boundaryBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
         A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩ :=
@@ -1012,7 +966,7 @@ public theorem toChosenCover_boundaryBase_eq
 
 /-- The chosen order-four filling base is the marked filling point. -/
 public theorem toChosenCover_fillingBase_eq
-    (E : A.OrderFourActualEllipticFillingExtension) :
+    (E : A.OrderFourActualEllipticFillingExtensionAtBase) :
     E.toChosenCover.fillingBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
         A.actualVanKampenFourPieceCover.ellipticFourPoint_mem.2⟩ := by
@@ -1022,7 +976,7 @@ public theorem toChosenCover_fillingBase_eq
   rw [A.ellipticFourBoundaryProjection_base]
   rfl
 
-end OrderFourActualEllipticFillingExtension
+end OrderFourActualEllipticFillingExtensionAtBase
 
 /-- The actual order-three overlap included into the core and transported along the specified
 connector to the base point of the four-piece cover. -/

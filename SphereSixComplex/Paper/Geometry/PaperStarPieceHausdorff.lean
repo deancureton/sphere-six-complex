@@ -67,10 +67,10 @@ public theorem actualLocalCuspFilling_t2
     T2Space (ActualLocalCuspFilling W) := by
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+      N W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let _ : MulAction (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) :=
-    C.toCuspActionData.psiAction
+    (C.toCuspActionData (M := M)).psiAction
   let _ : LocallyCompactSpace M.Carrier :=
     ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
   let _ : LocallyCompactSpace (localCarrier M W.localWitness.radius) :=
@@ -88,7 +88,7 @@ public theorem actualLocalCuspFilling_t2
     convert (C.genericPsiMap_holomorphic
       (Multiplicative.toAdd gamma)).continuous using 1
     funext p
-    exact C.toCuspActionData.psi_smul
+    exact (C.toCuspActionData (M := M)).psi_smul
       (Multiplicative.toAdd gamma) p
   infer_instance
 

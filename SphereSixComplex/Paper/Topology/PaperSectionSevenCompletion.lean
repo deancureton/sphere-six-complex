@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.PaperActualAffineFillingCoverModels
-public import SphereSixComplex.Paper.Topology.PaperCuspCollarFourTorusFiber
 public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenAffineCompletion
 public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenCuspCompletion
 

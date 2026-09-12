@@ -224,10 +224,7 @@ public import SphereSixComplex.Paper.Topology.CuspCentralFillingHomologyComparis
 public import SphereSixComplex.Paper.Topology.CuspCentralNormalizedSweepComparison
 public import SphereSixComplex.Paper.Topology.CuspChosenThirdPeriodLoop
 public import SphereSixComplex.Paper.Topology.CuspChosenThirdSweep
-public import SphereSixComplex.Prerequisites.Topology.CollarProductVanishing
 public import SphereSixComplex.Paper.Topology.PaperCuspCollarRadialMappingTorus
-public import SphereSixComplex.Paper.Topology.SectionSevenStageTopDegree
-public import SphereSixComplex.Prerequisites.Topology.WangDimensionVanishing
 public import SphereSixComplex.Paper.Topology.CuspCoordinateCircleTransport
 public import SphereSixComplex.Paper.Topology.CuspCorrectedBoundaryCoordinate
 public import SphereSixComplex.Paper.Topology.CuspCorrectedDegreeOneCoordinates
@@ -295,7 +292,6 @@ public import SphereSixComplex.Paper.Topology.CuspTranslationHomologyComparison
 public import SphereSixComplex.Paper.Topology.CuspWangKernel
 public import SphereSixComplex.Paper.Topology.EllipticCentralCoverSourceGammaCoordinates
 public import SphereSixComplex.Paper.Topology.EllipticCentralProjectionMappingTorusSquare
-public import SphereSixComplex.Paper.Topology.EllipticCollarTopDegreeVanishing
 public import SphereSixComplex.Paper.Topology.EllipticDegreeTwoBasisFromMappingTorusCoordinates
 public import SphereSixComplex.Paper.Topology.EllipticDegreeTwoBasisFromOrbitSweep
 public import SphereSixComplex.Paper.Topology.EllipticDegreeTwoCoinvariants
@@ -426,7 +422,6 @@ public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.CentralFiber.Cellu
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberHomology
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralNaturality
 public import SphereSixComplex.Paper.Topology.PaperCuspChosenAffineFilling
-public import SphereSixComplex.Paper.Topology.PaperCuspCollarFourTorusFiber
 public import SphereSixComplex.Paper.Topology.PaperCuspCollarHomologyBases
 public import SphereSixComplex.Paper.Topology.PaperCuspFiberTransportCompatibility
 public import SphereSixComplex.Paper.Topology.PaperCuspFillingDeckAction

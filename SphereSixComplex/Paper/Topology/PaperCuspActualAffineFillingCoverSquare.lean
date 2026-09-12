@@ -91,8 +91,8 @@ public theorem actualCuspFillingProjection_isQuotientCoveringMap
     (W : ActualPuncturedCuspCollarWitness N M) :
     let C :=
       NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-        N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
-    letI := C.toCuspActionData.psiAction
+        N W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+    letI := (C.toCuspActionData (M := M)).psiAction
     IsQuotientCoveringMap (actualCuspFillingProjection W)
       (Multiplicative ParameterLattice) := by
   exact W.localWitness.quotient_isQuotientCoveringMap

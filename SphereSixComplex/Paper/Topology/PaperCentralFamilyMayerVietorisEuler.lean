@@ -3,7 +3,7 @@ module
 public import SphereSixComplex.Prerequisites.Topology.HomeomorphHomotopyEquivalence
 public import SphereSixComplex.Paper.Topology.PaperActualCollarMappingTorusEuler
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOverlapInterleaving
-public import SphereSixComplex.Paper.Topology.SectionSevenStageTopDegree
+public import SphereSixComplex.Prerequisites.Topology.IntegralMayerVietorisTheorem
 
 /-!
 # The central family from its affine two-region cover

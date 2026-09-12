@@ -51,9 +51,9 @@ public theorem central_smul_coe (W : ActualPuncturedCuspCollarWitness N M₁) :
         (Additive.toMul (M₁.fanShear (Multiplicative.toAdd g)) p.1.1) := by
   let _ := actualLocalCuspQuotientAction W
   intro g p
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M₁ W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
-  change (C.toCuspActionData.psiMap
+  change ((C.toCuspActionData (M := M₁)).psiMap
     (Multiplicative.toAdd g) p.1 : M₁.Carrier) = _
   rw [← C.psiMap_eq_generic, C.psiMap_coe]
   change CuspToricPhaseAction.ToricModel.phaseAction M₁

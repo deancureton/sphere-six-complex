@@ -15,7 +15,7 @@ variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
   {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
 
 public theorem localPhaseActionEquiv_psiMap
-    {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r) (c : Phase)
+    {r : ℝ} (C : LocalHolomorphicPhaseCoefficients r) (c : Phase)
     (lambda : ParameterLattice) (p : localCarrier M r) :
     localPhaseActionEquiv M r c (C.psiMap lambda p) =
       C.psiMap lambda (localPhaseActionEquiv M r c p) := by
@@ -58,10 +58,10 @@ public theorem localCuspPeriodCircle_equivariant
   let _ := actualLocalCuspQuotientAction W
   intro z g p
   let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-    N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+    N W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   change localPhaseActionEquiv M W.localWitness.radius (cuspPeriodPhaseCircle i z)
-    (C.toCuspActionData.psiMap (Multiplicative.toAdd g) p) =
-    C.toCuspActionData.psiMap (Multiplicative.toAdd g)
+    ((C.toCuspActionData (M := M)).psiMap (Multiplicative.toAdd g) p) =
+    (C.toCuspActionData (M := M)).psiMap (Multiplicative.toAdd g)
       (localPhaseActionEquiv M W.localWitness.radius (cuspPeriodPhaseCircle i z) p)
   rw [← C.psiMap_eq_generic, ← C.psiMap_eq_generic]
   exact localPhaseActionEquiv_psiMap C _ _ _

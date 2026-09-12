@@ -358,7 +358,7 @@ public theorem exists_actualCentral_deck_translate_singleAxis
   obtain ⟨lambda, hlambda⟩ := shearVector_surjective (v - a.2)
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let g := Multiplicative.ofAdd lambda
   let q : actualLocalCuspCentralSubMulAction W := g • p
@@ -371,7 +371,7 @@ public theorem exists_actualCentral_deck_translate_singleAxis
     exact ⟨g, rfl⟩
   · have hchart : translateChartIndex lambda a = (a.1, v) := by
       simp [translateChartIndex, hlambda]
-    change ((C.toCuspActionData.psiMap lambda p.1).1 : Carrier) = _
+    change (((C.toCuspActionData (M := constructedModel)).psiMap lambda p.1).1 : Carrier) = _
     rw [← C.psiMap_eq_generic, C.psiMap_coe]
     change carrierTorusActionFun c (carrierFanShearFun lambda (p.1.1 : Carrier)) = _
     rw [hp, carrierFanShearFun_inclusion, hchart, carrierTorusActionFun_inclusion]

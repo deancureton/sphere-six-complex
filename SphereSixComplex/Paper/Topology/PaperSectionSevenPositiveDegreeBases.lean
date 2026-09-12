@@ -157,7 +157,7 @@ public noncomputable def cuspAttachmentHomologyBases
   cuspPieceOne :=
     (integralSingularHomologyEquiv 1
       (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm.trans
-        (A.cuspFillingHomologyOneEquiv R)
+        (A.cuspFillingHomologyOneEquiv)
   overlapTwo :=
     (integralSingularHomologyEquiv 2
       A.cuspCollarToSectionSevenFinalOverlapHomeomorph).symm.trans B.cuspCollarTwo

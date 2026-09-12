@@ -119,19 +119,6 @@ variable (A : OpenEmbeddingStarData)
 public abbrev sectionSevenEulerCover :=
   sectionSevenStarOpenCover A.toFourPieceStarGluingData
 
-/-- The three intermediate Mayer--Vietoris unions of the star cover carry no seventh integral
-homology.
-
-This is the exact top-degree hypothesis that makes the degree-six truncated Euler additivity
-formula applicable at each of the three gluing steps; without it the truncated formula is false
-(an `S⁷` cover by two contractible opens is a counterexample).  For the actual analytic star each
-union is an open subset of the completed six-manifold, where the standard dimension bound gives
-the vanishing. -/
-public def SectionSevenStageTopDegreeVanishing : Prop :=
-  ∀ r : Fin 3, Subsingleton (IntegralSingularHomology 7
-    ((A.sectionSevenEulerCover).stage r.castSucc ∪ (A.sectionSevenEulerCover).piece r.succ :
-      Set (GluedSpace A.toFourPieceStarGluingData.glueData)))
-
 /-- The central source is homeomorphic to the first actual open piece. -/
 public noncomputable def centralToSectionSevenEulerPieceHomeomorph :
     A.central ≃ₜ (A.sectionSevenEulerCover).piece 0 :=

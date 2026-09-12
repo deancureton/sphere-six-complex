@@ -52,9 +52,9 @@ public theorem centralFiber_cellularBoundary_eq
     let _ := C.topology
     let _ := C.cwComplex
     ∀ (n : ℕ) (x : CentralFiber.Cell n.succ → ℤ),
-      C.establishedIntegralCellularChainModel.chainComplex.d n.succ n
-          (labelledA2CellBasis C.cellEquiv C.establishedIntegralCellularChainModel n.succ x) =
-        labelledA2CellBasis C.cellEquiv C.establishedIntegralCellularChainModel n
+      C.integralCellularChainModel.chainComplex.d n.succ n
+          (labelledA2CellBasis C.cellEquiv C.integralCellularChainModel n.succ x) =
+        labelledA2CellBasis C.cellEquiv C.integralCellularChainModel n
           (cuspToricCellularBoundary n x) := by
   let T := centralFiberCellularModel W R
   let C := T.decomposition
@@ -62,9 +62,9 @@ public theorem centralFiber_cellularBoundary_eq
   let _ := C.cwComplex
   dsimp only
   intro n x
-  change C.establishedIntegralCellularChainModel.chainComplex.d n.succ n
-      (labelledA2CellBasis C.cellEquiv C.establishedIntegralCellularChainModel n.succ x) =
-    labelledA2CellBasis C.cellEquiv C.establishedIntegralCellularChainModel n
+  change C.integralCellularChainModel.chainComplex.d n.succ n
+      (labelledA2CellBasis C.cellEquiv C.integralCellularChainModel n.succ x) =
+    labelledA2CellBasis C.cellEquiv C.integralCellularChainModel n
       (cuspToricCellularBoundary n x)
   rw [← standardA2ToricCellularBoundary_eq]
   change C.integralCellularChainModel.chainComplex.d n.succ n
@@ -89,15 +89,6 @@ public noncomputable def actualCuspCentralFiberHomologyTwoEquiv
 
 
 
-public noncomputable def actualLocalCuspFillingHomologyOneEquiv
-    {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (_R : ActualLocalCuspCentralFiberRetractionData W) :
-    IntegralSingularHomology 1 (ActualLocalCuspFilling W) ≃+ (Fin 2 → ℤ) :=
-  actualCuspDeckHomologyOneEquiv W
-
-
 /-- The actual local cusp filling has second integral homology `ℤ⁴`. -/
 public noncomputable def actualLocalCuspFillingHomologyTwoEquiv
     {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
@@ -118,11 +109,10 @@ open CuspCollar
 variable (A : AnalyticData)
 
 /-- The cusp filling selected in the paper's four-piece star has first integral homology `ℤ²`. -/
-public noncomputable def cuspFillingHomologyOneEquiv
-    (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) :
+public noncomputable def cuspFillingHomologyOneEquiv :
     IntegralSingularHomology 1 (A.openEmbeddingStarData.filling 0) ≃+ (Fin 2 → ℤ) := by
   change IntegralSingularHomology 1 (ActualLocalCuspFilling A.starCuspWitness) ≃+ _
-  exact actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness R
+  exact actualCuspDeckHomologyOneEquiv A.starCuspWitness
 
 /-- The cusp filling selected in the paper's four-piece star has second integral homology
 `ℤ⁴`. -/

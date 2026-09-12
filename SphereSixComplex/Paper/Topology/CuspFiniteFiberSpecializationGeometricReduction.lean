@@ -119,8 +119,7 @@ private theorem specializationHomologyOneMap_apply
       IntegralSingularHomology 1 (CircleMappingTorus G.clutching)) :
     let _ := G.fiberTopology
     G.specializationHomologyOneMap y =
-      actualLocalCuspFillingHomologyOneEquiv W
-        (UnnormalizedCuspRadialClutchingData.radialCentralFiberRetractionData W)
+      actualCuspDeckHomologyOneEquiv W
         (integralSingularHomologyMap 1
           ⟨puncturedLocalCuspToFilling W, puncturedLocalCuspToFilling_continuous W⟩
           ((integralSingularHomologyEquivOfHomotopyEquiv 1 G.totalHomotopyEquiv).symm y)) := by
@@ -148,8 +147,7 @@ public theorem specializationHomologyOneMap_fiberInclusion
     G.specializationHomologyOneMap
         (integralSingularHomologyMap 1
           (finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ G.clutching)) x) =
-      actualLocalCuspFillingHomologyOneEquiv W
-        (UnnormalizedCuspRadialClutchingData.radialCentralFiberRetractionData W)
+      actualCuspDeckHomologyOneEquiv W
         (integralSingularHomologyMap 1 G.markedFiberToCuspFilling x) := by
   let _ := G.fiberTopology
   let e := integralSingularHomologyEquivOfHomotopyEquiv 1 G.totalHomotopyEquiv

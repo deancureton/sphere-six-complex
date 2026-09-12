@@ -83,10 +83,10 @@ public theorem constructedCentralOrigin_smul_coe
       inclusion (translateChartIndex (Multiplicative.toAdd g) (upper, 0)) 0 := by
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let _ := actualLocalCuspQuotientAction W
-  change ((C.toCuspActionData.psiMap
+  change (((C.toCuspActionData (M := constructedModel)).psiMap
     (Multiplicative.toAdd g) (constructedCentralOrigin W upper) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = _
   rw [← C.psiMap_eq_generic, C.psiMap_coe]

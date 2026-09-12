@@ -27,14 +27,14 @@ public theorem ellipticThreeCanonicalChosenCover_fillingBase_eq :
     A.ellipticThreeCanonicalChosenCover.fillingBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
         A.actualVanKampenFourPieceCover.ellipticThreePoint_mem.2⟩ :=
-  A.ellipticThreeFillingMarkedDeckData.toExtensionAtBase.toFillingExtension
+  A.ellipticThreeFillingMarkedDeckData.toExtensionAtBase
     |>.toChosenCover_fillingBase_eq
 
 public theorem ellipticFourCanonicalChosenCover_fillingBase_eq :
     A.ellipticFourCanonicalChosenCover.fillingBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
         A.actualVanKampenFourPieceCover.ellipticFourPoint_mem.2⟩ :=
-  A.ellipticFourFillingExtensionAtBase.toFillingExtension
+  A.ellipticFourFillingExtensionAtBase
     |>.toChosenCover_fillingBase_eq
 
 public theorem ellipticThreeCanonicalChosenCover_map_eq :

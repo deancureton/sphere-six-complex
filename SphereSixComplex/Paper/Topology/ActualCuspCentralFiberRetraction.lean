@@ -47,8 +47,8 @@ public def actualLocalCuspCentralFiber : Set (localCarrier M W.localWitness.radi
     MulAction (Multiplicative ParameterLattice) (localCarrier M W.localWitness.radius) :=
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
-  C.toCuspActionData.psiAction
+      N W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+  (C.toCuspActionData (M := M)).psiAction
 
 /-- Continuity of the actual phase-corrected lattice action. -/
 public theorem actualLocalPsiContinuousConstSMul :
@@ -57,12 +57,12 @@ public theorem actualLocalPsiContinuousConstSMul :
       (localCarrier M W.localWitness.radius) := by
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N M W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+      N W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let _ := actualLocalCuspQuotientAction W
   exact ⟨by
     intro lambda
     rw [show lambda = Multiplicative.ofAdd (Multiplicative.toAdd lambda) from rfl]
-    change Continuous (C.toCuspActionData.psiMap
+    change Continuous ((C.toCuspActionData (M := M)).psiMap
       (Multiplicative.toAdd lambda))
     exact (C.genericPsiMap_holomorphic _).continuous⟩
 

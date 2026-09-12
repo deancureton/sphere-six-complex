@@ -141,3 +141,13 @@ by the retained narrow-sector inequality are derived lemmas. Dual pullback equat
 chosen primal bases directly, without intermediate copies of their dual bases. Euler truncation
 states the H7 vanishing hypothesis it uses, and cusp Wang relations display their integer
 coefficients and orientation alternatives explicitly.
+
+Holomorphic phase coefficients depend on the disc radius; the toric model enters only when
+forming its action or quotient. Filling-cover equivariance is derived from the marked-point
+condition on the chosen lift, without copying the lift into an intermediate record. The H1
+cusp coordinate uses its deck equivalence directly; the central-fiber retraction enters H2.
+Generic compact-representative and Cayley-neighborhood results belong to prerequisites.
+
+The final Euler argument does not require a separate intermediate-union vanishing contract.
+Its unused collar-dimension branch has been removed. Dependency cleanup starts at the two
+Comparator theorems and retains simp rules needed to elaborate the remaining proofs.

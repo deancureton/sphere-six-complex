@@ -302,7 +302,7 @@ public theorem exists_orderThreeLinearCollarSourceData
     simpa only [hsource, hzOne, hzTwo] using hg.symm
   have hcenterT : fuchsianOneFixedPoint ∈ T := ⟨hcenterS, hcenterNotTwo⟩
   obtain ⟨r, hr, hr1, hrT⟩ :=
-    exists_cayleyRadius_subset fuchsianOneFixedPoint hTopen hcenterT
+    SphereSixComplex.UpperHalfPlane.exists_cayleyRadius_subset fuchsianOneFixedPoint hTopen hcenterT
   refine ⟨r, hr, hr1, ?_⟩
   rw [OrderThreeLinearCollarSourceData.eq_def]
   constructor
@@ -375,7 +375,7 @@ public theorem exists_orderFourLinearCollarSourceData
     simpa only [hsource, hzOne, hzTwo] using hg.symm
   have hcenterT : fuchsianTwoFixedPoint ∈ T := ⟨hcenterS, hcenterNotOne⟩
   obtain ⟨r, hr, hr1, hrT⟩ :=
-    exists_cayleyRadius_subset fuchsianTwoFixedPoint hTopen hcenterT
+    SphereSixComplex.UpperHalfPlane.exists_cayleyRadius_subset fuchsianTwoFixedPoint hTopen hcenterT
   refine ⟨r, hr, hr1, ?_⟩
   rw [OrderFourLinearCollarSourceData.eq_def]
   constructor

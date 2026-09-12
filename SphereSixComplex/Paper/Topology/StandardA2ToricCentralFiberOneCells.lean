@@ -443,11 +443,11 @@ private theorem centralOrbitRel_coe_eq_of_same_componentSupport
       constructedModel.Carrier)) hg
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
   have hphase := hcarrier
-  change ((C.toCuspActionData.psiMap lambda
+  change (((C.toCuspActionData (M := constructedModel)).psiMap lambda
     (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :
@@ -484,7 +484,7 @@ private theorem centralOrbitRel_coe_eq_of_same_componentSupport
     rw [hshear]
     ext i
     simp [shearVector, Matrix.mulVec]
-  change ((C.toCuspActionData.psiMap lambda
+  change (((C.toCuspActionData (M := constructedModel)).psiMap lambda
     (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :
@@ -513,10 +513,10 @@ private theorem centralOrbitRel_componentSupport_ncard_eq
       constructedModel.Carrier)) hg
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
-  change ((C.toCuspActionData.psiMap lambda
+  change (((C.toCuspActionData (M := constructedModel)).psiMap lambda
     (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :
@@ -561,10 +561,10 @@ private theorem centralOrbitRel_componentSupport_eq_translate
       constructedModel.Carrier)) hg
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
-  change ((C.toCuspActionData.psiMap lambda
+  change (((C.toCuspActionData (M := constructedModel)).psiMap lambda
     (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :
@@ -599,11 +599,11 @@ public theorem constructedCentralEdgeZeroOrbit_injOn
       constructedCentralEdgeZeroCarrier x at hcarrier
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
   have hphase := hcarrier
-  change ((C.toCuspActionData.psiMap lambda
+  change (((C.toCuspActionData (M := constructedModel)).psiMap lambda
     (constructedCentralEdgeZeroLocal W y) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         constructedCentralEdgeZeroCarrier x at hphase
@@ -641,7 +641,7 @@ public theorem constructedCentralEdgeZeroOrbit_injOn
     ext i
     simp [shearVector, Matrix.mulVec]
   have hplain := hcarrier
-  change ((C.toCuspActionData.psiMap lambda
+  change (((C.toCuspActionData (M := constructedModel)).psiMap lambda
     (constructedCentralEdgeZeroLocal W y) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         constructedCentralEdgeZeroCarrier x at hplain
@@ -761,10 +761,10 @@ private theorem constructedCentralChartOrigin_smul_coe
       inclusion (translateChartIndex (Multiplicative.toAdd g) a) 0 := by
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let _ := actualLocalCuspQuotientAction W
-  change ((C.toCuspActionData.psiMap
+  change (((C.toCuspActionData (M := constructedModel)).psiMap
     (Multiplicative.toAdd g) (constructedCentralChartOrigin W a) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) = _
   rw [← C.psiMap_eq_generic, C.psiMap_coe]

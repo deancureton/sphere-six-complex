@@ -29,7 +29,7 @@ open SphereSixComplex.Topology.TwistObstruction
 
 
 /-- Coordinates of the canonical order-three lattice-to-presentation map. -/
-public def orderOneLatticeProjectionCoordinates : Lattice →+ IntSquared where
+public def orderThreeLatticeProjectionCoordinates : Lattice →+ IntSquared where
   toFun x := ![3 * gamma x, psiOne x]
   map_zero' := by
     funext i
@@ -40,7 +40,7 @@ public def orderOneLatticeProjectionCoordinates : Lattice →+ IntSquared where
     ring
 
 /-- Coordinates of the canonical order-four lattice-to-presentation map. -/
-public def orderTwoLatticeProjectionCoordinates : Lattice →+ IntSquared where
+public def orderFourLatticeProjectionCoordinates : Lattice →+ IntSquared where
   toFun x := ![4 * gamma x, psiTwo x]
   map_zero' := by
     funext i
@@ -69,7 +69,7 @@ public theorem orderThree_coverProjection_degreeOne_coordinates
       (integralSingularHomologyMap 1
         (RadialEllipticActionData.centralFiberCoverProjection (orderThreeRadialActionData F))
         ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
-      orderOneLatticeProjectionCoordinates x)) (x : Lattice) :
+      orderThreeLatticeProjectionCoordinates x)) (x : Lattice) :
     orderThreeReducedCentralFiberHOneEquivIntSquared F
         (orderThreeReducedCentralFiberCoverHomologyDegreeOne F x) =
       ![3 * gamma x, psiOne x] := by
@@ -87,7 +87,7 @@ public theorem orderFour_coverProjection_degreeOne_coordinates
       (integralSingularHomologyMap 1
         (RadialEllipticActionData.centralFiberCoverProjection (orderFourRadialActionData F))
         ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
-      orderTwoLatticeProjectionCoordinates x)) (x : Lattice) :
+      orderFourLatticeProjectionCoordinates x)) (x : Lattice) :
     orderFourReducedCentralFiberHOneEquivIntSquared F
         (orderFourReducedCentralFiberCoverHomologyDegreeOne F x) =
       ![4 * gamma x, psiTwo x] := by
@@ -106,13 +106,13 @@ public structure EllipticFiniteCoverHomologyRealization where
       (integralSingularHomologyMap 1
         (RadialEllipticActionData.centralFiberCoverProjection (orderThreeRadialActionData F))
         ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
-      orderOneLatticeProjectionCoordinates x)
+      orderThreeLatticeProjectionCoordinates x)
   orderFourOne : (∀ x : Lattice,
     (orderFourReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
       (integralSingularHomologyMap 1
         (RadialEllipticActionData.centralFiberCoverProjection (orderFourRadialActionData F))
         ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
-      orderTwoLatticeProjectionCoordinates x)
+      orderFourLatticeProjectionCoordinates x)
   orderThreeTwo : OrderThreeReducedCentralFiberDegreeTwoRealization F
   orderFourTwo : OrderFourReducedCentralFiberDegreeTwoRealization F
 

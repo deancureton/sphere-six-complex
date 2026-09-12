@@ -35,8 +35,7 @@ public theorem rawDegreeOneTotalSpecialization_selectedPositiveMeridianClass
   let _ := G.fiberTopology
   let e := integralSingularHomologyEquivOfHomotopyEquiv 1
     G.toUnnormalizedCuspRadialClutchingData.totalHomotopyEquiv
-  let c := actualLocalCuspFillingHomologyOneEquiv A.starCuspWitness
-    A.cuspCentralFiberRetractionData
+  let c := actualCuspDeckHomologyOneEquiv A.starCuspWitness
   apply c.injective
   have h := DFunLike.congr_fun (finiteBasisNaturality A).degreeOne
     (e.symm (cuspSelectedPositiveMeridianClass A))

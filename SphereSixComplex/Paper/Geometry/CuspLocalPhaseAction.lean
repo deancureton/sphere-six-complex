@@ -108,7 +108,7 @@ public def localPhaseTwist (M : Model) (r : ℝ)
 /-- Exact phase data on one cusp disc.  The standard joint toric-action theorem turns
 coefficientwise holomorphicity into holomorphicity of the variable phase twist on the
 corresponding open toric submanifold. -/
-public structure LocalHolomorphicPhaseCoefficients (M : Model) (r : ℝ) where
+public structure LocalHolomorphicPhaseCoefficients (r : ℝ) where
   radius_pos : 0 < r
   phase : ParameterLattice → ℂ → Phase
   phase_zero : ∀ q, phase 0 q = 1
@@ -118,7 +118,7 @@ public structure LocalHolomorphicPhaseCoefficients (M : Model) (r : ℝ) where
 
 namespace LocalHolomorphicPhaseCoefficients
 
-variable {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients M r)
+variable {M : Model} {r : ℝ} (C : LocalHolomorphicPhaseCoefficients r)
 
 /-- Each variable phase coordinate is holomorphic after composition with the height character on
 the local carrier. -/
@@ -207,7 +207,7 @@ public theorem localFanShear_holomorphic (lambda : ParameterLattice) :
 /-- The local phase-corrected maps are holomorphic. -/
 public theorem psiMap_holomorphic (lambda : ParameterLattice) :
     ContMDiff (modelWithCornersSelf ℂ ComplexModel)
-      (modelWithCornersSelf ℂ ComplexModel) ∞ (C.psiMap lambda) := by
+      (modelWithCornersSelf ℂ ComplexModel) ∞ (C.psiMap (M := M) lambda) := by
   exact (C.localPhaseTwist_holomorphic lambda).comp
     (localFanShear_holomorphic (M := M) (r := r) lambda)
 
@@ -238,7 +238,7 @@ public def toCuspActionData :
 @[simp]
 public theorem psiMap_eq_generic
     (lambda : ParameterLattice) (p : localCarrier M r) :
-    C.psiMap lambda p = C.toCuspActionData.psiMap lambda p := by
+    C.psiMap lambda p = (C.toCuspActionData (M := M)).psiMap lambda p := by
   apply Subtype.ext
   simp [psiMap, localPhaseTwist, CuspActionData.psiMap, toCuspActionData,
     localT, localFanShear, localPhaseAction, M.fanShear_preserves_t]
@@ -248,15 +248,15 @@ public theorem genericPsiMap_holomorphic
     (lambda : ParameterLattice) :
     ContMDiff (modelWithCornersSelf ℂ ComplexModel)
       (modelWithCornersSelf ℂ ComplexModel) ∞
-      (C.toCuspActionData.psiMap lambda) := by
+      ((C.toCuspActionData (M := M)).psiMap lambda) := by
   convert C.psiMap_holomorphic lambda using 1
   funext p
   exact (C.psiMap_eq_generic lambda p).symm
 
-public theorem isCancelSMul (F : C.IsFree) :
-    letI := C.toCuspActionData.psiAction
+public theorem isCancelSMul (F : C.IsFree (M := M)) :
+    letI := (C.toCuspActionData (M := M)).psiAction
     IsCancelSMul (Multiplicative ParameterLattice) (localCarrier M r) := by
-  apply C.toCuspActionData.isCancelSMul
+  apply (C.toCuspActionData (M := M)).isCancelSMul
   intro lambda p hp
   rw [← C.psiMap_eq_generic] at hp
   exact F lambda p hp
@@ -269,18 +269,18 @@ public def CompactOverlapEstimate : Prop :=
 /-- The fixed-point and compact-overlap estimates give a free properly discontinuous action on
 the local cusp carrier. -/
 public theorem properlyDiscontinuous
-    (H : C.CompactOverlapEstimate) :
-    letI := C.toCuspActionData.psiAction
+    (H : C.CompactOverlapEstimate (M := M)) :
+    letI := (C.toCuspActionData (M := M)).psiAction
     ProperlyDiscontinuousSMul
       (Multiplicative ParameterLattice) (localCarrier M r) := by
-  apply C.toCuspActionData.properlyDiscontinuous
+  apply (C.toCuspActionData (M := M)).properlyDiscontinuous
   intro K L hK hL
   simpa only [← C.psiMap_eq_generic] using H K L hK hL
 
 /-- The local cusp quotient map is a quotient covering map. -/
-public theorem quotient_isQuotientCoveringMap (F : C.IsFree)
-    (H : C.CompactOverlapEstimate) :
-    letI := C.toCuspActionData.psiAction
+public theorem quotient_isQuotientCoveringMap (F : C.IsFree (M := M))
+    (H : C.CompactOverlapEstimate (M := M)) :
+    letI := (C.toCuspActionData (M := M)).psiAction
     IsQuotientCoveringMap
       (Quotient.mk (MulAction.orbitRel
         (Multiplicative ParameterLattice) (localCarrier M r)))
@@ -289,7 +289,7 @@ public theorem quotient_isQuotientCoveringMap (F : C.IsFree)
     ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
   let _ : LocallyCompactSpace (localCarrier M r) :=
     (cuspNeighborhood M r).isOpen.locallyCompactSpace
-  apply CuspFilling.quotient_isQuotientCoveringMap C.toCuspActionData (C.isCancelSMul F)
+  apply CuspFilling.quotient_isQuotientCoveringMap (C.toCuspActionData (M := M)) (C.isCancelSMul F)
   · intro lambda
     convert (C.psiMap_holomorphic lambda).continuous using 1
     funext p
@@ -300,9 +300,9 @@ public theorem quotient_isQuotientCoveringMap (F : C.IsFree)
 
 /-- The local cusp quotient is a complex manifold once the same two fixed-point estimates and
 compact-overlap estimate used in the global formulation are supplied on the restricted carrier. -/
-public theorem quotient_isManifold (F : C.IsFree)
-    (H : C.CompactOverlapEstimate) :
-    letI := C.toCuspActionData.psiAction
+public theorem quotient_isManifold (F : C.IsFree (M := M))
+    (H : C.CompactOverlapEstimate (M := M)) :
+    letI := (C.toCuspActionData (M := M)).psiAction
     let hf := C.quotient_isQuotientCoveringMap F H
     letI : ChartedSpace ComplexModel
       (MulAction.orbitRel.Quotient
@@ -311,7 +311,7 @@ public theorem quotient_isManifold (F : C.IsFree)
     IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞
       (MulAction.orbitRel.Quotient
         (Multiplicative ParameterLattice) (localCarrier M r)) := by
-  let _ := C.toCuspActionData.psiAction
+  let _ := (C.toCuspActionData (M := M)).psiAction
   let _ : LocallyCompactSpace M.Carrier :=
     ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
   let _ : LocallyCompactSpace (localCarrier M r) :=

@@ -116,7 +116,7 @@ used. -/
 public structure CuspFillingInclusionCoordinates
     (B : A.CollarInteriorHomologyBases) where
   degreeOne : ∀ x,
-    (A.cuspFillingHomologyOneEquiv A.cuspCentralFiberRetractionData)
+    (A.cuspFillingHomologyOneEquiv)
         (integralSingularHomologyMap 1 (A.openEmbeddingStarData.toFilling 0).hom x) =
       fun i ↦ -sectionSevenFirstBoundaryHom (B.cuspCollarOne x) (Fin.natAdd 1 i)
   degreeTwo : ∀ x,
@@ -142,18 +142,18 @@ public theorem finalCuspOne (C : A.CuspFillingInclusionCoordinates B) (x) :
   rw [show (A.cuspAttachmentHomologyBasesOfLocalBases B).cuspPieceOne =
       (integralSingularHomologyEquiv 1
         (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm.trans
-          (A.cuspFillingHomologyOneEquiv A.cuspCentralFiberRetractionData) from rfl]
-  change (A.cuspFillingHomologyOneEquiv A.cuspCentralFiberRetractionData)
+          (A.cuspFillingHomologyOneEquiv) from rfl]
+  change (A.cuspFillingHomologyOneEquiv)
       ((integralSingularHomologyEquiv 1
         (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm
           (integralSingularHomologyMap 1 _ x)) = _
   have hconj := A.cuspFinalRightHomologyMap_conjugacy 1 x
   calc
-    _ = (A.cuspFillingHomologyOneEquiv A.cuspCentralFiberRetractionData)
+    _ = (A.cuspFillingHomologyOneEquiv)
         (integralSingularHomologyMap 1 (A.openEmbeddingStarData.toFilling 0).hom
           ((integralSingularHomologyEquiv 1
             A.cuspCollarToSectionSevenFinalOverlapHomeomorph).symm x)) :=
-      congrArg (A.cuspFillingHomologyOneEquiv A.cuspCentralFiberRetractionData) hconj
+      congrArg (A.cuspFillingHomologyOneEquiv) hconj
     _ = _ := by rw [C.degreeOne]; rfl
 
 /-- Transport the actual degree-two cusp calculation to the final Mayer--Vietoris overlap. -/

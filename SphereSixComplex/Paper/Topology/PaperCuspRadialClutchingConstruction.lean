@@ -529,7 +529,7 @@ public theorem puncturedPsiMap_psiTranslate
   apply Subtype.ext
   change
     (NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-        N M W.localWitness.radius W.localWitness.radius_pos
+        N W.localWitness.radius W.localWitness.radius_pos
           W.localWitness.radius_le).psiMap lambda (e (Quotient.mk _ a)).1 =
       (e (Quotient.mk _ (psiTranslate W a lambda))).1
   rw [show ((e (Quotient.mk _ a)).1 : localCarrier M W.localWitness.radius) =

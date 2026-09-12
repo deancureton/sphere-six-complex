@@ -76,14 +76,14 @@ public theorem actualDeck_effectivePhase_carrier
           (q.1.1.1 : constructedModel.Carrier) := by
   let _ := actualLocalCuspQuotientAction W
   let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-    N constructedModel W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+    N W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
   let p := effectivePhaseCentralPoint W k q
   have hactual : C.psiMap lambda p.1 =
       frozenLocalPsiMap N constructedModel W.localWitness.radius lambda p.1 := by
     apply Subtype.ext
     rw [C.psiMap_coe, frozenLocalPsiMap_coe, p.property]
     rfl
-  change ((C.toCuspActionData.psiMap lambda p.1).1 :
+  change (((C.toCuspActionData (M := constructedModel)).psiMap lambda p.1).1 :
     constructedModel.Carrier) = _
   rw [← C.psiMap_eq_generic, hactual]
   exact (frozenDeck_effectivePhase_formula W.localWitness.radius lambda k

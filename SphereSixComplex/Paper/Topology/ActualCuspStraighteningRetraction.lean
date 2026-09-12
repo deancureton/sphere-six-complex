@@ -82,11 +82,11 @@ public theorem pointStraightening_actualPsiMap
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (lambda : ParameterLattice) (p : localCarrier M W.localWitness.radius) :
-    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     pointStraightening W (C.psiMap lambda p) =
       frozenLocalPsiMap N M W.localWitness.radius lambda (pointStraightening W p) := by
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   change pointStraightening W (C.psiMap lambda p) =
     frozenLocalPsiMap N M W.localWitness.radius lambda (pointStraightening W p)
@@ -113,15 +113,15 @@ public theorem pointStraightening_genericPsiMap
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (lambda : ParameterLattice) (p : localCarrier M W.localWitness.radius) :
-    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     pointStraightening W
-        (C.toCuspActionData.psiMap lambda p) =
+        ((C.toCuspActionData (M := M)).psiMap lambda p) =
       frozenLocalPsiMap N M W.localWitness.radius lambda (pointStraightening W p) := by
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   change pointStraightening W
-      (C.toCuspActionData.psiMap lambda p) = _
+      ((C.toCuspActionData (M := M)).psiMap lambda p) = _
   rw [← C.psiMap_eq_generic,
     pointStraightening_actualPsiMap W]
 
@@ -146,11 +146,11 @@ public theorem actualPsiMap_pointUnstraightening
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (lambda : ParameterLattice) (p : localCarrier M W.localWitness.radius) :
-    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     C.psiMap lambda (pointUnstraightening W p) =
       pointUnstraightening W (frozenLocalPsiMap N M W.localWitness.radius lambda p) := by
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   change C.psiMap lambda (pointUnstraightening W p) =
     pointUnstraightening W (frozenLocalPsiMap N M W.localWitness.radius lambda p)
@@ -167,14 +167,14 @@ public noncomputable def quotientStraighteningHomeomorph
     ActualLocalCuspFilling W ≃ₜ FrozenLocalCuspFilling N M W.localWitness.radius :=
   let J := InfiniteA2Toric.continuous_torusAction M
   Homeomorph.Quotient.congr (pointStraighteningHomeomorph J W) fun x y ↦ by
-    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     unfold frozenLocalCuspOrbitRel
     simp only [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
     constructor
     · rintro ⟨g, hg⟩
       refine ⟨g, ?_⟩
-      have hg' : C.toCuspActionData.psiMap
+      have hg' : (C.toCuspActionData (M := M)).psiMap
           (Multiplicative.toAdd g) y = x := hg
       change frozenLocalPsiMap N M W.localWitness.radius (Multiplicative.toAdd g)
         (pointStraightening W y) = pointStraightening W x
@@ -185,7 +185,7 @@ public noncomputable def quotientStraighteningHomeomorph
           (Multiplicative.toAdd g) (pointStraightening W y) = pointStraightening W x := hg
       apply Function.LeftInverse.injective (pointUnstraightening_pointStraightening W)
       change pointStraightening W
-        (C.toCuspActionData.psiMap
+        ((C.toCuspActionData (M := M)).psiMap
           (Multiplicative.toAdd g) y) = pointStraightening W x
       rw [pointStraightening_genericPsiMap W]
       exact hg'

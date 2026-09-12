@@ -192,11 +192,11 @@ public theorem actualCentral_parameter_eq_zero_of_singletonSupport
       constructedModel.Carrier)) hg
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
   have hphase := hcarrier
-  change ((C.toCuspActionData.psiMap lambda
+  change (((C.toCuspActionData (M := constructedModel)).psiMap lambda
     (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :
@@ -259,9 +259,9 @@ public theorem actualCentralOrbitRel_coe_eq_of_singletonSupport
       constructedModel.Carrier)) hg
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
-  change ((C.toCuspActionData.psiMap
+  change (((C.toCuspActionData (M := constructedModel)).psiMap
     (Multiplicative.toAdd g) (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :
@@ -316,10 +316,10 @@ public theorem actualCentralOrbitRel_componentSupport_ncard_eq
       constructedModel.Carrier)) hg
   let C :=
     NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
-      N constructedModel W.localWitness.radius W.localWitness.radius_pos
+      N W.localWitness.radius W.localWitness.radius_pos
         W.localWitness.radius_le
   let lambda := Multiplicative.toAdd g
-  change ((C.toCuspActionData.psiMap lambda
+  change (((C.toCuspActionData (M := constructedModel)).psiMap lambda
     (q : localCarrier constructedModel W.localWitness.radius) :
       localCarrier constructedModel W.localWitness.radius) : constructedModel.Carrier) =
         ((p : localCarrier constructedModel W.localWitness.radius) :

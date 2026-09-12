@@ -155,26 +155,14 @@ namespace Geometry.InfiniteA2Toric.CentralFiber.CWModel
 
 variable {X : Type} [TopologicalSpace X]
 
-/-- The standard cellular chain model selected for the carrier of a geometric toric CW
-decomposition. -/
-public noncomputable def establishedIntegralCellularChainModel
-    (D : CentralFiber.CWModel X) :
-    let _ := D.topology
-    let _ := D.cwComplex
-    IntegralCWCellularHomologyModel D.Carrier := by
-  letI := D.topology
-  letI := D.t2
-  letI := D.cwComplex
-  exact CellularHomology.normalizedModel D.Carrier
-
 /-- Conditional on the exact attaching incidences, the CW carrier has second homology `ℤ⁴`. -/
 public noncomputable def carrierIntegralSingularHomologyTwoEquiv
     (D : CentralFiber.CWModel X) (I : let _ := D.topology
       let _ := D.cwComplex
       ∀ (n : ℕ) (x : CentralFiber.Cell n.succ → ℤ),
-        D.establishedIntegralCellularChainModel.chainComplex.d n.succ n
-            (labelledA2CellBasis D.cellEquiv D.establishedIntegralCellularChainModel n.succ x) =
-          labelledA2CellBasis D.cellEquiv D.establishedIntegralCellularChainModel n
+        D.integralCellularChainModel.chainComplex.d n.succ n
+            (labelledA2CellBasis D.cellEquiv D.integralCellularChainModel n.succ x) =
+          labelledA2CellBasis D.cellEquiv D.integralCellularChainModel n
             (cuspToricCellularBoundary n x)) :
     let _ := D.topology
     IntegralSingularHomology 2 D.Carrier ≃+ (Fin 4 → ℤ) := by

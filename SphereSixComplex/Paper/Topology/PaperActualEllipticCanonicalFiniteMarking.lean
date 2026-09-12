@@ -23,25 +23,25 @@ variable (A : AnalyticData)
 /-- The canonical chosen order-three filling cover produced by the explicit radial action and
 lift. -/
 public noncomputable def ellipticThreeCanonicalChosenCover :=
-  A.ellipticThreeFillingMarkedDeckData.toExtensionAtBase.toFillingExtension.toChosenCover
+  A.ellipticThreeFillingMarkedDeckData.toExtensionAtBase.toChosenCover
 
 /-- The canonical chosen order-four filling cover produced by the explicit radial action and
 lift. -/
 public noncomputable def ellipticFourCanonicalChosenCover :=
-  A.ellipticFourFillingExtensionAtBase.toFillingExtension.toChosenCover
+  A.ellipticFourFillingExtensionAtBase.toChosenCover
 
 public theorem ellipticThreeCanonicalChosenCover_boundaryBase_eq :
     A.ellipticThreeCanonicalChosenCover.boundaryBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
         A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩ :=
-  A.ellipticThreeFillingMarkedDeckData.toExtensionAtBase.toFillingExtension
+  A.ellipticThreeFillingMarkedDeckData.toExtensionAtBase
     |>.toChosenCover_boundaryBase_eq
 
 public theorem ellipticFourCanonicalChosenCover_boundaryBase_eq :
     A.ellipticFourCanonicalChosenCover.boundaryBase =
       ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
         A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩ :=
-  A.ellipticFourFillingExtensionAtBase.toFillingExtension
+  A.ellipticFourFillingExtensionAtBase
     |>.toChosenCover_boundaryBase_eq
 
 /-- The canonical order-three translation loop is exactly the loop attached to the physical

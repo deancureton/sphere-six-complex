@@ -86,8 +86,8 @@ variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
 
 /-- Restrict the actual cusp coefficients to any smaller positive disc. -/
 public noncomputable def restrictedActualLocalPhaseCoefficients
-    (M : Model) (r : ℝ) (hr : 0 < r) (hradius : r ≤ cuspRadius N.height) :
-    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r where
+    (r : ℝ) (hr : 0 < r) (hradius : r ≤ cuspRadius N.height) :
+    CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients r where
   radius_pos := hr
   phase := N.phaseCoefficient
   phase_zero := N.phaseCoefficient_zero
@@ -217,7 +217,7 @@ end CuspPhaseEstimates
 
 namespace CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients
 
-variable {M : Model} {r : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r)
+variable {M : Model} {r : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients r)
 
 /-- The central-fibre fixed-point estimate follows from the standard fact that torus
 multiplication preserves ray components.  No analytic estimate is involved in this half of
@@ -263,7 +263,7 @@ variable {E : FuchsianModularLift} {D : FuchsianPeriodLocalData E}
 /-- A fixed point away from the central fibre satisfies the logarithmic equation
 `R(q)λ + log |q| B₀λ = 0` coordinatewise. -/
 public theorem offCentral_logarithmic_equation
-    (M : Model) {r : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r)
+    (M : Model) {r : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients r)
     (hphase : C.phase = N.phaseCoefficient) (lambda : ParameterLattice)
     (p : localCarrier M r) (ht : M.t p ≠ 0)
     (hfixed : C.psiMap lambda p = p)
@@ -317,7 +317,7 @@ public theorem offCentral_logarithmic_equation
 /-- The numerical contradiction in Step 1: once `|log |q||` dominates twice a common entry
 bound for `R(q)`, an off-central fixed point has zero lattice parameter. -/
 public theorem offCentral_fixedPoint_of_log_dominates
-    (M : Model) {r rho A : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r)
+    (M : Model) {r rho A : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients r)
     (hphase : C.phase = N.phaseCoefficient)
     (hR : ∀ q ∈ Metric.closedBall (0 : ℂ) rho,
       ∀ i j, |phaseLogMatrix N q i j| ≤ A)
@@ -434,7 +434,7 @@ This formulation deliberately does not require a globally finite error for
 varies.  What the argument uses is finiteness of `lambda` for each fixed pair of bounded
 regions. -/
 public structure QuantitativeToricRegionCover
-    {M : Model} {r : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r) where
+    {M : Model} {r : ℝ} (C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients r) where
   region : ToricRegionIndex → Set (localCarrier M r)
   region_isOpen : ∀ a, IsOpen (region a)
   cover : ∀ p, ∃ a, p ∈ region a
@@ -447,12 +447,12 @@ public structure QuantitativeToricRegionCover
 
 namespace QuantitativeToricRegionCover
 
-variable {M : Model} {r : ℝ} {C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients M r}
+variable {M : Model} {r : ℝ} {C : CuspLocalPhaseAction.LocalHolomorphicPhaseCoefficients r}
 
 /-- An overlap of a fixed pair of bounded regions is possible for only finitely many lattice
 parameters.  Density of the nonzero fibres is what permits the `B_t` estimate to control an
 overlap which may initially be witnessed on the central fibre. -/
-public theorem chartPairOverlapFinite (Q : QuantitativeToricRegionCover C)
+public theorem chartPairOverlapFinite (Q : QuantitativeToricRegionCover (M := M) C)
     (a b : ToricRegionIndex) :
     {lambda : ParameterLattice |
       (C.psiMap lambda '' Q.region a ∩ Q.region b).Nonempty}.Finite := by
@@ -482,8 +482,8 @@ public theorem chartPairOverlapFinite (Q : QuantitativeToricRegionCover C)
 
 /-- The bounded affine cover and fixed-chart-pair estimate prove the compact-overlap conclusion
 of Theorem 4.5, Step 3. -/
-public theorem compactOverlapEstimate (Q : QuantitativeToricRegionCover C) :
-    C.CompactOverlapEstimate := by
+public theorem compactOverlapEstimate (Q : QuantitativeToricRegionCover (M := M) C) :
+    C.CompactOverlapEstimate (M := M) := by
   intro K L hK hL
   obtain ⟨IK, hIK⟩ := hK.elim_finite_subcover Q.region Q.region_isOpen fun p _ ↦ by
     obtain ⟨a, ha⟩ := Q.cover p

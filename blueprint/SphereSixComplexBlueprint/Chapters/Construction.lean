@@ -437,7 +437,7 @@ unions in the four-piece cover gives the Mayer--Vietoris sequences used in the c
 The actual inclusion maps and their coordinate comparisons are computed separately.
 :::
 
-:::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.MultipleFiberCoinvariants.range_orderOneRelationMap_eq_ker, SphereSixComplex.MultipleFiberCoinvariants.range_orderTwoRelationMap_eq_ker")
+:::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.MultipleFiberCoinvariants.range_orderThreeRelationMap_eq_ker, SphereSixComplex.MultipleFiberCoinvariants.range_orderFourRelationMap_eq_ker")
 The two integral relation maps in Lemma 7.13 have images equal to the kernels of their respective coordinate classifiers. These identities give the required exact integral presentations.
 :::
 
@@ -463,32 +463,6 @@ cyclic-quotient abelianization and degree-one naturality statements are proved.
 In degree two, proved quotient-homology realizations are converted to perfect-pairing packages.
 Together these give `ellipticFiniteCoverHomologyRealization` for the two covers, including the
 actual pullback calculation. No specialized finite-cover realization axiom is retained.
-:::
-
-:::theorem "section-seven-top-degree-vanishing" (parent := "integral-homology") (lean := "SphereSixComplex.subsingleton_integralSingularHomology_of_isEmpty_cell, SphereSixComplex.FourTorusHomologicalModel.subsingleton_homology_five, SphereSixComplex.FourTorusHomologicalModel.subsingleton_homology_six, SphereSixComplex.subsingleton_homology_succ_finiteBouquetMappingTorus, SphereSixComplex.contractibleSpace_openInterval, SphereSixComplex.subsingleton_homology_prod_of_contractible, SphereSixComplex.subsingleton_homology_seven_union, SphereSixComplex.OpenEmbeddingStarData.sectionSevenStageTopDegreeVanishing_of_localFinite, SphereSixComplex.subsingleton_homology_six_of_radialMappingTorus, SphereSixComplex.Geometry.AnalyticData.subsingleton_homology_six_actualCuspCollar, SphereSixComplex.Geometry.AnalyticData.subsingleton_homology_six_orderThreeCollar, SphereSixComplex.Geometry.AnalyticData.subsingleton_homology_six_orderFourCollar, SphereSixComplex.Geometry.AnalyticData.subsingleton_homology_six_collarSource_of_cusp, SphereSixComplex.Geometry.AnalyticData.stageTopDegreeVanishing_of_actualCuspCollar, SphereSixComplex.Geometry.AnalyticData.stageTopDegreeVanishing")
-The Mayer--Vietoris comparison of the four pieces needs the three intermediate unions to have no
-seventh homology, which follows from the four pieces having none and the three collar sources
-having no sixth. `stageTopDegreeVanishing` supplies that obligation for the
-actual star, with no hypotheses left.
-
-The deduction is a dimension argument. A CW complex has no homology in a degree carrying no cells,
-since its cellular chain group there is already zero; a `FiniteCWModelSix` records a CW structure on
-a homotopy-equivalent carrier, so a zero cell count in a degree suffices, and a `FourTorusCellModel`
-has zero counts in degrees five and six. The Wang sequence transfers this to a mapping torus: its
-incoming term is the fibre's homology in the same degree and its outgoing term the fibre's one
-degree below, so a fibre with nothing in degrees five and six leaves the mapping torus with nothing
-in degree six. A contractible factor is discarded up to homotopy equivalence, and an open real
-interval is contractible because it is convex and nonempty.
-
-Each collar is realized as a radial interval times a mapping torus. For the two elliptic collars the
-fibre is the additive four-torus of the period family, and for the cusp collar the fibre is
-identified with a full-rank additive four-torus by the corresponding field of
-`_root_.SphereSixComplex.Geometry.CuspCollar.ActualPuncturedCuspCollarWitness.radialClutchingData`. In every case the four-torus cell model then gives the
-fibre nothing in degrees five and six.
-
-This deduction uses the retained general cellular-to-singular comparison. The Wang sequence,
-standard four-torus cell model, elliptic angular fundamental domains, and cusp radial clutching
-model, including its fibre identification, are proved in the development.
 :::
 
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_complexThreefold_nonempty_diffeomorph_sixSphere") (priority := "high")

@@ -166,12 +166,12 @@ public theorem straighteningRealParameter_psiMap
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (lambda : ParameterLattice)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     straighteningRealParameter W
         ⟨C.psiMap lambda p, C.psiMap_preserves_t lambda p ▸ hp⟩ =
       straighteningRealParameter W ⟨p, hp⟩ + CuspPhaseEstimates.realParameter lambda := by
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let d : Fin 2 → ℝ := fun i ↦ (shearVector lambda i : ℝ)
   let p' : PuncturedLocalCarrier W :=
@@ -217,13 +217,13 @@ public theorem straighteningPhase_mul_phaseCoefficient
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (lambda : ParameterLattice)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     straighteningPhase W
         ⟨C.psiMap lambda p, C.psiMap_preserves_t lambda p ▸ hp⟩ *
         N.phaseCoefficient lambda (M.t p) =
       N.phaseCoefficient lambda 0 * straighteningPhase W ⟨p, hp⟩ := by
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let p' : PuncturedLocalCarrier W :=
     ⟨C.psiMap lambda p, C.psiMap_preserves_t lambda p ▸ hp⟩
@@ -252,14 +252,14 @@ public theorem puncturedPointStraightening_psiMap
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M) (lambda : ParameterLattice)
     (p : localCarrier M W.localWitness.radius) (hp : M.t p ≠ 0) :
-    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+    let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
       W.localWitness.radius_pos W.localWitness.radius_le
     ((puncturedPointStraightening W
         ⟨C.psiMap lambda p, C.psiMap_preserves_t lambda p ▸ hp⟩).1 : M.Carrier) =
       ToricModel.phaseAction M (N.phaseCoefficient lambda 0)
         (Additive.toMul (M.fanShear lambda)
           ((puncturedPointStraightening W ⟨p, hp⟩).1 : M.Carrier)) := by
-  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N M W.localWitness.radius
+  let C := NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients N W.localWitness.radius
     W.localWitness.radius_pos W.localWitness.radius_le
   let p' : PuncturedLocalCarrier W :=
     ⟨C.psiMap lambda p, C.psiMap_preserves_t lambda p ▸ hp⟩
