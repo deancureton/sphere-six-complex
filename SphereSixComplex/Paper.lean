@@ -22,6 +22,9 @@ public import SphereSixComplex.Paper.Geometry.CuspStraightening.Extension
 public import SphereSixComplex.Paper.Geometry.CuspStraightening.Homeomorph
 public import SphereSixComplex.Paper.Geometry.CuspToricPhaseAction
 public import SphereSixComplex.Paper.Geometry.GlobalDeckQuotient
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralAttachment
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundaryCharts
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundaryModel
 public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianAction
 public import SphereSixComplex.Paper.Geometry.EllipticActualActionTopology
 public import SphereSixComplex.Paper.Geometry.EllipticVaryingFamilyQuotient

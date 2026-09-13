@@ -180,6 +180,8 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.SourceFundam
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.TriangleReflections
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.UpperHalfPlaneSchwarzPick
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.UpperHalfPlaneSolutionGerm
+public import SphereSixComplex.Prerequisites.Topology.AdjunctionCollar
+public import SphereSixComplex.Prerequisites.Topology.AttachmentMayerVietoris
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverAssembly
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverChains
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverCorestriction
@@ -240,6 +242,7 @@ public import SphereSixComplex.Prerequisites.Topology.ClosedPrismHomology
 public import SphereSixComplex.Prerequisites.Topology.ClosedPrismRelativeBoundary
 public import SphereSixComplex.Prerequisites.Topology.CollarHomotopyExtension
 public import SphereSixComplex.Prerequisites.Topology.Collaring
+public import SphereSixComplex.Prerequisites.Topology.CompactAdjunction
 public import SphereSixComplex.Prerequisites.Topology.CompactRepresentatives
 public import SphereSixComplex.Prerequisites.Topology.CompactSeparatedRestriction
 public import SphereSixComplex.Prerequisites.Topology.ComplexThreefoldHomology
@@ -255,6 +258,9 @@ public import SphereSixComplex.Prerequisites.Topology.CubicalSphereQuotient
 public import SphereSixComplex.Prerequisites.Topology.CyclicCoinvariantPresentation
 public import SphereSixComplex.Prerequisites.Topology.CyclicExtensionAbelianization
 public import SphereSixComplex.Prerequisites.Topology.CyclicPuncturedProductMappingTorus
+public import SphereSixComplex.Prerequisites.Topology.ExactSplitting
+public import SphereSixComplex.Prerequisites.Topology.OnePointGluing
+public import SphereSixComplex.Prerequisites.Topology.QuotientHomotopy
 public import SphereSixComplex.Prerequisites.Topology.RealMappingTorusFiberSlice
 public import SphereSixComplex.Prerequisites.Topology.CylinderLowerSideContraction
 public import SphereSixComplex.Prerequisites.Topology.CylinderRelativeContraction
