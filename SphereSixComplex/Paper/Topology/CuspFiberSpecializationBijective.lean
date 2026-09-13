@@ -3,7 +3,7 @@ module
 public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationTypes
 public import SphereSixComplex.Paper.Topology.CuspFiberSpecializationColumns
 public import SphereSixComplex.Prerequisites.Topology.PrimitiveFourColumnBasis
-public import SphereSixComplex.Paper.Topology.CuspMixedTorusIntegralColumns
+public import SphereSixComplex.Paper.Topology.CuspBoundaryMixedCoordinates
 
 @[expose] public section
 noncomputable section
@@ -48,26 +48,19 @@ theorem cuspFiberSpecializationTwoBijective_of_columns (A : AnalyticData)
   rw [AddEquiv.symm_apply_apply, ← A.cuspFiniteFiberTorusToFilling_homology j]
   exact hr j
 
-theorem cuspFiberSpecializationTwoBijective (A : AnalyticData)
-    (T : CellularHomology.IntegralComparison) : (let G := A.actualCuspRadialClutchingData
+theorem cuspFiberSpecializationTwoBijective (A : AnalyticData) :
+    (let G := A.actualCuspRadialClutchingData
       let _ := G.fiberTopology
       Function.Bijective (G.specializationHomologyTwoMap.comp
         (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal)) := by
-  let _ := actualLocalCuspFilling_t2 A.starCuspWitness
-  let _ : T2Space (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness) :=
-    (actualLocalCuspCentralOrbitMap_isEmbedding A.starCuspWitness).t2Space
-  obtain ⟨a,b,c,ha,hb,hc,h1,h2,h3⟩ := A.cuspMixedSourceColumns T
-  have hu (z : ℤ) (hz : z = 1 ∨ z = -1) : IsUnit z := by
-    rcases hz with rfl | rfl <;> simp
-  obtain ⟨a, rfl⟩ := hu a ha
-  obtain ⟨b, rfl⟩ := hu b hb
-  obtain ⟨c, rfl⟩ := hu c hc
   apply A.cuspFiberSpecializationTwoBijective_of_columns
-    (phaseSweepFillingHomologyTwoEquiv A.starCuspWitness A.cuspCentralFiberRetractionData T) a b c
+    (Construction.CentralFiberHomology.fillingHomologyTwoEquiv
+      A.starCuspWitness A.cuspCentralFiberRetractionData) 1 (-1) (-1)
   intro j
-  fin_cases j
-  · exact h1.trans (signedMixedThreeColumnEquiv_one a b c).symm
-  · exact h2.trans (signedMixedThreeColumnEquiv_two a b c).symm
-  · exact h3.trans (signedMixedThreeColumnEquiv_three a b c).symm
+  have h := BoundaryMixedTori.fillingHomologyTwoEquiv_mixedTorus
+    A A.cuspCentralFiberRetractionData j
+  fin_cases j <;>
+    simpa [cuspFiberSpecializationColumn, BoundaryMixedTori.index,
+      signedMixedThreeColumnEquiv_apply] using h
 
 end SphereSixComplex.Geometry.AnalyticData

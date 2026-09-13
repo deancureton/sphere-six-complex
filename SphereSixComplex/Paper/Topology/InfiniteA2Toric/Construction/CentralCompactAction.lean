@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CorrectedPhaseOrbit
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.BoundaryDeckAttachment
 public import SphereSixComplex.Paper.Topology.ActualCuspCentralModelEquivalence
 
 @[expose] public section

@@ -202,7 +202,6 @@ public noncomputable def partialDiffeomorphOfOpenEmbedding
     exact (hlocal x).localInverse_contMDiffAt.congr_of_eventuallyEq hevent
       |>.contMDiffWithinAt
 
-
 @[simp]
 public theorem partialDiffeomorphOfOpenEmbedding_source
     {f : M → N} [Nonempty M]
@@ -216,7 +215,6 @@ public theorem partialDiffeomorphOfOpenEmbedding_target
     (hopen : IsOpenEmbedding f) (hlocal : IsLocalDiffeomorph I I n f) :
     (partialDiffeomorphOfOpenEmbedding hopen hlocal).target = range f := by
   exact hopen.toOpenPartialHomeomorph_target
-
 
 /-- Two analytic open embeddings of the same nonempty manifold determine the ambient
 partial diffeomorphism between their ranges. -/

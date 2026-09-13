@@ -1,5 +1,6 @@
 module
 
+public import SphereSixComplex.Prerequisites.Topology.CellularSquareOrientation
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.HexagonCircleLoop
 
 @[expose] public section

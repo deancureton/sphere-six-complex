@@ -85,12 +85,4 @@ public def normalizedIntervalDiskOrientation (T : CellularHomology.IntegralCompa
     (cwOrientedIntervalClass.hom 1) (by
       exact ConcreteCategory.congr_hom cwOrientedIntervalClass_evaluation 1)
 
-public theorem normalizedIntervalDiskOrientation_symm_one
-    (T : CellularHomology.IntegralComparison) :
-    (normalizedIntervalDiskOrientation T).symm 1 = cwOrientedIntervalClass.hom 1 := by
-  apply (normalizedIntervalDiskOrientation T).injective
-  rw [AddEquiv.apply_symm_apply]
-  exact (ConcreteCategory.congr_hom cwOrientedIntervalClass_evaluation 1).symm
-
-
 end SphereSixComplex

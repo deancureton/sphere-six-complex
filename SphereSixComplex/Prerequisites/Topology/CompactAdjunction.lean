@@ -43,46 +43,6 @@ def desc (f : C(K, X)) (h : C(B, X)) (heq : ∀ a : A, f a.1 = h (g a)) :
     exact heq a)
   continuous_toFun := continuous_quot_lift _ (f.continuous.sumElim h.continuous)
 
-/-- Transport the space being attached to along a homeomorphism. -/
-def congrRight {B' : Type*} [TopologicalSpace B'] (e : B ≃ₜ B') :
-    AdjunctionSpace A g ≃ₜ AdjunctionSpace A (e ∘ g) where
-  toFun := desc A g
-    ⟨inl A (e ∘ g), continuous_inl A (e ∘ g)⟩
-    ⟨inr A (e ∘ g) ∘ e, (continuous_inr A (e ∘ g)).comp e.continuous⟩
-    (fun a ↦ inl_eq_inr A (e ∘ g) a)
-  invFun := desc A (e ∘ g)
-    ⟨inl A g, continuous_inl A g⟩
-    ⟨inr A g ∘ e.symm, (continuous_inr A g).comp e.symm.continuous⟩
-    (fun a ↦ by simpa using inl_eq_inr A g a)
-  left_inv x := by
-    induction x using Quot.inductionOn with | _ x =>
-      cases x with
-      | inl k => rfl
-      | inr b => change inr A g (e.symm (e b)) = inr A g b; rw [e.symm_apply_apply]
-  right_inv x := by
-    induction x using Quot.inductionOn with | _ x =>
-      cases x with
-      | inl k => rfl
-      | inr b =>
-        change inr A (e ∘ g) (e (e.symm b)) = inr A (e ∘ g) b
-        rw [e.apply_symm_apply]
-  continuous_toFun := (desc A g _ _ _).continuous
-  continuous_invFun := (desc A (e ∘ g) _ _ _).continuous
-
-@[simp] theorem congrRight_inl {B' : Type*} [TopologicalSpace B'] (e : B ≃ₜ B') (k : K) :
-    congrRight A g e (inl A g k) = inl A (e ∘ g) k := rfl
-
-@[simp] theorem congrRight_inr {B' : Type*} [TopologicalSpace B'] (e : B ≃ₜ B') (b : B) :
-    congrRight A g e (inr A g b) = inr A (e ∘ g) (e b) := rfl
-
-@[simp] theorem congrRight_symm_inl {B' : Type*} [TopologicalSpace B']
-    (e : B ≃ₜ B') (k : K) :
-    (congrRight A g e).symm (inl A (e ∘ g) k) = inl A g k := rfl
-
-@[simp] theorem congrRight_symm_inr {B' : Type*} [TopologicalSpace B']
-    (e : B ≃ₜ B') (b : B') :
-    (congrRight A g e).symm (inr A (e ∘ g) b) = inr A g (e.symm b) := rfl
-
 end AdjunctionSpace
 end SphereSixComplex
 
@@ -147,18 +107,6 @@ noncomputable def adjunctionHomeomorph [CompactSpace K] [T2Space X]
   let _ : CompactSpace (AdjunctionSpace (f ⁻¹' B) g) :=
     inferInstanceAs (CompactSpace (Quot _))
   exact d.continuous.homeoOfEquivCompactToT2 (f := Equiv.ofBijective d hd)
-
-@[simp] theorem adjunctionHomeomorph_inl [CompactSpace K] [T2Space X]
-    (f : C(K, X)) (hf : Function.Surjective f) (B : Set X) (hB : IsClosed B)
-    (hinj : Set.InjOn f (f ⁻¹' B)ᶜ) (k : K) :
-    f.adjunctionHomeomorph hf B hB hinj
-      (AdjunctionSpace.inl (f ⁻¹' B) (fun a ↦ (⟨f a.1, a.2⟩ : B)) k) = f k := rfl
-
-@[simp] theorem adjunctionHomeomorph_inr [CompactSpace K] [T2Space X]
-    (f : C(K, X)) (hf : Function.Surjective f) (B : Set X) (hB : IsClosed B)
-    (hinj : Set.InjOn f (f ⁻¹' B)ᶜ) (b : B) :
-    f.adjunctionHomeomorph hf B hB hinj
-      (AdjunctionSpace.inr (f ⁻¹' B) (fun a ↦ (⟨f a.1, a.2⟩ : B)) b) = b.1 := rfl
 
 /-- The compact adjunction theorem with a specified attaching subset and attaching map. -/
 noncomputable def adjunctionHomeomorphOfPreimage [CompactSpace K] [T2Space X]

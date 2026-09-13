@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.HoneycombCorrectedActualQuotientCell
+public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberOneCells
 
 @[expose] public section
 

@@ -469,11 +469,14 @@ specialization map make the degree-two attachment map surjective. Equal-rank exa
 vanishing second homology, and the local Euler models complete the sphere homology calculation.
 :::
 
-:::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.CellularHomology.normalizedModel, SphereSixComplex.Geometry.CuspCollar.centralFiberCWModel, SphereSixComplex.Geometry.CuspCollar.centralFiber_cellularBoundary_eq, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyTwoEquiv")
+:::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.Geometry.InfiniteA2Toric.Construction.CentralFiberHomology.homologyTwoEquiv, SphereSixComplex.Geometry.InfiniteA2Toric.Construction.CentralFiberHomology.finite_homology_and_euler_eq_two, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyTwoEquiv")
 The cusp filling has homology $`\mathbb Z^2,\mathbb Z^4,\mathbb Z^2,\mathbb Z` in degrees one
-through four. The standard $`A_2` CW decomposition and its incidence formula are proved. The
-retained general cellular-to-singular comparison transfers this cellular calculation to singular
-homology.
+through four. Its central fibre is obtained by attaching $`D^2\times T^2` to three
+spheres with their two poles identified. A radial open cover has pieces homotopy equivalent
+to $`T^2` and this boundary, with intersection $`T^3`. The boundary itself has a two-chart
+cover whose intersection is three punctured planes. The two Mayer–Vietoris sequences,
+together with the proved attaching-map vanishing, compute the integral groups and Euler
+characteristic $`2`. The cusp retraction transports them to the filling.
 :::
 
 :::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.AffineCyclicQuotientHomology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.AffineCyclicQuotientHomology.orderFourReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticDegreeTwoPullbackBases, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization")
@@ -527,11 +530,7 @@ Apply {uses "mayer-vietoris-contract"}[the binary open-cover Mayer--Vietoris seq
 complements of two antipodal points of $`S^{d+1}` and induct on the dimension from the circle.
 :::
 
-:::theorem "relative-disk-sphere-homology" (parent := "standard-six-sphere") (lean := "SphereSixComplex.relativeIntegralSingularShortComplex_shortExact")
-Relative integral singular chains are defined by a categorical cokernel. The inclusion and quotient maps form a short exact sequence of chain complexes.
-:::
-
-:::theorem "singular-small-chain-excision" (parent := "relative-disk-sphere-homology") (lean := "SphereSixComplex.coverSmallAffineSubdivisionEventuallySmall_of_openCover, SphereSixComplex.coverSmallChainQuasiIsomorphism_of_openCover, SphereSixComplex.barycentricOuterFaceIdentity")
+:::theorem "singular-small-chain-excision" (parent := "standard-six-sphere") (lean := "SphereSixComplex.coverSmallAffineSubdivisionEventuallySmall_of_openCover, SphereSixComplex.coverSmallChainQuasiIsomorphism_of_openCover, SphereSixComplex.barycentricOuterFaceIdentity")
 Iterated affine subdivision makes each singular chain subordinate to any open cover. The resulting cover-small inclusion is a quasi-isomorphism. The barycentric outer-face identity provides the boundary calculation used by subdivision.
 :::
 

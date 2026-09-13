@@ -47,33 +47,4 @@ public def normalizedPointDiskOrientation :
     (cwCharacteristicBoundaryInclusion 0)) 0)).symm).addCommGroupIsoToAddEquiv |>.trans
       (pathConnectedIntegralHomologyZeroEquivInteger (CWCharacteristicClosedBall 0))
 
-public def cwOrientedPointClass : AddCommGrpCat.of ℤ ⟶
-    (cwRelativeIntegralSingularChainComplex (cwCharacteristicBoundaryInclusion 0)).homology 0 :=
-  cwIntegralPointClass (TopCat.of (CWCharacteristicClosedBall 0)) cwPointDiskPoint ≫
-    HomologicalComplex.homologyMap (cwRelativeIntegralSingularChainProjection
-      (cwCharacteristicBoundaryInclusion 0)) 0
-
-public theorem cwOrientedPointClass_augmentation :
-    cwIntegralPointClass (TopCat.of (CWCharacteristicClosedBall 0)) cwPointDiskPoint ≫
-      (TopCat.of (CWCharacteristicClosedBall 0)).singularHomology₀ε (AddCommGrpCat.of ℤ) =
-        𝟙 (AddCommGrpCat.of ℤ) := by
-  exact SSet.liftCycles_ιChainComplex_homologyπ_homology₀ε
-    (TopCat.toSSet.obj (TopCat.of (CWCharacteristicClosedBall 0))) (AddCommGrpCat.of ℤ)
-      (TopCat.toSSetObj₀Equiv.symm cwPointDiskPoint)
-
-public theorem normalizedPointDiskOrientation_class :
-    normalizedPointDiskOrientation (cwOrientedPointClass.hom 1) = 1 := by
-  let e := (asIso (HomologicalComplex.homologyMap
-    (cwRelativeIntegralSingularChainProjection (cwCharacteristicBoundaryInclusion 0)) 0)).addCommGroupIsoToAddEquiv
-  let o := pathConnectedIntegralHomologyZeroEquivInteger (CWCharacteristicClosedBall 0)
-  change o (e.symm (e ((cwIntegralPointClass
-    (TopCat.of (CWCharacteristicClosedBall 0)) cwPointDiskPoint).hom 1))) = 1
-  rw [e.symm_apply_apply]
-  exact ConcreteCategory.congr_hom cwOrientedPointClass_augmentation 1
-
-public theorem normalizedPointDiskOrientation_symm_one :
-    normalizedPointDiskOrientation.symm 1 = cwOrientedPointClass.hom 1 := by
-  apply normalizedPointDiskOrientation.injective
-  rw [AddEquiv.apply_symm_apply, normalizedPointDiskOrientation_class]
-
 end SphereSixComplex

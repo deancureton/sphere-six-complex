@@ -156,44 +156,6 @@ public def constructedCentralZeroCell
     intro x hx
     simpa only [Set.mem_singleton_iff] using hx.symm
 
-public theorem constructedCentralZeroCell_source_eq
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :
-    (constructedCentralZeroCell W i).source = Metric.ball 0 1 :=
-  rfl
-
-public theorem constructedCentralZeroCell_continuousOn
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :
-    ContinuousOn (constructedCentralZeroCell W i) (Metric.closedBall 0 1) :=
-  continuous_const.continuousOn
-
-public theorem constructedCentralZeroCell_continuousOn_symm
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :
-    ContinuousOn (constructedCentralZeroCell W i).symm
-      (constructedCentralZeroCell W i).target :=
-  continuous_const.continuousOn
-
-/-- The interiors of the two zero-cells are disjoint in the actual orbit quotient. -/
-public theorem constructedCentralZeroCell_pairwiseDisjoint
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    (Set.univ : Set (Fin 2)).PairwiseDisjoint
-      (fun i ↦ constructedCentralZeroCell W i '' Metric.ball 0 1) := by
-  intro i hi j hj hij
-  have hi0 : i = 0 ∨ i = 1 := by omega
-  have hj0 : j = 0 ∨ j = 1 := by omega
-  rcases hi0 with rfl | rfl <;> rcases hj0 with rfl | rfl
-  · exact (hij rfl).elim
-  · change Disjoint _ _
-    rw [Set.disjoint_left]
-    intro x
-    rintro ⟨a, ha, hax⟩ ⟨b, hb, hbx⟩
-    exact constructedCentralOriginOrbit_ne W (hax.trans hbx.symm)
-  · change Disjoint _ _
-    rw [Set.disjoint_left]
-    intro x
-    rintro ⟨a, ha, hax⟩ ⟨b, hb, hbx⟩
-    exact constructedCentralOriginOrbit_ne W (hbx.trans hax.symm)
-  · exact (hij rfl).elim
-
 end SphereSixComplex.Geometry.CuspCollar
 
 end

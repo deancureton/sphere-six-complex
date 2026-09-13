@@ -142,7 +142,6 @@ public noncomputable def puncturedGlobalBaseProjection :
       _ = regularTotalSpaceBase F x := congrArg (regularTotalSpaceBase F) hg
   · exact continuous_quot_map _ (regularTotalSpaceBase_continuous F)
 
-
 end SphereSixComplex.Geometry.GlobalTorusFamily
 
 namespace SphereSixComplex.Geometry.AnalyticData
@@ -372,18 +371,6 @@ public noncomputable def markedOneCentralMeridianClass :
       (A.centralZeroSection A.markedPuncturedBasepoint) :=
   A.centralZeroSectionFundamentalGroupMap A.markedOneBaseMeridianClass
 
-
-
-@[simp]
-public theorem centralZeroSectionFundamentalGroupMap_zero :
-    A.centralZeroSectionFundamentalGroupMap A.markedZeroBaseMeridianClass =
-      A.markedZeroCentralMeridianClass := rfl
-
-@[simp]
-public theorem centralZeroSectionFundamentalGroupMap_one :
-    A.centralZeroSectionFundamentalGroupMap A.markedOneBaseMeridianClass =
-      A.markedOneCentralMeridianClass := rfl
-
 public theorem markedZeroCentralMeridianClass_eq_pathLoopClass :
     A.markedZeroCentralMeridianClass =
       Path.Homotopic.Quotient.mk A.markedZeroCentralMeridian := by
@@ -422,10 +409,8 @@ public theorem centralZeroSectionFundamentalGroupMap_range_le_markedClosure :
     apply (Subgroup.closure_le _).mpr
     intro x hx
     rcases hx with rfl | rfl
-    · apply Subgroup.subset_closure
-      simp
-    · apply Subgroup.subset_closure
-      simp
+    · exact Subgroup.subset_closure (Or.inl rfl)
+    · exact Subgroup.subset_closure (Or.inr rfl)
   apply hle
   rw [A.markedBaseMeridians_generate]
   trivial

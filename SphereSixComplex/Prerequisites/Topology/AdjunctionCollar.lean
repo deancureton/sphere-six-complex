@@ -6,7 +6,7 @@ public import Mathlib.Topology.Homotopy.Basic
 public import Mathlib.Topology.CompactOpen
 public import Mathlib.Tactic.Ring
 
-/-! # Radial open covers of attachments along the unit sphere -/
+/-! # Radial coordinates and expansion on ball attachments -/
 
 @[expose] public section
 
@@ -26,72 +26,11 @@ def radius (g : (ballBoundary (E := E) (T := T)) → B) :
     ⟨fun p ↦ ‖p.1.1‖, continuous_norm.comp (continuous_subtype_val.comp continuous_fst)⟩
     (ContinuousMap.const B 1) (fun a ↦ a.2)
 
-@[simp] theorem radius_inl (g : (ballBoundary (E := E) (T := T)) → B)
-    (p : Metric.closedBall (0 : E) 1 × T) :
-    radius g (inl ballBoundary g p) = ‖p.1.1‖ := rfl
-
-@[simp] theorem radius_inr (g : (ballBoundary (E := E) (T := T)) → B) (b : B) :
-    radius g (inr ballBoundary g b) = 1 := rfl
-
-theorem radius_nonneg (g : (ballBoundary (E := E) (T := T)) → B)
-    (x : AdjunctionSpace ballBoundary g) : 0 ≤ radius g x := by
-  induction x using Quot.inductionOn with | _ x =>
-    cases x with
-    | inl p => exact norm_nonneg p.1.1
-    | inr b => exact zero_le_one
-
-theorem radius_le_one (g : (ballBoundary (E := E) (T := T)) → B)
-    (x : AdjunctionSpace ballBoundary g) : radius g x ≤ 1 := by
-  induction x using Quot.inductionOn with | _ x =>
-    cases x with
-    | inl p =>
-      change ‖p.1.1‖ ≤ 1
-      simpa only [Metric.mem_closedBall, dist_zero_right] using p.1.2
-    | inr b => exact le_rfl
-
-/-- The part of the attachment inside a given radius. -/
-def radialInterior (g : (ballBoundary (E := E) (T := T)) → B) (r : ℝ) :
-    Set (AdjunctionSpace ballBoundary g) := {x | radius g x < r}
-
 /-- The outer collar, including the attached space when `r < 1`. -/
 def radialCollar (g : (ballBoundary (E := E) (T := T)) → B) (r : ℝ) :
     Set (AdjunctionSpace ballBoundary g) := {x | r < radius g x}
 
-theorem isOpen_radialInterior (g : (ballBoundary (E := E) (T := T)) → B) (r : ℝ) :
-    IsOpen (radialInterior g r) :=
-  isOpen_lt (radius g).continuous continuous_const
-
-theorem isOpen_radialCollar (g : (ballBoundary (E := E) (T := T)) → B) (r : ℝ) :
-    IsOpen (radialCollar g r) :=
-  isOpen_lt continuous_const (radius g).continuous
-
-theorem radialInterior_union_radialCollar
-    (g : (ballBoundary (E := E) (T := T)) → B) {r s : ℝ} (hrs : r < s) :
-    radialInterior g s ∪ radialCollar g r = Set.univ := by
-  apply Set.eq_univ_of_forall
-  intro x
-  exact (lt_or_ge (radius g x) s).imp_right (fun h ↦ hrs.trans_le h)
-
-@[simp] theorem inl_mem_radialInterior
-    (g : (ballBoundary (E := E) (T := T)) → B)
-    (p : Metric.closedBall (0 : E) 1 × T) (r : ℝ) :
-    inl ballBoundary g p ∈ radialInterior g r ↔ ‖p.1.1‖ < r := Iff.rfl
-
-@[simp] theorem inl_mem_radialCollar
-    (g : (ballBoundary (E := E) (T := T)) → B)
-    (p : Metric.closedBall (0 : E) 1 × T) (r : ℝ) :
-    inl ballBoundary g p ∈ radialCollar g r ↔ r < ‖p.1.1‖ := Iff.rfl
-
-@[simp] theorem inr_mem_radialInterior
-    (g : (ballBoundary (E := E) (T := T)) → B) (b : B) (r : ℝ) :
-    inr ballBoundary g b ∈ radialInterior g r ↔ 1 < r := Iff.rfl
-
-@[simp] theorem inr_mem_radialCollar
-    (g : (ballBoundary (E := E) (T := T)) → B) (b : B) (r : ℝ) :
-    inr ballBoundary g b ∈ radialCollar g r ↔ r < 1 := Iff.rfl
-
 end SphereSixComplex.AdjunctionSpace
-
 
 namespace SphereSixComplex
 
@@ -179,7 +118,6 @@ theorem ballRadialExpansion_of_mem_sphere {E : Type*} [NormedAddCommGroup E]
   have hn : 0 < ‖x.1‖ := hr.trans_le hx
   simp [ballRadialExpansion, max_eq_right hx, norm_smul, hn.ne']
 
-
 theorem norm_le_norm_ballRadialExpansion {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (r : ℝ) (hr : 0 < r) (hr1 : r ≤ 1)
     (t : I) (x : Metric.closedBall (0 : E) 1) :
@@ -227,12 +165,6 @@ noncomputable def radialExpansion (g : (ballBoundary (E := E) (T := T)) → B)
     funext p
     rcases p with ⟨t, k | b⟩ <;> rfl
 
-@[simp] theorem radialExpansion_inl (g : (ballBoundary (E := E) (T := T)) → B)
-    (r : ℝ) (hr : 0 < r) (hr1 : r ≤ 1) (t : I)
-    (k : Metric.closedBall (0 : E) 1 × T) :
-    radialExpansion g r hr hr1 (t, inl ballBoundary g k) =
-      inl ballBoundary g (ballRadialExpansion r hr (t, k.1), k.2) := rfl
-
 @[simp] theorem radialExpansion_inr (g : (ballBoundary (E := E) (T := T)) → B)
     (r : ℝ) (hr : 0 < r) (hr1 : r ≤ 1) (t : I) (b : B) :
     radialExpansion g r hr hr1 (t, inr ballBoundary g b) = inr ballBoundary g b := rfl
@@ -246,7 +178,6 @@ noncomputable def radialExpansion (g : (ballBoundary (E := E) (T := T)) → B)
       exact congrArg (inl ballBoundary g)
         (Prod.ext (ballRadialExpansion_zero r hr k.1) rfl)
     | inr b => rfl
-
 
 theorem radius_le_radius_radialExpansion
     (g : (ballBoundary (E := E) (T := T)) → B)

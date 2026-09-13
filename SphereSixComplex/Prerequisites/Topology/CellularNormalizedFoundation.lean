@@ -44,12 +44,4 @@ public def normalized (T : CellularHomology.IntegralComparison) :
     CellularHomology.IntegralComparison :=
   T.withDiskOrientations T.normalizedDiskOrientations
 
-public theorem normalized_diskOrientation_zero (T : CellularHomology.IntegralComparison) :
-    T.normalized.diskOrientation 0 = normalizedPointDiskOrientation := rfl
-
-public theorem normalized_diskOrientation_one (T : CellularHomology.IntegralComparison) :
-    T.normalized.diskOrientation 1 = normalizedIntervalDiskOrientation T := rfl
-
-
-
 end SphereSixComplex.CellularHomology.IntegralComparison

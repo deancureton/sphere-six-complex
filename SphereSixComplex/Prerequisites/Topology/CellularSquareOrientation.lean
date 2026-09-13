@@ -82,25 +82,6 @@ public theorem cwSquareBoundaryHomologyMap_eq_zero_of_positiveLoop
     StandardCircleHomologyLiftDegree.integralSingularHomologyMap_loopHomologyClass, h, smul_zero]
   rfl
 
-public theorem CellularHomology.IntegralComparison.attachingDegree_zero_of_positiveLoop
-    (T : CellularHomology.IntegralComparison)
-    (X : Type) [TopologicalSpace X] [T2Space X]
-    [Topology.CWComplex (Set.univ : Set X)]
-    (e : Topology.CWComplex.cell (Set.univ : Set X) 2)
-    (h : StandardCircleHomologyLiftDegree.loopHomologyClass
-      (cwSquareBoundaryPositiveLoop.map (T.characteristicPair X 2 e).boundaryMap.hom.continuous) = 0)
-    (e' : Topology.CWComplex.cell (Set.univ : Set X) 1) :
-    T.attachingDegree X 1 e e' = 0 := by
-  have hz : HomologicalComplex.homologyMap
-      (cwIntegralSingularChainMapObj (T.characteristicPair X 2 e).boundaryMap) 1 = 0 := by
-    apply AddCommGrpCat.hom_ext
-    exact cwSquareBoundaryHomologyMap_eq_zero_of_positiveLoop
-      (T.characteristicPair X 2 e).boundaryMap.hom h
-  rw [T.attachingDegree_eq_homologicalAttachingMapDegree]
-  unfold CellularHomology.IntegralComparison.homologicalAttachingMapDegree
-  rw [hz, zero_comp]
-  simp
-
 public def normalizedSquareDiskOrientation :
     (cwRelativeIntegralSingularChainComplex
       (cwCharacteristicBoundaryInclusion 2)).homology 2 ≃+ ℤ := by
@@ -108,7 +89,5 @@ public def normalizedSquareDiskOrientation :
   exact (asIso (cwRelativeIntegralSingularBoundary
     (cwCharacteristicBoundaryInclusion 2) 1)).addCommGroupIsoToAddEquiv.trans
       cwSquareBoundaryHomologyWinding
-
-
 
 end SphereSixComplex

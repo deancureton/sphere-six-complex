@@ -113,15 +113,6 @@ public theorem singletonPhaseImage_eq_actualSingletonStratum
     rw [← heq]
     exact zeroSupport_mem_singletonPhaseImage W q hq
 
-/-- The polar parametrization is onto the full geometric singleton-support stratum in the
-actual quotient. -/
-public def actualSingletonPhaseHomeomorph
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    SingletonPhaseCell W.localWitness.radius ≃ₜ
-      actualSingletonStratum W :=
-  (singletonPhaseHomeomorph W).trans
-    (Homeomorph.setCongr (singletonPhaseImage_eq_actualSingletonStratum W))
-
 end SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 end

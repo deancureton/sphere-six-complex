@@ -119,47 +119,6 @@ theorem axisOrbit_injective
     exact (axisOrbit_eq_zero_iff W upper i z).mp h
   exact axisOrbit_injOn_nonzero W upper i hz hw h
 
-theorem lower_upper_axisOrbit_eq_iff
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (z w : ℂ) :
-    axisOrbit W false 0 z = axisOrbit W true 2 w ↔ z ≠ 0 ∧ w = z⁻¹ := by
-  constructor
-  · intro h
-    have hc := centralOrbitRel_componentSupport_ncard_eq W _ _ (Quotient.exact h)
-    rw [axisPoint_support_ncard, axisPoint_support_ncard] at hc
-    have hz : z ≠ 0 := by
-      intro hz
-      have hw : w = 0 := by
-        by_contra hw
-        simp [hz, hw] at hc
-      subst z; subst w
-      rw [axisOrbit_zero, axisOrbit_zero] at h
-      exact constructedCentralOriginOrbit_ne W h
-    have hw : w ≠ 0 := by intro hw; simp [hz, hw] at hc
-    have hp : componentSupport constructedModel ((axisPoint W false 0 z).1.1 : Carrier) =
-        ({e₁, e₂} : Set ToricLattice) := by
-      ext v
-      change inclusion (false, 0) (singleAxis 0 z) ∈ carrierCentralComponent v ↔ _
-      rw [singleAxis_first]
-      simpa using lowerAxisZero_component_iff z hz v
-    have hq : componentSupport constructedModel ((axisPoint W true 2 w).1.1 : Carrier) =
-        ({e₁, e₂} : Set ToricLattice) := by
-      ext v
-      change inclusion (true, 0) (singleAxis 2 w) ∈ carrierCentralComponent v ↔ _
-      rw [singleAxis_last]
-      simpa using upperAxisTwo_component_iff w hw v
-    have he := centralOrbitRel_coe_eq_of_same_componentSupport W _
-      (by simp) (by simp) _ _ hp hq (Quotient.exact h)
-    change inclusion (false, 0) (singleAxis 0 z) = inclusion (true, 0) (singleAxis 2 w) at he
-    rw [singleAxis_first, singleAxis_last] at he
-    exact (inclusion_lowerAxisZero_eq_upperAxisTwo_iff 0 z w).mp he
-  · rintro ⟨hz, rfl⟩
-    apply congrArg (Quotient.mk _)
-    apply Subtype.ext
-    apply Subtype.ext
-    change inclusion (false, 0) (singleAxis 0 z) = inclusion (true, 0) (singleAxis 2 z⁻¹)
-    rw [singleAxis_first, singleAxis_last]
-    exact inclusion_lowerAxisZero_eq_upperAxisTwo 0 z hz
-
 private theorem toricPair_eq_translate_imp
     {a b c d k : ToricLattice} (hab : a ≠ b)
     (h : ({a, b} : Set ToricLattice) = (fun v ↦ v + k) '' ({c, d} : Set ToricLattice)) :
@@ -231,7 +190,6 @@ private theorem edgeSupportOne_ne_translate_two (k : ToricLattice) :
     simp [e₁, e₂] at h00 h01 h10
     omega
 
-
 private def lowerSupport (i : Fin 3) : Set ToricLattice :=
   ![{e₁, e₂}, {0, e₂}, {0, e₁}] i
 
@@ -253,7 +211,6 @@ private theorem lowerSupport_translate_injective
   · exact (edgeSupportZero_ne_translate_two (-k) hr).elim
   · exact (edgeSupportOne_ne_translate_two (-k) hr).elim
   · rfl
-
 
 private theorem axisPoint_lower_support
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -289,7 +246,6 @@ theorem lower_axisOrbit_eq_iff
   · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
     · rw [axisOrbit_zero, axisOrbit_zero]
     · rfl
-
 
 def upperChart (i : Fin 3) : ChartIndex := (true, ![0, -e₁, -e₂] i)
 def upperAxis (i : Fin 3) : Fin 3 := ![2, 1, 0] i
@@ -411,7 +367,6 @@ theorem upperOrbit_eq_iff
     lower_axisOrbit_eq_iff]
   simp [hz, hw, _root_.inv_inj]
 
-
 theorem not_mem_singletonPhaseImage_iff
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (p : actualLocalCuspCentralSubMulAction W) :
@@ -489,7 +444,6 @@ theorem not_mem_singletonPhaseImage_iff_exists_axis
   · rintro ⟨i, z, rfl | rfl⟩
     · exact axisOrbit_not_mem_singletonPhaseImage W false i z
     · exact upperOrbit_not_mem_singletonPhaseImage W i z
-
 
 theorem continuous_axisPoint
     (W : ActualPuncturedCuspCollarWitness N constructedModel)

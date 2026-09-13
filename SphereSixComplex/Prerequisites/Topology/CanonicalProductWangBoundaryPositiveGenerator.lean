@@ -85,22 +85,6 @@ private theorem reflMappingTorusHomologySplit_right
     exact hs
   simpa [q] using congrFun ht j
 
-private theorem realMappingTorusHomeomorph_intervalProjection
-    {X : Type} [TopologicalSpace X] (phi : X ≃ₜ X) (p : unitInterval × X) :
-    realMappingTorusHomeomorph phi (realMappingTorusIntervalProjection phi p) =
-      circleMappingTorusCylinderProjection phi p := by
-  let D := realMappingTorusClutchingData phi
-  let e : CircleMappingTorus phi ≃ RealMappingTorus phi :=
-    Equiv.ofBijective D.circleToTotal D.circleToTotal_bijective
-  apply e.injective
-  change D.circleToTotal
-      (D.totalHomeomorphCircleMappingTorus (D.projection p)) =
-    D.circleToTotal (circleMappingTorusCylinderProjection phi p)
-  rw [show D.circleToTotal
-      (D.totalHomeomorphCircleMappingTorus (D.projection p)) = D.projection p by
-    exact D.totalHomeomorphCircleMappingTorus.symm_apply_apply _]
-  exact D.circleToTotal_mk p
-
 private theorem circleProduct_stdTorus_homeomorph :
     (circleProductIdentityMappingTorusHomeomorph (X := StdTorus 1)).trans
         (stdTorusMappingTorusHomeomorph 1) =

@@ -21,21 +21,15 @@ def sourceCircle (z : ℂ) : ℂ := (starRingEnd ℂ z)⁻¹
 
 def sourceLeft (z : ℂ) : ℂ := -Real.sqrt 2 - starRingEnd ℂ z
 
-
-
-
 @[simp] theorem sourceRight_im (z : ℂ) : (sourceRight z).im = z.im := by
   simp [sourceRight]
 
 @[simp] theorem sourceLeft_im (z : ℂ) : (sourceLeft z).im = z.im := by
   simp [sourceLeft]
 
-
-
 theorem sourceCircle_im (z : ℂ) : (sourceCircle z).im = z.im / normSq z := by
   rw [sourceCircle, inv_im]
   simp [normSq_conj]
-
 
 def sourceRightUHP : Equiv.Perm UpperHalfPlane where
   toFun z := ⟨sourceRight z, by simpa using z.im_pos⟩
@@ -73,15 +67,6 @@ def sourceLeftUHP : Equiv.Perm UpperHalfPlane where
     apply UpperHalfPlane.coe_injective
     simp [sourceLeft]
 
-
-
-
-
-
-
-
-
-
 @[simp] theorem coe_sourceRightUHP (z : UpperHalfPlane) :
     (sourceRightUHP z : ℂ) = sourceRight z := rfl
 
@@ -117,8 +102,5 @@ theorem sourceCircle_sourceLeft (z : UpperHalfPlane) :
   rw [show -(Real.sqrt 2 : ℂ) - (z : ℂ) =
     -((Real.sqrt 2 : ℂ) + z) by ring, inv_neg]
   simp only [div_eq_mul_inv, neg_mul, one_mul, add_comm]
-
-
-
 
 end SphereSixComplex.Periods.TriangleReflections

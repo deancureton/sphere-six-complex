@@ -21,7 +21,7 @@ public theorem actualFiberSpecializationTwo_bijective (A : AnalyticData) :
     let _ := G.fiberTopology
     Function.Bijective (G.specializationHomologyTwoMap.comp
       (circleMappingTorusHTwoPresentation G.clutching).coinvariantsToTotal) := by
-  have h := A.cuspFiberSpecializationTwoBijective CellularHomology.integralComparison
+  have h := A.cuspFiberSpecializationTwoBijective
   rwa [A.actualCuspRadialClutchingData_eq] at h
 
 public noncomputable def cuspFillingTwoCoordinateChange (A : AnalyticData) :

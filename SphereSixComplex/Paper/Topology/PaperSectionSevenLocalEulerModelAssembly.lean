@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Paper.Topology.PaperActualCollarMappingTorusEuler
 public import SphereSixComplex.Paper.Topology.PaperCentralFamilyMayerVietorisEuler
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralFiberEuler
 
 /-!
 # Assembly of the actual Section 7 local Euler models
@@ -24,10 +25,14 @@ variable (A : AnalyticData)
 /-- Assemble every local Euler model from an explicitly supplied actual cusp retraction. -/
 public noncomputable def localEulerModelsOfCuspRetraction
     (R : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness) :
-    A.LocalEulerModels :=
-  LocalEulerModels.ofCuspCentralModelAndCollarMappingTorusModels A
+    A.LocalEulerModels := by
+  obtain ⟨hf, he⟩ := InfiniteA2Toric.Construction.CentralFiberHomology.finite_homology_and_euler_eq_two
+    A.starCuspWitness R
+  let e := actualLocalCuspCentralOrbitCoreHomeomorph A.starCuspWitness R
+  exact LocalEulerModels.ofCuspCentralModelAndCollarMappingTorusModels A
     R A.centralHomologyEulerModel
-      (actualCuspCentralFiberCellModel A.starCuspWitness R)
+      (hf.homeomorph e)
+      ((integralHomologyEulerCharacteristicSix_homeomorph e).symm.trans he)
       A.actualCollarCircleMappingTorusModel
 
 

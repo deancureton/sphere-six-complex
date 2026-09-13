@@ -98,36 +98,37 @@ public noncomputable def circleProductIdentityMappingTorusHomeomorph :
   circleProductRealMappingTorusHomeomorph.trans
     (realMappingTorusHomeomorph (Homeomorph.refl X))
 
-private theorem realMappingTorusHomeomorph_mk_zero (x : X) :
-    realMappingTorusHomeomorph (Homeomorph.refl X)
-        (Quotient.mk (realMappingTorusSetoid (Homeomorph.refl X)) ((0 : ℝ), x)) =
-      finiteBouquetMappingTorusFiberInclusion
-        (fun _ : Unit ↦ Homeomorph.refl X) x := by
-  let D := realMappingTorusClutchingData (Homeomorph.refl X)
-  change D.totalHomeomorphCircleMappingTorus (D.projection ((0 : unitInterval), x)) = _
-  let e : CircleMappingTorus (Homeomorph.refl X) ≃
-      RealMappingTorus (Homeomorph.refl X) :=
+public theorem realMappingTorusHomeomorph_intervalProjection
+    {X : Type} [TopologicalSpace X] (phi : X ≃ₜ X) (p : unitInterval × X) :
+    realMappingTorusHomeomorph phi (realMappingTorusIntervalProjection phi p) =
+      circleMappingTorusCylinderProjection phi p := by
+  let D := realMappingTorusClutchingData phi
+  let e : CircleMappingTorus phi ≃ RealMappingTorus phi :=
     Equiv.ofBijective D.circleToTotal D.circleToTotal_bijective
   apply e.injective
   change D.circleToTotal
-      (D.totalHomeomorphCircleMappingTorus (D.projection ((0 : unitInterval), x))) =
-    D.circleToTotal
-      (finiteBouquetMappingTorusFiberInclusion
-        (fun _ : Unit ↦ Homeomorph.refl X) x)
-  rw [show D.circleToTotal (D.totalHomeomorphCircleMappingTorus
-      (D.projection ((0 : unitInterval), x))) = D.projection ((0 : unitInterval), x) by
+      (D.totalHomeomorphCircleMappingTorus (D.projection p)) =
+    D.circleToTotal (circleMappingTorusCylinderProjection phi p)
+  rw [show D.circleToTotal
+      (D.totalHomeomorphCircleMappingTorus (D.projection p)) = D.projection p by
     exact D.totalHomeomorphCircleMappingTorus.symm_apply_apply _]
-  rfl
+  exact D.circleToTotal_mk p
+
+public theorem circleProductIdentityMappingTorusHomeomorph_interval
+    (t : unitInterval) (x : X) :
+    circleProductIdentityMappingTorusHomeomorph (((t : ℝ) : UnitAddCircle), x) =
+      circleMappingTorusCylinderProjection (Homeomorph.refl X) (t, x) := by
+  rw [circleProductIdentityMappingTorusHomeomorph, Homeomorph.trans_apply]
+  have h := circleProductRealMappingTorusHomeomorph_real (X := X) ((t : ℝ), x)
+  change circleProductRealMappingTorusHomeomorph (((t : ℝ) : UnitAddCircle), x) = _ at h
+  rw [h]
+  exact realMappingTorusHomeomorph_intervalProjection (Homeomorph.refl X) (t, x)
 
 public theorem circleProductIdentityMappingTorusHomeomorph_fiber (x : X) :
     circleProductIdentityMappingTorusHomeomorph (0, x) =
       finiteBouquetMappingTorusFiberInclusion
-        (fun _ : Unit ↦ Homeomorph.refl X) x := by
-  rw [circleProductIdentityMappingTorusHomeomorph, Homeomorph.trans_apply]
-  have h := circleProductRealMappingTorusHomeomorph_real (X := X) ((0 : ℝ), x)
-  change circleProductRealMappingTorusHomeomorph (0, x) = _ at h
-  rw [h]
-  exact realMappingTorusHomeomorph_mk_zero x
+        (fun _ : Unit ↦ Homeomorph.refl X) x :=
+  circleProductIdentityMappingTorusHomeomorph_interval 0 x
 
 public theorem circleProductIdentityMappingTorusHomeomorph_comp_fiberInclusion :
     (⟨circleProductIdentityMappingTorusHomeomorph,

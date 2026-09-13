@@ -16,6 +16,8 @@ open PositiveCircleCross CircleProductIdentityMappingTorus
 
 
 
+public def cuspMixedTorusIndex : Fin 3 → Fin 4 := ![1,2,3]
+
 public def cuspFillingPhaseSweep (A : AnalyticData) (i : Fin 2) :
     IntegralSingularHomology 1 (ActualLocalCuspFilling A.starCuspWitness) →+
       IntegralSingularHomology 2 (ActualLocalCuspFilling A.starCuspWitness) :=

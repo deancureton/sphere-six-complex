@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.HoneycombCorrectedPositiveCellAtlas
-public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralOrbitCellAtlasProof
+public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberCWConstruction
 
 @[expose] public section
 

@@ -61,27 +61,6 @@ public theorem continuous_closedPhaseCellMap
     (g := fun z : DenseTorus × constructedModel.Carrier ↦ constructedModel.torusAction z.1 z.2)
     (continuous_torusAction constructedModel) (hg.prodMk hp)
 
-public theorem isProperMap_closedPhaseCellMap
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    IsProperMap (closedPhaseCellMap W) := by
-  let _ : CompactSpace (constructedPositiveCentralCell W.localWitness.radius 0) :=
-    (surjective_cellSquareProjection W.localWitness.radius_pos 0).compactSpace
-      (continuous_cellSquareProjection W.localWitness.radius_pos 0)
-  let _ : T2Space (ActualLocalCuspFilling W) :=
-    SphereSixComplex.Geometry.AnalyticData.actualLocalCuspFilling_t2 W
-  let _ : T2Space (ActualLocalCuspCentralOrbitQuotient W) :=
-    (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
-  exact (continuous_closedPhaseCellMap W).isProperMap
-
-public theorem continuous_singletonPhaseCellMap
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    Continuous (singletonPhaseCellMap W) := by
-  have heq : singletonPhaseCellMap W = closedPhaseCellMap W ∘
-      (fun p : SingletonPhaseCell W.localWitness.radius ↦ (p.1.1, p.2)) := rfl
-  rw [heq]
-  exact (continuous_closedPhaseCellMap W).comp
-    ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)
-
 public def singletonPhaseImage
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     Set (ActualLocalCuspCentralOrbitQuotient W) :=
@@ -108,52 +87,6 @@ public theorem closedPhaseCellMap_mem_singletonImage_iff
     simpa [← h0] using hv
   · intro hp
     exact ⟨(⟨p.1, hp⟩, p.2), rfl⟩
-
-public def singletonPhasePreimageHomeomorph
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    SingletonPhaseCell W.localWitness.radius ≃ₜ
-      (closedPhaseCellMap W ⁻¹' singletonPhaseImage W) where
-  toFun p := ⟨(p.1.1, p.2),
-    (closedPhaseCellMap_mem_singletonImage_iff W _).mpr p.1.property⟩
-  invFun p := (⟨p.1.1,
-    (closedPhaseCellMap_mem_singletonImage_iff W _).mp p.property⟩, p.1.2)
-  left_inv _ := rfl
-  right_inv _ := rfl
-  continuous_toFun := by fun_prop
-  continuous_invFun := by fun_prop
-
-public def singletonPhaseMapToImage
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (p : SingletonPhaseCell W.localWitness.radius) :
-    singletonPhaseImage W :=
-  ⟨singletonPhaseCellMap W p, Set.mem_range_self p⟩
-
-public theorem isProperMap_singletonPhaseMapToImage
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    IsProperMap (singletonPhaseMapToImage W) := by
-  have heq : (singletonPhaseImage W).restrictPreimage
-      (closedPhaseCellMap W) ∘ singletonPhasePreimageHomeomorph W =
-      singletonPhaseMapToImage W := by
-    funext p
-    apply Subtype.ext
-    rfl
-  rw [← heq]
-  exact ((isProperMap_closedPhaseCellMap W).restrictPreimage
-    (singletonPhaseImage W)).comp
-      (singletonPhasePreimageHomeomorph W).isProperMap
-
-/-- The parametrized singleton-support image in the actual central quotient is a product with
-the effective compact two-torus, with a continuous inverse. -/
-public def singletonPhaseHomeomorph
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    SingletonPhaseCell W.localWitness.radius ≃ₜ
-      singletonPhaseImage W :=
-  (Equiv.ofBijective (singletonPhaseMapToImage W)
-    ⟨fun _ _ h ↦ injective_effectivePhaseCentralOrbit_prod W
-        (congrArg Subtype.val h),
-      fun ⟨_, p, hp⟩ ↦ ⟨p, Subtype.ext hp⟩⟩).toHomeomorphOfContinuousClosed
-    ((continuous_singletonPhaseCellMap W).subtype_mk _)
-    (isProperMap_singletonPhaseMapToImage W).isClosedMap
 
 end SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 

@@ -8,7 +8,6 @@ namespace SphereSixComplex.Geometry.InfiniteA2Toric
 open SphereSixComplex.Geometry.CuspCombinatorics
 namespace Construction
 
-
 public theorem correctedPlaneTile_mem_open_of_nonzero
     (v : ToricLattice) (i : Fin 6) (p : CellSquare)
     (hp : ∀ j, p.1 j ≠ 0) :
@@ -109,43 +108,6 @@ public theorem closedBallPositiveCellHomeomorph_support_iff
         x.1 ∈ Metric.ball 0 1 :=
   (finiteCell_support_singleton_iff W _).trans
     (correctedHexagonHomeomorph_mem_open_iff 0 x.1)
-
-public def ballPositiveSingletonHomeomorph
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    (Metric.ball (0 : Fin 2 → ℝ) 1) ≃ₜ
-      positiveSingletonStratum W.localWitness.radius where
-  toFun x := ⟨closedBallPositiveCellHomeomorph W
-      ⟨x.1, Metric.ball_subset_closedBall x.property⟩,
-    (closedBallPositiveCellHomeomorph_support_iff W _).mpr x.property⟩
-  invFun q := ⟨(closedBallPositiveCellHomeomorph W).symm q.1,
-    (closedBallPositiveCellHomeomorph_support_iff W _).mp (by
-      rw [(closedBallPositiveCellHomeomorph W).apply_symm_apply]
-      exact q.property)⟩
-  left_inv x := by
-    apply Subtype.ext
-    exact congrArg (fun q : Metric.closedBall (0 : Fin 2 → ℝ) 1 ↦ q.1)
-      ((closedBallPositiveCellHomeomorph W).symm_apply_apply
-        ⟨x.1, Metric.ball_subset_closedBall x.property⟩)
-  right_inv q := by
-    apply Subtype.ext
-    exact (closedBallPositiveCellHomeomorph W).apply_symm_apply q.1
-  continuous_toFun := by
-    apply Continuous.subtype_mk
-    exact (closedBallPositiveCellHomeomorph W).continuous.comp
-      (continuous_subtype_val.subtype_mk _)
-  continuous_invFun := by
-    apply Continuous.subtype_mk
-    exact continuous_subtype_val.comp
-      ((closedBallPositiveCellHomeomorph W).symm.continuous.comp continuous_subtype_val)
-
-/-- The full geometric singleton-support stratum is an open two-ball times the compact
-effective two-torus. -/
-public def actualSingletonBallPhaseHomeomorph
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    (Metric.ball (0 : Fin 2 → ℝ) 1) × (Fin 2 → Circle) ≃ₜ
-      actualSingletonStratum W :=
-  ((ballPositiveSingletonHomeomorph W).prodCongr (Homeomorph.refl _)).trans
-    (actualSingletonPhaseHomeomorph W)
 
 end Construction
 

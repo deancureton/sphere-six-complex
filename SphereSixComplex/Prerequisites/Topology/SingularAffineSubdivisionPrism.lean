@@ -864,5 +864,4 @@ public noncomputable def affineSingularSubdivisionHomotopy
           HomologicalComplex.id_f]
         exact affineSingularSubdivisionPrismComponent_identity_succ X n
 
-
 end SphereSixComplex

@@ -33,22 +33,6 @@ public theorem a2CyclicLinear_zero : a2CyclicLinear 0 = 0 := by
   ext i
   fin_cases i <;> simp [a2CyclicLinear]
 
-
-@[simp]
-public theorem a2CyclicLinear_apply_three (v : ToricLattice) :
-    a2CyclicLinear (a2CyclicLinear (a2CyclicLinear v)) = v := by
-  ext i
-  fin_cases i
-  · simp [a2CyclicLinear]
-    ring
-  · simp [a2CyclicLinear]
-
-
-
-
-
-
-
 /-- Cyclic permutation of the coordinates of a lower affine triangle. -/
 public def a2CyclicRawLower (z : RawCoordinates) : RawCoordinates :=
   ![z 2, z 0, z 1]
@@ -85,25 +69,6 @@ public def a2CyclicRaw (upper : Bool) : RawCoordinates ≃ RawCoordinates :=
 public def a2CyclicChartIndex (a : ChartIndex) : ChartIndex :=
   if a.1 then (true, a2CyclicLinear a.2 - e₁)
   else (false, a2CyclicLinear a.2)
-
-@[simp]
-public theorem a2CyclicChartIndex_apply_three (a : ChartIndex) :
-    a2CyclicChartIndex (a2CyclicChartIndex (a2CyclicChartIndex a)) = a := by
-  rcases a with ⟨upper, v⟩
-  cases upper
-  · apply Prod.ext
-    · simp [a2CyclicChartIndex]
-    · exact a2CyclicLinear_apply_three v
-  · apply Prod.ext
-    · simp [a2CyclicChartIndex]
-    · ext i
-      fin_cases i <;>
-        simp [a2CyclicChartIndex, a2CyclicLinear, e₁] <;> ring
-
-
-
-
-
 
 public theorem a2CyclicRawLower_lowerAxisZero (z : ℂ) :
     a2CyclicRawLower (lowerAxisZero z) = singleAxis 1 z := by
@@ -142,8 +107,6 @@ public theorem a2CyclicChartIndex_sq_upper_zero :
   · simp [a2CyclicChartIndex]
   · ext i
     fin_cases i <;> simp [a2CyclicChartIndex, a2CyclicLinear, e₁, e₂]
-
-
 
 public theorem a2CyclicRaw_transitionMatrix
     (a b : ChartIndex) (z : RawCoordinates) :
@@ -230,147 +193,6 @@ public theorem a2CyclicCarrier_inclusion (a : ChartIndex) (z : RawCoordinates) :
   apply (inclusion_eq_iff _ _ _ _).mpr
   refine ⟨(a2CyclicRaw_chartChange_source_iff b a w).mpr hchange.1, ?_⟩
   rw [← a2CyclicRaw_chartChange b a w, hchange.2]
-
-private theorem a2CyclicRaw_continuous (upper : Bool) :
-    Continuous (a2CyclicRaw upper) := by
-  cases upper
-  · change Continuous a2CyclicRawLower
-    apply continuous_pi
-    intro i
-    fin_cases i <;> simp [a2CyclicRawLower] <;> fun_prop
-  · change Continuous a2CyclicRawUpper
-    apply continuous_pi
-    intro i
-    fin_cases i <;> simp [a2CyclicRawUpper] <;> fun_prop
-
-public theorem a2CyclicCarrier_continuous : Continuous a2CyclicCarrier := by
-  rw [continuous_def]
-  intro s hs
-  rw [gluing.isOpen_iff]
-  intro a
-  let a' : ChartIndex := a
-  change IsOpen (inclusion a' ⁻¹' (a2CyclicCarrier ⁻¹' s))
-  have heq : inclusion a' ⁻¹' (a2CyclicCarrier ⁻¹' s) =
-      (inclusion (a2CyclicChartIndex a') ∘ a2CyclicRaw a'.1) ⁻¹' s := by
-    ext z
-    change a2CyclicCarrier (inclusion a' z) ∈ s ↔
-      inclusion (a2CyclicChartIndex a') (a2CyclicRaw a'.1 z) ∈ s
-    rw [a2CyclicCarrier_inclusion]
-  rw [heq]
-  exact hs.preimage ((inclusion_isOpenEmbedding _).continuous.comp
-    (a2CyclicRaw_continuous a'.1))
-
-@[simp]
-public theorem a2CyclicCarrier_apply_three (p : Carrier) :
-    a2CyclicCarrier (a2CyclicCarrier (a2CyclicCarrier p)) = p := by
-  obtain ⟨a, z, rfl⟩ := inclusion_jointly_surjective p
-  rw [a2CyclicCarrier_inclusion, a2CyclicCarrier_inclusion,
-    a2CyclicCarrier_inclusion, a2CyclicChartIndex_apply_three]
-  congr 1
-  rcases a with ⟨upper, v⟩
-  cases upper
-  · exact a2CyclicRawLower_apply_three z
-  · exact a2CyclicRawUpper_apply_three z
-
-/-- The order-three homeomorphism of the glued toric carrier. -/
-public noncomputable def a2CyclicCarrierHomeomorph : Carrier ≃ₜ Carrier where
-  toFun := a2CyclicCarrier
-  invFun := a2CyclicCarrier ∘ a2CyclicCarrier
-  left_inv := a2CyclicCarrier_apply_three
-  right_inv := a2CyclicCarrier_apply_three
-  continuous_toFun := a2CyclicCarrier_continuous
-  continuous_invFun := a2CyclicCarrier_continuous.comp a2CyclicCarrier_continuous
-
-/-- The second phase face, obtained by rotating the explicit zero-axis face. -/
-public def constructedCentralPhaseFaceOneCarrier (x : Fin 2 → ℝ) : Carrier :=
-  if x 0 ≤ 0 then
-    inclusion (false, 0) (singleAxis 1 (centralPhaseDiskLowerCoordinate x))
-  else
-    inclusion (true, -e₁) (singleAxis 1 (centralPhaseDiskUpperCoordinate x))
-
-/-- Carrier-level cyclic equivariance of the first explicit phase face. -/
-public theorem a2CyclicCarrier_constructedCentralPhaseFaceZeroCarrier
-    (x : Fin 2 → ℝ) :
-    a2CyclicCarrier (constructedCentralPhaseFaceZeroCarrier x) =
-      constructedCentralPhaseFaceOneCarrier x := by
-  by_cases hx : x 0 ≤ 0
-  · simp only [constructedCentralPhaseFaceZeroCarrier, constructedCentralPhaseFaceOneCarrier,
-      hx, ↓reduceIte]
-    rw [a2CyclicCarrier_inclusion, a2CyclicChartIndex_lower_zero]
-    exact congrArg (inclusion (false, 0))
-      (a2CyclicRawLower_lowerAxisZero (centralPhaseDiskLowerCoordinate x))
-  · simp only [constructedCentralPhaseFaceZeroCarrier, constructedCentralPhaseFaceOneCarrier,
-      hx, ↓reduceIte]
-    rw [a2CyclicCarrier_inclusion, a2CyclicChartIndex_upper_zero]
-    exact congrArg (inclusion (true, -e₁))
-      (a2CyclicRawUpper_upperAxisTwo (centralPhaseDiskUpperCoordinate x))
-
-/-- The third phase face, obtained by applying the carrier rotation twice. -/
-public def constructedCentralPhaseFaceTwoCarrier (x : Fin 2 → ℝ) : Carrier :=
-  if x 0 ≤ 0 then
-    inclusion (false, 0) (singleAxis 2 (centralPhaseDiskLowerCoordinate x))
-  else
-    inclusion (true, -e₂) (singleAxis 0 (centralPhaseDiskUpperCoordinate x))
-
-/-- Applying the carrier rotation twice transports the first face to the third face. -/
-public theorem a2CyclicCarrier_sq_constructedCentralPhaseFaceZeroCarrier
-    (x : Fin 2 → ℝ) :
-    a2CyclicCarrier (a2CyclicCarrier (constructedCentralPhaseFaceZeroCarrier x)) =
-      constructedCentralPhaseFaceTwoCarrier x := by
-  by_cases hx : x 0 ≤ 0
-  · simp only [constructedCentralPhaseFaceZeroCarrier, constructedCentralPhaseFaceTwoCarrier,
-      hx, ↓reduceIte]
-    rw [a2CyclicCarrier_inclusion, a2CyclicCarrier_inclusion,
-      a2CyclicChartIndex_lower_zero]
-    simpa [a2CyclicRaw] using congrArg (inclusion (false, 0))
-      (a2CyclicRawLower_sq_lowerAxisZero (centralPhaseDiskLowerCoordinate x))
-  · simp only [constructedCentralPhaseFaceZeroCarrier, constructedCentralPhaseFaceTwoCarrier,
-      hx, ↓reduceIte]
-    rw [a2CyclicCarrier_inclusion, a2CyclicCarrier_inclusion,
-      a2CyclicChartIndex_sq_upper_zero]
-    exact congrArg (inclusion (true, -e₂))
-      (a2CyclicRawUpper_sq_upperAxisTwo (centralPhaseDiskUpperCoordinate x))
-
-/-- Continuity of the second phase face follows by transport through the carrier homeomorphism. -/
-public theorem constructedCentralPhaseFaceOneCarrier_continuousOn_closedBall :
-    ContinuousOn constructedCentralPhaseFaceOneCarrier (Metric.closedBall 0 1) := by
-  have heq : a2CyclicCarrier ∘ constructedCentralPhaseFaceZeroCarrier =
-      constructedCentralPhaseFaceOneCarrier := by
-    funext x
-    exact a2CyclicCarrier_constructedCentralPhaseFaceZeroCarrier x
-  have h := a2CyclicCarrier_continuous.comp_continuousOn
-    constructedCentralPhaseFaceZeroCarrier_continuousOn_closedBall
-  rwa [heq] at h
-
-/-- Continuity of the third phase face follows by two cyclic transports. -/
-public theorem constructedCentralPhaseFaceTwoCarrier_continuousOn_closedBall :
-    ContinuousOn constructedCentralPhaseFaceTwoCarrier (Metric.closedBall 0 1) := by
-  have heq : a2CyclicCarrier ∘ a2CyclicCarrier ∘
-      constructedCentralPhaseFaceZeroCarrier = constructedCentralPhaseFaceTwoCarrier := by
-    funext x
-    exact a2CyclicCarrier_sq_constructedCentralPhaseFaceZeroCarrier x
-  have h := a2CyclicCarrier_continuous.comp_continuousOn
-    (a2CyclicCarrier_continuous.comp_continuousOn
-      constructedCentralPhaseFaceZeroCarrier_continuousOn_closedBall)
-  rwa [heq] at h
-
-/-- The second phase face has the same injective open-cell parametrization as the first. -/
-public theorem constructedCentralPhaseFaceOneCarrier_injOn :
-    Set.InjOn constructedCentralPhaseFaceOneCarrier (Metric.ball 0 1) := by
-  intro x hx y hy hxy
-  rw [← a2CyclicCarrier_constructedCentralPhaseFaceZeroCarrier,
-    ← a2CyclicCarrier_constructedCentralPhaseFaceZeroCarrier] at hxy
-  exact constructedCentralPhaseFaceZeroCarrier_injOn hx hy
-    (a2CyclicCarrierHomeomorph.injective hxy)
-
-/-- The third phase face has the same injective open-cell parametrization as the first. -/
-public theorem constructedCentralPhaseFaceTwoCarrier_injOn :
-    Set.InjOn constructedCentralPhaseFaceTwoCarrier (Metric.ball 0 1) := by
-  intro x hx y hy hxy
-  rw [← a2CyclicCarrier_sq_constructedCentralPhaseFaceZeroCarrier,
-    ← a2CyclicCarrier_sq_constructedCentralPhaseFaceZeroCarrier] at hxy
-  exact constructedCentralPhaseFaceZeroCarrier_injOn hx hy
-    (a2CyclicCarrierHomeomorph.injective (a2CyclicCarrierHomeomorph.injective hxy))
 
 end SphereSixComplex.Geometry.CuspCollar
 

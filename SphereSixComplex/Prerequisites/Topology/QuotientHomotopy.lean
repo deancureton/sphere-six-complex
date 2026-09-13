@@ -29,13 +29,6 @@ noncomputable def descendHomotopy (hq : IsQuotientMap q) {f g : C(Q, Y)}
   map_one_left x := (H.map_one_left _).trans
     (congrArg g (Function.surjInv_eq hq.surjective x))
 
-theorem descendHomotopy_apply (hq : IsQuotientMap q) {f g : C(Q, Y)}
-    (H : ContinuousMap.Homotopy (f.comp ⟨q, hq.continuous⟩) (g.comp ⟨q, hq.continuous⟩))
-    (h : ∀ t x y, q x = q y → H (t, x) = H (t, y))
-    (t : unitInterval) (x : X) :
-    hq.descendHomotopy H h (t, q x) = H (t, x) :=
-  h t _ x (Function.surjInv_eq hq.surjective (q x))
-
 end Topology.IsQuotientMap
 
 namespace Topology.IsQuotientMap

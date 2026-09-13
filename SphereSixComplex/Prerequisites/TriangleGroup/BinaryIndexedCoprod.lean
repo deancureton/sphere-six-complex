@@ -98,7 +98,6 @@ public theorem deltaToIndexed_comp_indexedToDelta :
 public theorem deltaIndexedEquiv_apply (g : Delta) : deltaIndexedEquiv g = deltaToIndexed g :=
   rfl
 
-
 /-- The canonical reduced-word type for the binary triangle group. -/
 public abbrev DeltaNormalWord := Monoid.CoprodI.Word DeltaFactor
 
@@ -109,7 +108,6 @@ public abbrev DeltaNormalWord := Monoid.CoprodI.Word DeltaFactor
 public theorem deltaNormalForm_prod (g : Delta) :
     (deltaNormalForm g).prod = deltaToIndexed g := by
   exact (Monoid.CoprodI.Word.equiv (M := DeltaFactor)).symm_apply_apply (deltaToIndexed g)
-
 
 namespace NeWord
 

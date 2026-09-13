@@ -1,5 +1,6 @@
 module
-public import SphereSixComplex.Paper.Topology.CuspMixedTorusCellularSweeps
+public import SphereSixComplex.Paper.Topology.CuspMixedPhaseTorus
+public import SphereSixComplex.Paper.Topology.CuspBoundaryMixedTori
 public import SphereSixComplex.Paper.Topology.ConstructedCuspPositivePhaseVanishing
 public import SphereSixComplex.Paper.Topology.CuspPhaseCentralCompatibility
 
@@ -43,42 +44,30 @@ open CuspCollar CuspStraighteningRetraction
 open InfiniteA2Toric CircleProductIdentityMappingTorus
 open StandardCircleHomologyLiftDegree
 
-local instance (A : AnalyticData) :
-    T2Space (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness) := by
-  let _ := actualLocalCuspFilling_t2 A.starCuspWitness
-  exact (actualLocalCuspCentralOrbitMap_isEmbedding A.starCuspWitness).t2Space
-
-public theorem cuspCellularGraphSweep_positiveProjection_zero
-    (A : AnalyticData) (i : Fin 2) (j k : Fin 3) :
+public theorem cuspBoundarySweep_positiveProjection_zero
+    (A : AnalyticData) (i : Fin 2) {x : Construction.CentralBoundary.Spheres} (p : Path x x) :
     let _ := (constructedCuspPolarData A.starCuspWitness).positiveDeckAction
     integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness)
       (A.cuspFillingPhaseSweep i
-        (loopHomologyClass (constructedCellularLoopInFilling A.starCuspWitness j k))) = 0 := by
+        (loopHomologyClass (p.map (Construction.CentralBoundary.toFilling A.starCuspWitness).continuous))) = 0 := by
   let _ := (constructedCuspPolarData A.starCuspWitness).positiveDeckAction
-  let _ := (constructedCentralCellAtlas A.starCuspWitness).cwComplex
-  let p := (constructedCentralCellularEdgePath A.starCuspWitness j).trans
-    (constructedCentralCellularEdgePath A.starCuspWitness k).symm
-  let inc : C(IntegralCWSkeletonLT (ActualLocalCuspCentralOrbitQuotient A.starCuspWitness) 2,
-      ActualLocalCuspFilling A.starCuspWitness) :=
-    ⟨fun x ↦ actualLocalCuspCentralOrbitMap A.starCuspWitness x.1,
-      (actualLocalCuspCentralOrbitMap_isEmbedding A.starCuspWitness).continuous.comp
-        continuous_subtype_val⟩
+  let inc := Construction.CentralBoundary.toFilling A.starCuspWitness
   let f := inc.comp (pathCircleMap p)
   have hf : integralSingularHomologyMap 1 f standardCircleHomologyGenerator =
-      loopHomologyClass (constructedCellularLoopInFilling A.starCuspWitness j k) := by
+      loopHomologyClass (p.map inc.continuous) := by
     rw [← integralSingularHomologyMap_comp_wang, pathCircleMap_homology,
       integralSingularHomologyMap_loopHomologyClass]
-    rfl
   dsimp only
   change integralSingularHomologyMap 2 _
     (integralSingularHomologyMap 2 (cuspFillingPeriodCircle A.starCuspWitness i)
       (normalizedCircleCross 1 _)) = 0
   rw [← hf]
   apply normalizedCircleSweep_projection_zero
-  intro t x
+  intro t z
   change constructedCuspPositiveProjection A.starCuspWitness
     (cuspFillingPeriodCircle A.starCuspWitness i
-      (t,actualLocalCuspCentralOrbitMap A.starCuspWitness (pathCircleMap p x).1)) = _
+      (t,actualLocalCuspCentralOrbitMap A.starCuspWitness
+        (Construction.CentralBoundary.homeomorph A.starCuspWitness (pathCircleMap p z)))) = _
   rw [cuspFillingPeriodCircle_centralOrbit]
   exact constructedCuspPositiveProjection_central_action A.starCuspWitness _ _
 
@@ -91,9 +80,12 @@ public theorem cuspMixedTorus_positiveProjection_zero
         standardTwoTorusHomologyGenerator) = 0 := by
   let _ := (constructedCuspPolarData A.starCuspWitness).positiveDeckAction
   dsimp only
-  rw [cuspMixedTorus_cellularSweeps, map_neg, map_add, map_zsmul, map_zsmul,
-    cuspCellularGraphSweep_positiveProjection_zero,
-    cuspCellularGraphSweep_positiveProjection_zero]
+  change integralSingularHomologyMap 2 (constructedCuspPositiveProjection A.starCuspWitness)
+    (integralSingularHomologyMap 2
+      (A.cuspFiniteFiberTorusToFilling (BoundaryMixedTori.index j))
+      standardTwoTorusHomologyGenerator) = 0
+  rw [BoundaryMixedTori.torus_homology, map_neg, map_add, map_zsmul, map_zsmul,
+    cuspBoundarySweep_positiveProjection_zero, cuspBoundarySweep_positiveProjection_zero]
   simp
 
 end SphereSixComplex.Geometry.AnalyticData

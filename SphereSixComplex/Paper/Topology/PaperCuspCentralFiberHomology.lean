@@ -1,93 +1,38 @@
 module
 
-public import SphereSixComplex.Paper.Topology.CuspToricCellularHomologyBridge
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralFiberHomologyCoordinates
+public import SphereSixComplex.Paper.Topology.ActualCuspCentralModelEquivalence
 public import SphereSixComplex.Paper.Topology.CuspDeckHomologyOne
 
-/-!
-# Integral homology of the cusp filling
+/-! # Integral homology of the cusp filling
 
-The standard periodic `A₂` toric CW decomposition has one nonzero cellular boundary: its three
-oriented edges all run between the two vertices.  Combining that established attaching-incidence
-calculation with the cellular-to-singular comparison computes the homology of the actual quotient
-central fibre.  The constructed strong deformation retraction then transports the calculation to
-the actual cusp filling.
-
-No specialization map from a nearby regular fibre is computed here.
+The radial cover of the central fiber computes its homology by Mayer–Vietoris.
+The cusp retraction transports these groups to the filling.
 -/
 
 @[expose] public section
-
 noncomputable section
-open SphereSixComplex.Geometry.InfiniteA2Toric
-
-open AlgebraicTopology
 
 namespace SphereSixComplex
-
 namespace Geometry.CuspCollar
 
-open SphereSixComplex.Geometry.CuspPeriodExpansion
-open SphereSixComplex.Geometry.InfiniteA2Toric
-open SphereSixComplex.Periods SphereSixComplex.TriangleGroup
+open SphereSixComplex.Periods
+open CuspPeriodExpansion InfiniteA2Toric
 
-private theorem standardA2ToricCellularBoundary_eq (n : ℕ)
-    (x : CentralFiber.Cell n.succ → ℤ) :
-    CentralFiber.boundary n x = cuspToricCellularBoundary n x := by
-  rcases n with _ | n
-  · change CentralFiber.edgeBoundary x = cuspToricCellularBoundaryOne x
-    funext i
-    fin_cases i <;>
-      simp [CentralFiber.edgeBoundary, cuspToricCellularBoundaryOne]
-  · rfl
-
-/-- For the standard periodic `A₂` toric decomposition, the cellular attaching maps have the
-incidence formula encoded by `cuspToricCellularBoundary`: the three oriented one-cells run from
-the first vertex to the second, and every higher cellular boundary is zero. -/
-public theorem centralFiber_cellularBoundary_eq
-    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
-    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
-    (W : ActualPuncturedCuspCollarWitness N M)
-    (R : ActualLocalCuspCentralFiberRetractionData W) :
-    let C := centralFiberCWModel W R
-    let _ := C.topology
-    let _ := C.cwComplex
-    ∀ (n : ℕ) (x : CentralFiber.Cell n.succ → ℤ),
-      C.integralCellularChainModel.chainComplex.d n.succ n
-          (labelledA2CellBasis C.cellEquiv C.integralCellularChainModel n.succ x) =
-        labelledA2CellBasis C.cellEquiv C.integralCellularChainModel n
-          (cuspToricCellularBoundary n x) := by
-  let T := centralFiberCellularModel W R
-  let C := T.decomposition
-  let _ := C.topology
-  let _ := C.cwComplex
-  dsimp only
-  intro n x
-  change C.integralCellularChainModel.chainComplex.d n.succ n
-      (labelledA2CellBasis C.cellEquiv C.integralCellularChainModel n.succ x) =
-    labelledA2CellBasis C.cellEquiv C.integralCellularChainModel n
-      (cuspToricCellularBoundary n x)
-  rw [← standardA2ToricCellularBoundary_eq]
-  change C.integralCellularChainModel.chainComplex.d n.succ n
-      (C.labelledCellBasis n.succ x) =
-    C.labelledCellBasis n (CentralFiber.boundary n x)
-  exact T.boundary_eq n x
-
-
-/-- The actual quotient cusp central fibre has second integral homology `ℤ⁴`. -/
-public noncomputable def actualCuspCentralFiberHomologyTwoEquiv
+public def actualCuspCentralFiberHomologyTwoEquiv
     {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
     (W : ActualPuncturedCuspCollarWitness N M)
     (R : ActualLocalCuspCentralFiberRetractionData W) :
     IntegralSingularHomology 2 (R.quotientCentralFiber W) ≃+ (Fin 4 → ℤ) := by
-  let C := centralFiberCWModel W R
-  letI := C.topology
-  exact (integralSingularHomologyEquivOfHomotopyEquiv 2 C.homotopyEquiv).trans
-    (C.carrierIntegralSingularHomologyTwoEquiv
-      (centralFiber_cellularBoundary_eq W R))
-
-
-
+  let W₀ := Classical.choice
+    (QuantitativeRegions.BoundedPolydiscRegions.exists_actualLocalCuspQuotientWitness
+      N Construction.constructedModel)
+  let W₁ := Classical.choice (exists_actualPuncturedCuspCollarWitness W₀)
+  exact (integralSingularHomologyEquiv 2
+    ((actualLocalCuspCentralOrbitCoreHomeomorph W R).symm.trans
+      (centralOrbitModelHomeomorph W₁ W).symm)).trans
+        (Construction.CentralFiberHomology.homologyTwoEquiv W₁)
 
 /-- The actual local cusp filling has second integral homology `ℤ⁴`. -/
 public noncomputable def actualLocalCuspFillingHomologyTwoEquiv

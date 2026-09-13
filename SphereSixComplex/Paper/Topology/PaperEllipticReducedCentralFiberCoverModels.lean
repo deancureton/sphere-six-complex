@@ -27,8 +27,10 @@ circle mapping-torus models. -/
 public noncomputable def ofCuspCentralModelAndCollarMappingTorusModels
     (cuspRetraction : ActualLocalCuspCentralFiberRetractionData A.starCuspWitness)
     (centralModel : CentralHomologyEulerModel A.openEmbeddingStarData.central)
-    (cuspCells : CuspToricCellModel
+    (cuspHomologyFinite : IntegralHomologyFiniteSix
       (cuspRetraction.quotientCentralFiber A.starCuspWitness))
+    (cuspEuler_eq_two : integralHomologyEulerCharacteristicSix
+      (cuspRetraction.quotientCentralFiber A.starCuspWitness) = 2)
     (collarMappingTorus : ∀ i : Fin 3, FourTorusCircleMappingTorusModel
       (A.openEmbeddingStarData.collarSource i)) :
     A.LocalEulerModels where
@@ -36,7 +38,8 @@ public noncomputable def ofCuspCentralModelAndCollarMappingTorusModels
   orderThreeRadialChart := orderThreeSelectedAffineRadialCompatibility A
   orderFourRadialChart := orderFourSelectedAffineRadialCompatibility A
   centralModel := centralModel
-  cuspCells := cuspCells
+  cuspHomologyFinite := cuspHomologyFinite
+  cuspEuler_eq_two := cuspEuler_eq_two
   collarModel := collarMappingTorus
 
 end Geometry.AnalyticData.LocalEulerModels

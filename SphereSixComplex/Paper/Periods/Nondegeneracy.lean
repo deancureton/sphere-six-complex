@@ -31,8 +31,6 @@ public structure SetupInequalities (x : Parameters) : Prop where
     funext i
     fin_cases i <;> simp [smul_add, mul_smul]
 
-
-
 @[simp]
 public theorem periodRealLinear_apply_zero (x : Parameters) (a : Fin 4 → ℝ) :
     periodRealLinear x a 0 =
@@ -83,7 +81,6 @@ public theorem periodRealLinear_injective (x : Parameters) (h : SetupInequalitie
 public theorem periodRealLinear_finrank_eq :
     Module.finrank ℝ (Fin 4 → ℝ) = Module.finrank ℝ (Fin 2 → ℂ) := by
   simp [Module.finrank_pi_fintype, Complex.finrank_real_complex]
-
 
 @[expose] public noncomputable def periodRealLinearEquiv (x : Parameters) (h : SetupInequalities x) :
     (Fin 4 → ℝ) ≃ₗ[ℝ] (Fin 2 → ℂ) :=

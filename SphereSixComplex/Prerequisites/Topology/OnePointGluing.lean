@@ -22,11 +22,5 @@ def onePointOfInv (f g : C(K, X)) (h : ∀ z ≠ 0, f z = g z⁻¹) : C(OnePoint
       exact isCompact_singleton.compl_mem_cocompact] with z hz
     exact (h z hz).symm)
 
-@[simp] theorem onePointOfInv_coe (f g : C(K, X)) (h : ∀ z ≠ 0, f z = g z⁻¹) (z : K) :
-    onePointOfInv f g h z = f z := rfl
-
-@[simp] theorem onePointOfInv_infty (f g : C(K, X)) (h : ∀ z ≠ 0, f z = g z⁻¹) :
-    onePointOfInv f g h ∞ = g 0 := rfl
-
 end ContinuousMap
 end

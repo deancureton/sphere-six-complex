@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveSingletonBall
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.BoundaryDeckAttachment
 public import SphereSixComplex.Prerequisites.Topology.CompactAdjunction
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundaryModel
 
@@ -66,7 +66,6 @@ public theorem zeroSupport_mem_closedPhaseImage
   change Quotient.mk _ (effectivePhaseCentralPoint W k q) = _
   rw [heq]
 
-
 public theorem closedPhaseCellMap_surjective
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     Function.Surjective (closedPhaseCellMap W) := by
@@ -102,28 +101,45 @@ public def centralDiskMap
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (p : (Metric.closedBall (0 : Fin 2 → ℝ) 1) × (Fin 2 → Circle)) :
     ActualLocalCuspCentralOrbitQuotient W :=
-  closedPhaseCellMap W (closedBallPositiveCellHomeomorph W p.1, p.2)
+  closedPhaseCellMap W (closedBallPositiveCellHomeomorph W p.1,
+    actualBoundaryGauge (N := N) (correctedHexagonHomeomorph 0 p.1.1) * p.2)
+
+@[simp] public theorem centralDiskMap_one
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (p : Metric.closedBall (0 : Fin 2 → ℝ) 1) :
+    centralDiskMap W (p, 1) = boundaryCorrectedBallOrbit W p := by
+  change effectivePhaseCentralOrbit W (_ * 1) _ = _
+  rw [mul_one]
+  rfl
 
 public theorem continuous_centralDiskMap
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    Continuous (centralDiskMap W) :=
-  (continuous_closedPhaseCellMap W).comp
-    (((closedBallPositiveCellHomeomorph W).continuous.comp continuous_fst).prodMk continuous_snd)
+    Continuous (centralDiskMap W) := by
+  have hg : Continuous (fun p : Metric.closedBall (0 : Fin 2 → ℝ) 1 × (Fin 2 → Circle) ↦
+      actualBoundaryGauge (N := N) (correctedHexagonHomeomorph 0 p.1.1)) :=
+    (continuous_boundaryCompactGauge _ _).comp
+      ((correctedHexagonHomeomorph 0).continuous.comp
+        (continuous_subtype_val.comp continuous_fst))
+  exact (continuous_closedPhaseCellMap W).comp
+    (((closedBallPositiveCellHomeomorph W).continuous.comp continuous_fst).prodMk
+      (hg.mul continuous_snd))
 
 public theorem centralDiskMap_surjective
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     Function.Surjective (centralDiskMap W) := by
   intro x
   obtain ⟨⟨q, k⟩, rfl⟩ := closedPhaseCellMap_surjective W x
-  exact ⟨((closedBallPositiveCellHomeomorph W).symm q, k), by
-    simp [centralDiskMap]⟩
+  let p := (closedBallPositiveCellHomeomorph W).symm q
+  refine ⟨(p, (actualBoundaryGauge (N := N) (correctedHexagonHomeomorph 0 p.1))⁻¹ * k), ?_⟩
+  simp [centralDiskMap, p]
 
 public theorem centralDiskMap_mem_boundary_iff
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (p : (Metric.closedBall (0 : Fin 2 → ℝ) 1) × (Fin 2 → Circle)) :
     centralDiskMap W p ∈ centralBoundary W ↔ ‖p.1.1‖ = 1 := by
   have h := (closedPhaseCellMap_mem_singletonImage_iff W
-    (closedBallPositiveCellHomeomorph W p.1, p.2)).trans
+    (closedBallPositiveCellHomeomorph W p.1,
+      actualBoundaryGauge (N := N) (correctedHexagonHomeomorph 0 p.1.1) * p.2)).trans
     (closedBallPositiveCellHomeomorph_support_iff W p.1)
   change ¬ closedPhaseCellMap W _ ∈ singletonPhaseImage W ↔ _
   rw [h, Metric.mem_ball, dist_zero_right, not_lt]
@@ -146,12 +162,18 @@ public theorem centralDiskMap_injOn_interior
     (closedBallPositiveCellHomeomorph_support_iff W q.1).mpr
       (by simpa only [Metric.mem_ball, dist_zero_right] using hq)
   have h := injective_effectivePhaseCentralOrbit_prod W
-    (a₁ := (⟨closedBallPositiveCellHomeomorph W p.1, hp'⟩, p.2))
-    (a₂ := (⟨closedBallPositiveCellHomeomorph W q.1, hq'⟩, q.2)) hpq
-  apply Prod.ext
-  · exact (closedBallPositiveCellHomeomorph W).injective
-      (congrArg (fun x ↦ x.1.1) h)
-  · exact congrArg (fun x : positiveSingletonStratum W.localWitness.radius × (Fin 2 → Circle) ↦ x.2) h
+    (a₁ := (⟨closedBallPositiveCellHomeomorph W p.1, hp'⟩,
+      actualBoundaryGauge (N := N) (correctedHexagonHomeomorph 0 p.1.1) * p.2))
+    (a₂ := (⟨closedBallPositiveCellHomeomorph W q.1, hq'⟩,
+      actualBoundaryGauge (N := N) (correctedHexagonHomeomorph 0 q.1.1) * q.2)) hpq
+  have hb : p.1 = q.1 := (closedBallPositiveCellHomeomorph W).injective
+    (congrArg (fun x ↦ x.1.1) h)
+  apply Prod.ext hb
+  have hk := congrArg
+    (fun x : positiveSingletonStratum W.localWitness.radius × (Fin 2 → Circle) ↦ x.2) h
+  change _ * p.2 = _ * q.2 at hk
+  rw [hb] at hk
+  exact mul_left_cancel hk
 
 public theorem centralBoundary_eq_image
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
@@ -234,21 +256,6 @@ public def centralAttachmentHomeomorph
     (actualLocalCuspCentralOrbitMap_isEmbedding W).t2Space
   unfold centralAttachmentHomeomorph
   exact ContinuousMap.adjunctionHomeomorphOfPreimage_inr _ _ _ _ _ _ _ _ _ _
-
-/-- The attaching map expressed in the three-sphere boundary model. -/
-public def sphereAttachingMap
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (p : {p : (Metric.closedBall (0 : Fin 2 → ℝ) 1) × (Fin 2 → Circle) |
-      ‖p.1.1‖ = 1}) : CentralBoundary.Spheres :=
-  (CentralBoundary.homeomorph W).symm (centralAttachingMap W p)
-
-/-- The cusp central fiber is a disk-times-torus attached to three spheres sharing two poles. -/
-public def centralFiberAttachmentHomeomorph
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
-    AdjunctionSpace {p : (Metric.closedBall (0 : Fin 2 → ℝ) 1) × (Fin 2 → Circle) |
-      ‖p.1.1‖ = 1} (sphereAttachingMap W) ≃ₜ ActualLocalCuspCentralOrbitQuotient W :=
-  (AdjunctionSpace.congrRight _ (centralAttachingMap W)
-    (CentralBoundary.homeomorph W).symm).symm.trans (centralAttachmentHomeomorph W)
 
 end SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 end

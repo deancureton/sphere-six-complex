@@ -52,7 +52,6 @@ public def localFanShearEquiv (M : Model) (r : ℝ) (lambda : ParameterLattice) 
       M.t (Additive.toMul (M.fanShear lambda) p) ∈ Metric.ball 0 r
     rw [M.fanShear_preserves_t]
 
-
 @[simp]
 public theorem localFanShearEquiv_coe
     (M : Model) (r : ℝ) (lambda : ParameterLattice) (p : localCarrier M r) :
@@ -215,7 +214,6 @@ public theorem psiMap_holomorphic (lambda : ParameterLattice) :
 public def IsFree : Prop :=
   ∀ lambda (p : localCarrier M r), C.psiMap lambda p = p → lambda = 0
 
-
 /-- The local algebraic action data obtained from the restricted fan and phase actions. -/
 public def toCuspActionData :
     CuspActionData (localCarrier M r) Phase where
@@ -233,7 +231,6 @@ public def toCuspActionData :
   shear_phase_commute lambda c p := by
     apply Subtype.ext
     exact CuspToricPhaseAction.ToricModel.fanShear_phase_commute M lambda c p
-
 
 @[simp]
 public theorem psiMap_eq_generic
@@ -296,7 +293,6 @@ public theorem quotient_isQuotientCoveringMap (F : C.IsFree (M := M))
     exact (C.psiMap_eq_generic lambda p).symm
   · intro K L hK hL
     simpa only [← C.psiMap_eq_generic] using H K L hK hL
-
 
 /-- The local cusp quotient is a complex manifold once the same two fixed-point estimates and
 compact-overlap estimate used in the global formulation are supplied on the restricted carrier. -/

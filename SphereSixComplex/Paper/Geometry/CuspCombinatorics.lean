@@ -20,20 +20,6 @@ public abbrev ToricLattice := Fin 2 → ℤ
 
 @[expose] public def e₂ : ToricLattice := ![0, 1]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @[simp]
 public theorem e₁_one : e₁ 1 = 0 :=
   rfl
