@@ -94,7 +94,6 @@ public import SphereSixComplex.Paper.Periods.Functions
 public import SphereSixComplex.Paper.Periods.Domain
 public import SphereSixComplex.Paper.Periods.EstablishedFuchsianTorsorDescent
 public import SphereSixComplex.Paper.Periods.FuchsianModularLift
-public import SphereSixComplex.Paper.Periods.EstablishedOrbifoldAffineTorsorAnalyticDescent
 public import SphereSixComplex.Paper.Periods.EstablishedOrbifoldAffineTorsorAnalyticDescentProof
 public import SphereSixComplex.Paper.Periods.EstablishedOrbifoldAffineTorsorDescent
 public import SphereSixComplex.Paper.Periods.FuchsianModularLift.CuspBounds

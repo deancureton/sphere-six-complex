@@ -34,18 +34,6 @@ multipliers to be nowhere zero.  The parabolic relation says the multiplier syst
 the cusp generator, so `frameZero` is invariant there; this is what makes "bounded at the cusp"
 a meaningful normalization. -/
 
-/-- The parabolic substitution is a translation on every fibre: its linear part is one. -/
-public theorem affineCusp_sub (z : UpperHalfPlane) (u v : ℂ) :
-    P.affineCusp z u - P.affineCusp z v = u - v := by
-  have hu := P.cuspNormalize_equivariant z u
-  have hv := P.cuspNormalize_equivariant z v
-  have hsub := P.cuspNormalize_sub (fuchsianSourceAction g₀ • z)
-    (P.affineCusp z u) (P.affineCusp z v)
-  rw [hu, hv] at hsub
-  have h := P.cuspNormalize_sub z u v
-  linear_combination h - hsub
-
-
 /-- The multiplier system is trivial on the parabolic generator. -/
 public theorem linearOne_mul_linearTwo_cusp (z : UpperHalfPlane) :
     P.linearOne (fuchsianSourceAction g₂ • z) * P.linearTwo z = 1 := by

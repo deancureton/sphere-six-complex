@@ -14,6 +14,8 @@ collar of the concrete four-piece star.
 open CategoryTheory TopologicalSpace Topology
 open scoped ContDiff Manifold
 
+open Filter
+
 namespace SphereSixComplex.Geometry.CuspCollarPairProperness
 
 open Set SphereSixComplex.Periods SphereSixComplex.TriangleGroup
@@ -366,16 +368,6 @@ public theorem puncturedLocalCuspRadiusBand_isCompact
     puncturedLocalCuspRadiusBand_image W a b hb]
   exact cuspBandCubeToGlobal_range_isCompact W a b ha hb
 
-public theorem modularCuspQ_lift
-    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
-    {N : NormalizedFuchsianCuspCoordinate E D}
-    (s : ℂ) (hs : s ∈ cuspHalfPlane N.height) :
-    modularCuspQ ((assembledFuchsianPeriodFunctions E D).tau (N.lift s)) =
-      cuspQ s := by
-  unfold modularCuspQ Function.Periodic.qParam cuspQ
-  rw [N.lift_tau s hs]
-  congr 1
-  norm_num
 
 /-- Compact subsets of the global family stay a positive normalized cusp radius away from the
 completed central end. -/
@@ -387,112 +379,31 @@ public theorem additiveCuspRadius_compact_central_lowerTrap
       ∃ a : ℝ, 0 < a ∧ ∀ p : additiveCuspRadiusCover W.localWitness.radius,
         additiveCuspCoverToGlobal W p ∈ K → a ≤ ‖cuspQ p.1.2‖ := by
   intro K hK
-  let J := Classical.choice ExactNormalizedModularJUniformization.nonempty
-  let Cusp := J.cusp
   have hcoordCompact : IsCompact
       ((fun y ↦ ‖orbifoldCoordinate (assembledFuchsianPeriodFunctions E D) y‖) '' K) :=
     hK.image (continuous_norm.comp (continuous_orbifoldCoordinate _))
   obtain ⟨C, hC⟩ := hcoordCompact.bddAbove
-  let C₁ := max C 0 + 1
-  have hC₁pos : 0 < C₁ := by dsimp only [C₁]; linarith [le_max_right C 0]
-  have hC₁bound : ∀ y ∈ K,
-      ‖orbifoldCoordinate (assembledFuchsianPeriodFunctions E D) y‖ ≤ C₁ := by
-    intro y hy
-    exact (hC ⟨_, hy, rfl⟩).trans (by
-      dsimp only [C₁]
-      linarith [le_max_left C 0])
-  let rho := Cusp.cuspRadius / 2
-  have hrho_pos : 0 < rho := div_pos Cusp.cuspRadius_pos (by norm_num)
-  have hrho_lt : rho < Cusp.cuspRadius := by
-    dsimp only [rho]
-    linarith [Cusp.cuspRadius_pos]
-  have hunitContinuous : ContinuousOn Cusp.cuspUnit (Metric.closedBall (0 : ℂ) rho) := by
-    intro q hq
-    exact (Cusp.cuspUnit_holomorphic q (by
-      rw [mem_ball_zero_iff]
-      exact (mem_closedBall_zero_iff.mp hq).trans_lt hrho_lt)).continuousAt.continuousWithinAt
-  obtain ⟨A, hA⟩ := (ProperSpace.isCompact_closedBall (0 : ℂ) rho)
-    |>.exists_bound_of_continuousOn hunitContinuous
-  let A₁ := max A 0 + 1
-  have hA₁pos : 0 < A₁ := by dsimp only [A₁]; linarith [le_max_right A 0]
-  have hA₁bound : ∀ q ∈ Metric.closedBall (0 : ℂ) rho,
-      ‖Cusp.cuspUnit q‖ ≤ A₁ := by
-    intro q hq
-    exact (hA q hq).trans (by
-      dsimp only [A₁]
-      linarith [le_max_left A 0])
-  have hevent : ∀ᶠ z in upperHalfPlaneAtInfinity,
-      (normalizedModularJCoordinate z)⁻¹ =
-          modularCuspQ z * Cusp.cuspUnit (modularCuspQ z) ∧
-        normalizedModularJCoordinate z ≠ 0 := by
-    filter_upwards [Cusp.reciprocal_factorization,
-      Cusp.coordinate_eventually_ne_zero] with z hfactor hne
-    exact ⟨hfactor, hne⟩
-  rw [upperHalfPlaneAtInfinity, Filter.eventually_comap] at hevent
-  obtain ⟨H, hH⟩ := Filter.eventually_atTop.1 hevent
-  let deltaHeight := Real.exp (-2 * Real.pi * H)
-  have hdeltaHeight_pos : 0 < deltaHeight := Real.exp_pos _
-  let delta := min deltaHeight rho
-  have hdelta_pos : 0 < delta := lt_min hdeltaHeight_pos hrho_pos
-  let inverseBound := (C₁ * A₁)⁻¹
-  have hinverseBound_pos : 0 < inverseBound := inv_pos.mpr (mul_pos hC₁pos hA₁pos)
-  refine ⟨min delta inverseBound, lt_min hdelta_pos hinverseBound_pos, ?_⟩
+  have hevent := (Classical.choice ExactNormalizedModularJUniformization.nonempty).cusp
+    |>.norm_coordinate_tendsto_atTop |>.eventually (eventually_gt_atTop C)
+  rw [upperHalfPlaneAtInfinity, Filter.eventually_comap, Filter.eventually_atTop] at hevent
+  obtain ⟨H, hH⟩ := hevent
+  refine ⟨Real.exp (-2 * Real.pi * H), Real.exp_pos _, ?_⟩
   intro p hpK
   let z := (assembledFuchsianPeriodFunctions E D).tau (N.lift p.1.2)
   have hs := additiveCuspRadiusCover_halfPlane W.localWitness.radius_le p
-  have hqz : modularCuspQ z = cuspQ p.1.2 := modularCuspQ_lift p.1.2 hs
-  have hJbound : ‖normalizedModularJCoordinate z‖ ≤ C₁ := by
+  have hJbound : ‖normalizedModularJCoordinate z‖ ≤ C := by
     rw [← orbifoldCoordinate_additiveCover W p]
-    exact hC₁bound _ hpK
-  by_cases hlarge : delta ≤ ‖cuspQ p.1.2‖
-  · exact (min_le_left delta inverseBound).trans hlarge
-  · have hqdelta : ‖cuspQ p.1.2‖ < delta := lt_of_not_ge hlarge
-    have hqheight : ‖cuspQ p.1.2‖ < deltaHeight :=
-      hqdelta.trans_le (min_le_left deltaHeight rho)
-    have hheight : H ≤ z.im := by
-      have hexp : Real.exp (-2 * Real.pi * p.1.2.im) <
-          Real.exp (-2 * Real.pi * H) := by
-        rw [← norm_cuspQ]
-        exact hqheight
-      have hlinear := Real.exp_lt_exp.mp hexp
-      have hsim : z.im = p.1.2.im := by
-        change (((assembledFuchsianPeriodFunctions E D).tau
-          (N.lift p.1.2) : UpperHalfPlane) : ℂ).im = p.1.2.im
-        rw [N.lift_tau p.1.2 hs]
-      rw [hsim]
-      nlinarith [Real.pi_pos]
-    obtain ⟨hfactor, hJne⟩ := hH z.im hheight z rfl
-    have hqball : modularCuspQ z ∈ Metric.closedBall (0 : ℂ) rho := by
-      rw [mem_closedBall_zero_iff, hqz]
-      exact hqdelta.le.trans (min_le_right deltaHeight rho)
-    have hunitBound : ‖Cusp.cuspUnit (modularCuspQ z)‖ ≤ A₁ :=
-      hA₁bound _ hqball
-    have hunitBound' : ‖Cusp.cuspUnit (cuspQ p.1.2)‖ ≤ A₁ := by
-      rw [← hqz]
-      exact hunitBound
-    have hproduct : 1 = normalizedModularJCoordinate z *
-        modularCuspQ z * Cusp.cuspUnit (modularCuspQ z) := by
-      calc
-        1 = normalizedModularJCoordinate z *
-            (normalizedModularJCoordinate z)⁻¹ :=
-          (mul_inv_cancel₀ hJne).symm
-        _ = normalizedModularJCoordinate z *
-            (modularCuspQ z * Cusp.cuspUnit (modularCuspQ z)) := by rw [hfactor]
-        _ = _ := by ring
-    have hnormProduct := congrArg norm hproduct
-    simp only [norm_one, norm_mul] at hnormProduct
-    have hboundProduct : 1 ≤ C₁ * ‖cuspQ p.1.2‖ * A₁ := by
-      calc
-        1 = ‖normalizedModularJCoordinate z‖ * ‖cuspQ p.1.2‖ *
-            ‖Cusp.cuspUnit (cuspQ p.1.2)‖ := by
-          rw [hqz] at hnormProduct
-          exact hnormProduct
-        _ ≤ C₁ * ‖cuspQ p.1.2‖ * A₁ := by gcongr
-    have hinvle : inverseBound ≤ ‖cuspQ p.1.2‖ := by
-      dsimp only [inverseBound]
-      rw [inv_le_iff_one_le_mul₀' (mul_pos hC₁pos hA₁pos)]
-      simpa only [mul_assoc, mul_comm, mul_left_comm] using hboundProduct
-    exact (min_le_right delta inverseBound).trans hinvle
+    exact hC ⟨_, hpK, rfl⟩
+  have hheight : z.im < H := lt_of_not_ge fun hz ↦
+    (not_lt_of_ge hJbound) (hH z.im hz z rfl)
+  have hsim : z.im = p.1.2.im := by
+    change (((assembledFuchsianPeriodFunctions E D).tau
+      (N.lift p.1.2) : UpperHalfPlane) : ℂ).im = p.1.2.im
+    rw [N.lift_tau p.1.2 hs]
+  rw [hsim] at hheight
+  rw [norm_cuspQ]
+  apply Real.exp_le_exp.mpr
+  nlinarith [Real.pi_pos]
 
 public theorem puncturedLocalCuspRadius_compact_central_lowerTrap
     {E : FuchsianModularLift} {D : FuchsianPeriodData E}

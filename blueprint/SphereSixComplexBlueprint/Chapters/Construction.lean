@@ -175,7 +175,7 @@ two-chart frame for the pulled-back $`\mathcal O(-1)` bundle, including its elli
 factorization. The modular uniformization and frame constructions are proved results.
 :::
 
-:::theorem "fuchsian-mu-torsor-descent" (parent := "fuchsian-modular-neg-one-frame") (lean := "SphereSixComplex.Periods.OrbifoldAffineDescentData.HasAcyclicProjectiveLineFrame, SphereSixComplex.Periods.OrbifoldAffineDescentData.hasCuspBoundedSection, SphereSixComplex.Periods.FuchsianAffineDescent.muDescentData")
+:::theorem "fuchsian-mu-torsor-descent" (parent := "fuchsian-modular-neg-one-frame") (lean := "SphereSixComplex.Periods.OrbifoldAffineDescentData.hasCuspBoundedSection_of_standard_transition, SphereSixComplex.Periods.FuchsianAffineDescent.muDescentData")
 The affine $`\mathcal O(-1)` torsor has a global holomorphic section $`\mu` with both generator
 laws and the required cusp bound. The standard-transition splitting theorem supplies this section
 directly from the modular frame.

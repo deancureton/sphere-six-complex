@@ -6,7 +6,8 @@ public import SphereSixComplex.Paper.Geometry.EllipticVaryingFamilyQuotient
 # Real-period product coordinates for the elliptic family
 
 The canonical real period basis gives a product trivialization of the moving vector cover and
-torus family. Explicit inverse coordinates prove joint continuity of the inverse period map.
+torus family. Continuity of inversion on linear equivalences gives joint continuity of the inverse
+period map.
 -/
 
 namespace SphereSixComplex.Geometry.RealPeriodTrivialization
@@ -30,126 +31,27 @@ noncomputable section
 
 variable {U : TriangleUniformization} (F : PeriodFunctions U)
 
-/-- The determinant of the imaginary two-by-two system which recovers the first two real period
-coordinates. -/
-@[expose] public def periodCoordinateDenominator (x : PeriodDomain) : ℝ :=
-  6 * x.1.mu.im ^ 2 - x.1.tau.im * x.1.beta.im
-
-public theorem periodCoordinateDenominator_pos (x : PeriodDomain) :
-    0 < periodCoordinateDenominator x := by
-  have ht : x.1.tau.im ≠ 0 := ne_of_gt x.2.tau_im_pos
-  have hmul : x.1.tau.im *
-      (x.1.beta.im - 6 * x.1.mu.im ^ 2 / x.1.tau.im) < 0 :=
-    mul_neg_of_pos_of_neg x.2.tau_im_pos x.2.schur_im_neg
-  rw [periodCoordinateDenominator]
-  field_simp [ht] at hmul
-  nlinarith
-
-/-- Explicit inverse real-period coordinates. -/
-@[expose] public def explicitPeriodCoordinates (x : PeriodDomain)
-    (v : ComplexTwoSpace) : RealPeriods :=
-  let d := periodCoordinateDenominator x
-  let a₀ := (x.1.mu.im * (v 0).im - x.1.tau.im * (v 1).im) / d
-  let a₁ := (-x.1.beta.im * (v 0).im + 6 * x.1.mu.im * (v 1).im) / d
-  ![a₀, a₁,
-    (v 0).re - 6 * a₀ * x.1.mu.re - a₁ * x.1.tau.re,
-    (v 1).re - a₀ * x.1.beta.re - a₁ * x.1.mu.re]
-
-/-- The explicit formula reconstructs the supplied vector in the real period basis. -/
-public theorem periodRealLinear_explicitPeriodCoordinates (x : PeriodDomain)
-    (v : ComplexTwoSpace) :
-    periodRealLinear x.1 (explicitPeriodCoordinates x v) = v := by
-  have hd : periodCoordinateDenominator x ≠ 0 :=
-    ne_of_gt (periodCoordinateDenominator_pos x)
-  funext i
-  fin_cases i
-  · apply Complex.ext
-    · simp [explicitPeriodCoordinates, periodRealLinear]
-      ring
-    · simp [explicitPeriodCoordinates]
-      field_simp [hd]
-      rw [periodCoordinateDenominator]
-      ring
-  · apply Complex.ext
-    · simp [explicitPeriodCoordinates, periodRealLinear]
-    · simp [explicitPeriodCoordinates]
-      field_simp [hd]
-      rw [periodCoordinateDenominator]
-      ring
-
-/-- The abstract inverse period equivalence is the explicit coordinate formula. -/
-public theorem periodCoordinates_eq_explicitPeriodCoordinates (x : PeriodDomain)
-    (v : ComplexTwoSpace) :
-    periodCoordinates x v = explicitPeriodCoordinates x v := by
-  apply (fullRankDomain x).realEquiv.injective
-  change (fullRankDomain x).realEquiv ((fullRankDomain x).realEquiv.symm v) = _
-  rw [(fullRankDomain x).realEquiv.apply_symm_apply]
-  rw [fullRankDomain.eq_def, FullRank.ofSetupInequalities_realEquiv_apply]
-  exact (periodRealLinear_explicitPeriodCoordinates x v).symm
 
 /-- The inverse moving period coordinates vary jointly continuously. -/
 public theorem periodCoordinates_parameterMap_continuous :
     Continuous (fun p : UpperHalfPlane × ComplexTwoSpace ↦
       periodCoordinates (parameterMap F p.1) p.2) := by
-  have ht : Continuous (fun p : UpperHalfPlane × ComplexTwoSpace ↦ (F.tau p.1 : ℂ)) :=
-    (tau_contMDiff F 0).continuous.comp continuous_fst
-  have hm : Continuous (fun p : UpperHalfPlane × ComplexTwoSpace ↦ F.mu p.1) :=
-    (mu_contMDiff F 0).continuous.comp continuous_fst
-  have hb : Continuous (fun p : UpperHalfPlane × ComplexTwoSpace ↦ F.beta p.1) :=
-    (beta_contMDiff F 0).continuous.comp continuous_fst
-  have hv (i : Fin 2) : Continuous (fun p : UpperHalfPlane × ComplexTwoSpace ↦ p.2 i) :=
-    (continuous_apply i).comp continuous_snd
-  have ht_re := Complex.continuous_re.comp ht
-  have ht_im := Complex.continuous_im.comp ht
-  have hm_re := Complex.continuous_re.comp hm
-  have hm_im := Complex.continuous_im.comp hm
-  have hb_re := Complex.continuous_re.comp hb
-  have hb_im := Complex.continuous_im.comp hb
-  have hv_re (i : Fin 2) := Complex.continuous_re.comp (hv i)
-  have hv_im (i : Fin 2) := Complex.continuous_im.comp (hv i)
-  have hd : Continuous (fun p : UpperHalfPlane × ComplexTwoSpace ↦
-      periodCoordinateDenominator (parameterMap F p.1)) := by
-    convert (hm_im.pow 2 |>.const_mul 6).sub (ht_im.mul hb_im) using 1
-    funext p
-    rfl
-  have hd_ne (p : UpperHalfPlane × ComplexTwoSpace) :
-      periodCoordinateDenominator (parameterMap F p.1) ≠ 0 :=
-    ne_of_gt (periodCoordinateDenominator_pos (parameterMap F p.1))
-  let a₀ := fun p : UpperHalfPlane × ComplexTwoSpace ↦
-    ((F.mu p.1).im * (p.2 0).im - (F.tau p.1).im * (p.2 1).im) /
-      periodCoordinateDenominator (parameterMap F p.1)
-  let a₁ := fun p : UpperHalfPlane × ComplexTwoSpace ↦
-    (-(F.beta p.1).im * (p.2 0).im + 6 * (F.mu p.1).im * (p.2 1).im)
-      / periodCoordinateDenominator (parameterMap F p.1)
-  have ha₀ : Continuous a₀ :=
-    (hm_im.mul (hv_im 0) |>.sub (ht_im.mul (hv_im 1))).div hd hd_ne |>.congr fun _ ↦ rfl
-  have ha₁ : Continuous a₁ := by
-    convert ((hb_im.neg.mul (hv_im 0)).add
-      (hm_im.mul (hv_im 1) |>.const_mul 6)).div hd hd_ne using 1
-    funext p
-    simp [a₁]
-    ring
-  rw [show (fun p : UpperHalfPlane × ComplexTwoSpace ↦
-      periodCoordinates (parameterMap F p.1) p.2) =
-      fun p ↦ explicitPeriodCoordinates (parameterMap F p.1) p.2 by
-    funext p
-    exact periodCoordinates_eq_explicitPeriodCoordinates _ _]
-  apply continuous_pi
-  intro i
-  fin_cases i
-  · convert ha₀ using 1
-    funext p
-    rfl
-  · convert ha₁ using 1
-    funext p
-    rfl
-  · convert (hv_re 0).sub ((ha₀.const_mul 6).mul hm_re) |>.sub (ha₁.mul ht_re)
-      using 1
-    funext p
-    rfl
-  · convert (hv_re 1).sub (ha₀.mul hb_re) |>.sub (ha₁.mul hm_re) using 1
-    funext p
-    rfl
+  let e (z : UpperHalfPlane) := (fullRankDomain (parameterMap F z)).realEquiv
+  have he : Continuous (fun z ↦ (e z : RealPeriods →L[ℝ] ComplexTwoSpace)) := by
+    apply continuous_clm_apply.mpr
+    intro v
+    convert! (periodRealLinear_parameterMap_continuous F).comp
+      (continuous_id.prodMk continuous_const) using 1
+    funext z
+    exact FullRank.ofSetupInequalities_realEquiv_apply _ _ _
+  have hi : Continuous (fun z ↦ (e z : RealPeriods →L[ℝ] ComplexTwoSpace).inverse) := by
+    apply continuous_iff_continuousAt.mpr
+    intro z
+    exact (contDiffAt_map_inverse (n := 0) (e z)).continuousAt.comp
+      (f := fun z ↦ (e z : RealPeriods →L[ℝ] ComplexTwoSpace)) he.continuousAt
+  convert! (hi.comp continuous_fst).clm_apply continuous_snd using 1
+  simp only [ContinuousLinearMap.inverse_equiv, ContinuousLinearEquiv.coe_coe]
+  rfl
 
 /-- Write a vector in the moving real period basis and rebuild it in the fixed basis over `z₀`. -/
 @[expose] public def movingToFixedCover (z₀ : UpperHalfPlane)
@@ -284,7 +186,6 @@ public theorem fixedToMovingCover_orbitRel (z₀ : UpperHalfPlane)
   Quotient.map (fixedToMovingCover F z₀) (fixedToMovingCover_orbitRel F z₀)
 
 
-
 /-- The varying-lattice torus family is canonically homeomorphic to its constant real-period
 model. -/
 @[expose] public def realPeriodFamilyHomeomorph (z₀ : UpperHalfPlane) :
@@ -350,7 +251,6 @@ public theorem fixedProductToFamily_respects (z₀ z : UpperHalfPlane)
       TotalSpace (fixedParameterMap F z₀) :=
   fun p ↦ Quotient.lift (fun v ↦ Quotient.mk _ (p.1, v))
     (fixedProductToFamily_respects F z₀ p.1) p.2
-
 
 
 public theorem fixedFamilyToProduct_continuous (z₀ : UpperHalfPlane) :

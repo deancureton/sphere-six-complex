@@ -7,7 +7,7 @@ public import SphereSixComplex.Paper.Geometry.PaperOpenEmbeddingStar
 # Hausdorffness of the four concrete star pieces
 
 The central family and three filling pieces are orbit quotients of Hausdorff, locally compact
-spaces by free properly discontinuous actions.  This module installs those action data locally
+spaces by properly discontinuous actions.  This module installs those action data locally
 and records the resulting Hausdorff conclusions in the star's dependent indexing.
 -/
 
@@ -50,9 +50,6 @@ public theorem centralFamily_t2 : T2Space A.CentralFamily := by
   let _ : LocallyCompactSpace (RegularTotalSpace A.periods) :=
     Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ := regularFamilyDeckAction A.periods
-  let _ : IsCancelSMul Delta (RegularTotalSpace A.periods) :=
-    regularFamilyDeckAction_isCancelSMul_of_fuchsian A.periods
-      A.modular.modularParameter.toTriangleUniformization_sourceAction hproper
   let _ : ProperlyDiscontinuousSMul Delta (RegularTotalSpace A.periods) :=
     regularFamilyDeckAction_properlyDiscontinuous_of_source A.periods hproper
   let _ : ContinuousConstSMul Delta (RegularTotalSpace A.periods) :=
@@ -75,9 +72,6 @@ public theorem actualLocalCuspFilling_t2
     ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
   let _ : LocallyCompactSpace (localCarrier M W.localWitness.radius) :=
     (cuspNeighborhood M W.localWitness.radius).isOpen.locallyCompactSpace
-  let _ : IsCancelSMul (Multiplicative ParameterLattice)
-      (localCarrier M W.localWitness.radius) :=
-    C.isCancelSMul W.localWitness.fixedPoint
   let _ : ProperlyDiscontinuousSMul (Multiplicative ParameterLattice)
       (localCarrier M W.localWitness.radius) :=
     C.properlyDiscontinuous W.localWitness.compactOverlap
@@ -103,8 +97,6 @@ public theorem orderThreeFilling_t2 (r : ℝ) :
     Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
   let _ : T2Space (A.orderThreeFillingOpen r) := by infer_instance
-  let _ : IsCancelSMul (FiniteCyclic 3) (A.orderThreeFillingOpen r) :=
-    A.orderThreeFillingAction_free r
   let _ : ContinuousConstSMul (FiniteCyclic 3) (A.orderThreeFillingOpen r) :=
     A.orderThreeFillingAction_continuousConstSMul r
   let _ : ProperlyDiscontinuousSMul (FiniteCyclic 3) (A.orderThreeFillingOpen r) := by
@@ -122,8 +114,6 @@ public theorem orderFourFilling_t2 (r : ℝ) :
     Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
   let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
   let _ : T2Space (A.orderFourFillingOpen r) := by infer_instance
-  let _ : IsCancelSMul (FiniteCyclic 4) (A.orderFourFillingOpen r) :=
-    A.orderFourFillingAction_free r
   let _ : ContinuousConstSMul (FiniteCyclic 4) (A.orderFourFillingOpen r) :=
     A.orderFourFillingAction_continuousConstSMul r
   let _ : ProperlyDiscontinuousSMul (FiniteCyclic 4) (A.orderFourFillingOpen r) := by

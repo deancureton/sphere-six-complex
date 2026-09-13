@@ -170,6 +170,29 @@ public structure HasExactNormalizedModularJCusp where
     (normalizedModularJCoordinate z)⁻¹ =
       modularCuspQ z * cuspUnit (modularCuspQ z)
 
+open Filter Topology in
+public theorem HasExactNormalizedModularJCusp.norm_coordinate_tendsto_atTop
+    (C : HasExactNormalizedModularJCusp) :
+    Tendsto (fun z ↦ ‖normalizedModularJCoordinate z‖) upperHalfPlaneAtInfinity atTop := by
+  have hq : Tendsto modularCuspQ upperHalfPlaneAtInfinity (nhds 0) :=
+    UpperHalfPlane.qParam_tendsto_atImInfty (h := 1) one_pos
+  have hzero : (0 : ℂ) ∈ Metric.ball 0 C.cuspRadius := by
+    simpa using C.cuspRadius_pos
+  have hu := (C.cuspUnit_holomorphic 0 hzero).continuousAt.tendsto.comp hq
+  have hi : Tendsto (fun z ↦ (normalizedModularJCoordinate z)⁻¹)
+      upperHalfPlaneAtInfinity (nhds 0) := by
+    have hp := hq.mul hu
+    simp only [zero_mul] at hp
+    apply hp.congr'
+    filter_upwards [C.reciprocal_factorization] with z hz
+    exact hz.symm
+  have hi' : Tendsto (fun z ↦ (normalizedModularJCoordinate z)⁻¹)
+      upperHalfPlaneAtInfinity (nhdsWithin 0 {0}ᶜ) :=
+    tendsto_nhdsWithin_iff.mpr ⟨hi, C.coordinate_eventually_ne_zero.mono
+      (fun z hz ↦ inv_ne_zero hz)⟩
+  simpa only [Function.comp_def, inv_inv] using
+    (tendsto_norm_inv_nhdsNE_zero_atTop (α := ℂ)).comp hi'
+
 /-- The exact target uniformization theorem for the normalized modular invariant.
 
 Mathlib currently supplies holomorphicity and modular invariance, but the quotient-fibre,

@@ -57,6 +57,8 @@ maps, without the former `CousinCechReduction` function package.
 laws, and cusp bounds. The production constructor chooses μ once and applies the second affine
 torsor theorem to that same μ. The period assembly uses these sections directly, then applies
 the Schur shift. `AnalyticData.periodData` retains this coherent choice.
+The cusp data records the actual affine translation law. Bounds concern the difference from the
+given cusp primitive, without an additional normalization function or certificates.
 
 ## Homology and markings
 

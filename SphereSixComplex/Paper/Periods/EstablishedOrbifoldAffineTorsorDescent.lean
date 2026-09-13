@@ -50,8 +50,6 @@ public structure OrbifoldAffineDescentData where
     MDiff (fun z ↦ affineOne z (s z))
   affineTwo_holomorphic : ∀ s : UpperHalfPlane → ℂ, MDiff s →
     MDiff (fun z ↦ affineTwo z (s z))
-  affineCusp_holomorphic : ∀ s : UpperHalfPlane → ℂ, MDiff s →
-    MDiff (fun z ↦ affineCusp z (s z))
   /-- Linear parts of the two affine substitutions. -/
   linearOne : UpperHalfPlane → ℂ
   linearTwo : UpperHalfPlane → ℂ
@@ -103,7 +101,6 @@ public structure OrbifoldAffineDescentData where
       ∃ g : Delta, fuchsianSourceAction g • fuchsianTwoFixedPoint = z)
   /-- Transition coefficient from the finite frame to the infinity frame. -/
   frameTransition : ℂ → ℂ
-  frameTransition_holomorphic : ∀ q, q ≠ 0 → MDiffAt frameTransition q
   frame_transition : ∀ z, quotient.coordinate z ≠ 0 →
     frameInfinity z = frameTransition (quotient.coordinate z) * frameZero z
   /-- Exact regularity of the infinity frame at the completed cusp. -/
@@ -112,7 +109,6 @@ public structure OrbifoldAffineDescentData where
   cuspFrameRadius_pos : 0 < cuspFrameRadius
   cuspFrameUnit_holomorphic : ∀ q, q ∈ Metric.ball 0 cuspFrameRadius →
     MDiffAt cuspFrameUnit q
-  cuspFrameUnit_zero_ne : cuspFrameUnit 0 ≠ 0
   /-- Sufficiently far into the cusp, the completed coordinate lies in a compact subdisc of the
   unit's domain.  This is germ data; the fixed closed horodisc need not fit in an arbitrarily
   small analytic neighbourhood of the completed point. -/
@@ -139,19 +135,7 @@ public structure OrbifoldAffineDescentData where
   cuspSection_equivariant : ∀ z,
     cuspSection (fuchsianSourceAction g₀ • z) = affineCusp z (cuspSection z)
   cusp_coordinate_ne_zero : ∀ z, z ∈ fuchsianCuspRegion → quotient.coordinate z ≠ 0
-  /-- The normalization in which regularity at the completed cusp is measured. -/
-  cuspNormalize : UpperHalfPlane → ℂ → ℂ
-  /-- Normalization is affine with linear part one in the fibre variable. -/
-  cuspNormalize_sub : ∀ z u v,
-    cuspNormalize z u - cuspNormalize z v = u - v
-  /-- Normalization preserves holomorphic sections of the pulled-back affine bundle. -/
-  cuspNormalize_holomorphic : ∀ s : UpperHalfPlane → ℂ, MDiff s →
-    MDiff (fun z ↦ cuspNormalize z (s z))
-  /-- Normalization conjugates inverse-parabolic affine transport to ordinary invariance. -/
-  cuspNormalize_equivariant : ∀ z u,
-    cuspNormalize (fuchsianSourceAction g₀ • z) (affineCusp z u) =
-      cuspNormalize z u
-  cuspSection_normalized_bounded :
-    BoundedOn (fun z ↦ cuspNormalize z (cuspSection z)) fuchsianCuspRegion
+  /-- The parabolic substitution is a translation on every fibre. -/
+  affineCusp_sub : ∀ z u v, affineCusp z u - affineCusp z v = u - v
 
 end SphereSixComplex.Periods

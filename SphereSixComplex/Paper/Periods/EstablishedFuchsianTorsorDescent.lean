@@ -3,7 +3,7 @@ module
 public import SphereSixComplex.Paper.Periods.ModularFrame.Basic
 public import SphereSixComplex.Paper.Periods.FuchsianMuTorsor
 public import SphereSixComplex.Paper.Periods.ModularFrame.Construction
-public import SphereSixComplex.Paper.Periods.EstablishedOrbifoldAffineTorsorAnalyticDescent
+public import SphereSixComplex.Paper.Periods.OrbifoldAffineTorsorStandardFrameDescent
 import all SphereSixComplex.Paper.Periods.Functions
 import all SphereSixComplex.Prerequisites.Periods.FuchsianModularParameterExistence
 import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianTessellation
@@ -155,7 +155,6 @@ general orbifold affine-torsor descent theorem. -/
     intro s hs
     exact mdifferentiable_const.add
       (hs.div (tau_coe_mdifferentiable E) (fun z ↦ (E.modularParameter.tau z).ne_zero))
-  affineCusp_holomorphic := fun s hs ↦ hs
   linearOne := muLinearOne E
   linearTwo := muLinearTwo E
   affineOne_sub := by
@@ -235,15 +234,11 @@ general orbifold affine-torsor descent theorem. -/
     intro z
     simpa [ModularNegOneFrame.frame] using F.frame_zero_iff z
   frameTransition := fun q ↦ q⁻¹
-  frameTransition_holomorphic := by
-    intro q hq
-    exact mdifferentiableAt_id.inv hq
   frame_transition := fun _ _ ↦ rfl
   cuspFrameUnit := F.cuspUnit
   cuspFrameRadius := F.cuspRadius
   cuspFrameRadius_pos := F.cuspRadius_pos
   cuspFrameUnit_holomorphic := F.cuspUnit_holomorphic
-  cuspFrameUnit_zero_ne := F.cuspUnit_zero_ne
   inverse_coordinate_eventually_mem_closedBall :=
     F.inverse_coordinate_eventually_mem_closedBall
   frameInfinity_cusp_factorization_eventually :=
@@ -262,17 +257,7 @@ general orbifold affine-torsor descent theorem. -/
   cuspSection_holomorphic := (cuspLocalMu_properties E).1
   cuspSection_equivariant := fun _ ↦ rfl
   cusp_coordinate_ne_zero := E.sourceCoordinate.coordinate_ne_zero_on_cusp
-  cuspNormalize := fun _ mu ↦ mu
-  cuspNormalize_sub := by
-    intro z u v
-    rfl
-  cuspNormalize_holomorphic := by
-    intro s hs
-    exact hs
-  cuspNormalize_equivariant := by
-    intro z u
-    rfl
-  cuspSection_normalized_bounded := (cuspLocalMu_properties E).2.2
+  affineCusp_sub := fun _ _ _ ↦ rfl
 
 @[expose] public def betaParameter
     (mu : UpperHalfPlane → ℂ) (z : UpperHalfPlane) : Parameters :=
@@ -633,9 +618,6 @@ invoked. -/
         (mdifferentiable_const.sub
           ((mdifferentiable_const.mul (hmu.1.pow 2)).div
             (tau_coe_mdifferentiable E) (fun z ↦ (E.modularParameter.tau z).ne_zero)))
-    affineCusp_holomorphic := by
-      intro s hs
-      exact hs.add mdifferentiable_const
     linearOne := fun _ ↦ 1
     linearTwo := fun _ ↦ 1
     affineOne_sub := by
@@ -686,15 +668,11 @@ invoked. -/
       factorization := Filter.Eventually.of_forall (by simp) }
     frameZero_zero_iff := by simp
     frameTransition := fun _ ↦ 1
-    frameTransition_holomorphic := by
-      intro q _
-      exact mdifferentiableAt_const
     frame_transition := fun _ _ ↦ by simp
     cuspFrameUnit := fun _ ↦ 1
     cuspFrameRadius := F.cuspRadius
     cuspFrameRadius_pos := F.cuspRadius_pos
     cuspFrameUnit_holomorphic := fun _ _ ↦ mdifferentiableAt_const
-    cuspFrameUnit_zero_ne := one_ne_zero
     inverse_coordinate_eventually_mem_closedBall :=
       F.inverse_coordinate_eventually_mem_closedBall
     frameInfinity_cusp_factorization_eventually :=
@@ -709,27 +687,16 @@ invoked. -/
     cuspSection_holomorphic := (cuspLocalBeta_properties E).1
     cuspSection_equivariant := (cuspLocalBeta_properties E).2.1
     cusp_coordinate_ne_zero := E.sourceCoordinate.coordinate_ne_zero_on_cusp
-    cuspNormalize := fun z beta ↦ beta + E.modularParameter.tau z
-    cuspNormalize_sub := by
+    affineCusp_sub := by
       intro z u v
-      ring
-    cuspNormalize_holomorphic := by
-      intro s hs
-      exact hs.add (tau_coe_mdifferentiable E)
-    cuspNormalize_equivariant := by
-      intro z u
-      have htau := congrArg (fun w : UpperHalfPlane ↦ (w : ℂ))
-        (E.modularParameter.equivariant g₀ z)
-      rw [rhoTauReal_g0_smul] at htau
-      rw [htau]
-      ring
-    cuspSection_normalized_bounded := (cuspLocalBeta_properties E).2.2 }
+      ring }
+
 
 /-- The global torsor sections directly supply a coherent pair of additive period coordinates. -/
 public theorem nonempty_fuchsianPeriodData (F : ModularNegOneFrame E) :
     Nonempty (FuchsianPeriodData E) := by
   obtain ⟨mu, hmuHol, hmuOne, hmuTwo, hmuCusp⟩ :=
-    (muDescentData E F).hasCuspBoundedSection (Or.inl ⟨rfl, rfl, rfl⟩)
+    (muDescentData E F).hasCuspBoundedSection_of_standard_transition (Or.inl rfl)
   have hmu : MDiff mu ∧
       (∀ z, mu (fuchsianSourceAction g₁ • z) =
         (1 - mu z) / E.modularParameter.tau z) ∧
@@ -738,7 +705,7 @@ public theorem nonempty_fuchsianPeriodData (F : ModularNegOneFrame E) :
     refine ⟨hmuHol, hmuOne, hmuTwo, ?_⟩
     simpa only [muDescentData, cuspLocalMu, sub_zero] using hmuCusp
   obtain ⟨beta, hbetaHol, hbetaOne, hbetaTwo, hbetaCusp⟩ :=
-    (betaDescentData E F mu hmu).hasCuspBoundedSection (Or.inr ⟨rfl, rfl, rfl⟩)
+    (betaDescentData E F mu hmu).hasCuspBoundedSection_of_standard_transition (Or.inr rfl)
   refine ⟨{
     mu := mu
     beta := beta
