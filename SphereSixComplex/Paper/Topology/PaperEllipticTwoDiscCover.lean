@@ -143,7 +143,6 @@ private theorem integralSingularHomologyMap_homotopic
         (TopCat.ofHom g)) x
   rw [SphereSixComplex.integralSingularHomologyMap_eq_of_homotopic h k]
 
-
 /-- In the homotopy-equivalence coordinates of the two-disc model, the actual
 Mayer--Vietoris difference map is the pair of finite-cover projection maps, with the standard
 minus sign on the order-four side. -/
@@ -198,19 +197,6 @@ public theorem differenceMap_one_conjugacy
         -integralSingularHomologyMap 1 D.orderFourBandProjection
           (D.bandHomologyEquiv 1 x)) :=
   D.differenceMap_conjugacy 1 x
-
-/-- Degree-two specialization of `differenceMap_conjugacy`. -/
-public theorem differenceMap_two_conjugacy
-    (x : IntegralSingularHomology 2
-      (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) :
-    D.sideHomologyEquiv 2
-        (IntegralMayerVietoris.differenceMap
-          D.orderThreeSide D.orderFourSide 2 x) =
-      (integralSingularHomologyMap 2 D.orderThreeBandProjection
-          (D.bandHomologyEquiv 2 x),
-        -integralSingularHomologyMap 2 D.orderFourBandProjection
-          (D.bandHomologyEquiv 2 x)) :=
-  D.differenceMap_conjugacy 2 x
 
 end EllipticTwoDiscCoverData
 

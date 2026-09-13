@@ -1,9 +1,47 @@
 module
 
+public import Mathlib.Algebra.Group.Hom.Defs
+public import Mathlib.Algebra.Group.Prod
+public import SphereSixComplex.Paper.Topology.EllipticFourthHomologySweep
+public import SphereSixComplex.Paper.Topology.CuspChosenThirdSweep
+public import SphereSixComplex.Paper.Topology.LocalToricCircleSweep
+public import SphereSixComplex.Paper.Topology.CuspFourthCircle
+public import SphereSixComplex.Paper.Topology.CuspFixedCircleSweep
+public import SphereSixComplex.Paper.Topology.GlobalInvariantPeriodCircle
+public import SphereSixComplex.Prerequisites.Topology.TwicePuncturedComplexFundamentalGroupGeneration
+public import SphereSixComplex.Prerequisites.Topology.FirstHurewiczProof
+public import SphereSixComplex.Prerequisites.Topology.NormalizedCircleProductCross
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSliceComparisonProof
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedBandSquares
+public import SphereSixComplex.Paper.Topology.PaperRegularFiberTransport
+public import SphereSixComplex.Prerequisites.Topology.RealMappingTorusFiberSlice
+public import SphereSixComplex.Prerequisites.Topology.CanonicalProductWangBoundaryNaturality
+public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverOrientedRefinementNaturality
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
+public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
+public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
+public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
+public import SphereSixComplex.Prerequisites.Topology.WangHomologyPresentationProof
+public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverAssembly
+public import SphereSixComplex.Prerequisites.Topology.UnitCircleExponential
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticMarkedCoordinateFromExistingGeometry
+public import SphereSixComplex.Paper.Topology.EllipticFillingHomology
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSlice
+public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecialization
+public import SphereSixComplex.Paper.Topology.PaperCuspUnwrappedFillingCover
+public import SphereSixComplex.Prerequisites.Topology.RankOneWangHomologySplitting
+public import Mathlib.Topology.Subpath
+public import SphereSixComplex.Prerequisites.Topology.IntervalClutchingQuotientCore
+public import Mathlib.Topology.Instances.AddCircle.Real
+public import SphereSixComplex.Paper.Topology.CuspFiniteFiberSpecializationGeometricReduction
+public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationProof
+public import SphereSixComplex.Paper.Topology.CuspNormalizedBandMarking
+
 public import SphereSixComplex.Paper.Topology.CuspFundamentalGroup
 public import SphereSixComplex.Prerequisites.Topology.SixSphereHomology
 public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenAffineCompletion
-public import SphereSixComplex.Paper.Topology.CuspAttachmentHomology
+public import SphereSixComplex.Paper.Topology.StarSecondHomology
+public import SphereSixComplex.Paper.Topology.EllipticHomologyVanishing
 public import SphereSixComplex.Paper.Topology.StarFirstHomology
 public import SphereSixComplex.Paper.Geometry.StarHomology
 public import SphereSixComplex.Prerequisites.Topology.MayerVietorisFiniteRank
@@ -22,35 +60,11 @@ namespace SphereSixComplex.Geometry.AnalyticData
 
 variable (P : AnalyticData)
 
-/-- The degree-two difference map is onto, and the preceding map is between rank-three groups. -/
+/-- The global circle action and cusp attachment kill second homology. -/
 public theorem star_homologyTwo_subsingleton :
-    Subsingleton (IntegralSingularHomology 2 P.VanKampenSpace) := by
-  let R := P.affineRadialCompletionInput
-  let U := P.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage 2
-  let V := P.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3
-  let eS := (integralSingularHomologyEquiv 1
-    P.cuspCollarToSectionSevenFinalOverlapHomeomorph).symm.trans P.cuspRawHomologyOneEquiv
-  let eT :=
-    (R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyOneEquiv
-      |>.prodCongr
-      ((integralSingularHomologyEquiv 1
-        (P.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm.trans
-        P.cuspFillingHomologyOneEquiv)).trans
-      ((LinearEquiv.sumArrowLequivProdArrow (Fin 1) (Fin 2) ℤ ℤ).symm.trans
-        (LinearEquiv.piCongrLeft ℤ (fun _ : Fin 3 ↦ ℤ) finSumFinEquiv)).toAddEquiv
-  let eOne := integralSingularHomologyEquiv 1
-    (OpenEmbeddingStarData.cuspAttachmentUnionHomeomorph
-      (A := P.openEmbeddingStarData))
-  have hUnion : Subsingleton (IntegralSingularHomology 1 (U ∪ V : Set P.VanKampenSpace)) :=
-    ⟨fun x y ↦ eOne.injective (P.star_homologyOne_subsingleton.elim _ _)⟩
-  have h := IntegralMayerVietoris.subsingleton_homology_succ U V
-    (FourPieceOpenCover.mayerVietoris_exact
-      P.openEmbeddingStarData.sectionSevenMayerVietorisCover 2)
-    1 3 eS eT hUnion (cuspAttachment_differenceMap_two_surjective R)
-  let e := integralSingularHomologyEquiv 2
-    (OpenEmbeddingStarData.cuspAttachmentUnionHomeomorph
-      (A := P.openEmbeddingStarData))
-  exact ⟨fun x y ↦ e.symm.injective (h.elim _ _)⟩
+    Subsingleton (IntegralSingularHomology 2 P.VanKampenSpace) :=
+  star_homologyTwo_subsingleton_of_interior P.affineRadialCompletionInput
+    (ellipticInterior_homologyTwo_eq_zero P.affineRadialCompletionInput)
 
 /-- Low-degree vanishing and the Euler calculation give the integral homology of the six-sphere. -/
 public theorem star_nonempty_homologyEquiv_sixSphere :

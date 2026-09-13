@@ -1,47 +1,78 @@
 module
+
+public import SphereSixComplex.Paper.Topology.EllipticFillingHomology
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSlice
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineCompletionReduction
+public import SphereSixComplex.Paper.Geometry.CuspCollarPairProperness
+public import SphereSixComplex.Paper.Geometry.RealPeriodTrivialization
+public import SphereSixComplex.Paper.Topology.PaperCuspBoundaryUniversalCover
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticMarkedCoordinateFromExistingGeometry
+public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecialization
+public import SphereSixComplex.Paper.Topology.PaperCuspUnwrappedFillingCover
+public import SphereSixComplex.Prerequisites.Topology.RankOneWangHomologySplitting
+public import Mathlib.Topology.Subpath
+public import SphereSixComplex.Prerequisites.Topology.FirstHurewiczProof
+public import SphereSixComplex.Prerequisites.Topology.CanonicalProductWangBoundaryNaturality
+public import SphereSixComplex.Prerequisites.Topology.IntervalClutchingQuotientCore
+public import Mathlib.Topology.Instances.AddCircle.Real
+public import SphereSixComplex.Paper.Topology.CuspFiniteFiberSpecializationGeometricReduction
+public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationProof
+public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverOrientedRefinementNaturality
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSliceComparisonProof
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedBandSquares
+public import SphereSixComplex.Prerequisites.Topology.WangHomologyPresentationProof
+public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverAssembly
+public import SphereSixComplex.Paper.Topology.PaperRegularFiberTransport
+public import SphereSixComplex.Prerequisites.Topology.RealMappingTorusFiberSlice
+public import SphereSixComplex.Paper.Topology.CuspNormalizedBandMarking
+public import SphereSixComplex.Paper.Topology.EllipticHomologyGeneratorAlignment
+public import SphereSixComplex.Paper.Topology.EllipticHomologyGeneration
+public import SphereSixComplex.Paper.Topology.StarFourthTranslation
 public import SphereSixComplex.Paper.Topology.EllipticFourthHomologySweep
-public import SphereSixComplex.Paper.Topology.CuspTranslationHomologyComparison
 
 @[expose] public section
 noncomputable section
 open AlgebraicTopology
 open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.AnalyticData
+namespace SphereSixComplex.Geometry.AnalyticData.EllipticProjectedFourthSweeps
 open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
 open SphereSixComplex.Periods ComplexTorus GlobalTorusFamily EllipticFamilySpecialization
 open SphereSixComplex.EllipticFilling
 open PositiveCircleCross CircleProductIdentityMappingTorus
 
-public def fourthFirstCoordinateTorus : C(StdTorus 2, StdTorus 4) :=
-  ⟨fun z ↦ ![z 1, 0, 0, z 0], by fun_prop⟩
+variable (i : Fin 6)
 
-public theorem fourthFirstCoordinateTorus_real (A : AnalyticData) (t s : ℝ) :
+public def fourthFirstCoordinateTorus : C(StdTorus 2, StdTorus 4) :=
+  (standardFourTorusCoordinateTwoTorus i).comp
+    (standardTwoTorusMatrixMap !![0,1;1,0])
+
+public theorem fourthFirstCoordinateTorus_real (A : AnalyticData) (hi : standardPeriodPairSecond i = 3) (t s : ℝ) :
     (additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
       A.duplicatedSectionSevenBandFullRank).symm
-      (fourthFirstCoordinateTorus ![(t : UnitAddCircle), (s : UnitAddCircle)]) =
+      (fourthFirstCoordinateTorus i ![(t : UnitAddCircle), (s : UnitAddCircle)]) =
     additiveTorusProjection A.duplicatedSectionSevenBandParameter
       (t • periodVector A.duplicatedSectionSevenBandParameter ![0,0,0,1] +
-        s • periodVector A.duplicatedSectionSevenBandParameter (Pi.single 0 1)) := by
+        s • periodVector A.duplicatedSectionSevenBandParameter (Pi.single (standardPeriodPairFirst i) 1)) := by
   apply (additiveTorusStdHomeomorph _ A.duplicatedSectionSevenBandFullRank).injective
   rw [Homeomorph.apply_symm_apply]
   change _ = periodCoordMap _ _ _
-  ext i
+  ext j
   simp only [periodCoordMap, map_add, map_smul, realEquiv_symm_periodVector]
-  fin_cases i <;> simp [fourthFirstCoordinateTorus, integerToReal]
+  fin_cases i <;> fin_cases j <;> simp_all [standardPeriodPairSecond, standardPeriodPairFirst, fourthFirstCoordinateTorus, standardFourTorusCoordinateTwoTorus, standardTwoTorusMatrixMap, integerToReal, Fin.sum_univ_two]
 
 public def normalizedFourthFirstTorus (A : AnalyticData) :
     C(StdTorus 2, A.CentralFamily) :=
   (A.regularFixedFiberMap A.affineNormalizedMidpoint).comp
     (((additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
-      A.duplicatedSectionSevenBandFullRank).symm : C(_, _)).comp fourthFirstCoordinateTorus)
+      A.duplicatedSectionSevenBandFullRank).symm : C(_, _)).comp (fourthFirstCoordinateTorus i))
 
-public theorem normalizedFourthFirstTorus_real (A : AnalyticData) (t s : ℝ) :
-    A.normalizedFourthFirstTorus ![(t : UnitAddCircle), (s : UnitAddCircle)] =
+public theorem normalizedFourthFirstTorus_real (A : AnalyticData) (hi : standardPeriodPairSecond i = 3) (t s : ℝ) :
+    normalizedFourthFirstTorus i A ![(t : UnitAddCircle), (s : UnitAddCircle)] =
     A.centralFourthTranslation ((t : UnitAddCircle),
-      regularPeriodCircleInGlobal A.periods (Pi.single 0 1)
+      regularPeriodCircleInGlobal A.periods (Pi.single (standardPeriodPairFirst i) 1)
         ((s : UnitAddCircle), A.affineNormalizedMidpoint)) := by
   change A.regularFixedFiberMap _ ((additiveTorusStdHomeomorph _ _).symm _) = _
-  rw [A.fourthFirstCoordinateTorus_real]
+  rw [fourthFirstCoordinateTorus_real i A hi]
   change A.regularFixedFiberCover _ _ = _
   rw [regularFixedFiberCover]
   change _ = invariantPeriodCircleTranslation A.periods _ _ (_, _)
@@ -53,7 +84,7 @@ public theorem normalizedFourthFirstTorus_real (A : AnalyticData) (t s : ℝ) :
     A.centralQuotientProjection (TorusFamily.projection _
       (A.affineNormalizedMidpoint,
         t • periodVector (regularParameterMap A.periods A.affineNormalizedMidpoint).1 ![0,0,0,1] +
-        s • periodVector (regularParameterMap A.periods A.affineNormalizedMidpoint).1 (Pi.single 0 1)))
+        s • periodVector (regularParameterMap A.periods A.affineNormalizedMidpoint).1 (Pi.single (standardPeriodPairFirst i) 1)))
   apply congrArg A.centralQuotientProjection
   apply congrArg (TorusFamily.projection (regularParameterMap A.periods))
   congr 1
@@ -69,12 +100,12 @@ public theorem normalizedFourthFirstTorus_real (A : AnalyticData) (t s : ℝ) :
     (A.regularMovingToFixed_period_smul _ _ s)).symm
 
 public theorem ellipticFourthSweep_markedCircle_map (A : AnalyticData)
-    (R : A.AffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) (hi : standardPeriodPairSecond i = 3) :
     A.ellipticFourthTranslation.comp
       (circleProductMap (R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap.comp
-        (normalizedMarkedPeriodBandCircle R (Pi.single 0 1)))) =
+        (normalizedMarkedPeriodBandCircle R (Pi.single (standardPeriodPairFirst i) 1)))) =
     A.fourthTranslationCentralInclusion.comp
-      (A.normalizedFourthFirstTorus.comp (circleProdStandardCircleHomeomorph : C(_, _))) := by
+      ((normalizedFourthFirstTorus i A).comp (circleProdStandardCircleHomeomorph : C(_, _))) := by
   ext1 p
   obtain ⟨t, ht⟩ := QuotientAddGroup.mk_surjective p.1
   obtain ⟨s, hs⟩ := QuotientAddGroup.mk_surjective (p.2 0)
@@ -85,24 +116,24 @@ public theorem ellipticFourthSweep_markedCircle_map (A : AnalyticData)
       exact hs.symm
   subst p
   change A.ellipticFourthTranslation ((t : UnitAddCircle),
-    (normalizedMarkedPeriodBandCircle R (Pi.single 0 1) (fun _ ↦ (s : UnitAddCircle))).1) = _
+    (normalizedMarkedPeriodBandCircle R (Pi.single (standardPeriodPairFirst i) 1) (fun _ ↦ (s : UnitAddCircle))).1) = _
   rw [normalizedMarkedPeriodBandCircle_interior]
   change A.ellipticFourthTranslation (_, A.fourthTranslationCentralInclusion _) = _
   rw [A.ellipticFourthTranslation_central]
   apply congrArg A.fourthTranslationCentralInclusion
-  exact (A.normalizedFourthFirstTorus_real t s).symm
+  exact (normalizedFourthFirstTorus_real i A hi t s).symm
 
 public theorem ellipticFourthSweep_markedCircle (A : AnalyticData)
-    (R : A.AffineRadialCompletionInput) :
+    (R : A.AffineRadialCompletionInput) (hi : standardPeriodPairSecond i = 3) :
     A.ellipticFourthHomologySweep
       (integralSingularHomologyMap 1 R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap
-        (integralSingularHomologyMap 1 (normalizedMarkedPeriodBandCircle R (Pi.single 0 1))
+        (integralSingularHomologyMap 1 (normalizedMarkedPeriodBandCircle R (Pi.single (standardPeriodPairFirst i) 1))
           standardCircleHomologyGenerator)) =
     integralSingularHomologyMap 2 A.fourthTranslationCentralInclusion
-      (integralSingularHomologyMap 2 A.normalizedFourthFirstTorus
+      (integralSingularHomologyMap 2 (normalizedFourthFirstTorus i A)
         standardTwoTorusHomologyGenerator) := by
   have hc := integralSingularHomologyMap_comp_wang 1
-    (normalizedMarkedPeriodBandCircle R (Pi.single 0 1))
+    (normalizedMarkedPeriodBandCircle R (Pi.single (standardPeriodPairFirst i) 1))
     R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap standardCircleHomologyGenerator
   erw [hc]
   change integralSingularHomologyMap 2 A.ellipticFourthTranslation
@@ -111,26 +142,22 @@ public theorem ellipticFourthSweep_markedCircle (A : AnalyticData)
   change integralSingularHomologyMap 2 A.ellipticFourthTranslation
     (integralSingularHomologyMap 2 _ positiveCircleProductGenerator) = _
   rw [integralSingularHomologyMap_comp_wang]
-  erw [A.ellipticFourthSweep_markedCircle_map R]
+  erw [ellipticFourthSweep_markedCircle_map i A R hi]
   rw [← integralSingularHomologyMap_comp_wang, ← integralSingularHomologyMap_comp_wang]
   congr 2
   exact (integralSingularHomologyEquiv 2 circleProdStandardCircleHomeomorph).apply_symm_apply _
 
 public theorem fourthFirstCoordinateTorus_homology :
     stdTorusFourHomologyTwo
-      (integralSingularHomologyMap 2 fourthFirstCoordinateTorus
-        standardTwoTorusHomologyGenerator) = -Pi.single (2 : Fin 6) 1 := by
-  have hm : fourthFirstCoordinateTorus = (standardFourTorusCoordinateTwoTorus 2).comp
-      (standardTwoTorusMatrixMap !![0,1;1,0]) := by
-    ext z i
-    fin_cases i <;> simp [fourthFirstCoordinateTorus, standardFourTorusCoordinateTwoTorus,
-      standardPeriodPairFirst, standardPeriodPairSecond, standardTwoTorusMatrixMap,
-      Fin.sum_univ_two]
+      (integralSingularHomologyMap 2 (fourthFirstCoordinateTorus i)
+        standardTwoTorusHomologyGenerator) = -Pi.single i 1 := by
+  have hm : fourthFirstCoordinateTorus i = (standardFourTorusCoordinateTwoTorus i).comp
+      (standardTwoTorusMatrixMap !![0,1;1,0]) := rfl
   rw [hm, ← integralSingularHomologyMap_comp_wang,
     standardTwoTorusMatrixDeterminantDegree]
   norm_num [Matrix.det_fin_two]
   change standardFourTorusCoordinateTwoTorusHom
-    (standardFourTorusCoordinateTwoTorusHomologyClass 2) = _
+    (standardFourTorusCoordinateTwoTorusHomologyClass i) = _
   rw [standardFourTorusCoordinateTwoTorusHom_coordinateHomologyClass]
 
 public def normalizedFourthFirstBandTorus {A : AnalyticData}
@@ -141,24 +168,24 @@ public def normalizedFourthFirstBandTorus {A : AnalyticData}
       A.affineCentralSeparation).symm
         (affineStripMidpoint,
           (additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
-            A.duplicatedSectionSevenBandFullRank).symm (fourthFirstCoordinateTorus z)))
+            A.duplicatedSectionSevenBandFullRank).symm (fourthFirstCoordinateTorus i z)))
   continuous_toFun := A.actualAffineHeightSplit.sidesIntersectionHomeomorph.symm.continuous.comp
     ((A.affineCentralBandMarkedProductHomeomorph
       A.affineCentralSeparation).symm.continuous.comp
       (continuous_const.prodMk ((additiveTorusStdHomeomorph _ _).symm.continuous.comp
-        fourthFirstCoordinateTorus.continuous)))
+        (fourthFirstCoordinateTorus i).continuous)))
 
 public theorem normalizedFourthFirstBandTorus_interior {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap.comp
-      (normalizedFourthFirstBandTorus R) =
-    A.fourthTranslationCentralInclusion.comp A.normalizedFourthFirstTorus := by
+      (normalizedFourthFirstBandTorus i R) =
+    A.fourthTranslationCentralInclusion.comp (normalizedFourthFirstTorus i A) := by
   ext1 z
   have h := A.affineCentralBandMarkedProductHomeomorph_symm_toCentralFamily
     A.affineCentralSeparation
     (affineStripMidpoint, (additiveTorusStdHomeomorph
       A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank).symm
-      (fourthFirstCoordinateTorus z))
+      (fourthFirstCoordinateTorus i z))
   rw [← A.regularFixedFiberPoint_strip, A.affineNamedStripLift_apply_midpoint] at h
   have h' := congrArg A.centralToEllipticInterior h
   dsimp only [centralToEllipticInterior, affineCentralBandToCentralFamily,
@@ -194,18 +221,18 @@ public theorem normalizedFourthFirstBandTorus_bandTwo {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     EllipticBandHomologyAlignment.bandTwo
       (D := R.twoDiscCover)
-      (integralSingularHomologyMap 2 (normalizedFourthFirstBandTorus R)
-        standardTwoTorusHomologyGenerator) = -Pi.single (2 : Fin 6) 1 := by
+      (integralSingularHomologyMap 2 (normalizedFourthFirstBandTorus i R)
+        standardTwoTorusHomologyGenerator) = -Pi.single i 1 := by
   rw [bandTwo_fixedCoordinates R]
   erw [additiveTorusTwo_apply A.duplicatedSectionSevenBandParameter
     A.duplicatedSectionSevenBandFullRank]
   rw [integralSingularHomologyMap_comp_wang]
   erw [integralSingularHomologyMap_comp_wang 2
-    (R.twoDiscCover.bandHomotopyEquiv.toFun.comp (normalizedFourthFirstBandTorus R))]
+    (R.twoDiscCover.bandHomotopyEquiv.toFun.comp (normalizedFourthFirstBandTorus i R))]
   have hc : (additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
       A.duplicatedSectionSevenBandFullRank : C(AdditiveTorus A.duplicatedSectionSevenBandParameter, StdTorus 4)).comp
-      (R.twoDiscCover.bandHomotopyEquiv.toFun.comp (normalizedFourthFirstBandTorus R)) =
-      fourthFirstCoordinateTorus := by
+      (R.twoDiscCover.bandHomotopyEquiv.toFun.comp (normalizedFourthFirstBandTorus i R)) =
+      fourthFirstCoordinateTorus i := by
     ext1 z
     change (additiveTorusStdHomeomorph _ _) ((A.affineCentralBandMarkedProductHomeomorph
       A.affineCentralSeparation
@@ -215,39 +242,69 @@ public theorem normalizedFourthFirstBandTorus_bandTwo {A : AnalyticData}
               A.affineCentralSeparation).symm _)))).2) = _
     erw [Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply]
   erw [hc]
-  exact fourthFirstCoordinateTorus_homology
+  exact fourthFirstCoordinateTorus_homology i
 
-public theorem ellipticFourthSweep_translation_fiberCoordinate (A : AnalyticData)
-    (R : A.AffineRadialCompletionInput)
-    (S : WangHomologyPresentation.NormalizedSplitting
-      (EllipticTwoDiscHomologyCoordinates.presentationTwo (D := R.twoDiscCover))) :
-    R.homologyAlignment.actualHomologyCoordinates.normalizedEllipticInteriorHomologyTwoEquiv S
-      (A.ellipticFourthHomologySweep
-        (integralSingularHomologyMap 1 A.cuspOverlapToEllipticInterior
-          (Hurewicz.Chains.hurewiczFunction A.cuspOverlapBase
-            (Additive.toMul (A.cuspAffineBridgeTranslation (Pi.single 0 1)))))) 0 = -12 := by
-  erw [A.cuspTranslation_homology_eq_band R (Pi.single 0 1)]
-  rw [A.ellipticFourthSweep_markedCircle R]
-  rw [integralSingularHomologyMap_comp_wang,
-    ← normalizedFourthFirstBandTorus_interior R,
-    ← integralSingularHomologyMap_comp_wang]
-  change R.homologyAlignment.actualHomologyCoordinates.normalizedUnionHomologyTwoEquiv S
-    ((integralSingularHomologyEquiv 2
-      (topologicalSubsetHomeomorphOfEqUniv (TopCat.of A.ellipticInterior)
-        (R.twoDiscCover.orderThreeSide ∪ R.twoDiscCover.orderFourSide) R.twoDiscCover.sides_cover)).symm
+
+public theorem normalizedFourthBandTorus_toStar_eq_zero {A : AnalyticData}
+    (R : A.AffineRadialCompletionInput) (hi : standardPeriodPairSecond i = 3) :
+    integralSingularHomologyMap 2 A.ellipticInteriorInclusion
       (integralSingularHomologyMap 2 R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap
-        (integralSingularHomologyMap 2 (normalizedFourthFirstBandTorus R)
-          standardTwoTorusHomologyGenerator))) 0 = -12
-  rw [R.twoDiscCover.ellipticInteriorEquiv_symm_bandInclusion,
-    R.twoDiscCover.actualHomologyCoordinates_normalizedUnionHomologyTwoEquiv_canonicalBand_zero]
-  change 12 * EllipticBandHomologyAlignment.bandTwo
-      (D := R.twoDiscCover) (integralSingularHomologyMap 2 (normalizedFourthFirstBandTorus R)
-        standardTwoTorusHomologyGenerator) 2 +
-    2 * EllipticBandHomologyAlignment.bandTwo
-      (D := R.twoDiscCover) (integralSingularHomologyMap 2 (normalizedFourthFirstBandTorus R)
-        standardTwoTorusHomologyGenerator) 3 = -12
-  rw [normalizedFourthFirstBandTorus_bandTwo R]
-  norm_num [Pi.single_apply]
-  decide
+        (integralSingularHomologyMap 2 (normalizedFourthFirstBandTorus i R)
+          standardTwoTorusHomologyGenerator)) = 0 := by
+  have hz := A.ellipticFourthHomologySweep_toStar_eq_zero
+    (integralSingularHomologyMap 1 R.twoDiscCover.canonicalBandToEllipticInteriorInclusionMap
+      (integralSingularHomologyMap 1
+        (normalizedMarkedPeriodBandCircle R (Pi.single (standardPeriodPairFirst i) 1))
+          standardCircleHomologyGenerator))
+  change integralSingularHomologyMap 2 A.ellipticInteriorInclusion
+    (A.ellipticFourthHomologySweep _) = 0 at hz
+  rw [ellipticFourthSweep_markedCircle i A R hi] at hz
+  rw [integralSingularHomologyMap_comp_wang 2 (normalizedFourthFirstBandTorus i R),
+    normalizedFourthFirstBandTorus_interior, ← integralSingularHomologyMap_comp_wang]
+  exact hz
 
-end SphereSixComplex.Geometry.AnalyticData
+open EllipticHomologyGeneratorAlignment Topology.FiniteCoverPerfectPairing
+
+public theorem projected_toStar_eq_zero {A : AnalyticData}
+    (R : A.AffineRadialCompletionInput) (hi : standardPeriodPairSecond i = 3) :
+    integralSingularHomologyMap 2 (ellipticUnionInclusion R.twoDiscCover)
+      (reducedFibersToUnion R.twoDiscCover 2
+        (orderThreeProjectedDegreeTwoGenerator A.periods i, 0)) = 0 := by
+  let D := R.twoDiscCover
+  let x := integralSingularHomologyMap 2 (normalizedFourthFirstBandTorus i R)
+    standardTwoTorusHomologyGenerator
+  have hb := normalizedFourthFirstBandTorus_bandTwo i R
+  have hsource : integralSingularHomologyMap 2 D.bandToOrderThreeCoverSource
+      (D.bandHomologyEquiv 2 x) =
+      -(orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeTwo.symm
+        (Pi.single i 1) := by
+    apply (orderThreeCentralFiberCoverSourceHomologyBasis A.periods).degreeTwo.injective
+    rw [map_neg, AddEquiv.apply_symm_apply]
+    exact hb
+  have hproj : integralSingularHomologyMap 2 D.orderThreeBandProjection
+      (D.bandHomologyEquiv 2 x) = -orderThreeProjectedDegreeTwoGenerator A.periods i := by
+    simp only [EllipticTwoDiscCoverData.orderThreeBandProjection,
+      ← integralSingularHomologyMap_comp_wang, hsource, map_neg,
+      orderThreeProjectedDegreeTwoGenerator]
+  have hleft := reducedFibersToUnion_band_left D 2 x
+  rw [hproj] at hleft
+  have hz : integralSingularHomologyMap 2 (ellipticUnionInclusion D)
+      (integralSingularHomologyMap 2
+        ((IntegralMayerVietoris.leftToUnion D.orderThreeSide D.orderFourSide).comp
+          (IntegralMayerVietoris.interToLeft D.orderThreeSide D.orderFourSide)) x) = 0 := by
+    rw [integralSingularHomologyMap_comp_wang]
+    change integralSingularHomologyMap 2
+      (A.ellipticInteriorInclusion.comp D.canonicalBandToEllipticInteriorInclusionMap) x = 0
+    rw [← integralSingularHomologyMap_comp_wang]
+    exact normalizedFourthBandTorus_toStar_eq_zero i R hi
+  rw [← hleft] at hz
+  have hp : (-orderThreeProjectedDegreeTwoGenerator A.periods i,
+      (0 : IntegralSingularHomology 2 (orderFourReducedCentralFiber A.periods))) =
+      -(orderThreeProjectedDegreeTwoGenerator A.periods i, 0) := by
+    apply Prod.ext
+    · rfl
+    · exact neg_zero.symm
+  rw [hp, map_neg, map_neg, neg_eq_zero] at hz
+  exact hz
+
+end SphereSixComplex.Geometry.AnalyticData.EllipticProjectedFourthSweeps

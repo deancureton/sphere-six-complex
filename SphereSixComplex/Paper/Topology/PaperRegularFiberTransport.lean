@@ -75,18 +75,6 @@ public def regularFixedFiberMap
   ⟨A.regularFixedFiberPoint b,
     A.regularFixedFiberPoint_continuous.comp (continuous_const.prodMk continuous_id)⟩
 
-public theorem regularFixedFiberMap_homotopic
-    (b c : RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :
-    (A.regularFixedFiberMap b).Homotopic (A.regularFixedFiberMap c) := by
-  let _ := regularBase_pathConnected A.modular.modularParameter.toTriangleUniformization
-  let p := PathConnectedSpace.somePath b c
-  exact ⟨{
-    toFun := fun q ↦ A.regularFixedFiberPoint (p q.1) q.2
-    continuous_toFun := A.regularFixedFiberPoint_continuous.comp
-      ((p.continuous.comp continuous_fst).prodMk continuous_snd)
-    map_zero_left := fun t ↦ by change A.regularFixedFiberPoint (p 0) t = _; rw [p.source]; rfl
-    map_one_left := fun t ↦ by change A.regularFixedFiberPoint (p 1) t = _; rw [p.target]; rfl }⟩
-
 public theorem regularFixedFiberPoint_strip (L : A.AffineStripLift)
     (z : affineVerticalStrip) (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
     A.regularFixedFiberPoint (L.lift z) t = A.stripLiftPoint L z t := rfl

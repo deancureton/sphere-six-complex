@@ -1,34 +1,29 @@
-# Cusp attachment replacement
+# Cusp attachment and global homology
 
-The cellular proof remains the production route to the Comparator endpoints. The replacement
-below is being developed alongside it; none of its prospective deletions has been made.
-The endpoint statements and trust boundary are unchanged.
+The finite attachment model and the global fourth-circle argument are now the production
+route. They replace the former high-dimensional cellular calculation and the full elliptic
+second-homology coordinate comparison. The Comparator endpoint statements and classical
+trust boundary are unchanged.
 
-## Verified geometric model
+## Actual cusp geometry
 
-Write `X` for the actual cusp central orbit quotient and `B` for the complement of its
-singleton-support locus. `Construction/CentralAttachment.lean` proves:
+Write `X` for the cusp central orbit quotient and `B` for the complement of its
+singleton-support locus. `Construction/CentralAttachment.lean` identifies `X` with
 
-- The original positive-cell phase map gives a continuous surjection `D² × T² → X`.
-- Its preimage of `B` is exactly `∂D² × T²`, and it is injective on the interior.
-- `B` is compact and closed.
-- `centralAttachmentHomeomorph` identifies `X` with the attachment along this actual map.
-  Its inclusion formulas retain the original phase map and inclusion of `B`.
+`B ∪ (D² × T²)`, attached along `∂D² × T²`.
 
-Here `D²` is the closed unit ball of `Fin 2 → ℝ` with its sup norm.
-`Construction/CentralBoundaryCharts.lean` proves coverage and the exact equality relations
-between the six complex axis charts in the actual deck quotient. Corresponding charts have
-transition `z ↦ z⁻¹`; distinct branches meet only at the two poles.
-`Construction/CentralBoundaryModel.lean` consequently identifies `B` with the quotient of
-`Fin 3 × OnePoint ℂ` that identifies the three zeros and separately the three infinities.
-`centralFiberAttachmentHomeomorph` combines these results into the concrete attachment model.
+Here `D²` is the closed unit ball of `Fin 2 → ℝ` with its sup norm. The actual disk-phase
+map is surjective, has boundary preimage exactly `∂D² × T²`, and is injective on the
+interior. The attachment homeomorphism preserves the inclusion of `B` and this map.
 
-The reusable attachment, inversion-chart gluing, quotient-homotopy, and exact-sequence tools
-live in `Prerequisites/Topology`. They do not assume the cusp homology calculation.
+`CentralBoundaryCharts.lean` proves the exact relations between the six complex axis charts.
+Corresponding charts have transition `z ↦ z⁻¹`; distinct branches meet only at the two poles.
+`CentralBoundaryModel.lean` identifies `B` with three copies of `OnePoint ℂ`, identifying
+all zeros and, separately, all infinities. These are statements about the actual quotient.
 
-## Remaining mathematical work
+## Integral Mayer–Vietoris calculation
 
-A radial open cover should reduce the attachment calculation to
+The radial open cover of the attachment has the following homotopy types:
 
 | Space | Homotopy type |
 | --- | --- |
@@ -36,23 +31,52 @@ A radial open cover should reduce the attachment calculation to
 | Outer open set | `B` |
 | Intersection | `S¹ × T²` |
 
-A second open cover of `B` removes one pole from each member. Its members contract, and
-its intersection consists of three copies of `ℂ \ {0}`. These give `H₁(B) = ℤ²` and
-`H₂(B) = ℤ³`.
+A second cover of `B` removes one pole from each member. Both members contract, and their
+intersection is three punctured planes. It gives `H₁(B) ≃ ℤ²` and `H₂(B) ≃ ℤ³`.
 
-The actual inclusion maps still need to be computed. In degrees one and two, the proposed
-Mayer–Vietoris difference maps are projection onto the pure phase coordinates in the inner
-piece and zero in the boundary piece. This must be proved from the attaching map, including
-the cancellation of opposite sides of the positive-cell boundary. Correct ranks alone do
-not establish these formulas.
+The attaching map induces zero into `B` in degrees one and two. Opposite hexagon sides lie
+in the same sphere component, so their paired loop classes vanish because
+`H₁(OnePoint ℂ) = 0`. The remaining mixed torus classes vanish by the circle cross product
+applied to this null homology class. Thus the Mayer–Vietoris difference maps are the pure
+phase projections into `T²`, with zero boundary components.
 
-The resulting degree-two sequence should be `0 → ℤ³ → H₂(X) → ℤ → 0`.
-`IntegralMayerVietoris.exists_homologyEquiv_coker_prod_ker` already supplies a splitting that
-preserves the actual inclusion and boundary coordinates. To replace the specialization
-proof, the three mixed torus classes must be shown to form a primitive basis of its `ℤ³`
-subgroup, and the positive class must map to a unit in `ℤ`. The remaining degrees must also
-be computed to recover the finite homology and Euler characteristic used by the endpoints.
+The degree-two calculation gives `0 → ℤ³ → H₂(X) → ℤ → 0`, with a splitting that retains
+the inclusion and boundary coordinates. The resulting cusp filling homology in degrees
+one through four is `ℤ², ℤ⁴, ℤ², ℤ`, and its Euler characteristic is two. These results
+are implemented in the `CentralFiberHomology` and `CentralFiberEuler` modules and
+transported through the actual cusp retraction.
 
-Only after those results replace their existing producers should the compiled dependency
-closure be retraced and the bypassed cellular declarations removed. The earlier estimate
-of about 7,600 removable old lines is conditional and excludes the replacement's cost.
+The explicit cusp specialization remains available. In particular,
+`AnalyticData.cuspToFilling_homologyTwo_surjective` proves that the collar maps onto the
+filling's second homology. This is the cusp input to the final argument.
+
+## Global fourth-circle argument
+
+`StarFourthTranslation.lean` extends translation in the fourth period direction over both
+elliptic fillings and the cusp, producing a continuous circle action on the glued space.
+The already proved vanishing of global first homology makes every loop sweep by this action
+zero in global second homology.
+
+`StarFourthTranslationGenerators.lean` identifies the actual local fixed-loop sweeps with
+these global sweeps. `EllipticProjectedFourthSweeps.lean` also kills the projected planes
+involving the fourth direction. Common-source alignment and the local deck relation now
+suffice; no full second-homology basis of the elliptic union is needed.
+
+Concretely, let `xᵢ` be the global image of the order-three projected plane `Pᵢ`. The
+order-four images agree at indices zero and three. The two fixed-loop sweep relations and
+the order-three deck relation give
+
+`x₁ + 2x₃ = 0`, `x₀ + 3x₃ = 0`, and `x₀ = 2x₁`.
+
+Twice the first relation minus the second gives `x₃ = 0`. Together with the vanishing
+fixed-loop sweeps, this kills the local mapping-torus generators integrally.
+`EllipticHomologyVanishing.lean` concludes that the elliptic interior's map into global
+second homology is zero.
+
+`StarSecondHomology.lean` finishes with the final two-set Mayer–Vietoris sequence. Collar
+surjectivity and compatibility of the two inclusions imply that the cusp piece also maps
+trivially. Exactness makes the degree-two difference map surjective. The degree-one map is
+surjective between free abelian groups of rank three, hence injective; exactness then gives
+vanishing global second homology. Finally, `StarHomology.lean` combines the two low-degree
+vanishing results with the geometric Euler characteristic, Poincaré duality, and universal
+coefficients to recover the integral homology of the six-sphere on the same carrier.

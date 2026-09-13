@@ -6,7 +6,11 @@ public import SphereSixComplex.Paper.Topology.EllipticSpecializedNormalizedCover
 public import SphereSixComplex.Paper.Topology.FiniteCoverPerfectPairing
 
 /-!
-# Elliptic degree-two bases from normalized orbit sweeps
+# Elliptic degree-two generators from orbit sweeps
+
+The fixed-loop sweep and transverse fibre class give integral Wang coordinates on each reduced
+mapping torus. Selected covering projections identify these classes with explicit combinations
+of source tori, supplying the local generation argument in `EllipticHomologyGenerators`.
 -/
 
 @[expose] public section
@@ -323,149 +327,6 @@ private noncomputable def orderFourMappingTorusCoordinates :
     IntegralSingularHomology 2 (CircleMappingTorus orderFourThreeTorusClutching) ≃+
       (Fin 2 → ℤ) :=
   orderFourTotalAddEquiv orderFourSweepGenerator orderFourSweepGenerator_positiveInvariant
-
-private noncomputable def orderThreeTargetCoordinates :
-    IntegralSingularHomology 2 (orderThreeReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
-  (integralSingularHomologyEquiv 2
-    (orderThreeReducedCentralFiberCircleMappingTorusHomeomorph F)).trans
-      orderThreeMappingTorusCoordinates
-
-private noncomputable def orderFourTargetCoordinates :
-    IntegralSingularHomology 2 (orderFourReducedCentralFiber F) ≃+ (Fin 2 → ℤ) :=
-  (integralSingularHomologyEquiv 2
-    (orderFourReducedCentralFiberCircleMappingTorusHomeomorph F)).trans
-      orderFourMappingTorusCoordinates
-
-private theorem orderThreeTargetCoordinates_apply (x) :
-    orderThreeTargetCoordinates F x = orderThreeMappingTorusCoordinates
-      (integralSingularHomologyMap 2
-        (orderThreeReducedCentralFiberCircleMappingTorusHomeomorph F : C(_, _)) x) :=
-  rfl
-
-private theorem orderFourTargetCoordinates_apply (x) :
-    orderFourTargetCoordinates F x = orderFourMappingTorusCoordinates
-      (integralSingularHomologyMap 2
-        (orderFourReducedCentralFiberCircleMappingTorusHomeomorph F : C(_, _)) x) :=
-  rfl
-
-private theorem orderThreeTargetCoordinates_basisCombination :
-    orderThreeTargetCoordinates F
-        (orderThreeProjectedDegreeTwoGenerator F 1 +
-          2 • orderThreeProjectedDegreeTwoGenerator F 3) = ![1, 0] := by
-  have hsource :
-      (orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-          orderThreeBasisCombination =
-        (orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-            (Pi.single 1 1) +
-          2 • (orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-            (Pi.single 3 1) := by
-    rw [orderThreeBasisCombination, map_add, map_nsmul]
-  have hprojection := orderThree_projection_in_mappingTorus F orderThreeBasisCombination
-  rw [orderThree_cover_basisCombination] at hprojection
-  rw [hsource, map_add, map_nsmul, map_add, map_nsmul] at hprojection
-  rw [orderThreeTargetCoordinates_apply, map_add, map_nsmul]
-  simp only [orderThreeProjectedDegreeTwoGenerator]
-  rw [hprojection]
-  exact orderThreeNegatedTotalAddEquiv_section _ _
-
-private theorem orderThreeTargetCoordinates_coordinateThree :
-    orderThreeTargetCoordinates F (orderThreeProjectedDegreeTwoGenerator F 3) =
-      ![0, 1] := by
-  have hprojection := orderThree_projection_in_mappingTorus F (Pi.single 3 1)
-  rw [orderThree_cover_coordinateThree] at hprojection
-  rw [orderThreeTargetCoordinates_apply, orderThreeProjectedDegreeTwoGenerator,
-    hprojection]
-  exact orderThreeNegatedTotalAddEquiv_fiberCoordinateZero _ _
-
-private theorem orderFourTargetCoordinates_basisCombination :
-    orderFourTargetCoordinates F
-        (orderFourProjectedDegreeTwoGenerator F 0 +
-          3 • orderFourProjectedDegreeTwoGenerator F 3) = ![2, 0] := by
-  have hsource :
-      (orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-          orderFourBasisCombination =
-        (orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-            (Pi.single 0 1) +
-          3 • (orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm
-            (Pi.single 3 1) := by
-    rw [orderFourBasisCombination, map_add, map_nsmul]
-  have hprojection := orderFour_projection_in_mappingTorus F orderFourBasisCombination
-  rw [orderFour_cover_basisCombination] at hprojection
-  rw [hsource, map_add, map_nsmul, map_add, map_nsmul] at hprojection
-  rw [orderFourTargetCoordinates_apply, map_add, map_nsmul]
-  simp only [orderFourProjectedDegreeTwoGenerator]
-  rw [hprojection, map_nsmul]
-  have hsection : orderFourMappingTorusCoordinates orderFourSweepGenerator = ![1, 0] :=
-    orderFourTotalAddEquiv_section _ _
-  rw [hsection]
-  funext i
-  fin_cases i <;> norm_num
-
-private theorem orderFourTargetCoordinates_coordinateThree :
-    orderFourTargetCoordinates F (orderFourProjectedDegreeTwoGenerator F 3) =
-      ![0, 1] := by
-  have hprojection := orderFour_projection_in_mappingTorus F (Pi.single 3 1)
-  rw [orderFour_cover_coordinateThree] at hprojection
-  rw [orderFourTargetCoordinates_apply, orderFourProjectedDegreeTwoGenerator,
-    hprojection]
-  exact orderFourTotalAddEquiv_fiberCoordinateZero _ _
-
-/-- The actual elliptic degree-two basis package, derived from the single normalized orbit-sweep
-theorem and the explicit three-torus clutching calculations. -/
-public theorem actualEllipticDegreeTwoHomologyBasisFiniteData :
-    Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F) := by
-  let e₃ : IntegralSingularHomology 2 (orderThreeReducedCentralFiber F) ≃ₗ[ℤ]
-      (Fin 2 → ℤ) := (orderThreeTargetCoordinates F).toIntLinearEquiv
-  let e₄ : IntegralSingularHomology 2 (orderFourReducedCentralFiber F) ≃ₗ[ℤ]
-      (Fin 2 → ℤ) := (orderFourTargetCoordinates F).toIntLinearEquiv
-  have he₃ : (e₃ : _ → _) = orderThreeTargetCoordinates F := by
-    funext x
-    rfl
-  have he₄ : (e₄ : _ → _) = orderFourTargetCoordinates F := by
-    funext x
-    rfl
-  let b₃ : Module.Basis (Fin 2) ℤ
-      (IntegralSingularHomology 2 (orderThreeReducedCentralFiber F)) :=
-    Module.Basis.ofEquivFun e₃
-  let b₄ : Module.Basis (Fin 2) ℤ
-      (IntegralSingularHomology 2 (orderFourReducedCentralFiber F)) :=
-    Module.Basis.ofEquivFun e₄
-  refine ⟨{
-    orderThreeBasis := b₃
-    orderThreeBasis_zero := ?_
-    orderThreeBasis_one := ?_
-    orderFourBasis := b₄
-    orderFourBasis_zero_double := ?_
-    orderFourBasis_one := ?_
-  }⟩
-  · apply e₃.injective
-    rw [map_add, map_nsmul, he₃]
-    simp only [b₃, Module.Basis.coe_ofEquivFun]
-    rw [← he₃, e₃.apply_symm_apply]
-    rw [← map_nsmul, ← map_add, he₃,
-      orderThreeTargetCoordinates_basisCombination]
-    funext i
-    fin_cases i <;> simp
-  · apply e₃.injective
-    rw [he₃, orderThreeTargetCoordinates_coordinateThree]
-    simp only [b₃, Module.Basis.coe_ofEquivFun]
-    rw [← he₃, e₃.apply_symm_apply]
-    funext i
-    fin_cases i <;> simp
-  · apply e₄.injective
-    rw [map_nsmul, map_add, map_nsmul, he₄]
-    simp only [b₄, Module.Basis.coe_ofEquivFun]
-    rw [← he₄, e₄.apply_symm_apply]
-    rw [← map_nsmul, ← map_add, he₄,
-      orderFourTargetCoordinates_basisCombination]
-    funext i
-    fin_cases i <;> simp
-  · apply e₄.injective
-    rw [he₄, orderFourTargetCoordinates_coordinateThree]
-    simp only [b₄, Module.Basis.coe_ofEquivFun]
-    rw [← he₄, e₄.apply_symm_apply]
-    funext i
-    fin_cases i <;> simp
 
 end SphereSixComplex.Topology.EllipticDegreeTwoBasisFromOrbitSweep
 

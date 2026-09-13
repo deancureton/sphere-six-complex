@@ -45,8 +45,8 @@ $`\tau \mapsto \tau-1` at the cusp.
 Descend the dual monodromy powers to the two cyclic factors, then use the coproduct universal property. The cusp relation identifies their inverse product.
 :::
 
-:::theorem "dual-coinvariants" (parent := "construction_spine") (lean := "SphereSixComplex.LatticeData.dualCoinvariantRelations_eq_ker_gamma")
-The dual monodromy relation lattice is exactly the kernel of the invariant functional $`\gamma`.
+:::theorem "dual-coinvariants" (parent := "construction_spine") (lean := "SphereSixComplex.LatticeData.gamma_A₁, SphereSixComplex.LatticeData.gamma_A₂")
+The integral functional $`\gamma` is invariant under both dual monodromy matrices $`A_1` and $`A_2`.
 :::
 
 :::theorem "atlas-transport" (parent := "construction_spine") (lean := "SphereSixComplex.isManifold_transportChartedSpace")
@@ -431,21 +431,27 @@ The integral homology of $`X` is the integral homology of $`S^6`.
 :::
 
 :::proof "integral-homology"
-First homology vanishes by the local elliptic and cusp relations. For the final two-set cover,
-exactness makes the preceding degree-one difference map surjective between free abelian groups
-of rank three, hence injective as well. The degree-two difference map is onto: cusp specialization
-covers four coordinates, and raw four and raw five lie in its kernel and cover the two remaining
-elliptic coordinates. Mayer--Vietoris exactness therefore kills second homology. The geometric
-Euler characteristic is two; Poincaré duality and universal coefficients on the same compact
-complex threefold determine the remaining groups.
+First homology vanishes by the local elliptic and cusp relations. Translation in the fourth
+period direction extends to a circle action on the whole glued space. Since first homology
+is zero, sweeping any loop by this action gives zero in second homology. The actual local
+mapping-torus generators and integral deck relations then show that the elliptic interior
+maps trivially to global second homology. The cusp collar surjects onto the cusp filling's
+second homology, so the cusp piece also maps trivially. For the final two-set cover,
+Mayer--Vietoris exactness makes the degree-two difference map surjective. Its degree-one
+counterpart is surjective between free abelian groups of rank three and hence injective.
+Exactness therefore kills second homology. The geometric Euler characteristic is two;
+Poincaré duality and universal coefficients on the same compact complex threefold determine
+the remaining groups.
 :::
 
-:::theorem "elliptic-filling-relations" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.AnalyticData.cuspOverlap_homology_fullIterate")
+:::theorem "elliptic-filling-relations" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.AnalyticData.centralToInteriorAbelian_orderThree, SphereSixComplex.Geometry.AnalyticData.centralToInteriorAbelian_orderFour, SphereSixComplex.Topology.cuspElliptic_abelian_generators_eq_zero")
 Each local filling loop splits into a period loop and a meridian power. In first homology,
 free homotopies and changes of base point preserve the loop class, so these factors can be
-transported independently. The order-three and order-four relations give the integral equation
-$`12(-[\mu])=[e_0]` in the elliptic interior. Synchronizing both factors along one conjugating path
-is unnecessary.
+transported independently. The resulting order-three and order-four relations are
+$`3r_1=t(-\epsilon)` and $`4r_2=t(\epsilon')`. After imposing the cusp relation
+$`r_1+r_2=0`, the toric relations and monodromy invariance identify both period images
+with one generator. The two equations then force that generator and both meridians to vanish.
+Synchronizing both factors along one conjugating path is unnecessary.
 :::
 
 :::definition "homology-sphere-contract" (parent := "integral-homology") (lean := "SphereSixComplex.HasIntegralHomologyOfSixSphere")
@@ -463,10 +469,11 @@ The actual inclusion maps and their coordinate comparisons are computed separate
 The two integral relation maps in Lemma 7.13 have images equal to the kernels of their respective coordinate classifiers. These identities give the required exact integral presentations.
 :::
 
-:::theorem "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.AnalyticData.star_homologyOne_subsingleton, SphereSixComplex.Geometry.AnalyticData.cuspAttachment_differenceMap_two_surjective, SphereSixComplex.Geometry.AnalyticData.star_homologyTwo_subsingleton, SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere_of_lowDegrees")
-The actual local relations give vanishing first homology. Two kernel generators and the integral
-specialization map make the degree-two attachment map surjective. Equal-rank exactness gives
-vanishing second homology, and the local Euler models complete the sphere homology calculation.
+:::theorem "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.AnalyticData.star_homologyOne_subsingleton, SphereSixComplex.Geometry.AnalyticData.ellipticInterior_homologyTwo_eq_zero, SphereSixComplex.Geometry.AnalyticData.star_homologyTwo_subsingleton_of_interior, SphereSixComplex.Geometry.AnalyticData.star_homologyTwo_subsingleton, SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere_of_lowDegrees")
+The actual local relations give vanishing first homology. The global fourth-circle action
+kills the elliptic interior's image in second homology. Cusp specialization is surjective,
+and equal-rank Mayer--Vietoris exactness gives vanishing second homology. The local Euler
+models complete the sphere homology calculation.
 :::
 
 :::theorem "cusp-filling-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.Geometry.InfiniteA2Toric.Construction.CentralFiberHomology.homologyTwoEquiv, SphereSixComplex.Geometry.InfiniteA2Toric.Construction.CentralFiberHomology.finite_homology_and_euler_eq_two, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyOneEquiv, SphereSixComplex.Geometry.AnalyticData.cuspFillingHomologyTwoEquiv")
@@ -474,20 +481,31 @@ The cusp filling has homology $`\mathbb Z^2,\mathbb Z^4,\mathbb Z^2,\mathbb Z` i
 through four. Its central fibre is obtained by attaching $`D^2\times T^2` to three
 spheres with their two poles identified. A radial open cover has pieces homotopy equivalent
 to $`T^2` and this boundary, with intersection $`T^3`. The boundary itself has a two-chart
-cover whose intersection is three punctured planes. The two Mayer–Vietoris sequences,
+cover whose intersection is three punctured planes. The two Mayer–Vietoris sequences
 compute the integral groups and Euler characteristic $`2`. For the attaching map, opposite
 hexagon sides lie in the same sphere component and cancel in homology because
 $`H_1(\mathbb{CP}^1;\mathbb Z)=0`. The cusp retraction transports the groups to the filling.
 :::
 
-:::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.AffineCyclicQuotientHomology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.AffineCyclicQuotientHomology.orderFourReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticDegreeTwoPullbackBases, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization")
+:::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.AffineCyclicQuotientHomology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.AffineCyclicQuotientHomology.orderFourReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourHOneNaturality")
 The order-three and order-four reduced central fibres have explicit first-homology presentations,
 and the fixed bases satisfy the required covering-projection coordinate formulas. The affine
 cyclic-quotient abelianization and degree-one naturality statements are proved.
 
-In degree two, proved quotient-homology realizations are converted to perfect-pairing packages.
-Together these give `ellipticFiniteCoverHomologyRealization` for the two covers, including the
-actual pullback calculation. No specialized finite-cover realization axiom is retained.
+These degree-one coordinates also give the rank-one first homology of the elliptic interior
+used in the final Mayer--Vietoris argument.
+:::
+
+:::theorem "fourth-circle-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.Geometry.AnalyticData.starFourthTranslation, SphereSixComplex.Geometry.AnalyticData.orderThree_fixedLoopSweep_toStar_eq_zero, SphereSixComplex.Geometry.AnalyticData.orderFour_fixedLoopSweep_toStar_eq_zero, SphereSixComplex.Topology.EllipticHomologyGenerators.homologyTwo_maps_eq_zero, SphereSixComplex.Geometry.AnalyticData.ellipticInterior_homologyTwo_eq_zero")
+The fourth period translation extends across the cusp and both elliptic fillings. Naturality
+of the circle cross product and vanishing global first homology kill the actual fixed-loop
+sweeps and the projected planes involving this direction. Let $`x_i` denote the global image
+of the order-three projected plane $`P_i`. Common-source alignment identifies $`P_0` and
+$`P_3` with their order-four counterparts. The local sweep and deck relations give
+$`x_1+2x_3=0`, $`x_0+3x_3=0`, and $`x_0=2x_1`. Subtracting the second relation from twice
+the first gives $`x_3=0`. The mapping-torus generators therefore all map to zero. This is an
+integral argument and does not require a full coordinate basis for the elliptic union's
+second homology.
 :::
 
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_complexThreefold_nonempty_diffeomorph_sixSphere") (priority := "high")

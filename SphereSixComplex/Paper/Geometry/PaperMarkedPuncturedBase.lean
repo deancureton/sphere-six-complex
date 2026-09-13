@@ -123,25 +123,6 @@ public theorem puncturedGlobalZeroSection_mk (b : RegularBase (U := U)) :
       quotientProjection (M := RegularTotalSpace F) (G := Delta)
         (regularFamilyZeroSection F b) := rfl
 
-/-- Forget the torus coordinate after both quotient stages. -/
-public noncomputable def puncturedGlobalBaseProjection :
-    C(PuncturedGlobalFamily F, PuncturedOrbifoldBase (U := U)) := by
-  refine ⟨Quotient.map (regularTotalSpaceBase F) ?_, ?_⟩
-  · intro x y hxy
-    change MulAction.orbitRel Delta (RegularTotalSpace F) x y at hxy
-    rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hxy
-    change MulAction.orbitRel Delta (RegularBase (U := U))
-      (regularTotalSpaceBase F x) (regularTotalSpaceBase F y)
-    rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
-    obtain ⟨g, hg⟩ := hxy
-    refine ⟨g, ?_⟩
-    calc
-      regularSourceEquiv g (regularTotalSpaceBase F y) =
-          regularTotalSpaceBase F (regularFamilyDeckMap F g y) :=
-        (regularTotalSpaceBase_familyDeckMap F g y).symm
-      _ = regularTotalSpaceBase F x := congrArg (regularTotalSpaceBase F) hg
-  · exact continuous_quot_map _ (regularTotalSpaceBase_continuous F)
-
 end SphereSixComplex.Geometry.GlobalTorusFamily
 
 namespace SphereSixComplex.Geometry.AnalyticData

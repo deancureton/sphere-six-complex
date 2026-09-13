@@ -159,3 +159,60 @@ and the strict recursive axiom audit. Comparator reported “Lean default kernel
 solution” and “Your solution is okay!” against the unchanged permitted-axiom list. The final
 boundary remains three Lean axioms plus ten classical assumptions; the construction still uses
 three Lean axioms plus seven classical assumptions. Existing linter/docstring warnings remain.
+
+## Global circle translation replaces the elliptic H₂ coordinate calculation
+
+The new production argument extends fourth-period translation across both elliptic fillings and
+across the cusp. A general circle-product homology lemma shows that a torus swept by this map
+has zero image in H₂ whenever the target has trivial H₁. The actual fixed-loop sweeps and the
+projected planes involving the fourth period satisfy this hypothesis.
+
+The remaining projected classes satisfy integral relations
+`x₁ + 2x₃ = 0`, `x₀ + 3x₃ = 0`, and `x₀ = 2x₁`.
+They imply `x₃ = 0` without division or a torsion-free hypothesis. Local Wang generation,
+elliptic Mayer–Vietoris, and the existing primitive cusp boundary calculation then show that the
+elliptic inclusion induces zero on H₂. Cusp specialization is onto on H₂; the final
+Mayer–Vietoris argument uses the already established H₁ vanishing and equal integral H₁ ranks.
+The old full elliptic H₂ basis and cusp raw-five normalization are no longer dependencies.
+
+Only the two Comparator theorems were mathematical roots of the deletion analysis. The export
+included opaque theorem values and type dependencies; resolved `.ilean` source references
+protected elaboration support. It was captured after the new proof passed a full root build.
+Declaration deletion was followed by import repair, removal of dangling section variables, and
+another full build. The shared `CuspAttachmentHomology` import now contains the actual cusp
+surjectivity theorem, so the Comparator challenge files remain unchanged.
+
+The requested 10,000-line reduction was not reached. A further candidate is to replace the
+selected elliptic relation loops with ordinary circles bounding discs in the fixed local
+product charts, and replace full marked-band homotopies with the homology comparisons actually
+used. A joint dependency cut gives an optimistic ceiling of 11,249 existing source lines,
+before replacement proofs and elaboration support. The unproved obligations are the new loops'
+exact logarithmic period-lift endpoints, base winding multiplicities three and four, and local
+period-equivariance of the weaker band comparisons. This is a research direction, not a
+verified deletion estimate. Reusing the current selected loops retains most of that machinery.
+
+
+| Library inventory | Before | After |
+|---|---:|---:|
+| Lean modules, including the root import | 780 | 771 |
+| Source lines | 174,475 | 171,657 |
+
+This is a net reduction of **2,818 lines**, including all new proofs. Twenty-three obsolete
+modules were removed and fourteen modules were added. No clean A/B timing benchmark was run;
+this is a source reduction, not a measured build speedup.
+
+The post-deletion export contains 20,704 compiled project constants and 17,094 constants in the
+two endpoint term closures. The source-supported closure has 18,142 constants. It reports
+exactly the same seventeen previously reviewed elaboration-helper ranges, no missing `.ilean`
+files, and only the two known linter-option metadata references. Generated auxiliary proof names
+changed after deletion, and one surviving proof now closes a definitional equality explicitly;
+the endpoint closure size is unchanged from the pre-deletion export of the new route.
+
+Validation passed: the full root build (9,799 jobs), Blueprint build (10,152 jobs),
+post-Blueprint root build, all 263 Blueprint declaration checks, import/layer and placeholder
+checks, and the strict recursive axiom audit. Comparator's default Lean kernel accepted the
+unchanged challenge. Its macOS fake-Landrun path checks functionality, not Linux process
+isolation. The endpoint boundary remains three standard Lean axioms plus ten classical
+assumptions; the construction uses the standard three plus seven classical assumptions.
+Existing linter/docstring warnings remain. The challenge files, Comparator configuration,
+axiom allowlists, and dependency pins are unchanged.

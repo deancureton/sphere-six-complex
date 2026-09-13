@@ -318,7 +318,6 @@ public import SphereSixComplex.Prerequisites.Topology.RelativeCWHomotopyExtensio
 public import SphereSixComplex.Prerequisites.Topology.RelativeHomotopy
 public import SphereSixComplex.Prerequisites.Topology.RelativeSingularHomology
 public import SphereSixComplex.Prerequisites.Topology.RestrictedOrbitQuotientOpenEmbedding
-public import SphereSixComplex.Prerequisites.Topology.SimplyConnectedCircleSweep
 public import SphereSixComplex.Prerequisites.Topology.SingularAffineSubdivision
 public import SphereSixComplex.Prerequisites.Topology.SingularAffineSubdivisionIteration
 public import SphereSixComplex.Prerequisites.Topology.SingularAffineSubdivisionMesh
@@ -361,7 +360,6 @@ public import SphereSixComplex.Prerequisites.Topology.TwicePuncturedComplexFunda
 public import SphereSixComplex.Prerequisites.Topology.TwicePuncturedComplexHalfPlaneCover
 public import SphereSixComplex.Prerequisites.Topology.TwicePuncturedComplexMarkedMeridians
 public import SphereSixComplex.Prerequisites.Topology.TwicePuncturedComplexPairOfPants
-public import SphereSixComplex.Prerequisites.Topology.TwicePuncturedHomologyOneGenerators
 public import SphereSixComplex.Prerequisites.Topology.UnitCircleExponential
 public import SphereSixComplex.Prerequisites.Topology.WangHomologyPresentation
 public import SphereSixComplex.Prerequisites.Topology.WangHomologyPresentationDefs
@@ -388,7 +386,6 @@ public import SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 public import TauCeti.Analysis.Complex.Conformal.Reflection.Arc
 public import TauCeti.Analysis.Complex.Conformal.Reflection.Injective
 public import SphereSixComplex.Prerequisites.Topology.FreeLoopHomology
-public import SphereSixComplex.Prerequisites.Topology.AddMonoidHomSurjectivity
 public import SphereSixComplex.Prerequisites.Topology.AdjunctionCollarEquiv
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverBoundaryCoordinates
 public import SphereSixComplex.Prerequisites.Topology.ComplexUnitsHomology
@@ -397,3 +394,5 @@ public import SphereSixComplex.Prerequisites.Topology.FirstHurewiczSurjective
 public import SphereSixComplex.Prerequisites.Topology.MayerVietorisFiniteRank
 public import SphereSixComplex.Prerequisites.Topology.ThreeTorusCoordinateMaps
 public import SphereSixComplex.Prerequisites.Topology.UnitSphereEquiv
+public import SphereSixComplex.Prerequisites.Topology.CircleActionHomology
+public import SphereSixComplex.Prerequisites.Topology.ExactGeneration

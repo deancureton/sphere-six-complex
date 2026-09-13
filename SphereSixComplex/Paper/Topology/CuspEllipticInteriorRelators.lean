@@ -1,5 +1,8 @@
 module
-public import SphereSixComplex.Paper.Topology.AffinePeripheralAbelianization
+
+public import SphereSixComplex.Paper.LatticeData
+public import SphereSixComplex.Paper.Topology.PaperVanKampenAlgebraAdapter
+public import SphereSixComplex.Prerequisites.Topology.EstablishedAffineVanKampen
 public import SphereSixComplex.Paper.Topology.PaperEllipticActualStraightPeriod
 
 @[expose] public section

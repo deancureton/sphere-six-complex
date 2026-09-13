@@ -1,5 +1,7 @@
 module
-public import SphereSixComplex.Prerequisites.Topology.SimplyConnectedCircleSweep
+
+public import SphereSixComplex.Prerequisites.Topology.NormalizedCircleProductCross
+public import SphereSixComplex.Prerequisites.Topology.FirstHurewiczProof
 public import SphereSixComplex.Paper.Geometry.EstablishedContinuousTorusAction
 
 @[expose] public section
@@ -19,17 +21,5 @@ public def localHeightPreservingCircleAction (M : Model) (r : ℝ)
     exact z.2.property⟩
   continuous_toFun := ((continuous_torusAction M).comp
     ((g.continuous.comp continuous_fst).prodMk (continuous_subtype_val.comp continuous_snd))).subtype_mk _
-
-public theorem localHeightPreservingCircleSweep_zero (M : Model) (r : ℝ) (hr : 0 < r)
-    (g : C(UnitAddCircle, DenseTorus)) (hg : ∀ z, g z 2 = 1)
-    (f : C(UnitAddCircle × StandardTorusHomology.StdTorus 1,
-      UnitAddCircle × localCarrier M r))
-    (p : C(StandardTorusHomology.StdTorus 1, localCarrier M r))
-    (h : C(UnitAddCircle × StandardTorusHomology.StdTorus 1, StandardTorusHomology.StdTorus 1))
-    (hf : CircleProductIdentityMappingTorus.productFiberProjection.comp f = p.comp h)
-    (x : IntegralSingularHomology 2 (UnitAddCircle × StandardTorusHomology.StdTorus 1)) :
-    integralSingularHomologyMap 2 ((localHeightPreservingCircleAction M r g hg).comp f) x = 0 := by
-  let : SimplyConnectedSpace (localCarrier M r) := M.localCarrierSimplyConnected r hr
-  rw [← integralSingularHomologyMap_comp_wang, circleFactor_homologyTwo_zero f p h hf, map_zero]
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

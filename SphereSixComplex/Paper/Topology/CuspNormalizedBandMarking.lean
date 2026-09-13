@@ -295,16 +295,5 @@ public theorem cuspRawFour_pulled_back_primitive {A : AnalyticData}
     integralSingularHomologyMap_eq_of_homotopy 2 A.cuspThirdSweep_homotopic_chosen.some]
   exact cuspChosenThirdSweep_pulledBack_primitive R
 
-public theorem cuspRawFour_pulled_back_scalar_one {A : AnalyticData}
-    (R : A.AffineRadialCompletionInput) :
-    R.twoDiscCover.cuspPulledBackBoundaryCoordinateHom R.homologyAlignment
-      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)) = 1 := by
-  rw [EllipticTwoDiscCoverData.cuspPulledBackBoundaryCoordinateHom_apply_eq_bandCoordinate]
-  change (EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
-    (R.twoDiscCover.cuspPulledBackBoundaryHom
-      (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)))) 3 = 1
-  rw [cuspRawFour_pulled_back_primitive]
-  rfl
-
 end SphereSixComplex.Geometry.AnalyticData
 end

@@ -1,6 +1,13 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenPositiveDegreeRealization
+public import SphereSixComplex.Paper.Topology.PaperEllipticInteriorNormalizedSplitting
+public import SphereSixComplex.Paper.Topology.PaperCuspCollarRadialMappingTorus
+public import SphereSixComplex.Paper.Topology.PaperEllipticTwoDiscHomologyCoordinatesRealization
+public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberHomology
+public import SphereSixComplex.Paper.Topology.PaperCuspPhaseSpreading
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenFinalDegreeZero
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenEllipticTwoDiscCoverRealization
+
 
 /-!
 # Geometric reduction of the Section 7 positive-degree input

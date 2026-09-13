@@ -30,7 +30,6 @@ noncomputable section
 /-- Second coordinate in the ordered list `(01, 02, 03, 12, 13, 23)`. -/
 @[expose] public def periodPairSecond : Fin 6 → Fin 4 := ![1, 2, 3, 2, 3, 3]
 
-
 /-- The second compound of a four-by-four matrix in coordinates `(01, 02, 03, 12, 13, 23)`. -/
 @[expose] public def secondCompoundMatrix
     (M : Matrix (Fin 4) (Fin 4) ℤ) : Matrix (Fin 6) (Fin 6) ℤ :=
@@ -56,14 +55,6 @@ public theorem integralMatrix_rhoLambda_gOne :
   ext i j
   rw [LinearMap.toMatrix'_apply]
   convert congrFun (rhoLambda_g₁_apply (Pi.single j 1)) i using 1 <;> simp
-
-public theorem integralMatrix_rhoLambda_gTwo :
-    LinearMap.toMatrix' (rhoLambda g₂).toLinearMap = A₂ := by
-  ext i j
-  rw [LinearMap.toMatrix'_apply]
-  convert congrFun (rhoLambda_g₂_apply (Pi.single j 1)) i using 1 <;> simp
-
-
 
 /-- An affine automorphism of a period torus together with its actual lift and integral lattice
 automorphism. -/
@@ -339,10 +330,6 @@ variable {U : TriangleUniformization} (F : PeriodFunctions U)
   StandardTorusHomology.additiveTorusHomologyBasis _
     (fullRankDomain (parameterMap F U.zTwo))
 
-
-
-
-
 end Geometry.EllipticFamilySpecialization
 
 namespace EllipticFilling
@@ -379,15 +366,6 @@ standard period basis. -/
       (orderThreeRadialActionData F))).comp
     (orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm.toAddHom
 
-/-- The actual order-three covering map on second homology, with its source written in exterior
-degree-two period coordinates. -/
-@[expose] public def orderThreeReducedCentralFiberCoverHomologyDegreeTwo :
-    (Fin 6 → ℤ) →+ IntegralSingularHomology 2 (orderThreeReducedCentralFiber F) :=
-  (integralSingularHomologyMap 2
-    (RadialEllipticActionData.centralFiberCoverProjection
-      (orderThreeRadialActionData F))).comp
-    (orderThreeCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm.toAddHom
-
 /-- The actual order-four covering map on first homology, with its source written in the
 standard period basis. -/
 @[expose] public def orderFourReducedCentralFiberCoverHomologyDegreeOne :
@@ -396,15 +374,6 @@ standard period basis. -/
     (RadialEllipticActionData.centralFiberCoverProjection
       (orderFourRadialActionData F))).comp
     (orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm.toAddHom
-
-/-- The actual order-four covering map on second homology, with its source written in exterior
-degree-two period coordinates. -/
-@[expose] public def orderFourReducedCentralFiberCoverHomologyDegreeTwo :
-    (Fin 6 → ℤ) →+ IntegralSingularHomology 2 (orderFourReducedCentralFiber F) :=
-  (integralSingularHomologyMap 2
-    (RadialEllipticActionData.centralFiberCoverProjection
-      (orderFourRadialActionData F))).comp
-    (orderFourCentralFiberCoverSourceHomologyBasis F).degreeTwo.symm.toAddHom
 
 end EllipticFilling
 

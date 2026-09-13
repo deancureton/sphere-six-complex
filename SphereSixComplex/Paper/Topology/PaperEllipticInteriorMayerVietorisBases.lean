@@ -4,12 +4,11 @@ public import SphereSixComplex.Paper.Topology.CircleMappingTorusHomologyBases
 public import SphereSixComplex.Paper.Topology.PaperEllipticTwoDiscCover
 
 /-!
-# Homology bases from the elliptic two-disc cover
+# Mayer–Vietoris for the elliptic two-disc cover
 
-This file performs the purely algebraic Mayer--Vietoris step behind Lemma 7.19.  Given bases in
-which the two actual difference maps are the integral covering-index matrix in degree one and
-`alphaTwoMatrix` in degree two, it constructs `H₁ ≅ ℤ` and `H₂ ≅ ℤ²` for the elliptic
-interior.  No basis of the interior is assumed.
+The degree-one difference matrix has a rank-one kernel and a primitive cokernel coordinate.
+The actual open cover also supplies canonical Mayer–Vietoris connecting maps and exact
+presentations in degrees one and two, without choosing degree-two bases for the interior.
 -/
 
 @[expose] public section
@@ -88,18 +87,10 @@ public theorem ellipticActualHOneCokernelFunctional_surjective :
 def ellipticActualHOneLinear : (Fin 4 → ℤ) →ₗ[ℤ] (Fin 4 → ℤ) :=
   ellipticActualHOneDifferenceMatrix.mulVecLin
 
-def alphaTwoLinear : (Fin 6 → ℤ) →ₗ[ℤ] (Fin 4 → ℤ) :=
-  alphaTwoMatrix.mulVecLin
-
 def ellipticActualHOneFunctionalLinear : (Fin 4 → ℤ) →ₗ[ℤ] ℤ where
   toFun := ellipticActualHOneCokernelFunctional
   map_add' x y := by simp [ellipticActualHOneCokernelFunctional]; ring
   map_smul' n x := by simp [ellipticActualHOneCokernelFunctional]; ring
-
-def alphaTwoFunctionalLinear : (Fin 4 → ℤ) →ₗ[ℤ] ℤ where
-  toFun := alphaTwoFunctional
-  map_add' x y := by simp [alphaTwoFunctional]; ring
-  map_smul' n x := by simp [alphaTwoFunctional]; ring
 
 theorem range_ellipticActualHOneLinear_eq_ker :
     LinearMap.range ellipticActualHOneLinear =
@@ -109,39 +100,11 @@ theorem range_ellipticActualHOneLinear_eq_ker :
     ellipticActualHOneCokernelFunctional x = 0
   exact ellipticActualHOne_image_iff x
 
-theorem range_alphaTwoLinear_eq_ker :
-    LinearMap.range alphaTwoLinear = LinearMap.ker alphaTwoFunctionalLinear := by
-  ext x
-  change (∃ y, alphaTwoMatrix *ᵥ y = x) ↔ alphaTwoFunctional x = 0
-  exact alphaTwo_image_iff x
-
 noncomputable def ellipticActualHOneCokernelEquivInt :
     ((Fin 4 → ℤ) ⧸ LinearMap.range ellipticActualHOneLinear) ≃ₗ[ℤ] ℤ :=
   (Submodule.quotEquivOfEq _ _ range_ellipticActualHOneLinear_eq_ker).trans
     (ellipticActualHOneFunctionalLinear.quotKerEquivOfSurjective
       ellipticActualHOneCokernelFunctional_surjective)
-
-noncomputable def alphaTwoCokernelEquivInt :
-    ((Fin 4 → ℤ) ⧸ LinearMap.range alphaTwoLinear) ≃ₗ[ℤ] ℤ :=
-  (Submodule.quotEquivOfEq _ _ range_alphaTwoLinear_eq_ker).trans
-    (alphaTwoFunctionalLinear.quotKerEquivOfSurjective alphaTwoFunctional_surjective)
-
-def ellipticActualHOneKernelEquivInt : LinearMap.ker ellipticActualHOneLinear ≃ₗ[ℤ] ℤ where
-  toFun x := x.1 3
-  invFun n := ⟨n • alphaOneKernelGenerator, by
-    rw [LinearMap.mem_ker]
-    rw [map_smul]
-    change n • (ellipticActualHOneDifferenceMatrix *ᵥ alphaOneKernelGenerator) = 0
-    rw [ellipticActualHOne_generator_mem_kernel, smul_zero]⟩
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-  left_inv x := by
-    apply Subtype.ext
-    obtain ⟨n, hn⟩ := (ellipticActualHOne_kernel x.1).mp x.2
-    have h3 := congrFun hn (3 : Fin 4)
-    simp [alphaOneKernelGenerator] at h3
-    simpa [h3] using hn.symm
-  right_inv n := by simp [alphaOneKernelGenerator]
 
 theorem map_range_eq_of_comm
     {A B A' B' : Type*} [AddCommGroup A] [AddCommGroup B]
@@ -165,36 +128,6 @@ noncomputable def cokernelEquivOfComm
     (h : eB.toLinearMap.comp f = g.comp eA.toLinearMap) :
     (B ⧸ LinearMap.range f) ≃ₗ[ℤ] B' ⧸ LinearMap.range g :=
   Submodule.Quotient.equiv _ _ eB (map_range_eq_of_comm eA eB f g h)
-
-theorem map_ker_eq_of_comm
-    {A B A' B' : Type*} [AddCommGroup A] [AddCommGroup B]
-    [AddCommGroup A'] [AddCommGroup B']
-    (eA : A ≃ₗ[ℤ] A') (eB : B ≃ₗ[ℤ] B') (f : A →ₗ[ℤ] B) (g : A' →ₗ[ℤ] B')
-    (h : eB.toLinearMap.comp f = g.comp eA.toLinearMap) :
-    (LinearMap.ker f).map eA.toLinearMap = LinearMap.ker g := by
-  ext x
-  constructor
-  · rintro ⟨a, ha, rfl⟩
-    apply LinearMap.mem_ker.mpr
-    have hh := DFunLike.congr_fun h a
-    simp only [LinearMap.coe_comp, Function.comp_apply] at hh
-    rw [← hh, LinearMap.mem_ker.mp ha, map_zero]
-  · intro hx
-    refine ⟨eA.symm x, ?_, eA.apply_symm_apply x⟩
-    apply LinearMap.mem_ker.mpr
-    apply eB.injective
-    rw [eB.map_zero]
-    have hh := DFunLike.congr_fun h (eA.symm x)
-    simp only [LinearMap.coe_comp, Function.comp_apply] at hh
-    exact hh.trans <| (congrArg g (eA.apply_symm_apply x)).trans (LinearMap.mem_ker.mp hx)
-
-def kernelEquivOfComm
-    {A B A' B' : Type*} [AddCommGroup A] [AddCommGroup B]
-    [AddCommGroup A'] [AddCommGroup B']
-    (eA : A ≃ₗ[ℤ] A') (eB : B ≃ₗ[ℤ] B') (f : A →ₗ[ℤ] B) (g : A' →ₗ[ℤ] B')
-    (h : eB.toLinearMap.comp f = g.comp eA.toLinearMap) :
-    LinearMap.ker f ≃ₗ[ℤ] LinearMap.ker g :=
-  eA.ofSubmodules _ _ (map_ker_eq_of_comm eA eB f g h)
 
 def kernelEquivFinZeroOfInjective
     {A B : Type*} [AddCommGroup A] [AddCommGroup B]
@@ -224,50 +157,13 @@ def intProdFinZeroEquivFinOne : (ℤ × (Fin 0 → ℤ)) ≃ₗ[ℤ] (Fin 1 → 
       exact Fin.elim0 i
   right_inv x := by funext i; fin_cases i; rfl
 
-def intProdEquivFinTwo : (ℤ × ℤ) ≃ₗ[ℤ] (Fin 2 → ℤ) where
-  toFun z := ![z.1, z.2]
-  invFun f := (f 0, f 1)
-  map_add' x y := by funext i; fin_cases i <;> rfl
-  map_smul' n x := by funext i; fin_cases i <;> rfl
-  left_inv z := by rcases z with ⟨x, y⟩; rfl
-  right_inv f := by funext i; fin_cases i <;> rfl
-
 namespace Geometry.AnalyticData
 
 variable {A : AnalyticData}
 
-/-- Exact coordinate input for the two-disc Mayer--Vietoris calculation.  It contains bases only
-on the overlap and the two sides, not on their union. -/
-public structure EllipticTwoDiscHomologyCoordinates
-    (D : A.EllipticTwoDiscCoverData) where
-  bandOne :
-    IntegralSingularHomology 1
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) ≃+
-      (Fin 4 → ℤ)
-  sidesOne :
-    (IntegralSingularHomology 1 D.orderThreeSide ×
-      IntegralSingularHomology 1 D.orderFourSide) ≃+ (Fin 4 → ℤ)
-  differenceOne : ∀ x,
-    sidesOne (IntegralMayerVietoris.differenceMap
-      D.orderThreeSide D.orderFourSide 1 x) =
-        ellipticActualHOneDifferenceMatrix *ᵥ bandOne x
-  bandTwo :
-    IntegralSingularHomology 2
-        (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) ≃+
-      (Fin 6 → ℤ)
-  sidesTwo :
-    (IntegralSingularHomology 2 D.orderThreeSide ×
-      IntegralSingularHomology 2 D.orderFourSide) ≃+ (Fin 4 → ℤ)
-  differenceTwo : ∀ x,
-    sidesTwo (IntegralMayerVietoris.differenceMap
-      D.orderThreeSide D.orderFourSide 2 x) = alphaTwoMatrix *ᵥ bandTwo x
-  differenceZero_injective : Function.Injective
-    (IntegralMayerVietoris.differenceMap D.orderThreeSide D.orderFourSide 0)
-
 namespace EllipticTwoDiscHomologyCoordinates
 
 variable {D : A.EllipticTwoDiscCoverData}
-  (B : A.EllipticTwoDiscHomologyCoordinates D)
 
 /-- The order-three side as an open subspace of the elliptic interior. -/
 public def orderThreeOpen (D : A.EllipticTwoDiscCoverData) :
@@ -298,25 +194,6 @@ public noncomputable def canonicalMayerVietorisData
 public noncomputable def canonicalBoundary
     (D : A.EllipticTwoDiscCoverData) (n : ℕ) :=
   (canonicalMayerVietorisData D).legacyBoundary n
-
-theorem differenceOne_linear_comm :
-    B.sidesOne.toIntLinearEquiv.toLinearMap.comp
-        (IntegralMayerVietoris.differenceMap
-          D.orderThreeSide D.orderFourSide 1).toIntLinearMap =
-      ellipticActualHOneLinear.comp B.bandOne.toIntLinearEquiv.toLinearMap := by
-  apply LinearMap.ext
-  intro x
-  exact B.differenceOne x
-
-theorem differenceTwo_linear_comm :
-    B.sidesTwo.toIntLinearEquiv.toLinearMap.comp
-        (IntegralMayerVietoris.differenceMap
-          D.orderThreeSide D.orderFourSide 2).toIntLinearMap =
-      alphaTwoLinear.comp B.bandTwo.toIntLinearEquiv.toLinearMap := by
-  apply LinearMap.ext
-  intro x
-  exact B.differenceTwo x
-
 
 noncomputable def presentationOne :
     WangHomologyPresentation
@@ -367,14 +244,6 @@ noncomputable def presentationTwo :
       exact_highDifference_inclusion := (h 2).2.2
       exact_inclusion_boundary := (h 1).1
       exact_boundary_lowDifference := (h 1).2.1 }
-
-
-/-- The degree-two presentation uses the canonical open-cover connecting map. -/
-public theorem presentationTwo_boundary :
-    (presentationTwo (D := D)).boundary = canonicalBoundary D 1 := by
-  rfl
-
-
 
 end EllipticTwoDiscHomologyCoordinates
 

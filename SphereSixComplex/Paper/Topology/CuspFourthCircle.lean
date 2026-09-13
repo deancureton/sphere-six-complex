@@ -26,27 +26,7 @@ public theorem cuspFourthCircle_real (x : PeriodDomain) (t : ℝ) :
       additiveTorusProjection x.1 (t • periodVector x.1 ![0,0,0,1]) := by
   simpa only [cuspFourthCircle, fourthCoordinate_eq] using cuspCoordinateCircle_real x 3 t
 
-public theorem cuspFourthCircle_fixed (x : PeriodDomain) (z : StdTorus 1) :
-    cuspFiberClutching x (cuspFourthCircle x z) = cuspFourthCircle x z :=
-  cuspCoordinateCircle_fixed x 3 (by rw [fourthCoordinate_eq]; exact rhoLambda_fourthBasis g₀) z
-
-public theorem cuspFourthCircle_homology (x : PeriodDomain) :
-    (cuspMonodromyCoordinates x).degreeOne
-      (integralSingularHomologyMap 1 (cuspFourthCircle x) standardCircleHomologyGenerator) =
-      Pi.single 3 1 := cuspCoordinateCircle_homology x 3
-
 open SphereSixComplex.Topology.FixedTopologicalCircleWangBoundary
-public def cuspFourthFixedCircle (x : PeriodDomain) :
-    FixedTopologicalCircle (cuspFiberClutching x) :=
-  ⟨cuspFourthCircle x, cuspFourthCircle_fixed x⟩
-
-public theorem cuspFourthSweep_wang (x : PeriodDomain) :
-    (cuspMonodromyCoordinates x).degreeOne
-      ((circleMappingTorusWangPresentationOfCover (cuspFiberClutching x) 1).boundary
-        (fixedLoopSweepClass (cuspFiberClutching x) (cuspFourthFixedCircle x))) =
-      Pi.single 3 1 := by
-  rw [fixedLoopSweepClass_boundary]
-  exact cuspFourthCircle_homology x
 
 end SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 end

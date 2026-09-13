@@ -30,37 +30,6 @@ public def cuspFixedCircleSweep (A : AnalyticData)
       (fixedLoopMappingTorusMap (cuspFiberClutching _)
         c))
 
-public theorem cuspFixedCircleSweep_real (A : AnalyticData)
-    (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate
-      (markedCuspParameter A.starCuspWitness)))) (r : ℝ)
-    (z : StdTorus 1) :
-    cuspFixedCircleSweep A c ((r : UnitAddCircle), z) =
-      actualCuspFullFiberSlice (A := A)
-        (cuspParameterOfPolar (A.starCuspWitness.localWitness.radius / 2) r)
-        (by rw [norm_cuspQ_cuspParameterOfPolar _ _ (by
-              have := A.starCuspWitness.localWitness.radius_pos; linarith)]
-            have := A.starCuspWitness.localWitness.radius_pos; linarith)
-        (c.1 z) := by
-  have h := circleProductRealMappingTorusHomeomorph_real (X := StdTorus 1) (r, z)
-  change circleProductRealMappingTorusHomeomorph ((r : UnitAddCircle), z) = _ at h
-  apply (puncturedLocalCuspQuotientHomeomorph A.starCuspWitness
-    (markedCuspParameter A.starCuspWitness)).injective
-  change (puncturedLocalCuspQuotientHomeomorph A.starCuspWitness _)
-      ((puncturedLocalCuspQuotientHomeomorph A.starCuspWitness _).symm _) =
-    (puncturedLocalCuspQuotientHomeomorph A.starCuspWitness _)
-      ((puncturedLocalCuspQuotientHomeomorph A.starCuspWitness _).symm _)
-  erw [Homeomorph.apply_symm_apply, Homeomorph.apply_symm_apply]
-  apply Prod.ext
-  · apply Subtype.ext
-    exact (norm_cuspQ_cuspParameterOfPolar (A.starCuspWitness.localWitness.radius / 2) r (by
-      have := A.starCuspWitness.localWitness.radius_pos; linarith)).symm
-  · change realMappingTorusHomeomorph _
-      (fixedLoopRealMappingTorusMap _ _
-        (circleProductRealMappingTorusHomeomorph ((r : UnitAddCircle), z))) = _
-    rw [h, fixedLoopRealMappingTorusMap_mk]
-    rfl
-
-
 public theorem cuspFixedCircleSweep_to_mapping_torus (A : AnalyticData)
     (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate
       (markedCuspParameter A.starCuspWitness)))) :
@@ -74,7 +43,6 @@ public theorem cuspFixedCircleSweep_to_mapping_torus (A : AnalyticData)
       (markedCuspParameter A.starCuspWitness)).symm _)).2 = _
   erw [Homeomorph.apply_symm_apply]
   rfl
-
 
 public theorem cuspFixedCircleSweep_wang (A : AnalyticData)
     (c : FixedTopologicalCircle (cuspFiberClutching (cuspBasePoint A.cuspCoordinate

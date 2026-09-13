@@ -1,5 +1,6 @@
 module
 
+
 public import SphereSixComplex.Paper.Final
 public import SphereSixComplex.Paper.Geometry.StandardInfiniteA2ToricModel
 public import SphereSixComplex.Paper.Geometry.AdditiveTorusTopology
@@ -137,12 +138,10 @@ public import SphereSixComplex.Paper.Topology.ActualEllipticFourthGaugeCompatibi
 public import SphereSixComplex.Paper.Topology.ActualEllipticFourthInteriorTranslation
 public import SphereSixComplex.Paper.Topology.ActualEllipticVaryingFourthTranslation
 public import SphereSixComplex.Paper.Topology.AffineCyclicCoverDegreeTwoInvariance
-public import SphereSixComplex.Paper.Topology.AffinePeripheralAbelianization
 public import SphereSixComplex.Paper.Topology.AffineRealMappingTorusUniversalCover
 
 public import SphereSixComplex.Paper.Topology.AffineVanKampenTransport
 public import SphereSixComplex.Prerequisites.Topology.CellularChainModel
-public import SphereSixComplex.Paper.Topology.CentralInvariantCircleBoundary
 public import SphereSixComplex.Paper.Topology.CircleMappingTorusHomologyBases
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.VanKampen
 public import SphereSixComplex.Paper.Topology.VanKampenGeometry
@@ -202,10 +201,8 @@ public import SphereSixComplex.Paper.Topology.CuspChosenThirdSweep
 public import SphereSixComplex.Paper.Topology.PaperCuspCollarRadialMappingTorus
 public import SphereSixComplex.Paper.Topology.CuspCoordinateCircleTransport
 
-public import SphereSixComplex.Paper.Topology.CuspCorrectedEllipticSplitting
 
 public import SphereSixComplex.Paper.Topology.CuspDeckHomologyOne
-public import SphereSixComplex.Paper.Topology.CuspEllipticHomologyFullIterate
 public import SphereSixComplex.Paper.Topology.CuspEllipticInteriorRelators
 
 public import SphereSixComplex.Paper.Topology.CuspFiberSpecializationBijective
@@ -218,15 +215,7 @@ public import SphereSixComplex.Paper.Topology.CuspFiniteFiberCoordinateTori
 public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecialization
 public import SphereSixComplex.Paper.Topology.PaperCuspGeometricSpecializationProof
 public import SphereSixComplex.Paper.Topology.CuspFixedCircleSweep
-public import SphereSixComplex.Paper.Topology.CuspFourthActionSweep
 public import SphereSixComplex.Paper.Topology.CuspFourthCircle
-public import SphereSixComplex.Paper.Topology.CuspFourthFiberUnit
-public import SphereSixComplex.Paper.Topology.CuspFourthSweepCentralImage
-public import SphereSixComplex.Paper.Topology.CuspFourthSweepFiberParity
-public import SphereSixComplex.Paper.Topology.CuspFourthSweepNormalization
-public import SphereSixComplex.Paper.Topology.CuspFourthSweepNormalizationOfProjection
-public import SphereSixComplex.Paper.Topology.CuspFourthSweepToricLift
-public import SphereSixComplex.Paper.Topology.CuspFullIterateWangComparison
 public import SphereSixComplex.Paper.Topology.CuspInvariantCoordinateCircle
 public import SphereSixComplex.Paper.Topology.CuspMixedPhaseTorus
 public import SphereSixComplex.Paper.Topology.CuspMixedTorusPositiveProjection
@@ -245,7 +234,6 @@ public import SphereSixComplex.Paper.Topology.CuspThirdCircle
 public import SphereSixComplex.Paper.Topology.CuspThirdPeripheralInvariance
 public import SphereSixComplex.Paper.Topology.CuspThirdSweep
 public import SphereSixComplex.Paper.Topology.CuspThirdSweepLoopRealization
-public import SphereSixComplex.Paper.Topology.CuspTranslationHomologyComparison
 public import SphereSixComplex.Paper.Topology.CuspWangKernel
 public import SphereSixComplex.Paper.Topology.CuspFundamentalGroup
 public import SphereSixComplex.Paper.Topology.EllipticCentralCoverSourceGammaCoordinates
@@ -253,7 +241,6 @@ public import SphereSixComplex.Paper.Topology.EllipticCentralProjectionMappingTo
 
 public import SphereSixComplex.Paper.Topology.EllipticDegreeTwoBasisFromOrbitSweep
 
-public import SphereSixComplex.Paper.Topology.EllipticFourthFiberSweep
 public import SphereSixComplex.Paper.Topology.EllipticFourthHomologySweep
 public import SphereSixComplex.Paper.Topology.EllipticGammaShearDegreeTwoCoordinates
 public import SphereSixComplex.Paper.Topology.EllipticInvariantCircleTranslation
@@ -266,7 +253,6 @@ public import SphereSixComplex.Paper.Topology.EllipticThreeTorusRankOneMappingTo
 public import SphereSixComplex.Paper.Topology.EllipticThreeTorusWangEndpointCoordinates
 public import SphereSixComplex.Paper.Topology.EllipticThreeTorusWangLattice
 public import SphereSixComplex.Paper.Topology.EstablishedA2PhaseSpreading
-public import SphereSixComplex.Paper.Topology.EstablishedActualEllipticDegreeTwoHomologyBasisFiniteDataProof
 public import SphereSixComplex.Paper.Topology.EstablishedBasedVanKampen
 public import SphereSixComplex.Prerequisites.Topology.FiniteCoverCechDefs
 public import SphereSixComplex.Paper.Topology.EstablishedMayerVietoris
@@ -403,7 +389,6 @@ public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasis
 public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasisProof
 public import SphereSixComplex.Paper.Topology.PaperEllipticTwoDiscCover
 public import SphereSixComplex.Paper.Topology.PaperEllipticTwoDiscHomologyCoordinatesRealization
-public import SphereSixComplex.Paper.Topology.PaperFiniteCyclicQuotientDegreeTwoComparison
 public import SphereSixComplex.Paper.Topology.PaperGeometricCentralCore
 public import SphereSixComplex.Paper.Topology.PaperGeometricCentralMonodromy
 public import SphereSixComplex.Paper.Topology.PaperGeometricCentralPeripheral
@@ -418,7 +403,6 @@ public import SphereSixComplex.Paper.Topology.PaperMultipleFiberHOneTopologyProo
 
 public import SphereSixComplex.Paper.Topology.PaperOrderThreeBasedChartLoopIdentities
 
-public import SphereSixComplex.Paper.Topology.PaperPropositionSevenFourteenDegreeTwoAlgebra
 public import SphereSixComplex.Paper.Topology.PaperRegularFiberTransport
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineNamedSheetCompletion
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineActualCuspStripLift
@@ -464,20 +448,17 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineStripMidpoi
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCentralBandSplit
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCompletion
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspActualCoordinateScalarsFromExistingGeometry
 
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverOrientedRefinementNaturality
 public import SphereSixComplex.Prerequisites.Topology.CanonicalProductWangBoundaryNaturality
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSlice
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenPositiveDegreeRealization
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspCoverNaturality
 
 public import Mathlib.Algebra.Category.Grp.EpiMono
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticMarkedCoordinateFromExistingGeometry
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMeridianWangSectionProof
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspPullbackWangComparison
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiberSliceComparisonProof
@@ -530,7 +511,6 @@ public import SphereSixComplex.Paper.TriangleGroup.FuchsianTriangleCover
 public import SphereSixComplex.Paper.TriangleGroup.Representation
 public import SphereSixComplex.Paper.Topology.EllipticFillingHomology
 public import SphereSixComplex.Paper.Geometry.StarHomology
-public import SphereSixComplex.Paper.Topology.CuspAttachmentHomology
 public import SphereSixComplex.Paper.Topology.CuspBoundaryMixedCoordinates
 public import SphereSixComplex.Paper.Topology.CuspBoundaryMixedTori
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralAttachingHomology
@@ -547,3 +527,15 @@ public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.Centr
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralFiberHomology
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralFiberHomologyCoordinates
 public import SphereSixComplex.Paper.Topology.StarFirstHomology
+public import SphereSixComplex.Paper.Topology.ActualEllipticFourthSideInclusion
+public import SphereSixComplex.Paper.Topology.ActualEllipticSideInclusion
+public import SphereSixComplex.Paper.Topology.EllipticDegreeTwoRelations
+public import SphereSixComplex.Paper.Topology.EllipticHomologyGeneration
+public import SphereSixComplex.Paper.Topology.EllipticHomologyGeneratorAlignment
+public import SphereSixComplex.Paper.Topology.EllipticHomologyGenerators
+public import SphereSixComplex.Paper.Topology.EllipticHomologyOne
+public import SphereSixComplex.Paper.Topology.EllipticHomologyVanishing
+public import SphereSixComplex.Paper.Topology.EllipticProjectedFourthSweeps
+public import SphereSixComplex.Paper.Topology.StarFourthTranslation
+public import SphereSixComplex.Paper.Topology.StarFourthTranslationGenerators
+public import SphereSixComplex.Paper.Topology.StarSecondHomology

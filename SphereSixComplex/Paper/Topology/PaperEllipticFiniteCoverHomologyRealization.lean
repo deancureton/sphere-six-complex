@@ -83,25 +83,7 @@ public theorem orderFourHOneNaturality : ∀ x : Lattice,
 
 namespace EllipticDegreeTwoPullbackBases
 
-/-- Construct the finite-cover homology realization from the two degree-two perfect-pairing
-inputs. -/
-public def toEllipticFiniteCoverHomologyRealization
-    (P : EllipticDegreeTwoPullbackBases F) :
-    EllipticFiniteCoverHomologyRealization F where
-  orderThreeOne := orderThreeHOneNaturality F
-  orderFourOne := orderFourHOneNaturality F
-  orderThreeTwo := P.orderThreeRealization
-  orderFourTwo := P.orderFourRealization
-
 end EllipticDegreeTwoPullbackBases
-
-/-- The actual degree-one and degree-two homology realization for both elliptic finite
-covers. -/
-public noncomputable def ellipticFiniteCoverHomologyRealization
-    (hBasis : Nonempty (EllipticDegreeTwoHomologyBasisFiniteData F)) :
-    EllipticFiniteCoverHomologyRealization F :=
-  EllipticDegreeTwoPullbackBases.toEllipticFiniteCoverHomologyRealization F
-    (ellipticDegreeTwoPullbackBases F hBasis)
 
 end SphereSixComplex.Topology.FiniteCoverPerfectPairing
 

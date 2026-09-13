@@ -1,6 +1,13 @@
 module
 
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenPositiveDegreeRealization
+public import SphereSixComplex.Paper.Topology.PaperEllipticInteriorNormalizedSplitting
+public import SphereSixComplex.Paper.Topology.PaperCuspCollarRadialMappingTorus
+public import SphereSixComplex.Paper.Topology.PaperEllipticTwoDiscHomologyCoordinatesRealization
+public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberHomology
+public import SphereSixComplex.Paper.Topology.PaperCuspPhaseSpreading
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenFinalDegreeZero
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenEllipticTwoDiscCoverRealization
+
 
 /-!
 # Pulling the elliptic two-disc cover back to the cusp collar
@@ -95,6 +102,7 @@ public theorem cuspToEllipticInteriorMap_homology
         (cuspToEllipticUnionHomology D k x) := by
   simp [cuspToEllipticInteriorMap, cuspToEllipticUnionHomology,
     integralSingularHomologyMap_comp]
+  rfl
 
 /-- The elliptic canonical boundary of an included cusp class is computed entirely in the
 pulled-back cusp cover. -/

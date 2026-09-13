@@ -20,7 +20,6 @@ namespace SphereSixComplex
 namespace Geometry.AnalyticData
 
 open EllipticTwoDiscHomologyCoordinates
-open EllipticInteriorMarkedCycleData
 open SphereSixComplex.CircleMappingTorusHomologyBases
 
 variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)

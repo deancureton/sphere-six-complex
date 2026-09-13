@@ -190,7 +190,6 @@ theorem orderFourCanonicalRelator_homology_split :
 
 end SphereSixComplex.Geometry.AnalyticData
 
-
 open SphereSixComplex SphereSixComplex.Hurewicz.Chains
 namespace SphereSixComplex.Geometry.AnalyticData
 variable (A : AnalyticData)
@@ -405,39 +404,5 @@ namespace SphereSixComplex.Geometry.AnalyticData
 open LatticeData SphereSixComplex.Topology
 variable (A : AnalyticData)
 
-theorem ellipticInterior_peripheral_twelfth_homology :
-    let C := A.coreDataOf A.cuspCentralNaturality
-    hurewiczPi1 _ (A.actualCoreToEllipticInteriorPiOne ((C.rhoOne * C.rhoTwo)⁻¹)) ^ 12 =
-      hurewiczPi1 _ (A.actualCoreToEllipticInteriorPiOne
-        (Additive.toMul (C.translation (Pi.single (0 : Fin 4) 1)))) := by
-  have he (g : FundamentalGroup A.CentralFamily A.centralAffineBase) :
-      hurewiczPi1 _ (A.actualCoreToEllipticInteriorPiOne
-        (A.cuspCentralNaturality.centralToCore g)) = A.centralToInteriorAbelian g := by
-    apply Multiplicative.toAdd.injective
-    exact A.geometricMarkedCentralToCoreEquiv_hurewicz g
-  have h := affineCore_peripheral_twelfth_abelian A.centralAffineCorePiOneData
-    A.centralToInteriorAbelian A.centralToInteriorAbelian_orderThree
-    A.centralToInteriorAbelian_orderFour
-  rw [← he, ← he] at h
-  simp only [map_mul, map_inv] at h
-  dsimp only [coreDataOf, AffineTorusCorePiOneData.mapSurjective]
-  simp only [map_mul, map_inv]
-  exact h
-
-theorem ellipticInterior_cuspMeridian_twelfth_homology :
-    hurewiczPi1 _ (A.actualCoreToEllipticInteriorPiOne
-      (A.cuspOverlapToCore A.cuspAffineBridgeMeridian)⁻¹) ^ 12 =
-      hurewiczPi1 _ (A.actualCoreToEllipticInteriorPiOne
-        (A.cuspOverlapToCore (Additive.toMul
-          (A.cuspAffineBridgeTranslation (Pi.single (0 : Fin 4) 1))))) := by
-  rw [A.cuspBridge_translation_core A.cuspCentralNaturality,
-    A.cuspBridge_meridian_core A.cuspCentralNaturality]
-  have hz : Additive.toMul
-      ((A.coreDataOf A.cuspCentralNaturality).translation 0) = 1 :=
-    congrArg Additive.toMul (map_zero
-      (A.coreDataOf A.cuspCentralNaturality).translation)
-  rw [hz]
-  simp only [inv_one, mul_one]
-  exact A.ellipticInterior_peripheral_twelfth_homology
 end SphereSixComplex.Geometry.AnalyticData
 end
