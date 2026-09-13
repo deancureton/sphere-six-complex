@@ -21,19 +21,13 @@ private lemma exists_ball_pow_eq_of_ne_zero_current
     (h0 : A z₀ ≠ 0) (hn : n ≠ 0) :
     ∃ r > 0, ∃ h : ℂ → ℂ,
       DifferentiableOn ℂ h (ball z₀ r) ∧ ∀ z ∈ ball z₀ r, h z ^ n = A z := by
-  have hloc : ∀ᶠ z in 𝓝 z₀, AnalyticAt ℂ A z ∧ A z ≠ 0 :=
-    hA.eventually_analyticAt.and (hA.continuousAt.eventually_ne h0)
-  obtain ⟨r, hr, hball⟩ := Metric.eventually_nhds_iff.mp hloc
-  have hsc : IsSimplyConnected (ball z₀ r) := by
-    have : ContractibleSpace (ball z₀ r) := Metric.contractibleSpace_ball hr
-    exact SimplyConnectedSpace.ofContractible _
-  have hAd : DifferentiableOn ℂ A (ball z₀ r) := fun z hz ↦
-    ((hball (mem_ball.mp hz)).1.differentiableAt).differentiableWithinAt
-  have hA0 : (0 : ℂ) ∉ A '' ball z₀ r := by
-    rintro ⟨z, hz, hz0⟩
-    exact (hball (mem_ball.mp hz)).2 hz0
-  obtain ⟨h, hhd, hheq⟩ := exists_differentiableOn_pow_eq hsc isOpen_ball hAd hA0 hn
-  exact ⟨r, hr, h, hhd, fun z hz ↦ hheq hz⟩
+  obtain ⟨h, hh, he⟩ := (exists_eventuallyEq_pow_iff_dvd hA hn).mpr
+    (by rw [hA.analyticOrderAt_eq_zero.mpr h0]; exact dvd_zero _)
+  obtain ⟨r, hr, hball⟩ := Metric.eventually_nhds_iff.mp
+    (hh.eventually_analyticAt.and he)
+  exact ⟨r, hr, h, fun z hz ↦
+    (hball (mem_ball.mp hz)).1.differentiableAt.differentiableWithinAt,
+    fun z hz ↦ (hball (mem_ball.mp hz)).2.symm⟩
 
 /-- Current-Tau-compatible local power normal form.  This is the minimal chart-producing result
 from historical Tau commit `4a9f0b5...`; all imports above are from current Tau. -/

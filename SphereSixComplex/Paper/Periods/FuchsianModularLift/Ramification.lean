@@ -1,5 +1,7 @@
 module
 
+import TauCeti.Analysis.Complex.Conformal.LocalDegree
+
 import Mathlib.Analysis.Analytic.Order
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
@@ -21,127 +23,8 @@ derivative. -/
 theorem AnalyticAt.deriv_ne_zero_of_exists_open_injOn
     {f : ℂ → ℂ} {z : ℂ} (hf : AnalyticAt ℂ f z)
     (hinj : ∃ U : Set ℂ, IsOpen U ∧ z ∈ U ∧ U.InjOn f) : deriv f z ≠ 0 := by
-  intro hderiv
-  let g : ℂ → ℂ := fun w ↦ f w - f z
-  have hg : AnalyticAt ℂ g z := hf.sub (by fun_prop)
-  have hg_zero : g z = 0 := by simp [g]
-  obtain ⟨U, hU_open, hzU, hU_inj⟩ := hinj
-  have hg_not_eventually_zero : ¬ ∀ᶠ w in nhds z, g w = 0 := by
-    intro hzero
-    have hU_ne : ∀ᶠ w in nhdsWithin z ({z} : Set ℂ)ᶜ, w ∈ U :=
-      mem_nhdsWithin_of_mem_nhds (hU_open.mem_nhds hzU)
-    have hzero_ne : ∀ᶠ w in nhdsWithin z ({z} : Set ℂ)ᶜ, g w = 0 :=
-      hzero.filter_mono nhdsWithin_le_nhds
-    have hw_ne : ∀ᶠ w in nhdsWithin z ({z} : Set ℂ)ᶜ, w ≠ z := by
-      filter_upwards [self_mem_nhdsWithin] with w hw
-      simpa using hw
-    obtain ⟨w, hwU, hwzero, hwz⟩ := (hU_ne.and (hzero_ne.and hw_ne)).exists
-    apply hwz
-    apply hU_inj hwU hzU
-    exact sub_eq_zero.mp hwzero
-  have horder_ne_top : analyticOrderAt g z ≠ ⊤ := by
-    intro htop
-    exact hg_not_eventually_zero (analyticOrderAt_eq_top.mp htop)
-  let n : ℕ := analyticOrderNatAt g z
-  have horder : analyticOrderAt g z = (n : ℕ∞) := by
-    simpa [n] using (Nat.cast_analyticOrderNatAt horder_ne_top).symm
-  have hn_ne_zero : n ≠ 0 := by
-    intro hn
-    have : analyticOrderAt g z = 0 := by simpa [hn] using horder
-    exact (hg.analyticOrderAt_ne_zero.mpr hg_zero) this
-  have hg_deriv : deriv g z = 0 := by
-    have hgf : HasDerivAt g (deriv f z) z := by
-      simpa [g] using hf.differentiableAt.hasDerivAt.sub_const (f z)
-    rw [hgf.deriv, hderiv]
-  have hn_two : 2 ≤ n := by
-    have hn_pos : 0 < n := Nat.pos_of_ne_zero hn_ne_zero
-    by_contra hn_not
-    have hn_one : n = 1 := by omega
-    have horder_one : analyticOrderAt g z = (1 : ℕ∞) := by
-      simpa only [hn_one, Nat.cast_one] using horder
-    have hdata := (analyticOrderAt_eq_nat_iff_iteratedDeriv_eq_zero hg).mp horder_one
-    exact hdata.2 (by simpa [iteratedDeriv_one] using hg_deriv)
-  obtain ⟨k, hk, hkz, hg_factor⟩ :=
-    (hg.analyticOrderAt_eq_natCast (n := n)).mp horder
-  let r : ℂ → ℂ := fun w ↦ (k w / k z) ^ ((n : ℂ)⁻¹)
-  have hratio : AnalyticAt ℂ (fun w ↦ k w / k z) z :=
-    hk.div (by fun_prop) hkz
-  have hr : AnalyticAt ℂ r z := by
-    apply hratio.cpow (by fun_prop)
-    simp [div_self hkz, Complex.one_mem_slitPlane]
-  have hr_z : r z = 1 := by simp [r, hkz]
-  have hr_pow (w : ℂ) : r w ^ n = k w / k z := by
-    simpa [r] using Complex.cpow_nat_inv_pow (k w / k z) hn_ne_zero
-  have hk_eq (w : ℂ) : k w = k z * r w ^ n := by
-    rw [hr_pow]
-    field_simp
-  let h : ℂ → ℂ := fun w ↦ (w - z) * r w
-  have hh : AnalyticAt ℂ h z :=
-    (analyticAt_id.sub (by fun_prop)).mul hr
-  have hh_z : h z = 0 := by simp [h]
-  have hh_deriv : deriv h z = 1 := by
-    have hleft : HasDerivAt (fun w : ℂ ↦ w - z) 1 z :=
-      (hasDerivAt_id z).sub_const z
-    have hprod := hleft.mul hr.differentiableAt.hasDerivAt
-    change deriv ((fun w : ℂ ↦ w - z) * r) z = 1
-    simpa only [Pi.mul_apply, hr_z, one_mul, sub_self, zero_mul, add_zero] using hprod.deriv
-  have hh_strict : HasStrictDerivAt h 1 z := by
-    simpa [hh_deriv] using hh.hasStrictDerivAt
-  let inv : ℂ → ℂ := hh_strict.localInverse h 1 z one_ne_zero
-  have hinv_tendsto : Tendsto inv (nhds 0) (nhds z) := by
-    simpa [inv, hh_z] using
-      (hh_strict.hasStrictFDerivAt_equiv one_ne_zero).localInverse_tendsto
-  have hright : ∀ᶠ q in nhds 0, h (inv q) = q := by
-    simpa [inv, hh_z] using hh_strict.eventually_right_inverse one_ne_zero
-  have hnormal : ∀ᶠ w in nhds z, g w = k z * h w ^ n := by
-    filter_upwards [hg_factor] with w hw
-    rw [hw, hk_eq]
-    simp only [h]
-    rw [mul_pow]
-    ring
-  have hgood : ∀ᶠ q in nhds 0,
-      inv q ∈ U ∧ g (inv q) = k z * h (inv q) ^ n ∧ h (inv q) = q := by
-    filter_upwards [hinv_tendsto.eventually (hU_open.mem_nhds hzU),
-      hinv_tendsto.eventually hnormal, hright] with q hqU hqnormal hqright
-    exact ⟨hqU, hqnormal, hqright⟩
-  let ζ : ℂ := Complex.exp (2 * Real.pi * Complex.I / n)
-  have hζ_primitive : IsPrimitiveRoot ζ n := by
-    simpa [ζ] using Complex.isPrimitiveRoot_exp n hn_ne_zero
-  have hζ_pow : ζ ^ n = 1 := hζ_primitive.pow_eq_one
-  have hζ_ne_one : ζ ≠ 1 := hζ_primitive.ne_one (by omega)
-  have hζ_tendsto : Tendsto (fun q : ℂ ↦ ζ * q) (nhds 0) (nhds 0) := by
-    have hc : ContinuousAt (fun q : ℂ ↦ ζ * q) 0 := by fun_prop
-    simpa only [ContinuousAt, mul_zero] using hc
-  have hgoodζ : ∀ᶠ q in nhds 0,
-      inv (ζ * q) ∈ U ∧
-        g (inv (ζ * q)) = k z * h (inv (ζ * q)) ^ n ∧
-        h (inv (ζ * q)) = ζ * q :=
-    hζ_tendsto.eventually hgood
-  have hq_ne : ∀ᶠ q in nhdsWithin (0 : ℂ) ({0} : Set ℂ)ᶜ, q ≠ 0 := by
-    filter_upwards [self_mem_nhdsWithin] with q hq
-    simpa using hq
-  obtain ⟨q, ⟨hqgood, hqgoodζ⟩, hq0⟩ :=
-    ((hgood.and hgoodζ).filter_mono nhdsWithin_le_nhds |>.and hq_ne).exists
-  rcases hqgood with ⟨haU, hga, hha⟩
-  rcases hqgoodζ with ⟨hbU, hgb, hhb⟩
-  have hab_ne : inv q ≠ inv (ζ * q) := by
-    intro hab
-    have hqeq : q = ζ * q := by
-      calc
-        q = h (inv q) := hha.symm
-        _ = h (inv (ζ * q)) := congrArg h hab
-        _ = ζ * q := hhb
-    have : ζ = 1 := by
-      apply mul_right_cancel₀ hq0
-      simpa using hqeq.symm
-    exact hζ_ne_one this
-  have hg_eq : g (inv q) = g (inv (ζ * q)) := by
-    rw [hga, hgb, hha, hhb, mul_pow, hζ_pow, one_mul]
-  have hf_eq : f (inv q) = f (inv (ζ * q)) := by
-    simpa [g] using hg_eq
-  exact hab_ne (hU_inj haU hbU hf_eq)
-
-
+  obtain ⟨U, hU, hz, hi⟩ := hinj
+  exact (TauCeti.exists_injOn_nhds_iff_deriv_ne_zero hf).mp ⟨U, hU.mem_nhds hz, hi⟩
 
 end AnalyticLocalHomeo
 

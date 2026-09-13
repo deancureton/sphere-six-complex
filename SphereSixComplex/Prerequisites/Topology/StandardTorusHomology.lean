@@ -1,6 +1,8 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.WangHomologyPresentationProof
+public import SphereSixComplex.Prerequisites.Topology.IdentityMappingTorus
+public import SphereSixComplex.Prerequisites.Topology.ExactSplitting
 public import SphereSixComplex.Prerequisites.Topology.ConnectedMayerVietorisDegreeZero
 public import SphereSixComplex.Prerequisites.Topology.StandardCircleHomologyLiftDegree
 public import SphereSixComplex.Prerequisites.Geometry.IntegerRealPeriodCoordinates
@@ -31,67 +33,16 @@ namespace StandardTorusHomology
 
 variable {A B : Type*} [AddCommGroup A] [AddCommGroup B]
 
-/-- A right inverse to a surjection onto a finite free group, built from chosen lifts of the
-standard basis vectors. -/
-public def freeSection {m : ℕ} (q : B →+ (Fin m → ℤ)) (hq : Function.Surjective q) :
-    (Fin m → ℤ) →+ B where
-  toFun c := ∑ i, c i • (hq (Pi.single i 1)).choose
-  map_zero' := by simp
-  map_add' c d := by
-    simp only [Pi.add_apply, add_smul]
-    exact Finset.sum_add_distrib
-
-public theorem freeSection_spec {m : ℕ} (q : B →+ (Fin m → ℤ)) (hq : Function.Surjective q)
-    (c : Fin m → ℤ) : q (freeSection q hq c) = c := by
-  show q (∑ i, c i • (hq (Pi.single i 1)).choose) = c
-  rw [map_sum]
-  funext j
-  rw [Finset.sum_apply]
-  have hstep : ∀ i : Fin m, (q (c i • (hq (Pi.single i 1)).choose)) j =
-      if i = j then c j else 0 := by
-    intro i
-    rw [map_zsmul, (hq (Pi.single i 1)).choose_spec]
-    by_cases h : i = j
-    · subst h
-      simp
-    · simp [h]
-  rw [Finset.sum_congr rfl fun i _ ↦ hstep i]
-  simp
-
 /-- A short exact sequence of abelian groups with finite free quotient splits. -/
 public def splitOfFreeQuotient {m : ℕ} (i : A →+ B) (q : B →+ (Fin m → ℤ))
     (hi : Function.Injective i) (hq : Function.Surjective q) (hex : Function.Exact i q) :
-    B ≃+ A × (Fin m → ℤ) := by
-  classical
-  let s := freeSection q hq
-  let f : A × (Fin m → ℤ) →+ B :=
-    { toFun := fun p ↦ i p.1 + s p.2
-      map_zero' := by simp
-      map_add' := fun p₁ p₂ ↦ by
-        show i (p₁.1 + p₂.1) + s (p₁.2 + p₂.2) =
-          (i p₁.1 + s p₁.2) + (i p₂.1 + s p₂.2)
-        rw [map_add, map_add]
-        abel }
-  have hfinj : Function.Injective f := by
-    rw [injective_iff_map_eq_zero]
-    rintro ⟨a, c⟩ h
-    have hqf : q (i a + s c) = 0 := by rw [show i a + s c = f (a, c) from rfl, h, map_zero]
-    rw [map_add, hex.apply_apply_eq_zero, zero_add, freeSection_spec] at hqf
-    subst hqf
-    have h' : i a + s 0 = 0 := h
-    rw [map_zero, add_zero] at h'
-    have ha : a = 0 := hi (by rw [h', map_zero])
-    subst ha
-    rfl
-  have hfsurj : Function.Surjective f := by
-    intro b
-    have hz : q (b - s (q b)) = 0 := by rw [map_sub, freeSection_spec, sub_self]
-    obtain ⟨a, ha⟩ := (hex (b - s (q b))).mp hz
-    refine ⟨(a, q b), ?_⟩
-    show i a + s (q b) = b
-    rw [ha]
-    abel
-  exact (AddEquiv.ofBijective f ⟨hfinj, hfsurj⟩).symm
+    B ≃+ A × (Fin m → ℤ) :=
+  (LinearMap.exists_equiv_prod_of_exact i.toIntLinearMap q.toIntLinearMap hi hex hq).choose.toAddEquiv
+
+public theorem splitOfFreeQuotient_snd {m : ℕ} (i : A →+ B) (q : B →+ (Fin m → ℤ))
+    (hi : Function.Injective i) (hq : Function.Surjective q) (hex : Function.Exact i q) (z : B) :
+    (splitOfFreeQuotient i q hi hq hex z).2 = q z :=
+  (LinearMap.exists_equiv_prod_of_exact i.toIntLinearMap q.toIntLinearMap hi hex hq).choose_spec.2 z
 
 /-- Concatenation of finite free coordinates. -/
 public def finArrowProdAddEquiv (a m : ℕ) :
@@ -168,153 +119,17 @@ end MappingTorus
 
 section StandardTorus
 
-public theorem unitAddCircle_eq_iff (t t' : ℝ) :
-    ((t : UnitAddCircle)) = (t' : UnitAddCircle) ↔ ∃ k : ℤ, t - t' = k := by
-  rw [QuotientAddGroup.eq_iff_sub_mem, AddSubgroup.mem_zmultiples_iff]
-  constructor
-  · rintro ⟨k, hk⟩
-    exact ⟨k, by rw [← hk]; simp⟩
-  · rintro ⟨k, hk⟩
-    exact ⟨k, by simp [hk]⟩
-
-public theorem unitAddCircle_zero_eq_one :
-    ((0 : ℝ) : UnitAddCircle) = ((1 : ℝ) : UnitAddCircle) :=
-  (unitAddCircle_eq_iff 0 1).mpr ⟨-1, by norm_num⟩
-
-/-- The cylinder parametrization of the standard torus one dimension up. -/
-public def stdTorusCylinderMap (n : ℕ) (p : Unit × unitInterval × StdTorus n) :
-    StdTorus (n + 1) :=
-  Fin.cons ((p.2.1 : ℝ) : UnitAddCircle) p.2.2
-
-public theorem continuous_stdTorusCylinderMap (n : ℕ) :
-    Continuous (stdTorusCylinderMap n) := by
-  refine continuous_pi fun i ↦ ?_
-  induction i using Fin.cases with
-  | zero =>
-    simp only [stdTorusCylinderMap, Fin.cons_zero]
-    exact (AddCircle.continuous_mk' 1).comp
-      (continuous_subtype_val.comp (continuous_fst.comp continuous_snd))
-  | succ j =>
-    simp only [stdTorusCylinderMap, Fin.cons_succ]
-    exact (continuous_apply j).comp (continuous_snd.comp continuous_snd)
-
-/-- The identity clutching, packaged as a one-loop bouquet monodromy. -/
-public abbrev stdTorusClutching (n : ℕ) : Unit → StdTorus n ≃ₜ StdTorus n :=
-  fun _ ↦ Homeomorph.refl (StdTorus n)
-
-public theorem bouquetKey_std_end (n : ℕ) (r : Unit × unitInterval × StdTorus n)
-    (h : r.2.1 = 0 ∨ r.2.1 = 1) :
-    bouquetKey (stdTorusClutching n) r = Sum.inl r.2.2 := by
-  obtain ⟨u, t, x⟩ := r
-  rcases h with h | h
-  · subst h
-    exact bouquetKey_zero _ u x
-  · subst h
-    exact bouquetKey_one _ u x
-
-public theorem bouquetKey_std_interior (n : ℕ) (r : Unit × unitInterval × StdTorus n)
-    (h0 : r.2.1 ≠ 0) (h1 : r.2.1 ≠ 1) :
-    bouquetKey (stdTorusClutching n) r = Sum.inr r :=
-  bouquetKey_of_ne _ h0 h1
-
-public theorem stdTorusCylinderMap_of_key (n : ℕ) (p q : Unit × unitInterval × StdTorus n)
-    (h : bouquetKey (stdTorusClutching n) p = bouquetKey (stdTorusClutching n) q) :
-    stdTorusCylinderMap n p = stdTorusCylinderMap n q := by
-  by_cases hp : p.2.1 = 0 ∨ p.2.1 = 1
-  · by_cases hq : q.2.1 = 0 ∨ q.2.1 = 1
-    · rw [bouquetKey_std_end n p hp, bouquetKey_std_end n q hq, Sum.inl.injEq] at h
-      have hcoe : ((p.2.1 : ℝ) : UnitAddCircle) = ((q.2.1 : ℝ) : UnitAddCircle) := by
-        rcases hp with hp | hp <;> rcases hq with hq | hq <;> rw [hp, hq]
-        · exact unitAddCircle_zero_eq_one
-        · exact unitAddCircle_zero_eq_one.symm
-      rw [stdTorusCylinderMap, stdTorusCylinderMap, hcoe, h]
-    · rw [bouquetKey_std_end n p hp,
-        bouquetKey_std_interior n q (fun hx ↦ hq (Or.inl hx)) (fun hx ↦ hq (Or.inr hx))] at h
-      exact absurd h (by simp)
-  · by_cases hq : q.2.1 = 0 ∨ q.2.1 = 1
-    · rw [bouquetKey_std_interior n p (fun hx ↦ hp (Or.inl hx)) (fun hx ↦ hp (Or.inr hx)),
-        bouquetKey_std_end n q hq] at h
-      exact absurd h (by simp)
-    · rw [bouquetKey_std_interior n p (fun hx ↦ hp (Or.inl hx)) (fun hx ↦ hp (Or.inr hx)),
-        bouquetKey_std_interior n q (fun hx ↦ hq (Or.inl hx)) (fun hx ↦ hq (Or.inr hx)),
-        Sum.inr.injEq] at h
-      rw [h]
-
-/-- The standard torus, as a quotient of the cylinder over the torus one dimension down. -/
-public def stdTorusOfMappingTorus (n : ℕ) :
-    CircleMappingTorus (Homeomorph.refl (StdTorus n)) → StdTorus (n + 1) :=
-  Quotient.lift (stdTorusCylinderMap n) fun p q h ↦
-    stdTorusCylinderMap_of_key n p q ((eqvGen_iff_bouquetKey _ p q).mp h)
-
-public theorem continuous_stdTorusOfMappingTorus (n : ℕ) :
-    Continuous (stdTorusOfMappingTorus n) :=
-  continuous_quot_lift _ (continuous_stdTorusCylinderMap n)
-
-public theorem stdTorusOfMappingTorus_surjective (n : ℕ) :
-    Function.Surjective (stdTorusOfMappingTorus n) := by
-  intro z
-  obtain ⟨r, hr⟩ := QuotientAddGroup.mk_surjective (s := AddSubgroup.zmultiples (1 : ℝ)) (z 0)
-  have ht : Int.fract r ∈ unitInterval :=
-    ⟨Int.fract_nonneg r, (Int.fract_lt_one r).le⟩
-  have hcoe : ((Int.fract r : ℝ) : UnitAddCircle) = z 0 := by
-    rw [← hr, unitAddCircle_eq_iff]
-    refine ⟨-⌊r⌋, ?_⟩
-    have hfr : Int.fract r = r - ⌊r⌋ := rfl
-    rw [hfr]
-    push_cast
-    ring
-  refine ⟨Quotient.mk _ ((), ⟨Int.fract r, ht⟩, Fin.tail z), ?_⟩
-  show Fin.cons ((Int.fract r : ℝ) : UnitAddCircle) (Fin.tail z) = z
-  rw [hcoe, Fin.cons_self_tail]
-
-public theorem stdTorusOfMappingTorus_injective (n : ℕ) :
-    Function.Injective (stdTorusOfMappingTorus n) := by
-  refine fun a b ↦ Quotient.inductionOn₂ a b fun p q hab ↦ ?_
-  have hab' : stdTorusCylinderMap n p = stdTorusCylinderMap n q := hab
-  have hy : p.2.2 = q.2.2 := by
-    funext j
-    have h2 := congrFun hab' j.succ
-    simpa [stdTorusCylinderMap] using h2
-  have hc : ((p.2.1 : ℝ) : UnitAddCircle) = ((q.2.1 : ℝ) : UnitAddCircle) := by
-    have h2 := congrFun hab' 0
-    simpa [stdTorusCylinderMap] using h2
-  obtain ⟨k, hk⟩ := (unitAddCircle_eq_iff _ _).mp hc
-  have hp0 : (0 : ℝ) ≤ (p.2.1 : ℝ) := unitInterval.nonneg p.2.1
-  have hp1 : ((p.2.1 : ℝ)) ≤ 1 := unitInterval.le_one p.2.1
-  have hq0 : (0 : ℝ) ≤ (q.2.1 : ℝ) := unitInterval.nonneg q.2.1
-  have hq1 : ((q.2.1 : ℝ)) ≤ 1 := unitInterval.le_one q.2.1
-  have hkle : (k : ℝ) ≤ 1 := by rw [← hk]; linarith
-  have hkge : (-1 : ℝ) ≤ (k : ℝ) := by rw [← hk]; linarith
-  have hk1 : k ≤ 1 := by exact_mod_cast hkle
-  have hk2 : -1 ≤ k := by exact_mod_cast hkge
-  refine (bouquetMk_eq_iff (stdTorusClutching n) p q).mpr ?_
-  interval_cases k
-  · have hpv : (p.2.1 : ℝ) = 0 := by push_cast at hk; linarith
-    have hqv : (q.2.1 : ℝ) = 1 := by push_cast at hk; linarith
-    rw [bouquetKey_std_end n p (Or.inl (Subtype.ext hpv)),
-      bouquetKey_std_end n q (Or.inr (Subtype.ext hqv)), hy]
-  · have hpq : p.2.1 = q.2.1 := by
-      refine Subtype.ext ?_
-      push_cast at hk
-      linarith
-    have hpq2 : p = q := by
-      refine Prod.ext (Subsingleton.elim _ _) (Prod.ext hpq hy)
-    rw [hpq2]
-  · have hpv : (p.2.1 : ℝ) = 1 := by push_cast at hk; linarith
-    have hqv : (q.2.1 : ℝ) = 0 := by push_cast at hk; linarith
-    rw [bouquetKey_std_end n p (Or.inr (Subtype.ext hpv)),
-      bouquetKey_std_end n q (Or.inl (Subtype.ext hqv)), hy]
+/-- Splitting off the first circle coordinate. -/
+public def stdTorusSplit (n : ℕ) : StdTorus (n + 1) ≃ₜ UnitAddCircle × StdTorus n where
+  toEquiv := (Fin.consEquiv (fun _ : Fin (n + 1) ↦ UnitAddCircle)).symm
+  continuous_toFun := by fun_prop
+  continuous_invFun := by fun_prop
 
 /-- The standard `(n + 1)`-torus is the mapping torus of the identity of the `n`-torus. -/
 public def stdTorusMappingTorusHomeomorph (n : ℕ) :
-    CircleMappingTorus (Homeomorph.refl (StdTorus n)) ≃ₜ StdTorus (n + 1) := by
-  haveI : CompactSpace (CircleMappingTorus (Homeomorph.refl (StdTorus n))) :=
-    inferInstanceAs (CompactSpace
-      (Quotient (finiteBouquetMappingTorusSetoid (stdTorusClutching n))))
-  exact Continuous.homeoOfEquivCompactToT2
-    (f := Equiv.ofBijective (stdTorusOfMappingTorus n)
-      ⟨stdTorusOfMappingTorus_injective n, stdTorusOfMappingTorus_surjective n⟩)
-    (continuous_stdTorusOfMappingTorus n)
+    CircleMappingTorus (Homeomorph.refl (StdTorus n)) ≃ₜ StdTorus (n + 1) :=
+  (Topology.CircleProductIdentityMappingTorus.circleProductIdentityMappingTorusHomeomorph).symm.trans
+    (stdTorusSplit n).symm
 
 end StandardTorus
 

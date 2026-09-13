@@ -19,22 +19,9 @@ open scoped ContinuousMap
 namespace SphereSixComplex.Topology.CanonicalProductWangBoundarySlant
 
 open CircleProductIdentityMappingTorus
-open CyclicMappingTorus
 open PositiveCircleCross
 open StandardTorusHomology
 open CyclicAngularFundamentalDomain
-
-private theorem splitOfFreeQuotient_snd
-    {A B : Type*} [AddCommGroup A] [AddCommGroup B] {m : ℕ}
-    (i : A →+ B) (q : B →+ (Fin m → ℤ))
-    (hi : Function.Injective i) (hq : Function.Surjective q)
-    (hex : Function.Exact i q) (z : B) :
-    (splitOfFreeQuotient i q hi hq hex z).2 = q z := by
-  let e := splitOfFreeQuotient i q hi hq hex
-  have h := congrArg q (e.symm_apply_apply z)
-  change q (i (e z).1 + freeSection q hq (e z).2) = q z at h
-  rw [map_add, hex.apply_apply_eq_zero, zero_add, freeSection_spec] at h
-  exact h
 
 private theorem reflMappingTorusHomologySplit_right
     {F : Type} [TopologicalSpace F] (k a m : ℕ)
@@ -89,39 +76,12 @@ private theorem circleProduct_stdTorus_homeomorph :
     (circleProductIdentityMappingTorusHomeomorph (X := StdTorus 1)).trans
         (stdTorusMappingTorusHomeomorph 1) =
       circleProdStandardCircleHomeomorph := by
-  apply Homeomorph.ext
-  rintro ⟨s, x⟩
-  obtain ⟨t, rfl⟩ := QuotientAddGroup.mk_surjective
-    (s := AddSubgroup.zmultiples (1 : ℝ)) s
-  let u : unitInterval :=
-    ⟨Int.fract t, Int.fract_nonneg t, (Int.fract_lt_one t).le⟩
-  have hreal :
-      realMappingTorusIntervalProjection (Homeomorph.refl (StdTorus 1)) (u, x) =
-        Quotient.mk (realMappingTorusSetoid (Homeomorph.refl (StdTorus 1))) (t, x) := by
-    exact ((realMappingTorusMk_eq_iff (Homeomorph.refl (StdTorus 1))
-      (t, x) ((u : ℝ), x)).mpr ⟨⌊t⌋, by
-        rw [mappingTorusShift_apply]
-        apply Prod.ext
-        · simp [u]
-        · change x = ((1 : StdTorus 1 ≃ₜ StdTorus 1) ^ ⌊t⌋) x
-          rw [one_zpow]
-          rfl⟩).symm
-  have hcircle : (((u : ℝ) : UnitAddCircle)) = (t : UnitAddCircle) := by
-    apply (unitAddCircle_eq_iff _ _).mpr
-    refine ⟨-⌊t⌋, ?_⟩
-    change Int.fract t - t = ((-⌊t⌋ : ℤ) : ℝ)
-    rw [show Int.fract t = t - ⌊t⌋ by rfl]
-    push_cast
-    ring
-  change stdTorusOfMappingTorus 1
-      (realMappingTorusHomeomorph (Homeomorph.refl (StdTorus 1))
-        (circleProductRealMappingTorusHomeomorph
-          (realToCircleProduct (t, x)))) =
-    Fin.cons (t : UnitAddCircle) x
-  rw [circleProductRealMappingTorusHomeomorph_real, ← hreal,
-    realMappingTorusHomeomorph_intervalProjection]
-  exact congrArg
-    (fun z : UnitAddCircle ↦ @Fin.cons 1 (fun _ : Fin 2 ↦ UnitAddCircle) z x) hcircle
+  ext p k
+  change ((stdTorusSplit 1).symm
+    (circleProductIdentityMappingTorusHomeomorph.symm
+      (circleProductIdentityMappingTorusHomeomorph p))) k = _
+  rw [Homeomorph.symm_apply_apply]
+  rfl
 
 /-- The canonical product Wang boundary of the selected degree-two generator has winding
 coordinate `+1`. -/
