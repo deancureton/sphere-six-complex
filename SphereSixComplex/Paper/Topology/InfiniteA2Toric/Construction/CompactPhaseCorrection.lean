@@ -29,16 +29,6 @@ open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 
-@[simp]
-public theorem frozenCompactPhase_zero :
-    frozenCompactPhase N 0 = 1 := by
-  ext i
-  fin_cases i <;>
-    simp [frozenCompactPhase, normalizedCuspPositiveTwist, positiveRadialPart]
-
-
-
-
 namespace Construction
 
 /-- The six oriented nearest-neighbor vectors of the corrected hexagonal tiling. -/
@@ -56,147 +46,9 @@ public theorem shearVector_boundaryShearParameter (i : Fin 6) :
   rw [Matrix.mulVec_mulVec, B₀_mul_inv]
   simp
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/-- Any point in the closed image of one of the three established one-cells belongs to the
-established positive one-skeleton. -/
-public theorem centralOneCell_mem_oneSkeleton
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 3) (x : Fin 1 → ℝ) (hx : x ∈ Metric.closedBall 0 1) :
-    constructedCentralOneCell W i x ∈ constructedCentralOneSkeleton W := by
-  apply Or.inr
-  apply Set.mem_iUnion.mpr
-  exact ⟨i, x, hx, rfl⟩
-
-/-- Carrier equality with an established one-cell representative is sufficient for
-one-skeleton membership in the actual orbit quotient. -/
-public def centralOneCellRepresentativePoint
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 3) (x : Fin 1 → ℝ) : actualLocalCuspCentralSubMulAction W :=
-  ![constructedCentralEdgeZeroPoint W,
-    centralEdgePointOf W constructedCentralEdgeOneCarrier
-      constructedCentralEdgeOneCarrier_height,
-    centralEdgePointOf W constructedCentralEdgeTwoCarrier
-      constructedCentralEdgeTwoCarrier_height] i x
-
-public theorem centralOneCellRepresentativePoint_orbit
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (i : Fin 3) (x : Fin 1 → ℝ) :
-    Quotient.mk (MulAction.orbitRel (Multiplicative ParameterLattice)
-      (actualLocalCuspCentralSubMulAction W))
-        (centralOneCellRepresentativePoint W i x) =
-      constructedCentralOneCell W i x := by
-  let _ := actualLocalCuspQuotientAction W
-  let S := actualLocalCuspCentralSubMulAction W
-  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
-  fin_cases i <;> rfl
-
-public theorem mem_centralOneSkeleton_of_carrier_eq_oneCell
-    (W : ActualPuncturedCuspCollarWitness N constructedModel)
-    (q : actualLocalCuspCentralSubMulAction W) (i : Fin 3)
-    (x : Fin 1 → ℝ) (hx : x ∈ Metric.closedBall 0 1)
-    (h : ((q : localCarrier constructedModel W.localWitness.radius) :
-          constructedModel.Carrier) =
-        ((centralOneCellRepresentativePoint W i x :
-          localCarrier constructedModel W.localWitness.radius) :
-            constructedModel.Carrier)) :
-    Quotient.mk (MulAction.orbitRel (Multiplicative ParameterLattice)
-      (actualLocalCuspCentralSubMulAction W)) q ∈
-        constructedCentralOneSkeleton W := by
-  let _ := actualLocalCuspQuotientAction W
-  let S := actualLocalCuspCentralSubMulAction W
-  let _ : MulAction (Multiplicative ParameterLattice) S := inferInstance
-  have hq : Quotient.mk (MulAction.orbitRel
-      (Multiplicative ParameterLattice) S) q = constructedCentralOneCell W i x := by
-    rw [← centralOneCellRepresentativePoint_orbit W i x]
-    apply congrArg (Quotient.mk (MulAction.orbitRel
-      (Multiplicative ParameterLattice) S))
-    apply Subtype.ext
-    apply Subtype.ext
-    exact h
-  rw [hq]
-  exact centralOneCell_mem_oneSkeleton W i x hx
-
-
-
 end Construction
 
-/-- Integral character matrices act on the compact phase torus. -/
-public def constructedCompactPhaseMonomial
-    (A : Matrix (Fin 3) (Fin 3) ℤ) (k : CompactTorus) : CompactTorus :=
-  fun i ↦ ∏ j, k j ^ A i j
-
-public theorem constructedCompactPhaseMonomial_coe
-    (A : Matrix (Fin 3) (Fin 3) ℤ) (k : CompactTorus) :
-    (fun i ↦ (constructedCompactPhaseMonomial A k i : ℂ)) =
-      monomial A (fun i ↦ (k i : ℂ)) := by
-  funext i
-  simp [constructedCompactPhaseMonomial, monomial, Fin.prod_univ_succ]
-
-public theorem constructedCompactPhaseMonomial_continuous
-    (A : Matrix (Fin 3) (Fin 3) ℤ) : Continuous (constructedCompactPhaseMonomial A) := by
-  unfold constructedCompactPhaseMonomial
-  fun_prop
-
-public theorem constructedCompactPhaseMonomial_comp
-    (A B : Matrix (Fin 3) (Fin 3) ℤ) (k : CompactTorus) :
-    constructedCompactPhaseMonomial A (constructedCompactPhaseMonomial B k) =
-      constructedCompactPhaseMonomial (A * B) k := by
-  have hk : (fun i ↦ (k i : ℂ)) ∈ coordinateTorus := fun i ↦ (k i).coe_ne_zero
-  have h := monomial_comp_on_coordinateTorus A B hk
-  rw [← constructedCompactPhaseMonomial_coe B k,
-    ← constructedCompactPhaseMonomial_coe A,
-    ← constructedCompactPhaseMonomial_coe (A * B)] at h
-  exact funext fun i ↦ Subtype.ext (congrFun h i)
-
 namespace Construction
-
-/-- Unimodular chart coordinates give a continuous, invertible change of compact phases. -/
-public def compactPhaseChartHomeomorph (a : ChartIndex) :
-    CompactTorus ≃ₜ CompactTorus where
-  toFun := constructedCompactPhaseMonomial (dualMatrix a)
-  invFun := constructedCompactPhaseMonomial (a2ConeMatrix a.1 a.2)
-  left_inv k := by
-    rw [constructedCompactPhaseMonomial_comp, coneMatrix_mul_dualMatrix]
-    ext i
-    simpa only [constructedCompactPhaseMonomial_coe, monomial_one] using
-      congrFun (constructedCompactPhaseMonomial_coe 1 k) i
-  right_inv k := by
-    rw [constructedCompactPhaseMonomial_comp, dualMatrix_mul_coneMatrix]
-    ext i
-    simpa only [constructedCompactPhaseMonomial_coe, monomial_one] using
-      congrFun (constructedCompactPhaseMonomial_coe 1 k) i
-  continuous_toFun := constructedCompactPhaseMonomial_continuous _
-  continuous_invFun := constructedCompactPhaseMonomial_continuous _
-
-public theorem compactPhaseChartHomeomorph_coe
-    (a : ChartIndex) (k : CompactTorus) :
-    (fun i ↦ (compactPhaseChartHomeomorph a k i : ℂ)) =
-      torusChartCoordinates a (compactTorusEmbedding k) :=
-  constructedCompactPhaseMonomial_coe _ _
 
 /-- Two torus translates of a chart point agree precisely when their characters agree on
 its nonzero coordinates. -/
@@ -341,8 +193,6 @@ public theorem continuous_effectivePhaseSection :
     Continuous effectivePhaseSection := by
   unfold effectivePhaseSection
   fun_prop
-
-
 
 /-- Effective phase action on the actual prequotient central fibre. -/
 public def effectivePhaseCentralPoint

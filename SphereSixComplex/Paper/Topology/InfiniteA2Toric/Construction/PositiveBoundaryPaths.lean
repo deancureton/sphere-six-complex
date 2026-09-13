@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveBoundaryEdges
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.BoundaryDeckAttachment
 public import SphereSixComplex.Prerequisites.Topology.HexagonBoundaryPathHomology
 
 @[expose] public section
@@ -16,7 +16,6 @@ open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}
   {N : NormalizedFuchsianCuspCoordinate E D}
 namespace Construction
-
 
 public def boundaryFirstSquare (t : unitInterval) (ht : (t : ℝ) ≤ 1 / 2) :
     CellSquare :=
@@ -103,20 +102,6 @@ public theorem correctedPlaneCellOrbit_square
     correctedFiniteQuotientCellHomeomorph_apply]
   rfl
 
-public theorem correctedPlaneCellOrbit_side_mem_edge
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 6) (t : unitInterval) :
-    correctedPlaneCellOrbit W (hexagonSide i t) ∈
-      constructedCentralOneCell W (boundaryZeroOneEdge i) '' Metric.closedBall 0 1 := by
-  unfold hexagonSide
-  split_ifs
-  · rw [correctedPlaneCellOrbit_square]
-    exact actualBoundaryGauge_square_zero_one_mem_edge W i _ rfl
-  · rw [correctedPlaneCellOrbit_square]
-    have hi : boundaryZeroZeroEdge (cellNextIndex i) =
-        boundaryZeroOneEdge i := by fin_cases i <;> rfl
-    rw [← hi]
-    exact actualBoundaryGauge_square_zero_zero_mem_edge W _ _ rfl
-
 public theorem centralOriginOrbit_eq_of_carrier
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
     (p : actualLocalCuspCentralSubMulAction W) (a : ChartIndex)
@@ -197,8 +182,6 @@ public def actualHexagonSidePath
     (continuous_hexagonSide i)
   source' := correctedPlaneCellOrbit_side_zero W i
   target' := correctedPlaneCellOrbit_side_one W i
-
-
 
 end Construction
 

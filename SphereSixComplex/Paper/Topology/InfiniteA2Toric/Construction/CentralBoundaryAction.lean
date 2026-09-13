@@ -81,5 +81,13 @@ public theorem centralAttachingMap_eq_phase
   change centralDiskMap W (p, k) = centralCompactOrbitMap W k (centralDiskMap W (p, 1))
   rw [centralCompactOrbitMap_centralDiskMap, mul_one]
 
+public def centralBoundaryCircleSweep
+    (W : ActualPuncturedCuspCollarWitness N constructedModel)
+    (phase : C(UnitAddCircle, Fin 2 → Circle)) :
+    C(UnitAddCircle × centralBoundary W, centralBoundary W) :=
+  (centralBoundaryPhaseMap W).comp
+    ⟨fun p ↦ (phase p.1, p.2),
+      (phase.continuous.comp continuous_fst).prodMk continuous_snd⟩
+
 end SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 end

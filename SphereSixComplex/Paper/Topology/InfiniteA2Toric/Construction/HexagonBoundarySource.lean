@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveBoundaryLoop
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveBoundaryPaths
 public import SphereSixComplex.Prerequisites.Topology.CellularSquareBoundary
 
 @[expose] public section

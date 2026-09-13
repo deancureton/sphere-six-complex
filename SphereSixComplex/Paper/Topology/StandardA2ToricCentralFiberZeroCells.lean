@@ -135,27 +135,6 @@ public theorem constructedCentralOriginOrbit_ne
   exact lowerOrigin_ne_upperOrigin 0
     (translateChartIndex (Multiplicative.toAdd g) (true, 0)).2 hcarrier.symm
 
-/-- The characteristic map of either zero-cell. -/
-public def constructedCentralZeroCell
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (i : Fin 2) :
-    PartialEquiv (Fin 0 → ℝ) (ActualLocalCuspCentralOrbitQuotient W) where
-  toFun := fun _ ↦ constructedCentralOriginOrbit W (![false, true] i)
-  invFun := fun _ ↦ 0
-  source := Metric.ball 0 1
-  target := {constructedCentralOriginOrbit W (![false, true] i)}
-  map_source' := by
-    intro x hx
-    simp
-  map_target' := by
-    intro x hx
-    simp
-  left_inv' := by
-    intro x hx
-    exact Subsingleton.elim _ _
-  right_inv' := by
-    intro x hx
-    simpa only [Set.mem_singleton_iff] using hx.symm
-
 end SphereSixComplex.Geometry.CuspCollar
 
 end

@@ -475,8 +475,9 @@ through four. Its central fibre is obtained by attaching $`D^2\times T^2` to thr
 spheres with their two poles identified. A radial open cover has pieces homotopy equivalent
 to $`T^2` and this boundary, with intersection $`T^3`. The boundary itself has a two-chart
 cover whose intersection is three punctured planes. The two Mayer–Vietoris sequences,
-together with the proved attaching-map vanishing, compute the integral groups and Euler
-characteristic $`2`. The cusp retraction transports them to the filling.
+compute the integral groups and Euler characteristic $`2`. For the attaching map, opposite
+hexagon sides lie in the same sphere component and cancel in homology because
+$`H_1(\mathbb{CP}^1;\mathbb Z)=0`. The cusp retraction transports the groups to the filling.
 :::
 
 :::theorem "elliptic-multiple-fibre-homology" (parent := "section-seven-paper-assembly") (lean := "SphereSixComplex.AffineCyclicQuotientHomology.reducedCentralFiberHOneEquivPresentation, SphereSixComplex.AffineCyclicQuotientHomology.orderThreeReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.AffineCyclicQuotientHomology.orderFourReducedCentralFiberHOneEquivIntSquared, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourFixedHOneBasis_projection, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderThreeHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.orderFourHOneNaturality, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticDegreeTwoPullbackBases, SphereSixComplex.Topology.FiniteCoverPerfectPairing.ellipticFiniteCoverHomologyRealization")

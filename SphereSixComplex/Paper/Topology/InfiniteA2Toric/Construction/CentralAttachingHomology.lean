@@ -1,5 +1,7 @@
 module
 
+public import SphereSixComplex.Prerequisites.Topology.NormalizedCircleProductCross
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundaryAction
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralFiberCoverMaps
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundaryAttachingLoop
 public import SphereSixComplex.Prerequisites.Topology.StandardSpherePositiveHomology

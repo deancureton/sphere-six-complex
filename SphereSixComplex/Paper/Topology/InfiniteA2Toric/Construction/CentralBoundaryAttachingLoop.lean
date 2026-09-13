@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundaryLoop
+public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundarySpherePaths
 public import SphereSixComplex.Paper.Topology.SquareRadialCircleComparison
 
 @[expose] public section
@@ -19,8 +19,7 @@ public def correctedBallBoundaryMap
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     C(CWCharacteristicBoundarySphere 2, centralBoundary W) where
   toFun x := ⟨boundaryCorrectedBallOrbit W ⟨x.1, Metric.sphere_subset_closedBall x.2⟩,
-    constructedCentralOneSkeleton_subset_centralBoundary W
-      (boundaryCorrectedBallOrbit_boundary_mem_oneSkeleton W _ x.2)⟩
+    boundaryCorrectedBallOrbit_boundary_mem_centralBoundary W _ x.2⟩
   continuous_toFun := ((continuous_boundaryCorrectedBallOrbit W).comp
     (continuous_subtype_val.subtype_mk _)).subtype_mk _
 
@@ -49,13 +48,13 @@ public theorem correctedBallBoundaryMap_positiveLoop_homology_zero
       (correctedBallBoundaryMap W).continuous) = 0 := by
   let f := (correctedBallBoundaryMap W).comp
     ⟨squareBoundaryHexagonHomeomorph.symm, squareBoundaryHexagonHomeomorph.symm.continuous⟩
-  let g := oneSkeletonToCentralBoundary W
+  let g : C(centralBoundary W, centralBoundary W) := ContinuousMap.id _
   have hi (i : Fin 6) (t : unitInterval) :
-      f (hexagonBoundarySidePath i t) = g (oneSkeletonHexagonSidePath W i t) := by
+      f (hexagonBoundarySidePath i t) = g (boundarySide W i t) := by
     apply Subtype.ext
     exact correctedBallBoundaryMap_side W i t
   have hl (t : unitInterval) : f (hexagonBoundaryLoop t) =
-      g (oneSkeletonHexagonLoop W t) := by
+      g (boundaryLoop W t) := by
     apply path_trans_pointwise f g _ _ _ _ ?_ (hi 5) t
     intro u
     apply path_trans_pointwise f g _ _ _ _ ?_ (hi 4) u
@@ -64,17 +63,20 @@ public theorem correctedBallBoundaryMap_positiveLoop_homology_zero
     intro w
     apply path_trans_pointwise f g _ _ _ _ ?_ (hi 2) w
     exact path_trans_pointwise f g _ _ _ _ (hi 0) (hi 1)
-  have hb : f (hexagonBoundaryVertex 0) = g (oneSkeletonOrigin W false) := by
+  have hb : f (hexagonBoundaryVertex 0) = g (boundaryOrigin W false) := by
     exact (congrArg f (hexagonBoundarySidePath 0).source).symm.trans
-      ((hi 0 0).trans (congrArg g (oneSkeletonHexagonSidePath W 0).source))
+      ((hi 0 0).trans (congrArg g (boundarySide W 0).source))
   have hp : hexagonBoundaryLoop.map f.continuous =
-      ((oneSkeletonHexagonLoop W).map g.continuous).cast hb hb := by
+      ((boundaryLoop W).map g.continuous).cast hb hb := by
     apply Path.ext
     funext t
     exact hl t
   have hz : loopHomologyClass (hexagonBoundaryLoop.map f.continuous) = 0 := by
     rw [hp, loopHomologyClass_cast]
-    exact centralBoundaryHexagonLoop_homology_zero W
+    have hzero := boundaryLoop_homology_zero W
+    have hmap := congrArg (integralSingularHomologyMap 1 g) hzero
+    rw [integralSingularHomologyMap_loopHomologyClass, map_zero] at hmap
+    exact hmap
   have h := congrArg (integralSingularHomologyMap 1 (correctedBallBoundaryMap W))
     hexagonBoundaryLoop_square_homology_eq_positive
   rw [integralSingularHomologyMap_loopHomologyClass,

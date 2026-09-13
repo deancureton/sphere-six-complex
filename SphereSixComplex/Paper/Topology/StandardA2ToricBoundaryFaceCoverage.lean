@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CompactPhaseCorrection
-public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberCyclicSymmetry
 public import Mathlib.Analysis.Complex.Polynomial.Basic
 
 @[expose] public section
@@ -17,64 +16,6 @@ open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspPhaseEstimates
 open SphereSixComplex.Geometry.InfiniteA2Toric
-
-public theorem lowerAxisZero_mem_edgeZero_of_nonnegReal (r : ℝ) (hr : 0 ≤ r) :
-    inclusion (false, 0) (lowerAxisZero (r : ℂ)) ∈
-      constructedCentralEdgeZeroCarrier '' Metric.closedBall 0 1 := by
-  by_cases hr1 : r ≤ 1
-  · let x : Fin 1 → ℝ := fun _ ↦ r - 1
-    have hx : x ∈ Metric.closedBall 0 1 := by
-      have hb : -1 ≤ r - 1 ∧ r - 1 ≤ 1 := by constructor <;> linarith
-      simpa [x, Metric.mem_closedBall, dist_zero_right, Pi.norm_def, Real.norm_eq_abs, abs_le]
-        using hb
-    refine ⟨x, hx, ?_⟩
-    have hx0 : x 0 ≤ 0 := by dsimp [x]; linarith
-    simp [constructedCentralEdgeZeroCarrier, hx0, constructedCentralEdgeZeroLowerBranch, x]
-  · have hrpos : 0 < r := lt_trans zero_lt_one (lt_of_not_ge hr1)
-    have hri0 : 0 < r⁻¹ := inv_pos.mpr hrpos
-    have hri1 : r⁻¹ < 1 := inv_lt_one_of_one_lt₀ (lt_of_not_ge hr1)
-    let x : Fin 1 → ℝ := fun _ ↦ 1 - r⁻¹
-    have hx : x ∈ Metric.closedBall 0 1 := by
-      have hb : -1 ≤ 1 - r⁻¹ ∧ 1 - r⁻¹ ≤ 1 := by constructor <;> linarith
-      simpa [x, Metric.mem_closedBall, dist_zero_right, Pi.norm_def, Real.norm_eq_abs, abs_le]
-        using hb
-    refine ⟨x, hx, ?_⟩
-    have hx0 : ¬x 0 ≤ 0 := by dsimp [x]; linarith
-    simp only [constructedCentralEdgeZeroCarrier, hx0, ↓reduceIte,
-      constructedCentralEdgeZeroUpperBranch, x, sub_sub_cancel]
-    simpa using (inclusion_lowerAxisZero_eq_upperAxisTwo 0 (r : ℂ)
-      (by exact_mod_cast hrpos.ne')).symm
-
-public theorem a2CyclicCarrier_constructedCentralEdgeZeroCarrier (x : Fin 1 → ℝ) :
-    a2CyclicCarrier (constructedCentralEdgeZeroCarrier x) =
-      constructedCentralEdgeOneCarrier x := by
-  by_cases hx : x 0 ≤ 0
-  · simp only [constructedCentralEdgeZeroCarrier, constructedCentralEdgeOneCarrier,
-      hx, ↓reduceIte, constructedCentralEdgeZeroLowerBranch]
-    rw [a2CyclicCarrier_inclusion, a2CyclicChartIndex_lower_zero]
-    exact congrArg (inclusion (false, 0)) (a2CyclicRawLower_lowerAxisZero _)
-  · simp only [constructedCentralEdgeZeroCarrier, constructedCentralEdgeOneCarrier,
-      hx, ↓reduceIte, constructedCentralEdgeZeroUpperBranch]
-    rw [a2CyclicCarrier_inclusion, a2CyclicChartIndex_upper_zero]
-    exact congrArg (inclusion (true, -e₁)) (a2CyclicRawUpper_upperAxisTwo _)
-
-public theorem a2CyclicCarrier_sq_constructedCentralEdgeZeroCarrier (x : Fin 1 → ℝ) :
-    a2CyclicCarrier (a2CyclicCarrier (constructedCentralEdgeZeroCarrier x)) =
-      constructedCentralEdgeTwoCarrier x := by
-  by_cases hx : x 0 ≤ 0
-  · simp only [constructedCentralEdgeZeroCarrier, constructedCentralEdgeTwoCarrier,
-      hx, ↓reduceIte, constructedCentralEdgeZeroLowerBranch]
-    rw [a2CyclicCarrier_inclusion, a2CyclicCarrier_inclusion, a2CyclicChartIndex_lower_zero]
-    simpa [a2CyclicRaw] using congrArg (inclusion (false, 0))
-      (a2CyclicRawLower_sq_lowerAxisZero _)
-  · simp only [constructedCentralEdgeZeroCarrier, constructedCentralEdgeTwoCarrier,
-      hx, ↓reduceIte, constructedCentralEdgeZeroUpperBranch]
-    rw [a2CyclicCarrier_inclusion, a2CyclicCarrier_inclusion, a2CyclicChartIndex_sq_upper_zero]
-    exact congrArg (inclusion (true, -e₂)) (a2CyclicRawUpper_sq_upperAxisTwo _)
-
-public def constructedCentralEdgeCarrier : Fin 3 → (Fin 1 → ℝ) → Carrier :=
-  ![constructedCentralEdgeZeroCarrier, constructedCentralEdgeOneCarrier,
-    constructedCentralEdgeTwoCarrier]
 
 public theorem componentSupport_inclusion_eq_zeroCoordinates
     (a : ChartIndex) (z : RawCoordinates) :
@@ -127,11 +68,6 @@ public theorem exists_singleAxis_of_componentSupport_ncard_ge_two
         ext i; fin_cases i <;> simp_all
       rw [componentSupport_inclusion_eq_zeroCoordinates, hs, Set.image_empty, Set.ncard_empty] at hz
       omega
-
-public def constructedCentralUpperAxisChart : Fin 3 → ChartIndex :=
-  ![(true, 0), (true, -e₁), (true, -e₂)]
-
-public def constructedCentralUpperAxisIndex : Fin 3 → Fin 3 := ![2, 1, 0]
 
 open SphereSixComplex.Periods
 open SphereSixComplex.Geometry.CuspLocalPhaseAction

@@ -178,10 +178,8 @@ public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.Momen
 public import SphereSixComplex.Paper.Topology.ConstructedA2PhaseSpreadingCompletion
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveRelativeCWDefs
 public import SphereSixComplex.Paper.Topology.ConstructedA2PositivePartContractibilityProof
-public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveBoundaryLoop
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveBoundaryPaths
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveRelativeCW
-public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveBoundaryEdges
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.PositiveInterior
 public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveLocalCollars
 public import SphereSixComplex.Paper.Topology.ConstructedA2PositiveQuadrantManifold
@@ -212,7 +210,6 @@ public import SphereSixComplex.Paper.Topology.CuspEllipticInteriorRelators
 
 public import SphereSixComplex.Paper.Topology.CuspFiberSpecializationBijective
 public import SphereSixComplex.Paper.Topology.CuspFiberSpecializationColumns
-
 
 public import SphereSixComplex.Paper.Topology.CuspFiniteFiberSpecializationGeometricReduction
 public import SphereSixComplex.Paper.Topology.CuspFillingPhaseCircle
@@ -286,7 +283,6 @@ public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenAffine
 
 public import SphereSixComplex.Paper.Topology.FiniteCoverPerfectPairing
 
-
 public import SphereSixComplex.Paper.Topology.GeometricWangSplitting
 public import SphereSixComplex.Paper.Topology.GlobalInvariantPeriodCircle
 public import SphereSixComplex.Paper.Topology.GlobalInvariantPeriodTranslation
@@ -335,13 +331,11 @@ public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeBaseF
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeBaseFreeHomotopyProof
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeCommonGaugeGeometry
 
-
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeFullProductCoordinateProof
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreePrincipalGaugeStraighteningProof
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeLocalGlobalFactorHomotopyReduction
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticStraightLoopGeometricConnectorReduction
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreePrincipalGaugeHomotopyProof
-
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeSmallCircleHomotopyProof
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticOrderThreeZeroSectionHomotopyProof
@@ -349,7 +343,6 @@ public import SphereSixComplex.Paper.Topology.PaperActualEllipticRadialFillingDe
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorClassificationProof
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticRelatorNormalClosureTypes
-
 
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticWholeRelatorClassificationProof
 public import SphereSixComplex.Paper.Topology.PaperActualEllipticWholeRelatorReduction
@@ -376,7 +369,6 @@ public import SphereSixComplex.Paper.Topology.PaperCuspCentralFiberHomology
 public import SphereSixComplex.Paper.Topology.PaperCuspCentralNaturality
 public import SphereSixComplex.Paper.Topology.PaperCuspChosenAffineFilling
 
-
 public import SphereSixComplex.Paper.Topology.PaperCuspFillingDeckAction
 public import SphereSixComplex.Paper.Topology.PaperCuspFinalInclusionAdapter
 
@@ -387,8 +379,6 @@ public import SphereSixComplex.Paper.Topology.PaperCuspRadialClutchingConstructi
 public import SphereSixComplex.Paper.Topology.PaperCuspSpecializationAlgebra
 public import SphereSixComplex.Paper.Topology.PaperCuspUnwrappedFillingCover
 public import SphereSixComplex.Paper.Topology.PaperEllipticActualStraightPeriod
-
-
 
 public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomain
 public import SphereSixComplex.Paper.Topology.PaperEllipticCollarFundamentalDomainProof
@@ -409,7 +399,6 @@ public import SphereSixComplex.Paper.Topology.PaperEllipticReducedCentralFiberCo
 public import SphereSixComplex.Paper.Topology.PaperEllipticReducedCentralFiberCoverModels
 public import SphereSixComplex.Paper.Topology.PaperEllipticSynchronizedBaseMarking
 
-
 public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasis
 public import SphereSixComplex.Paper.Topology.PaperEllipticTorusHomologyBasisProof
 public import SphereSixComplex.Paper.Topology.PaperEllipticTwoDiscCover
@@ -428,7 +417,6 @@ public import SphereSixComplex.Paper.Topology.PaperMultipleFiberHOneTopologyDeri
 public import SphereSixComplex.Paper.Topology.PaperMultipleFiberHOneTopologyProof
 
 public import SphereSixComplex.Paper.Topology.PaperOrderThreeBasedChartLoopIdentities
-
 
 public import SphereSixComplex.Paper.Topology.PaperPropositionSevenFourteenDegreeTwoAlgebra
 public import SphereSixComplex.Paper.Topology.PaperRegularFiberTransport
@@ -474,12 +462,9 @@ public import SphereSixComplex.Prerequisites.Topology.EquivariantHomotopyEquival
 public import SphereSixComplex.Prerequisites.Topology.PuncturedAffineHalfPlaneRadial
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineStripMidpoint
 
-
-
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCentralBandSplit
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCompletion
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspActualCoordinateScalarsFromExistingGeometry
-
 
 public import SphereSixComplex.Prerequisites.Topology.BinaryOpenCoverOrientedRefinementNaturality
 public import SphereSixComplex.Prerequisites.Topology.CanonicalProductWangBoundaryNaturality
@@ -488,13 +473,9 @@ public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspWangFullFiber
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenPositiveDegreeRealization
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspCoverNaturality
 
-
 public import Mathlib.Algebra.Category.Grp.EpiMono
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspEllipticMarkedCoordinateFromExistingGeometry
-
-
-
 
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspMeridianWangSectionProof
 public import SphereSixComplex.Paper.Topology.PaperSectionSevenCuspPullbackWangComparison
@@ -536,7 +517,6 @@ public import Mathlib.Algebra.Homology.Homotopy
 public import Mathlib.Algebra.Homology.TotalComplex
 public import SphereSixComplex.Paper.Topology.SquareRadialCircleComparison
 public import SphereSixComplex.Paper.Topology.StandardA2ToricBoundaryFaceCoverage
-public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberCyclicSymmetry
 public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberOneCells
 public import SphereSixComplex.Paper.Topology.StandardA2ToricCentralFiberZeroCells
 public import SphereSixComplex.Paper.Topology.StandardFourTorusHomologicalModel
@@ -558,7 +538,6 @@ public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.Centr
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundaryAttachingLoop
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundaryCover
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundaryHomology
-public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundaryLoop
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundaryPeriodLoops
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralBoundarySweepCoordinates
 public import SphereSixComplex.Paper.Topology.InfiniteA2Toric.Construction.CentralFiberCover
