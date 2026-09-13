@@ -272,8 +272,6 @@ public import SphereSixComplex.Paper.Topology.EstablishedA2PhaseSpreading
 public import SphereSixComplex.Paper.Topology.EstablishedActualEllipticDegreeTwoHomologyBasisFiniteDataProof
 public import SphereSixComplex.Paper.Topology.EstablishedBasedVanKampen
 public import SphereSixComplex.Prerequisites.Topology.FiniteCoverCechDefs
-public import SphereSixComplex.Prerequisites.Topology.FirstQuadrantRowwiseTotalizationProof
-public import SphereSixComplex.Prerequisites.Topology.BoundarySevenCechRowIdentificationsProof
 public import SphereSixComplex.Paper.Topology.EstablishedMayerVietoris
 public import SphereSixComplex.Prerequisites.Topology.StandardSphereHomologyZeroCore
 public import SphereSixComplex.Paper.Topology.HomologyComputation
@@ -283,7 +281,6 @@ public import Mathlib.Algebra.Category.Grp.Zero
 public import SphereSixComplex.Prerequisites.Topology.StandardSpherePositiveHomology
 public import SphereSixComplex.Prerequisites.Topology.SixSphereHomology
 public import SphereSixComplex.Prerequisites.Topology.SingularExcisionOpenCover
-public import SphereSixComplex.Prerequisites.Topology.SingularStandardSimplexCone
 public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenAffineCompletion
 public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenAffineRegularLiftCompletion
 

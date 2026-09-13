@@ -338,6 +338,9 @@ public structure SixSphereFiniteCWModel where
   finite :
     letI := complex
     Topology.CWComplex.Finite (Set.univ : Set SixSphereFiniteCWCarrier)
+  cellEquiv (n : ℕ) :
+    (letI := complex; Topology.CWComplex.cell (Set.univ : Set SixSphereFiniteCWCarrier) n) ≃
+      { _u : PUnit.{0} // n = 0 ∨ n = 6 }
 
 /-- The explicit finite two-cell CW structure on the one-point compactification of `ℝ⁶`. -/
 public noncomputable opaque sixSphereFiniteCWModel : SixSphereFiniteCWModel := {
@@ -364,13 +367,38 @@ public noncomputable opaque sixSphereFiniteCWModel : SixSphereFiniteCWModel := {
     onePointSixCellMap_continuousOn_symm
     onePointSixCellMap_pairwiseDisjoint
     onePointSixCellMap_mapsTo
-    onePointSixCellMap_union }
+    onePointSixCellMap_union
+  cellEquiv n := Equiv.refl (onePointSixCell n) }
 
 /-- The finite CW structure carried by `sixSphereFiniteCWModel`. -/
 @[instance_reducible]
 public noncomputable def sixSphereFiniteCWComplex :
     Topology.CWComplex (Set.univ : Set SixSphereFiniteCWCarrier) :=
   sixSphereFiniteCWModel.complex
+
+
+/-- The actual characteristic cells are a singleton precisely in degrees zero and six. -/
+public noncomputable def sixSphereCellEquiv (n : ℕ) :
+    (letI := sixSphereFiniteCWComplex;
+      Topology.CWComplex.cell (Set.univ : Set SixSphereFiniteCWCarrier) n) ≃
+        { _u : PUnit.{0} // n = 0 ∨ n = 6 } :=
+  sixSphereFiniteCWModel.cellEquiv n
+
+
+@[instance_reducible]
+public noncomputable def sixSphereCell_unique (n : ℕ) (hn : n = 0 ∨ n = 6) :
+    letI := sixSphereFiniteCWComplex
+    Unique (Topology.CWComplex.cell (Set.univ : Set SixSphereFiniteCWCarrier) n) := by
+  letI : Unique { _u : PUnit.{0} // n = 0 ∨ n = 6 } :=
+    ⟨⟨⟨PUnit.unit, hn⟩⟩, fun _ ↦ Subsingleton.elim _ _⟩
+  exact (sixSphereCellEquiv n).unique
+
+public theorem sixSphereCell_isEmpty (n : ℕ) (h0 : n ≠ 0) (h6 : n ≠ 6) :
+    letI := sixSphereFiniteCWComplex
+    IsEmpty (Topology.CWComplex.cell (Set.univ : Set SixSphereFiniteCWCarrier) n) := by
+  let : IsEmpty { _u : PUnit.{0} // n = 0 ∨ n = 6 } :=
+    ⟨fun x ↦ x.2.elim h0 h6⟩
+  exact (sixSphereCellEquiv n).isEmpty
 
 
 /-- The standard identification of the finite CW model with the standard six-sphere. -/

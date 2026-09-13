@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Geometry.FourPieceStarGluing
 public import SphereSixComplex.Prerequisites.Topology.FiniteCoverCechDefs
-public import SphereSixComplex.Prerequisites.Topology.FirstQuadrantRowwiseTotalizationProof
-public import SphereSixComplex.Prerequisites.Topology.BoundarySevenCechRowIdentificationsProof
 public import SphereSixComplex.Paper.Topology.EstablishedMayerVietoris
 public import SphereSixComplex.Prerequisites.Topology.StandardSphereHomologyZeroCore
 public import SphereSixComplex.Paper.Topology.HomologyComputation
@@ -13,16 +11,8 @@ public import Mathlib.Algebra.Category.Grp.Zero
 public import SphereSixComplex.Prerequisites.Topology.StandardSpherePositiveHomology
 public import SphereSixComplex.Prerequisites.Topology.SixSphereHomology
 public import SphereSixComplex.Prerequisites.Topology.SingularExcisionOpenCover
-public import SphereSixComplex.Prerequisites.Topology.SingularStandardSimplexCone
 
-/-!
-# Local intersection models for the Section 7 star cover
-
-This file separates the geometry of every nonempty intersection of the actual four-piece star
-cover from the finite Section 7 matrix calculation.  The local models form a contravariant
-diagram under inclusion of index sets, and their realizations are required to commute strictly
-with the induced singular-chain maps.
--/
+/-! # The four-piece open cover induced by a star gluing -/
 
 @[expose] public section
 

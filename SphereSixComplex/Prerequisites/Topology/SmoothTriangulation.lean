@@ -58,7 +58,7 @@ public theorem finite_homology (M : CWType.FiniteModelOfDimension d X) (k : ℕ)
   let _ := M.t2
   let _ := M.cwComplex
   let _ := M.finite
-  let CM := CellularHomology.normalizedModel M.Carrier
+  let CM := CellularHomology.integralComparison.objectwiseModel M.Carrier
   have hfin : Finite (Topology.CWComplex.cell (Set.univ : Set M.Carrier) k) :=
     Topology.CWComplex.FiniteType.finite_cell (C := (Set.univ : Set M.Carrier)) k
   have hChains : Module.Finite ℤ (CM.chainComplex.X k) :=

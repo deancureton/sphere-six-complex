@@ -11,23 +11,7 @@ open CategoryTheory CategoryTheory.Limits
 
 namespace SphereSixComplex
 
-public instance (n : ℕ) : ContractibleSpace (CWCharacteristicClosedBall n) :=
-  (convex_closedBall (0 : Fin n → ℝ) 1).contractibleSpace
-    ⟨0, Metric.mem_closedBall_self zero_le_one⟩
 
-public theorem cwCharacteristicBoundary_isIso (n : ℕ) (hn : n ≠ 0) :
-    IsIso (cwRelativeIntegralSingularBoundary (cwCharacteristicBoundaryInclusion (n + 1)) n) := by
-  have hz (k : ℕ) (hk : k ≠ 0) :
-      IsZero ((cwIntegralSingularChainComplexObj
-        (TopCat.of (CWCharacteristicClosedBall (n + 1)))).homology k) := by
-    let _ : Subsingleton ((cwIntegralSingularChainComplexObj
-        (TopCat.of (CWCharacteristicClosedBall (n + 1)))).homology k) :=
-      subsingleton_integralSingularHomology_of_contractible
-        (X := CWCharacteristicClosedBall (n + 1)) k hk
-    exact AddCommGrpCat.isZero_of_subsingleton _
-  exact (cwRelativeIntegralSingularShortComplex_shortExact
-    (cwCharacteristicBoundaryInclusion (n + 1))).isIso_δ (n + 1) n
-      (ComplexShape.down_mk (n + 1) n rfl) (hz (n + 1) (by omega)) (hz n hn)
 
 public def cwSquareBoundaryAddCircleHomeomorph :
     CWCharacteristicBoundarySphere 2 ≃ₜ UnitAddCircle :=
@@ -82,12 +66,5 @@ public theorem cwSquareBoundaryHomologyMap_eq_zero_of_positiveLoop
     StandardCircleHomologyLiftDegree.integralSingularHomologyMap_loopHomologyClass, h, smul_zero]
   rfl
 
-public def normalizedSquareDiskOrientation :
-    (cwRelativeIntegralSingularChainComplex
-      (cwCharacteristicBoundaryInclusion 2)).homology 2 ≃+ ℤ := by
-  let _ := cwCharacteristicBoundary_isIso 1 (by omega)
-  exact (asIso (cwRelativeIntegralSingularBoundary
-    (cwCharacteristicBoundaryInclusion 2) 1)).addCommGroupIsoToAddEquiv.trans
-      cwSquareBoundaryHomologyWinding
 
 end SphereSixComplex

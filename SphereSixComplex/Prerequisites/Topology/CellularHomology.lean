@@ -120,11 +120,6 @@ public def cwCharacteristicBoundaryInclusion (n : ℕ) :
       TopCat.of (CWCharacteristicClosedBall n) :=
   TopCat.ofHom ⟨fun x ↦ ⟨x.1, le_of_eq x.2⟩, by fun_prop⟩
 
-public instance (n : ℕ) : Mono (cwCharacteristicBoundaryInclusion n) := by
-  rw [TopCat.mono_iff_injective]
-  intro x y h
-  apply Subtype.ext
-  exact congrArg (fun z : CWCharacteristicClosedBall n ↦ z.1) h
 
 /-- The union of cells of dimension strictly below `n`. -/
 public abbrev IntegralCWSkeletonLT

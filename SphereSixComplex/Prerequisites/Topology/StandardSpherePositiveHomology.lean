@@ -13,18 +13,11 @@ public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
 public import Mathlib.Topology.Homotopy.Contractible
 
 /-!
-# Positive integral homology of the standard six-sphere
+# Positive integral homology
 
-This file isolates the algebraic output required from the standard hemisphere
-Mayer--Vietoris calculation. Contractible spaces already have trivial positive-degree
-integral homology in Mathlib; this is proved below from homotopy invariance and the calculation
-for totally disconnected spaces.
-
-For the sphere calculation, `StandardSphereMayerVietorisInputs` records exactly the remaining
-outputs of singular excision and the standard hemisphere covers: the positive-degree
-suspension equivalences, the degree-one edge cases, and the circle generator. The final theorem
-proves, without another topological assumption, that these data give
-`SixSpherePositiveHomologyInputs`.
+Positive-degree homology vanishes for contractible spaces. The sphere homology specification
+records that the six-sphere has integral homology ℤ in degree six and zero in other positive degrees.
+`SixSphereHomology` proves it from the explicit two-cell CW model and cellular/singular comparison.
 -/
 
 @[expose] public section
@@ -50,19 +43,12 @@ public theorem subsingleton_integralSingularHomology_of_contractible
   let he := integralSingularHomologyEquivOfHomotopyEquiv n e
   exact ⟨fun x y ↦ he.injective (Subsingleton.elim _ _)⟩
 
+/-! ## The sphere homology specification -/
 
-/-! ## The finite suspension calculation -/
-
-/-- The positive-degree sphere homology calculation absent from Mathlib. -/
+/-- Integral homology of the six-sphere in positive degrees. -/
 public structure SixSpherePositiveHomologyInputs : Prop where
   degreeSix : Nonempty (IntegralSingularHomology 6 SixSphere ≃+ ℤ)
   otherDegrees :
     ∀ n : ℕ, n ≠ 0 → n ≠ 6 → Subsingleton (IntegralSingularHomology n SixSphere)
-
-
-
-
-
-
 
 end SphereSixComplex
