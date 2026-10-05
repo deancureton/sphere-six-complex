@@ -415,30 +415,7 @@ public theorem affineTorusMappingTorusDeckTransform_mul
   one_smul := affineTorusMappingTorusDeckTransform_one D b
   mul_smul := affineTorusMappingTorusDeckTransform_mul D b
 
-/-- The embedded lattice generator acts by the corresponding period translation. -/
-public theorem affineTorusMappingTorusDeckTranslation_smul
-    {p : Parameters} (D : DescendedAffineTorusAutomorphism p) (b : ComplexTwoSpace)
-    (n : IntegerPeriods) (w : ℝ × ComplexTwoSpace) :
-    letI := affineTorusMappingTorusDeckAction D b
-    Additive.toMul (affineTorusMappingTorusDeckTranslation D n) • w =
-      (w.1, periodVector p n + w.2) := by
-  change affineTorusMappingTorusDeckTransform D b
-    (SemidirectProduct.inl
-      (φ := affineDeckIntegerMonodromy D.latticeMap.toAddEquiv)
-      (Multiplicative.ofAdd n)) w = _
-  simp [affineTorusMappingTorusDeckTransform]
 
-/-- The angular meridian acts by one negative real turn and one affine clutching transform. -/
-public theorem affineTorusMappingTorusDeckMeridian_smul
-    {p : Parameters} (D : DescendedAffineTorusAutomorphism p) (b : ComplexTwoSpace)
-    (w : ℝ × ComplexTwoSpace) :
-    letI := affineTorusMappingTorusDeckAction D b
-    affineTorusMappingTorusDeckMeridian D • w =
-      (w.1 - 1, D.lift w.2 + b) := by
-  change affineTorusMappingTorusDeckTransform D b
-    (SemidirectProduct.inr (Multiplicative.ofAdd 1)) w = _
-  simp [affineTorusMappingTorusDeckTransform,
-    Geometry.affineEquiv_apply]
 
 /-- Full rank makes the combined lattice/angular action free: the real coordinate detects the
 angular exponent, and injectivity of the period map then detects the lattice translation. -/

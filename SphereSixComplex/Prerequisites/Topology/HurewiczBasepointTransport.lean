@@ -32,11 +32,6 @@ public theorem hurewiczFunction_map {X Y : Type} [TopologicalSpace X] [Topologic
   obtain ⟨p, rfl⟩ := Path.Homotopic.Quotient.mk_surjective g
   exact (integralSingularHomologyMap_loopHomologyClass f p).symm
 
-public theorem hurewiczFunction_baseEq {X : Type} [TopologicalSpace X]
-    {x y : X} (h : x = y) (g : FundamentalGroup X x) :
-    hurewiczFunction y (fundamentalGroupElementOfBaseEq h g) = hurewiczFunction x g := by
-  subst y
-  rfl
 
 
 end SphereSixComplex.Hurewicz.Chains

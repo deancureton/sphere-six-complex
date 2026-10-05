@@ -1,5 +1,7 @@
 module
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineNamedSheetCompletion
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenSmallMarkedDiscWitness
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineRegularLiftCompletionAssembly
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineOverlapInterleaving
 public import SphereSixComplex.Paper.Topology.RegularPeriodCircleSideSupport
 public import SphereSixComplex.Prerequisites.Topology.MappingTorusTwoSliceBoundary
 

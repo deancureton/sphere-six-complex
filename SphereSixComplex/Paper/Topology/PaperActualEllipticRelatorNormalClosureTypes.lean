@@ -60,53 +60,9 @@ public theorem ellipticFourCanonicalChosenCover_map_eq :
     A.ellipticFourCanonicalChosenCover_boundaryBase_eq
     A.ellipticFourCanonicalChosenCover_fillingBase_eq
 
-/-- The sign-correct order-three filling relator in the actual overlap fundamental group. -/
-public noncomputable def ellipticThreeCanonicalRelator :
-    FundamentalGroup
-        (A.actualVanKampenFourPieceCover.core ∩
-          A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)
-        ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
-          A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩ :=
-  (fundamentalGroupElementOfBaseEq
-      A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
-      A.ellipticThreeCanonicalChosenCover.meridian) ^ 3 *
-    (Additive.toMul
-      ((fundamentalGroupAddHomOfBaseEq
-        A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
-        A.ellipticThreeCanonicalChosenCover.translation) (-epsilon)))⁻¹
 
-/-- The sign-correct order-four filling relator in the actual overlap fundamental group. -/
-public noncomputable def ellipticFourCanonicalRelator :
-    FundamentalGroup
-        (A.actualVanKampenFourPieceCover.core ∩
-          A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)
-        ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
-          A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩ :=
-  (fundamentalGroupElementOfBaseEq
-      A.ellipticFourCanonicalChosenCover_boundaryBase_eq
-      A.ellipticFourCanonicalChosenCover.meridian) ^ 4 *
-    (Additive.toMul
-      ((fundamentalGroupAddHomOfBaseEq
-        A.ellipticFourCanonicalChosenCover_boundaryBase_eq
-        A.ellipticFourCanonicalChosenCover.translation) epsilon'))⁻¹
 
-public theorem ellipticThreeCanonicalRelator_killed :
-    A.actualVanKampenFourPieceCover.ellipticThreeOverlapFundamentalGroupMap
-        A.ellipticThreeCanonicalRelator = 1 := by
-  rw [← A.ellipticThreeCanonicalChosenCover_map_eq]
-  exact chosenCyclicRelation_killed
-    A.ellipticThreeCanonicalChosenCover
-    A.ellipticThreeCanonicalChosenCover_boundaryBase_eq
-    A.ellipticThreeCanonicalChosenCover_fillingBase_eq rfl
 
-public theorem ellipticFourCanonicalRelator_killed :
-    A.actualVanKampenFourPieceCover.ellipticFourOverlapFundamentalGroupMap
-        A.ellipticFourCanonicalRelator = 1 := by
-  rw [← A.ellipticFourCanonicalChosenCover_map_eq]
-  exact chosenCyclicRelation_killed
-    A.ellipticFourCanonicalChosenCover
-    A.ellipticFourCanonicalChosenCover_boundaryBase_eq
-    A.ellipticFourCanonicalChosenCover_fillingBase_eq rfl
 
 public theorem ellipticThreeOverlapFundamentalGroupMap_surjective :
     Function.Surjective

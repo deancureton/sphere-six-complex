@@ -33,4 +33,5 @@ fi
 git -C "$tools_root/comparator" restore --source=HEAD -- lean-toolchain lake-manifest.json
 git -C "$tools_root/comparator" fetch --tags origin
 git -C "$tools_root/comparator" checkout --detach "$comparator_rev"
+cp "$project_root/lean-toolchain" "$tools_root/comparator/lean-toolchain"
 (cd "$tools_root/comparator" && lake update && lake build comparator)

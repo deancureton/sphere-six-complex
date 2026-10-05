@@ -19,13 +19,7 @@ noncomputable section
 @[expose] public noncomputable def orderFourCayley (z : UpperHalfPlane) : ℂ :=
   UpperHalfPlane.cayley fuchsianTwoFixedPoint z
 
-public theorem norm_orderThreeCayley_lt_one (z : UpperHalfPlane) :
-    ‖orderThreeCayley z‖ < 1 :=
-  UpperHalfPlane.norm_cayley_lt_one fuchsianOneFixedPoint z
 
-public theorem norm_orderFourCayley_lt_one (z : UpperHalfPlane) :
-    ‖orderFourCayley z‖ < 1 :=
-  UpperHalfPlane.norm_cayley_lt_one fuchsianTwoFixedPoint z
 
 @[simp]
 public theorem orderThreeCayley_fixedPoint :

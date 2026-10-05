@@ -444,14 +444,14 @@ Poincaré duality and universal coefficients on the same compact complex threefo
 the remaining groups.
 :::
 
-:::theorem "elliptic-filling-relations" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.AnalyticData.centralToInteriorAbelian_orderThree, SphereSixComplex.Geometry.AnalyticData.centralToInteriorAbelian_orderFour, SphereSixComplex.Topology.cuspElliptic_abelian_generators_eq_zero")
-Each local filling loop splits into a period loop and a meridian power. In first homology,
-free homotopies and changes of base point preserve the loop class, so these factors can be
-transported independently. The resulting order-three and order-four relations are
+:::theorem "elliptic-filling-relations" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.EllipticDiscCircle.orderThree_star_homology_relation, SphereSixComplex.Geometry.EllipticDiscCircle.orderFour_star_homology_relation, SphereSixComplex.Topology.cuspElliptic_abelian_generators_eq_zero")
+A small circle bounds a disc in each local filling. Its logarithmic gauge lift splits its
+homology class into a period loop and a base loop. The modular coordinate is a power times
+a nonvanishing unit; contracting the unit shows that the base loop winds three or four times
+around the corresponding puncture. The resulting order-three and order-four relations are
 $`3r_1=t(-\epsilon)` and $`4r_2=t(\epsilon')`. After imposing the cusp relation
 $`r_1+r_2=0`, the toric relations and monodromy invariance identify both period images
 with one generator. The two equations then force that generator and both meridians to vanish.
-Synchronizing both factors along one conjugating path is unnecessary.
 :::
 
 :::definition "homology-sphere-contract" (parent := "integral-homology") (lean := "SphereSixComplex.HasIntegralHomologyOfSixSphere")

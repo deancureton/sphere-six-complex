@@ -1,7 +1,8 @@
 module
 
 public import SphereSixComplex.Paper.Topology.CuspFundamentalGroup
-public import SphereSixComplex.Paper.Topology.EllipticFillingHomology
+public import SphereSixComplex.Paper.Topology.EllipticDiscCircleFirstHomology
+public import SphereSixComplex.Paper.Topology.CentralHomology
 public import SphereSixComplex.Prerequisites.Topology.FirstHurewiczSurjective
 
 /-! # Vanishing first homology from the local filling relations
@@ -65,52 +66,52 @@ open Hurewicz.Chains
 public def ellipticInteriorInclusion (A : AnalyticData) : C(A.ellipticInterior, A.VanKampenSpace) :=
   ⟨Subtype.val, continuous_subtype_val⟩
 
-public theorem coreToStar_hurewicz_via_interior (A : AnalyticData)
-    (g : FundamentalGroup A.actualVanKampenFourPieceCover.core
-      ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩) :
-    hurewiczFunction A.vanKampenBase (A.actualVanKampenFourPieceCover.coreFundamentalGroupMap g) =
-      integralSingularHomologyMap 1 (ellipticInteriorInclusion A)
-        (hurewiczFunction _ (A.actualCoreToEllipticInteriorPiOne g)) := by
-  rw [← hurewiczFunction_map]
-  congr 1
-  exact (CoveringSpace.map_map A.actualCoreToEllipticInterior
-    (ellipticInteriorInclusion A) _ g).symm
-
-
 public noncomputable def starHurewiczCoreHom (A : AnalyticData) :
     FundamentalGroup A.actualVanKampenFourPieceCover.core
       ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ →*
       Multiplicative (IntegralSingularHomology 1 A.VanKampenSpace) :=
   (hurewiczPi1 A.vanKampenBase).comp A.actualVanKampenFourPieceCover.coreFundamentalGroupMap
 
-public theorem starHurewiczCoreHom_central (A : AnalyticData)
-    (g : FundamentalGroup A.CentralFamily A.centralAffineBase) :
-    (integralSingularHomologyMap 1 (ellipticInteriorInclusion A)).toMultiplicative
-        (A.centralToInteriorAbelian g) =
-      starHurewiczCoreHom A (A.cuspCentralNaturality.centralToCore g) := by
-  apply Multiplicative.toAdd.injective
-  exact (congrArg (integralSingularHomologyMap 1 (ellipticInteriorInclusion A))
-    (A.geometricMarkedCentralToCoreEquiv_hurewicz g).symm).trans
-      (A.coreToStar_hurewicz_via_interior (A.cuspCentralNaturality.centralToCore g)).symm
-
 public theorem starHurewiczCoreHom_orderThree (A : AnalyticData) :
     starHurewiczCoreHom A (A.coreDataOf A.cuspCentralNaturality).rhoOne ^ 3 =
       starHurewiczCoreHom A
         (Additive.toMul ((A.coreDataOf A.cuspCentralNaturality).translation (-epsilon))) := by
-  have h := congrArg
-    (integralSingularHomologyMap 1 (ellipticInteriorInclusion A)).toMultiplicative
-    A.centralToInteriorAbelian_orderThree
-  rw [map_pow, A.starHurewiczCoreHom_central, A.starHurewiczCoreHom_central] at h
+  apply Multiplicative.toAdd.injective
+  change (3 : ℕ) • hurewiczFunction A.vanKampenBase
+    (A.actualVanKampenFourPieceCover.coreFundamentalGroupMap
+      (A.cuspCentralNaturality.centralToCore A.geometricCentralRhoOne)) =
+    hurewiczFunction A.vanKampenBase
+      (A.actualVanKampenFourPieceCover.coreFundamentalGroupMap
+        (A.cuspCentralNaturality.centralToCore
+          (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)))))
+  erw [A.centralToStar_hurewicz, A.centralToStar_hurewicz]
+  have h := EllipticDiscCircle.orderThree_star_homology_relation A A.cuspRegularCoverPoint
+  rw [A.cuspPeriod_homology_eq_translation] at h
+  have hi (g : FundamentalGroup A.CentralFamily A.centralAffineBase) :
+      hurewiczFunction _ g⁻¹ = -hurewiczFunction _ g :=
+    congrArg Multiplicative.toAdd ((hurewiczPi1 _).map_inv g)
+  simp only [map_neg, toMul_neg, hi] at h ⊢
   exact h
 
 public theorem starHurewiczCoreHom_orderFour (A : AnalyticData) :
     starHurewiczCoreHom A (A.coreDataOf A.cuspCentralNaturality).rhoTwo ^ 4 =
       starHurewiczCoreHom A
         (Additive.toMul ((A.coreDataOf A.cuspCentralNaturality).translation epsilon')) := by
-  have h := congrArg
-    (integralSingularHomologyMap 1 (ellipticInteriorInclusion A)).toMultiplicative
-    A.centralToInteriorAbelian_orderFour
-  rw [map_pow, A.starHurewiczCoreHom_central, A.starHurewiczCoreHom_central] at h
+  apply Multiplicative.toAdd.injective
+  change (4 : ℕ) • hurewiczFunction A.vanKampenBase
+    (A.actualVanKampenFourPieceCover.coreFundamentalGroupMap
+      (A.cuspCentralNaturality.centralToCore A.geometricCentralRhoTwo)) =
+    hurewiczFunction A.vanKampenBase
+      (A.actualVanKampenFourPieceCover.coreFundamentalGroupMap
+        (A.cuspCentralNaturality.centralToCore
+          (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon'))))
+  erw [A.centralToStar_hurewicz, A.centralToStar_hurewicz]
+  have h := EllipticDiscCircle.orderFour_star_homology_relation A A.cuspRegularCoverPoint
+  rw [A.cuspPeriod_homology_eq_translation] at h
+  have hi (g : FundamentalGroup A.CentralFamily A.centralAffineBase) :
+      hurewiczFunction _ g⁻¹ = -hurewiczFunction _ g :=
+    congrArg Multiplicative.toAdd ((hurewiczPi1 _).map_inv g)
+  simp only [map_neg, toMul_neg, hi, neg_neg] at h ⊢
   exact h
 
 

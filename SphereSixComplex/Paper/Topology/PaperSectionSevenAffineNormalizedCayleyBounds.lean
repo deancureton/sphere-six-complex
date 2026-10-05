@@ -1,5 +1,7 @@
 module
-public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineMarkedBandEndpointFormula
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenSmallMarkedDiscWitness
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineNormalizedStripLift
+public import SphereSixComplex.Paper.Topology.PaperSectionSevenAffineRegularBaseRadialEquivalence
 public import SphereSixComplex.Paper.Topology.PaperEllipticPathSheet
 /-!
 # Identity-collar bounds for the normalized affine strip
@@ -195,56 +197,6 @@ public theorem affineNormalizedOrderFourRadialLift_midpoint_cayley
   rw [hmid]
   simpa only [Qsmall.source] using hbound
 
-public theorem affineNormalizedOrderThreeRadialLift_cayley
-    (A : AnalyticData) (z : affineVerticalStrip) :
-    ‖(orderThreeCayleyHomeomorph
-      (A.affineNormalizedOrderThreeRadialLift z).1.1 : ℂ)‖ <
-      A.starSeparation.orderThree.radius := by
-  let : ContractibleSpace affineVerticalStrip :=
-    affineVerticalStrip_contractibleSpace
-  let p := PathConnectedSpace.somePath affineStripMidpoint z
-  let Q := ((p.map A.affineNormalizedOrderThreeRadialLift.continuous).map
-    continuous_subtype_val).map continuous_subtype_val
-  have hcover (t : unitInterval) : ∃ k : Delta,
-      ‖(orderThreeCayleyHomeomorph (fuchsianSourceAction k • Q t) : ℂ)‖ <
-        A.starSeparation.orderThree.radius := by
-    obtain ⟨k, hk⟩ := A.affineOrderThreeMarkedDiscRadius_cayley
-      (A.affineNormalizedOrderThreeRadialLift (p t)).1.1
-      (A.affineNormalizedOrderThreeRadialLift (p t)).2
-    exact ⟨k, hk.trans (half_lt_self A.starSeparation.orderThree.radius_pos)⟩
-  have hzero : ‖(orderThreeCayleyHomeomorph (fuchsianSourceAction 1 • Q 0) : ℂ)‖ <
-      A.starSeparation.orderThree.radius := by
-    simpa only [map_one, one_smul, Q.source] using
-      A.affineNormalizedOrderThreeRadialLift_midpoint_cayley
-  have h := A.orderThree_path_stays_entering_sheet
-    A.starSeparation.orderThree.sourceData Q.toContinuousMap hcover 1 hzero 1
-  change ‖(orderThreeCayleyHomeomorph (fuchsianSourceAction 1 • Q 1) : ℂ)‖ < _ at h
-  simpa only [map_one, one_smul, Q.target] using h
 
-public theorem affineNormalizedOrderFourRadialLift_cayley
-    (A : AnalyticData) (z : affineVerticalStrip) :
-    ‖(orderFourCayleyHomeomorph
-      (A.affineNormalizedOrderFourRadialLift z).1.1 : ℂ)‖ <
-      A.starSeparation.orderFour.radius := by
-  let : ContractibleSpace affineVerticalStrip :=
-    affineVerticalStrip_contractibleSpace
-  let p := PathConnectedSpace.somePath affineStripMidpoint z
-  let Q := ((p.map A.affineNormalizedOrderFourRadialLift.continuous).map
-    continuous_subtype_val).map continuous_subtype_val
-  have hcover (t : unitInterval) : ∃ k : Delta,
-      ‖(orderFourCayleyHomeomorph (fuchsianSourceAction k • Q t) : ℂ)‖ <
-        A.starSeparation.orderFour.radius := by
-    obtain ⟨k, hk⟩ := A.affineOrderFourMarkedDiscRadius_cayley
-      (A.affineNormalizedOrderFourRadialLift (p t)).1.1
-      (A.affineNormalizedOrderFourRadialLift (p t)).2
-    exact ⟨k, hk.trans (half_lt_self A.starSeparation.orderFour.radius_pos)⟩
-  have hzero : ‖(orderFourCayleyHomeomorph (fuchsianSourceAction 1 • Q 0) : ℂ)‖ <
-      A.starSeparation.orderFour.radius := by
-    simpa only [map_one, one_smul, Q.source] using
-      A.affineNormalizedOrderFourRadialLift_midpoint_cayley
-  have h := A.orderFour_path_stays_entering_sheet
-    A.starSeparation.orderFour.sourceData Q.toContinuousMap hcover 1 hzero 1
-  change ‖(orderFourCayleyHomeomorph (fuchsianSourceAction 1 • Q 1) : ℂ)‖ < _ at h
-  simpa only [map_one, one_smul, Q.target] using h
 
 end SphereSixComplex.Geometry.AnalyticData

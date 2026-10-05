@@ -175,43 +175,11 @@ public noncomputable def fundamentalGroupData
   letI := D.fillingAction
   exact cyclicAffineFillingPiOneData D.model
 
-/-- The lattice generators in the chosen cyclic boundary fundamental group. -/
-public noncomputable def translation
-    (D : ChosenCyclicAffineFillingCoverModel m Λ B N) :
-    Λ →+ Additive (FundamentalGroup B D.boundaryBase) := by
-  letI := D.boundaryDeckGroup
-  letI := D.fillingDeckGroup
-  letI := D.boundaryCoverTopology
-  letI := D.fillingCoverTopology
-  letI := D.boundaryAction
-  letI := D.fillingAction
-  exact D.fundamentalGroupData.translation
-
-/-- The unwrapped angular meridian in the chosen cyclic boundary fundamental group. -/
-public noncomputable def meridian
-    (D : ChosenCyclicAffineFillingCoverModel m Λ B N) :
-    FundamentalGroup B D.boundaryBase := by
-  letI := D.boundaryDeckGroup
-  letI := D.fillingDeckGroup
-  letI := D.boundaryCoverTopology
-  letI := D.fillingCoverTopology
-  letI := D.boundaryAction
-  letI := D.fillingAction
-  exact D.fundamentalGroupData.meridian
 
 
 
 
-/-- The lattice twist made by one full cyclic iterate. -/
-public noncomputable def twist
-    (D : ChosenCyclicAffineFillingCoverModel m Λ B N) : Λ := by
-  letI := D.boundaryDeckGroup
-  letI := D.fillingDeckGroup
-  letI := D.boundaryCoverTopology
-  letI := D.fillingCoverTopology
-  letI := D.boundaryAction
-  letI := D.fillingAction
-  exact D.model.twist
+
 
 /-- The cyclic filling inclusion is onto on fundamental groups. -/
 public theorem fundamentalGroupMap_surjective
@@ -225,28 +193,7 @@ public theorem fundamentalGroupMap_surjective
   letI := D.fillingAction
   exact D.fundamentalGroupData.map_surjective
 
-/-- The exact kernel of the cyclic filling inclusion. -/
-public theorem fundamentalGroupMap_kernel
-    (D : ChosenCyclicAffineFillingCoverModel m Λ B N) :
-    D.fundamentalGroupMap.ker = Subgroup.normalClosure
-      {D.meridian ^ m * (Additive.toMul (D.translation D.twist))⁻¹} := by
-  letI := D.boundaryDeckGroup
-  letI := D.fillingDeckGroup
-  letI := D.boundaryCoverTopology
-  letI := D.fillingCoverTopology
-  letI := D.boundaryAction
-  letI := D.fillingAction
-  exact D.fundamentalGroupData.ker_map
 
-/-- The canonical cyclic affine relation is killed by the filling inclusion. -/
-public theorem fundamentalGroupMap_relation
-    (D : ChosenCyclicAffineFillingCoverModel m Λ B N) :
-    D.fundamentalGroupMap
-      (D.meridian ^ m * (Additive.toMul (D.translation D.twist))⁻¹) = 1 := by
-  change D.meridian ^ m *
-    (Additive.toMul (D.translation D.twist))⁻¹ ∈ D.fundamentalGroupMap.ker
-  rw [D.fundamentalGroupMap_kernel]
-  exact Subgroup.subset_normalClosure (Set.mem_singleton _)
 
 end ChosenCyclicAffineFillingCoverModel
 

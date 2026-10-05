@@ -441,8 +441,6 @@ public theorem norm_standardMultiplier (m : ℕ) : ‖standardMultiplier m‖ = 
   Circle.norm_coe (Circle.exp (-(2 * π / m)))
 
 
-public theorem angleMap_coe (m : ℕ) (θ : ℝ) :
-    ((angleMap m θ : Circle) : ℂ) = Complex.exp (((2 * π / m) * θ : ℝ) * Complex.I) := rfl
 
 section Nonzero
 

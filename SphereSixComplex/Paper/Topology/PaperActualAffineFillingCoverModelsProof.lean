@@ -80,20 +80,6 @@ public theorem passiveProd_isQuotientCoveringMap
     rcases hg with ⟨q, ⟨w, hw, hgwq⟩, hq⟩
     exact ⟨q.2, ⟨w.2, hw.2, congrArg Prod.snd hgwq⟩, hq.2⟩
 
-/-- The canonical cyclic affine relation is killed by the transported filling inclusion. -/
-public theorem chosenCyclicRelation_killed
-    {m : ℕ} {Λ B N : Type*} [NeZero m] [AddCommGroup Λ]
-    [TopologicalSpace B] [TopologicalSpace N]
-    (D : ChosenCyclicAffineFillingCoverModel m Λ B N) {b : B} {n : N}
-    (hb : D.boundaryBase = b) (hn : D.fillingBase = n) {tw : Λ} (htw : D.twist = tw) :
-    fundamentalGroupHomOfBaseEq hb hn D.fundamentalGroupMap
-        ((fundamentalGroupElementOfBaseEq hb D.meridian) ^ m *
-          (Additive.toMul
-            ((fundamentalGroupAddHomOfBaseEq hb D.translation) tw))⁻¹) = 1 := by
-  subst hb
-  subst hn
-  subst htw
-  exact D.fundamentalGroupMap_relation
 
 /-- Transporting the source and target base points of a map does not change its induced
 fundamental-group homomorphism. -/
@@ -928,47 +914,7 @@ public theorem toChosenCover_fillingBase_eq
 
 end OrderFourActualEllipticFillingExtensionAtBase
 
-/-- The actual order-three overlap included into the core and transported along the specified
-connector to the base point of the four-piece cover. -/
-public noncomputable def ellipticThreeOverlapToCore :
-    FundamentalGroup
-        (A.actualVanKampenFourPieceCover.core ∩
-          A.actualVanKampenFourPieceCover.ellipticThree : Set A.VanKampenSpace)
-        ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
-          A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩ →*
-      FundamentalGroup A.actualVanKampenFourPieceCover.core
-        ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
-  (FundamentalGroup.fundamentalGroupMulEquivOfPath
-      (A.actualVanKampenFourPieceCover.connectorInCore
-        A.actualVanKampenFourPieceCover.ellipticThreeConnector
-        A.actualVanKampenFourPieceCover.ellipticThreeConnector_mem
-        A.actualVanKampenFourPieceCover.ellipticThreePoint_mem.1).symm).toMonoidHom.comp
-    (FundamentalGroup.map
-      (A.actualVanKampenFourPieceCover.overlapToCore
-        A.actualVanKampenFourPieceCover.ellipticThree)
-      ⟨A.actualVanKampenFourPieceCover.ellipticThreePoint,
-        A.actualVanKampenFourPieceCover.ellipticThreePoint_mem⟩)
 
-/-- The actual order-four overlap included into the core and transported along the specified
-connector to the base point of the four-piece cover. -/
-public noncomputable def ellipticFourOverlapToCore :
-    FundamentalGroup
-        (A.actualVanKampenFourPieceCover.core ∩
-          A.actualVanKampenFourPieceCover.ellipticFour : Set A.VanKampenSpace)
-        ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
-          A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩ →*
-      FundamentalGroup A.actualVanKampenFourPieceCover.core
-        ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
-  (FundamentalGroup.fundamentalGroupMulEquivOfPath
-      (A.actualVanKampenFourPieceCover.connectorInCore
-        A.actualVanKampenFourPieceCover.ellipticFourConnector
-        A.actualVanKampenFourPieceCover.ellipticFourConnector_mem
-        A.actualVanKampenFourPieceCover.ellipticFourPoint_mem.1).symm).toMonoidHom.comp
-    (FundamentalGroup.map
-      (A.actualVanKampenFourPieceCover.overlapToCore
-        A.actualVanKampenFourPieceCover.ellipticFour)
-      ⟨A.actualVanKampenFourPieceCover.ellipticFourPoint,
-        A.actualVanKampenFourPieceCover.ellipticFourPoint_mem⟩)
 
 
 /-- The central affine presentation transported through a marked cusp naturality equivalence. -/

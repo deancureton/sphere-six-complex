@@ -86,14 +86,6 @@ public noncomputable def regularFlatTransport
         exact congrArg (A.regularFlatVector bx.1) hg)
     bx.2
 
-@[simp]
-public theorem regularFlatTransport_mk
-    (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
-    (p : RegularBase (U := A.modular.modularParameter.toTriangleUniformization) ×
-      ComplexTwoSpace) :
-    A.regularFlatTransport (b, Quotient.mk _ p) =
-      Quotient.mk _ (b, A.regularFlatVector b p) :=
-  rfl
 
 /-- Flat transport lands over the prescribed base point. -/
 public theorem regularTotalSpaceBase_regularFlatTransport

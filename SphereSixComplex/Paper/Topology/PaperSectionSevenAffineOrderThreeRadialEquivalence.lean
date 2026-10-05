@@ -83,13 +83,6 @@ public noncomputable def fiberTransfer
     RegularTotalSpace A.periods → RegularTotalSpace A.periods :=
   Quotient.map (fiberTransferCover A w) (fiberTransferCover_orbitRel A w)
 
-@[simp]
-public theorem fiberTransfer_mk
-    (w : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
-    (p : RegularBase (U := A.modular.modularParameter.toTriangleUniformization) ×
-      ComplexTwoSpace) :
-    A.fiberTransfer w (Quotient.mk _ p) = Quotient.mk _ (fiberTransferCover A w p) :=
-  rfl
 
 @[simp]
 public theorem regularTotalSpaceBase_fiberTransfer

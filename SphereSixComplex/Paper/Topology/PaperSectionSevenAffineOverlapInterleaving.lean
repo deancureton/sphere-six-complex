@@ -19,6 +19,7 @@ records the point-set dictionary between the star collars and the affine central
 @[expose] public section
 
 noncomputable section
+open scoped ContinuousMap
 
 open Set Topology
 
@@ -1480,7 +1481,32 @@ public theorem orderFourOverlapIsHomotopyEquivalence :
       (A.orderFourOverlapCollarHomeomorph.symm_apply_apply u)
 
 
+/-- The side-to-reduced-fibre equivalence selected from the proved order-three overlap
+equivalence. -/
+public noncomputable def affineOrderThreeSideToReducedFiberHomotopyEquiv
+    (A : AnalyticData) :
+    A.actualAffineHeightSplit.allocation.orderThreeSide ≃ₕ
+      orderThreeReducedCentralFiber A.periods :=
+  (orderThreeOverlapIsHomotopyEquivalence_inclusion
+      A.orderThreeOverlapIsHomotopyEquivalence).toHomotopyEquiv |>.trans
+    (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderThreeSide
+      A.orderThreeFillingImage
+      A.actualAffineHeightSplit.orderThreeFillingImage_subset_side).toHomotopyEquiv |>.trans
+    A.orderThreeFillingImageHomotopyEquiv
+
+/-- The side-to-reduced-fibre equivalence selected from the proved order-four overlap
+equivalence. -/
+public noncomputable def affineOrderFourSideToReducedFiberHomotopyEquiv
+    (A : AnalyticData) :
+    A.actualAffineHeightSplit.allocation.orderFourSide ≃ₕ
+      orderFourReducedCentralFiber A.periods :=
+  (orderFourOverlapIsHomotopyEquivalence_inclusion
+      A.orderFourOverlapIsHomotopyEquivalence).toHomotopyEquiv |>.trans
+    (nestedSubtypeHomeomorph A.actualAffineHeightSplit.allocation.orderFourSide
+      A.orderFourFillingImage
+      A.actualAffineHeightSplit.orderFourFillingImage_subset_side).toHomotopyEquiv |>.trans
+    A.orderFourFillingImageHomotopyEquiv
+
 end SphereSixComplex.Geometry.AnalyticData
 
 end
-

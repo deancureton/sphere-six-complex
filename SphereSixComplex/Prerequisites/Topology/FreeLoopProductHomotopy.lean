@@ -11,15 +11,6 @@ open scoped ContinuousMap
 
 namespace SphereSixComplex.Topology
 
-/-- Forget the endpoint-relative conditions of a path homotopy. -/
-public def pathHomotopyToFreeHomotopy
-    {X : Type*} [TopologicalSpace X] {x : X}
-    {p q : Path x x} (H : Path.Homotopy p q) :
-    ContinuousMap.Homotopy p.toContinuousMap q.toContinuousMap where
-  toFun := H
-  continuous_toFun := H.continuous
-  map_zero_left t := H.map_zero_left t
-  map_one_left t := H.map_one_left t
 
 
 /-- A loop in a product is based-homotopic to its fibre coordinate followed by its base

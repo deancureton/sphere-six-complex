@@ -45,12 +45,6 @@ public noncomputable def restrictedOrbitQuotientInclusion
     Quotient (restrictedOrbitRel A S) → Quotient (orbitRelOf A) :=
   Quotient.map Subtype.val (restrictedOrbitRel_subtype_val A S)
 
-@[simp]
-public theorem restrictedOrbitQuotientInclusion_mk
-    (A : MulAction G X) (S : InvariantOpenCarrier A) (x : S.carrier) :
-    restrictedOrbitQuotientInclusion A S (Quotient.mk _ x) =
-      Quotient.mk _ (x : X) :=
-  rfl
 
 public theorem restrictedOrbitQuotientInclusion_continuous
     (A : MulAction G X) (S : InvariantOpenCarrier A) :

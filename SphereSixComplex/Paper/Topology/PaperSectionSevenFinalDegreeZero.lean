@@ -126,22 +126,6 @@ public theorem starCuspCollarSource_pathConnected :
     (CuspCollar.PuncturedLocalCuspQuotient A.starCuspWitness)
   exact CuspCollar.puncturedLocalCuspQuotient_pathConnected A.starCuspWitness
 
-/-- The penultimate Mayer--Vietoris stage is the union of the central, order-three, and
-order-four pieces. -/
-public theorem ellipticInterior_eq_threePieceUnion :
-    (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) =
-      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 0 ∪
-      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 1 ∪
-      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 2 := by
-  ext x
-  simp only [FourPieceOpenCover.stage, mem_iUnion, mem_union]
-  constructor
-  · rintro ⟨i, hi, hx⟩
-    fin_cases i <;> simp_all
-  · rintro ((hx | hx) | hx)
-    · exact ⟨0, by omega, hx⟩
-    · exact ⟨1, by omega, hx⟩
-    · exact ⟨2, by omega, hx⟩
 
 
 /-- The actual final overlap is exactly the central--cusp intersection. -/

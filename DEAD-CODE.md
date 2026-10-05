@@ -216,3 +216,38 @@ isolation. The endpoint boundary remains three standard Lean axioms plus ten cla
 assumptions; the construction uses the standard three plus seven classical assumptions.
 Existing linter/docstring warnings remain. The challenge files, Comparator configuration,
 axiom allowlists, and dependency pins are unchanged.
+
+
+## Direct disc homology and midpoint comparisons (2026-10-05)
+
+Ordinary circles in the filling charts bound actual discs. Their logarithmic
+period increments and the modular coordinate's power-times-unit factorization
+identify the elliptic H₁ relations directly. Product-loop homology separates the
+fiber period from base winding. For the band comparisons, contract the strip to
+its midpoint and remove the torus translation by homotopy, using the correct
+coordinate change for the order-four filling. These arguments replace the
+selected-loop, synchronized-gauge, and full marked-band comparison routes.
+
+| Library inventory | Before (`a713389`) | After |
+|---|---:|---:|
+| Lean modules, including the root import | 771 | 733 |
+| Source lines | 171,657 | 161,912 |
+
+The net reduction is **9,745 lines**, including replacement proofs. Fifty-six
+obsolete modules were removed and eighteen were added. Only the two Comparator
+endpoints were mathematical roots of the dependency analysis. A fresh audit
+after pruning reports zero remaining dead source ranges or modules, with all
+source ranges matching `.ilean` artifacts. Elaboration helpers, local syntax,
+and module scaffolding are protected; see `PROOF-REFACTOR.md` for audit details.
+
+Validation passed: root build (9,761 jobs), Blueprint build (10,114 jobs),
+post-Blueprint root build, all 263 Blueprint declaration checks, import/layer and
+placeholder checks, strict recursive axiom audit, and Comparator default-kernel
+replay. The final boundary remains the standard three axioms plus ten classical
+assumptions; construction uses the standard three plus seven. The challenge,
+Comparator configuration, axiom allowlists, and dependency pins are unchanged.
+
+Lean was updated from 4.34.0-rc1 to 4.34.0 to recover from a macOS compiler crash.
+Builds run at nice 15 with at most three compiler workers. Existing warnings
+remain; no A/B speed benchmark was performed. Comparator's macOS fake-Landrun
+path verifies functionality without Linux process isolation.

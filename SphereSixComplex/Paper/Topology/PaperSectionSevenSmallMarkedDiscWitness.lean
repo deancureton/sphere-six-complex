@@ -39,4 +39,52 @@ public theorem exists_small_discRegion_subset_orderFourOverlap (A : AnalyticData
   apply hcoordinate z
   exact hz.trans ((min_le_right _ _).trans_lt (half_lt_self hδ))
 
+/-- A fixed small affine disc contained in the actual order-three star overlap. -/
+public noncomputable def affineOrderThreeMarkedDiscRadius (A : AnalyticData) : ℝ :=
+  A.exists_small_discRegion_subset_orderThreeOverlap.choose
+
+public theorem affineOrderThreeMarkedDiscRadius_spec (A : AnalyticData) :
+    0 < A.affineOrderThreeMarkedDiscRadius ∧
+      A.affineOrderThreeMarkedDiscRadius ≤ 1 / 3 ∧
+      A.affineOrderThreeDiscRegion
+          A.affineOrderThreeMarkedDiscRadius ⊆
+        A.orderThreeFillingImage ∩
+          A.affineOrderThreeCentralRegion :=
+  by
+    have h := A.exists_small_discRegion_subset_orderThreeOverlap.choose_spec
+    exact ⟨h.1, h.2.1, h.2.2.1⟩
+
+/-- A fixed small affine disc contained in the actual order-four star overlap. -/
+public noncomputable def affineOrderFourMarkedDiscRadius (A : AnalyticData) : ℝ :=
+  A.exists_small_discRegion_subset_orderFourOverlap.choose
+
+public theorem affineOrderFourMarkedDiscRadius_spec (A : AnalyticData) :
+    0 < A.affineOrderFourMarkedDiscRadius ∧
+      A.affineOrderFourMarkedDiscRadius ≤ 1 / 3 ∧
+      A.affineOrderFourDiscRegion
+          A.affineOrderFourMarkedDiscRadius ⊆
+        A.orderFourFillingImage ∩
+          A.affineOrderFourCentralRegion :=
+  by
+    have h := A.exists_small_discRegion_subset_orderFourOverlap.choose_spec
+    exact ⟨h.1, h.2.1, h.2.2.1⟩
+
+public theorem affineOrderThreeMarkedDiscRadius_cayley (A : AnalyticData)
+    (z : UpperHalfPlane)
+    (hz : ‖A.modular.sourceCoordinate.coordinate z‖ < A.affineOrderThreeMarkedDiscRadius) :
+    ∃ k : SphereSixComplex.TriangleGroup.Delta,
+      ‖(SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderThreeCayleyHomeomorph
+        (SphereSixComplex.TriangleGroup.fuchsianSourceAction k • z) : ℂ)‖ <
+        A.starSeparation.orderThree.radius / 2 :=
+  A.exists_small_discRegion_subset_orderThreeOverlap.choose_spec.2.2.2 z hz
+
+public theorem affineOrderFourMarkedDiscRadius_cayley (A : AnalyticData)
+    (z : UpperHalfPlane)
+    (hz : ‖A.modular.sourceCoordinate.coordinate z - 1‖ < A.affineOrderFourMarkedDiscRadius) :
+    ∃ k : SphereSixComplex.TriangleGroup.Delta,
+      ‖(SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderFourCayleyHomeomorph
+        (SphereSixComplex.TriangleGroup.fuchsianSourceAction k • z) : ℂ)‖ <
+        A.starSeparation.orderFour.radius / 2 :=
+  A.exists_small_discRegion_subset_orderFourOverlap.choose_spec.2.2.2 z hz
+
 end SphereSixComplex.Geometry.AnalyticData

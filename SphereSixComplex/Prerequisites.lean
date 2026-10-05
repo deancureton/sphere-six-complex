@@ -240,9 +240,9 @@ public import SphereSixComplex.Prerequisites.Topology.FiniteExactSequenceEuler
 public import SphereSixComplex.Prerequisites.Topology.FirstHurewiczDefs
 public import SphereSixComplex.Prerequisites.Topology.FirstHurewiczProof
 public import SphereSixComplex.Prerequisites.Topology.FixedLoopSweepWangBoundary
-public import SphereSixComplex.Prerequisites.Topology.FreeLoopChangeBasepointHomotopy
-
 public import SphereSixComplex.Prerequisites.Topology.FreeLoopProductHomotopy
+public import Mathlib.Topology.Subpath
+
 
 public import SphereSixComplex.Prerequisites.Topology.FundamentalGroupCoverLifting
 public import SphereSixComplex.Prerequisites.Topology.FundamentalGroupSimplyConnected
