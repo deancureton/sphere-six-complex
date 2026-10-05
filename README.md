@@ -4,8 +4,8 @@ This project formalizes the construction in [`references/s6.pdf`](https://alpo.g
 compact complex threefold diffeomorphic to the standard smooth six-sphere.
 
 The Lean development separates reusable mathematics in `SphereSixComplex/Prerequisites/` from
-the construction in `SphereSixComplex/Paper/`. See [MODULE-LAYOUT.md](MODULE-LAYOUT.md) for the
-classification and entry points. The `blueprint/` directory tracks the
+the construction in topic directories such as `Elliptic/`, `Cusp/`, `Toric/`, and `Homology/`.
+See [MODULE-LAYOUT.md](MODULE-LAYOUT.md) for the classification and entry points. The `blueprint/` directory tracks the
 retained construction and its Lean dependencies. `ChallengeDefs.lean`, `ChallengeAxioms.lean`, `Challenge.lean`,
 `Solution.lean`, and `comparator.json` form the Comparator boundary. `ChallengeDefs` contains
 the Mathlib-only statement definitions; `ChallengeAxioms` exposes the audited established results
@@ -82,7 +82,7 @@ discharged, and the generated catalog in `ChallengeAxioms.lean` must be current.
 `CHECK_AXIOMS_SKIP_BUILD=1` to reuse an existing build.
 
 `./scripts/axiom_inventory.py` is the static counterpart: it lists every `axiom` declaration in
-`SphereSixComplex/` and marks whether it is reachable from `Paper.Final` (so the headline theorem may
+`SphereSixComplex/` and marks whether it is reachable from `Final` (so the headline theorem may
 come to depend on it), only from `Main`, or from neither.
 
 `./scripts/check-sorries.py` checks that no `sorry`, `admit`, or `native_decide` appears outside
@@ -90,8 +90,8 @@ the trusted Comparator statements in `Challenge.lean`. It counts them, so an ext
 an already listed file also fails.
 
 `./scripts/check-imports.py` checks that every module is reachable from `SphereSixComplex.Main`.
-It also rejects missing project imports and any dependency from `Prerequisites/` into the paper
-or either aggregate. A module outside the build cone is elaborated by nothing and its axioms are invisible to the
+It also rejects missing project imports and any dependency from `Prerequisites/` into the construction
+or an aggregate. A module outside the build cone is elaborated by nothing and its axioms are invisible to the
 audit, so this keeps the two scripts above honest.
 
 These gates run in CI after `lake build`.

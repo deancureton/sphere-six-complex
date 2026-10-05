@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Periods.ModularUniformization
-public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianSmoothAction
+public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.SmoothAction
 import all SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 
 open scoped Manifold

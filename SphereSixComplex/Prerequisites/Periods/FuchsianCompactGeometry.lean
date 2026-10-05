@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianFundamentalDomain
+public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.FundamentalDomain
 
 /-!
 # A compact core from the explicit Fuchsian triangle

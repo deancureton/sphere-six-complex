@@ -1,0 +1,92 @@
+module
+
+public import SphereSixComplex.Homology.FiniteCoverPairing
+
+/-!
+# Homology realization for the two elliptic finite covers
+
+The affine-cyclic presentation supplies degree-one naturality in the fixed production bases. The
+degree-two coordinates are supplied by the exact integral calculation in Proposition 7.14.
+-/
+
+@[expose] public section
+
+noncomputable section
+
+open AlgebraicTopology
+
+namespace SphereSixComplex.Topology.FiniteCoverPerfectPairing
+
+open Geometry Geometry.AnalyticTorusFamily Geometry.EllipticFamilySpecialization
+open Geometry.GlobalTorusFamily
+open LatticeData EllipticFilling
+open EllipticFilling MultipleFiberCoinvariants
+open AffineCyclicQuotientHomology
+
+variable {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U)
+
+/-- The fixed production basis has the required order-three covering coordinates. -/
+public theorem orderThreeFixedHOneBasis_projection (x : Lattice) :
+    (orderThreeReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
+        (integralSingularHomologyMap 1
+          (RadialEllipticActionData.centralFiberCoverProjection
+            (orderThreeRadialActionData F))
+          ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderThreeLatticeProjectionCoordinates x := by
+  change orderThreeReducedCentralFiberHOneEquivIntSquared F
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection
+          (orderThreeRadialActionData F))
+        ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) = _
+  rw [orderThreeReducedCentralFiberHOneEquivIntSquared_projection_raw,
+    orderThreeSelectedPresentationEquivIntSquared_mk]
+  funext i
+  fin_cases i <;>
+    simp [orderThreePresentationCoordinates, orderThreeLatticeProjectionCoordinates,
+      orderThreeCoinvariantsEquivIntSquared_mk, orderThreeCoordinates, psiOne]
+
+/-- The fixed production basis has the required order-four covering coordinates. -/
+public theorem orderFourFixedHOneBasis_projection (x : Lattice) :
+    (orderFourReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
+        (integralSingularHomologyMap 1
+          (RadialEllipticActionData.centralFiberCoverProjection
+            (orderFourRadialActionData F))
+          ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderFourLatticeProjectionCoordinates x := by
+  change orderFourReducedCentralFiberHOneEquivIntSquared F
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection
+          (orderFourRadialActionData F))
+        ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) = _
+  rw [orderFourReducedCentralFiberHOneEquivIntSquared_projection_raw,
+    orderFourSelectedPresentationEquivIntSquared_mk]
+  funext i
+  fin_cases i <;>
+    simp [orderFourPresentationCoordinates, orderFourLatticeProjectionCoordinates,
+      orderFourCoinvariantsEquivIntSquared_mk, orderFourCoordinates, psiTwo]
+
+/-- Degree-one naturality for the actual order-three finite cover. -/
+public theorem orderThreeHOneNaturality : ∀ x : Lattice,
+    (orderThreeReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection (orderThreeRadialActionData F))
+        ((orderThreeCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderThreeLatticeProjectionCoordinates x := orderThreeFixedHOneBasis_projection F
+
+/-- Degree-one naturality for the actual order-four finite cover. -/
+public theorem orderFourHOneNaturality : ∀ x : Lattice,
+    (orderFourReducedCentralFiberHOneEquivIntSquared F).toAddEquiv
+      (integralSingularHomologyMap 1
+        (RadialEllipticActionData.centralFiberCoverProjection (orderFourRadialActionData F))
+        ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
+      orderFourLatticeProjectionCoordinates x := orderFourFixedHOneBasis_projection F
+
+namespace EllipticDegreeTwoPullbackBases
+
+end EllipticDegreeTwoPullbackBases
+
+end SphereSixComplex.Topology.FiniteCoverPerfectPairing
+
+end
+
+end

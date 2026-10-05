@@ -1,0 +1,61 @@
+module
+
+public import SphereSixComplex.Cusp.CollarPairProperness
+public import SphereSixComplex.Construction.EllipticCentralEscape
+public import SphereSixComplex.Prerequisites.Geometry.Gluing.StarClosedRelation
+
+/-!
+# Hausdorffness of the concrete four-piece star
+
+The two elliptic relation components are already closed.  This module isolates the remaining
+cusp properness input and turns the three proper collar pairs into the Hausdorff glued topology.
+-/
+
+open CategoryTheory TopologicalSpace Topology
+
+namespace SphereSixComplex.Geometry
+
+noncomputable section
+
+namespace AnalyticData
+
+variable (A : AnalyticData)
+
+/-- Cusp properness, together with the proved elliptic cases, closes all three collar pairs. -/
+public theorem closedCollarPairData_of_cuspProper
+    (hcusp : IsProperMap
+      (A.openEmbeddingStarData.collarPairMap (0 : Fin 3))) :
+    A.openEmbeddingStarData.ClosedCollarPairData := by
+  apply A.openEmbeddingStarData.closedCollarPairData_of_isProperMap
+  intro i
+  fin_cases i
+  · exact hcusp
+  · exact A.orderThreeCollarPairMap_isProper
+  · exact A.orderFourCollarPairMap_isProper
+
+/-- Once the cusp collar pair is proper, the concrete completed star is Hausdorff. -/
+public theorem gluedT2_of_cuspProper
+    (hcusp : IsProperMap
+      (A.openEmbeddingStarData.collarPairMap (0 : Fin 3))) :
+    T2Space
+      (GluedSpace A.openEmbeddingStarData.toFourPieceStarGluingData.glueData) := by
+  let _ : T2Space A.openEmbeddingStarData.central := by
+    change T2Space A.CentralFamily
+    exact A.centralFamily_t2
+  let _ (i : Fin 3) : T2Space (A.openEmbeddingStarData.filling i) := by
+    change T2Space (A.StarFilling i)
+    exact A.starFilling_t2 i
+  exact (A.closedCollarPairData_of_cuspProper hcusp).t2Space
+
+
+/-- The concrete completed four-piece star is Hausdorff. -/
+public theorem t2Space_starGlued :
+    T2Space
+      (GluedSpace A.openEmbeddingStarData.toFourPieceStarGluingData.glueData) :=
+  A.gluedT2_of_cuspProper A.cuspCollarPairMap_isProper
+
+end AnalyticData
+
+end
+
+end SphereSixComplex.Geometry

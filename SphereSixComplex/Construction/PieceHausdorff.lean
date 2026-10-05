@@ -1,0 +1,135 @@
+module
+
+public import SphereSixComplex.Construction.CentralFamilyTopology
+public import SphereSixComplex.Construction.OpenEmbeddingGluing
+
+/-!
+# Hausdorffness of the four concrete star pieces
+
+The central family and three filling pieces are orbit quotients of Hausdorff, locally compact
+spaces by properly discontinuous actions.  This module installs those action data locally
+and records the resulting Hausdorff conclusions in the star's dependent indexing.
+-/
+
+open scoped Manifold ContDiff
+
+namespace SphereSixComplex.Geometry
+
+open Set Topology SphereSixComplex.Periods SphereSixComplex.TriangleGroup
+open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
+open TorusFamily AnalyticTorusFamily GlobalTorusFamily ComplexTorus
+open EllipticVaryingFamilyQuotient
+open CuspCollar CuspPhaseEstimates CuspPeriodExpansion
+open CuspFilling CuspLocalPhaseAction InfiniteA2Toric
+
+noncomputable section
+
+namespace AnalyticData
+
+variable (A : AnalyticData)
+
+/-- The regular central family quotient is Hausdorff. -/
+public theorem centralFamily_t2 : T2Space A.CentralFamily := by
+  let hproper : SourceActionProperlyDiscontinuous :=
+    sourceActionProperlyDiscontinuous_of_eq
+      A.modular.modularParameter.toTriangleUniformization_sourceAction
+  let _ := regularBaseChartedSpace hproper
+  let _ : LocallyCompactSpace
+      (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
+    (isOpen_isRegularBasePoint hproper).locallyCompactSpace
+  let _ : IsManifold globalDeckBaseModel regularSmoothnessOrder
+      (RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
+    regularBase_isManifold hproper
+  let _ := familyIsCancelSMul (regularParameterMap A.periods)
+  let _ := familyContinuousConstSMul (regularParameterMap A.periods)
+    fun a ↦ (regularPeriodSection_contMDiff A.periods hproper a
+      regularSmoothnessOrder).continuous
+  let _ := familyProperlyDiscontinuousSMul (regularParameterMap A.periods)
+    (compactlyUniformPeriods_of_compactUniformLowerBound (regularParameterMap A.periods)
+      (regularParameterMap_compactUniformLowerBound A.periods))
+  let _ : LocallyCompactSpace (RegularTotalSpace A.periods) :=
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
+  let _ := regularFamilyDeckAction A.periods
+  let _ : ProperlyDiscontinuousSMul Delta (RegularTotalSpace A.periods) :=
+    regularFamilyDeckAction_properlyDiscontinuous_of_source A.periods hproper
+  let _ : ContinuousConstSMul Delta (RegularTotalSpace A.periods) :=
+    regularFamilyDeckAction_continuousConstSMul A.periods hproper
+  infer_instance
+
+/-- The actual phase-corrected local cusp filling quotient is Hausdorff. -/
+public theorem actualLocalCuspFilling_t2
+    {E : FuchsianModularLift} {D : FuchsianPeriodData E}
+    {N : NormalizedFuchsianCuspCoordinate E D} {M : Model}
+    (W : ActualPuncturedCuspCollarWitness N M) :
+    T2Space (ActualLocalCuspFilling W) := by
+  let C :=
+    NormalizedFuchsianCuspCoordinate.restrictedActualLocalPhaseCoefficients
+      N W.localWitness.radius W.localWitness.radius_pos W.localWitness.radius_le
+  let _ : MulAction (Multiplicative ParameterLattice)
+      (localCarrier M W.localWitness.radius) :=
+    (C.toCuspActionData (M := M)).psiAction
+  let _ : LocallyCompactSpace M.Carrier :=
+    ChartedSpace.locallyCompactSpace ComplexModel M.Carrier
+  let _ : LocallyCompactSpace (localCarrier M W.localWitness.radius) :=
+    (cuspNeighborhood M W.localWitness.radius).isOpen.locallyCompactSpace
+  let _ : ProperlyDiscontinuousSMul (Multiplicative ParameterLattice)
+      (localCarrier M W.localWitness.radius) :=
+    C.properlyDiscontinuous W.localWitness.compactOverlap
+  let _ : ContinuousConstSMul (Multiplicative ParameterLattice)
+      (localCarrier M W.localWitness.radius) := by
+    constructor
+    intro gamma
+    convert (C.genericPsiMap_holomorphic
+      (Multiplicative.toAdd gamma)).continuous using 1
+    funext p
+    exact (C.toCuspActionData (M := M)).psi_smul
+      (Multiplicative.toAdd gamma) p
+  infer_instance
+
+/-- The order-three varying filling quotient is Hausdorff. -/
+public theorem orderThreeFilling_t2 (r : ℝ) :
+    T2Space (A.OrderThreeVaryingFilling r) := by
+  let _ := A.orderThreeFillingSourceCharts r
+  let _ := A.orderThreeFillingAction r
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
+      (A.orderThreeFillingOpen r) := A.orderThreeFillingSource_isManifold r
+  let _ : LocallyCompactSpace (A.orderThreeFillingOpen r) :=
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
+  let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
+  let _ : T2Space (A.orderThreeFillingOpen r) := by infer_instance
+  let _ : ContinuousConstSMul (FiniteCyclic 3) (A.orderThreeFillingOpen r) :=
+    A.orderThreeFillingAction_continuousConstSMul r
+  let _ : ProperlyDiscontinuousSMul (FiniteCyclic 3) (A.orderThreeFillingOpen r) := by
+    infer_instance
+  infer_instance
+
+/-- The order-four varying filling quotient is Hausdorff. -/
+public theorem orderFourFilling_t2 (r : ℝ) :
+    T2Space (A.OrderFourVaryingFilling r) := by
+  let _ := A.orderFourFillingSourceCharts r
+  let _ := A.orderFourFillingAction r
+  let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
+      (A.orderFourFillingOpen r) := A.orderFourFillingSource_isManifold r
+  let _ : LocallyCompactSpace (A.orderFourFillingOpen r) :=
+    Manifold.locallyCompact_of_finiteDimensional globalDeckTotalModel
+  let _ : T2Space (TotalSpace (parameterMap A.periods)) := A.totalSpace_t2
+  let _ : T2Space (A.orderFourFillingOpen r) := by infer_instance
+  let _ : ContinuousConstSMul (FiniteCyclic 4) (A.orderFourFillingOpen r) :=
+    A.orderFourFillingAction_continuousConstSMul r
+  let _ : ProperlyDiscontinuousSMul (FiniteCyclic 4) (A.orderFourFillingOpen r) := by
+    infer_instance
+  infer_instance
+
+/-- Each of the three concrete filling pieces is Hausdorff. -/
+public theorem starFilling_t2 (i : Fin 3) : T2Space (A.StarFilling i) := by
+  fin_cases i
+  · exact actualLocalCuspFilling_t2 A.starCuspWitness
+  · exact A.orderThreeFilling_t2 A.starSeparation.orderThree.radius
+  · exact A.orderFourFilling_t2 A.starSeparation.orderFour.radius
+
+
+end AnalyticData
+
+end
+
+end SphereSixComplex.Geometry

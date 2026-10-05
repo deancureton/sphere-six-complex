@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.TriangleGroup.FuchsianAction
+public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.Action
 public import Mathlib.GroupTheory.CoprodI
 import all SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 

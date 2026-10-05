@@ -1,4 +1,4 @@
 module
 
 public import SphereSixComplex.Prerequisites
-public import SphereSixComplex.Paper
+public import SphereSixComplex.Construction

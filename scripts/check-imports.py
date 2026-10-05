@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check build coverage, project imports, and the prerequisite/paper boundary.
+"""Check build coverage, project imports, and the prerequisite/construction boundary.
 
 A module outside every build target is checked by nothing: `lake build` never elaborates it, and
 its axioms are invisible to `#print axioms`. This guards against that regressing.
@@ -67,7 +67,7 @@ def main() -> int:
                         for dependency in dependencies
                         if not dependency.startswith(prerequisite_prefix))
     if violations:
-        print("Import check FAILED: prerequisites depend on the paper or an aggregate:")
+        print("Import check FAILED: prerequisites depend on the construction or an aggregate:")
         for module, dependency in violations:
             print(f"  {module} imports {dependency}")
         return 1

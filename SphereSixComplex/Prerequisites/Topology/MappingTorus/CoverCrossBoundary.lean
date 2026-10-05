@@ -1,0 +1,188 @@
+module
+
+public import SphereSixComplex.Prerequisites.Topology.MappingTorus.FixedLoopSweep
+
+/-!
+# The normalized-cover positive-cross calculation
+
+This file proves the normalized-cover overlap calculation whenever multiplication by the cover
+order is injective on first homology.  In particular, it applies to the three-torus fibres used
+by the elliptic charts.
+-/
+
+@[expose] public section
+
+noncomputable section
+
+open AlgebraicTopology
+open scoped ContinuousMap
+
+namespace SphereSixComplex.CyclicMappingTorus.Cross
+
+open SphereSixComplex.Topology
+
+open CanonicalProductWangBoundaryNaturality
+open CircleProductIdentityMappingTorus
+open CyclicAngularFundamentalDomain
+open FixedLoopSweepWangBoundary
+open NormalizedAffineMappingTorusCover
+open NormalizedFiniteOrderAdditiveCircleSweep
+open CircleSweep
+open CyclicMappingTorus
+open PositiveCircleCross
+open StandardTorusHomology
+
+variable {G : Type} [TopologicalSpace G] [AddCommGroup G] [IsTopologicalAddGroup G]
+  [PathConnectedSpace G]
+
+private def baseMultiply (m : ℕ) (X : Type) [TopologicalSpace X] :
+    C(UnitAddCircle × X, UnitAddCircle × X) where
+  toFun p := (m • p.1, p.2)
+  continuous_toFun := by fun_prop
+
+private def baseMultiplyMatrix (m : ℕ) : Matrix (Fin 2) (Fin 2) ℤ :=
+  !![(m : ℤ), 0; 0, 1]
+
+private theorem baseMultiply_conjugate_matrix (m : ℕ) :
+    (circleProdStandardCircleHomeomorph :
+        C(UnitAddCircle × StdTorus 1, StdTorus 2)).comp
+        (baseMultiply m (StdTorus 1)) =
+      (standardTwoTorusMatrixMap (baseMultiplyMatrix m)).comp
+        (circleProdStandardCircleHomeomorph :
+          C(UnitAddCircle × StdTorus 1, StdTorus 2)) := by
+  apply ContinuousMap.ext
+  rintro ⟨s, x⟩
+  funext i
+  change (@Fin.cons 1 (fun _ : Fin 2 ↦ UnitAddCircle) (m • s) x) i =
+    ∑ j, baseMultiplyMatrix m i j •
+      (@Fin.cons 1 (fun _ : Fin 2 ↦ UnitAddCircle) s x) j
+  fin_cases i <;> simp [baseMultiplyMatrix, Fin.sum_univ_two]
+
+private theorem baseMultiply_positiveCircleProductGenerator_mapped (m : ℕ) :
+    integralSingularHomologyMap 2 circleProdStandardCircleHomeomorph
+        (integralSingularHomologyMap 2 (baseMultiply m (StdTorus 1))
+          positiveCircleProductGenerator) =
+      (m : ℤ) • standardTwoTorusHomologyGenerator := by
+  calc
+    integralSingularHomologyMap 2 circleProdStandardCircleHomeomorph
+        (integralSingularHomologyMap 2 (baseMultiply m (StdTorus 1))
+          positiveCircleProductGenerator) =
+        integralSingularHomologyMap 2
+          (standardTwoTorusMatrixMap (baseMultiplyMatrix m))
+          standardTwoTorusHomologyGenerator := by
+      rw [integralSingularHomologyMap_comp_wang, baseMultiply_conjugate_matrix,
+        ← integralSingularHomologyMap_comp_wang]
+      rw [show integralSingularHomologyMap 2 circleProdStandardCircleHomeomorph
+          positiveCircleProductGenerator = standardTwoTorusHomologyGenerator by
+        exact (integralSingularHomologyEquiv 2
+          circleProdStandardCircleHomeomorph).apply_symm_apply _]
+    _ = (m : ℤ) • standardTwoTorusHomologyGenerator := by
+      rw [standardTwoTorusMatrixDeterminantDegree]
+      congr 1
+      simp [baseMultiplyMatrix, Matrix.det_fin_two]
+
+private theorem baseMultiply_positiveCircleProductGenerator (m : ℕ) :
+    integralSingularHomologyMap 2 (baseMultiply m (StdTorus 1))
+        positiveCircleProductGenerator =
+      (m : ℤ) • positiveCircleProductGenerator := by
+  apply (integralSingularHomologyEquiv 2 circleProdStandardCircleHomeomorph).injective
+  rw [map_zsmul]
+  rw [show (integralSingularHomologyEquiv 2 circleProdStandardCircleHomeomorph)
+      positiveCircleProductGenerator = standardTwoTorusHomologyGenerator by
+    exact (integralSingularHomologyEquiv 2
+      circleProdStandardCircleHomeomorph).apply_symm_apply _]
+  exact baseMultiply_positiveCircleProductGenerator_mapped m
+
+omit [IsTopologicalAddGroup G] [PathConnectedSpace G] in
+private theorem normalizedAffineCover_real
+    (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
+    (hpow : phi.toHomeomorph ^ m = 1) (t : ℝ) (x : G) :
+    normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow
+        (((t : ℝ) : UnitAddCircle), x) =
+      realMappingTorusHomeomorph phi.toHomeomorph
+        (Quotient.mk (realMappingTorusSetoid phi.toHomeomorph) ((m : ℝ) * t, x)) := by
+  change CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
+      phi.toHomeomorph hpow
+      (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+        (((t : ℝ) : UnitAddCircle), x)) = _
+  unfold CyclicMappingTorus.normalizedAffineCyclicQuotientCircleMappingTorusHomeomorph
+  rw [Homeomorph.trans_apply]
+  congr 1
+  unfold CyclicMappingTorus.normalizedAffineCyclicQuotientRealMappingTorusHomeomorph
+    CyclicAngularFundamentalDomain.homeomorphOfQuotientMaps
+  dsimp only
+  apply (CyclicMappingTorus.normalizedAffineQuotientMap_eq_iff phi.toHomeomorph hpow _ _).mp
+  calc
+    CyclicMappingTorus.normalizedAffineQuotientMap (m := m) phi.toHomeomorph
+        (Function.surjInv (CyclicMappingTorus.normalizedAffineQuotientMap_surjective phi.toHomeomorph)
+          (Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+            (((t : ℝ) : UnitAddCircle), x))) =
+      Quotient.mk (CyclicMappingTorus.normalizedAffineCyclicSetoid (m := m) phi.toHomeomorph)
+        (((t : ℝ) : UnitAddCircle), x) :=
+      Function.surjInv_eq (CyclicMappingTorus.normalizedAffineQuotientMap_surjective phi.toHomeomorph) _
+    _ = CyclicMappingTorus.normalizedAffineQuotientMap (m := m) phi.toHomeomorph ((m : ℝ) * t, x) := by
+      change Quotient.mk _ (((t : ℝ) : UnitAddCircle), x) =
+        Quotient.mk _ (((((m : ℝ) * t) / (m : ℝ) : ℝ) : UnitAddCircle), x)
+      congr 2
+      rw [mul_div_cancel_left₀ t (by exact_mod_cast (NeZero.ne m))]
+
+omit [PathConnectedSpace G] in
+private theorem normalizedAffineCover_comp_circleProductMap_fixed
+    (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
+    (hpow : phi.toHomeomorph ^ m = 1) (d : fixedLoops phi) :
+    (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow).comp
+        (circleProductMap d.1) =
+      (fixedLoopMappingTorusMap phi d).comp (baseMultiply m (StdTorus 1)) := by
+  apply ContinuousMap.ext
+  rintro ⟨s, x⟩
+  obtain ⟨t, rfl⟩ := QuotientAddGroup.mk_surjective
+    (s := AddSubgroup.zmultiples (1 : ℝ)) s
+  rw [ContinuousMap.comp_apply, ContinuousMap.comp_apply]
+  change normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow
+      (((t : ℝ) : UnitAddCircle), d.1 x) =
+    fixedLoopMappingTorusMap phi d (m • ((t : ℝ) : UnitAddCircle), x)
+  rw [normalizedAffineCover_real]
+  unfold fixedLoopMappingTorusMap
+  change realMappingTorusHomeomorph phi.toHomeomorph
+      (Quotient.mk (realMappingTorusSetoid phi.toHomeomorph) ((m : ℝ) * t, d.1 x)) =
+    realMappingTorusHomeomorph phi.toHomeomorph
+      (fixedLoopRealMappingTorusMap phi d
+        (circleProductRealMappingTorusHomeomorph
+          (m • ((t : ℝ) : UnitAddCircle), x)))
+  congr 1
+  rw [show m • ((t : ℝ) : UnitAddCircle) =
+      (((m : ℝ) * t : ℝ) : UnitAddCircle) by
+    rw [← AddCircle.coe_nsmul]
+    congr 1
+    simp [nsmul_eq_mul]]
+  rw [← show realToCircleProduct ((m : ℝ) * t, x) =
+      ((((m : ℝ) * t : ℝ) : UnitAddCircle), x) by rfl]
+  rw [circleProductRealMappingTorusHomeomorph_real,
+    fixedLoopRealMappingTorusMap_mk]
+
+omit [PathConnectedSpace G] in
+/-- A pointwise-fixed loop crosses the normalized cover with degree exactly `m` in the base. -/
+public theorem normalizedAffineCover_positiveCircleCross_fixed
+    (m : ℕ) [NeZero m] (phi : G ≃ₜ+ G)
+    (hpow : phi.toHomeomorph ^ m = 1) (d : fixedLoops phi) :
+    integralSingularHomologyMap 2
+        (normalizedAffineCoverToCircleMappingTorus phi.toHomeomorph hpow)
+        (positiveCircleCross d.1) =
+      (m : ℤ) • fixedLoopSweepClass phi d := by
+  rw [positiveCircleCross, integralSingularHomologyMap_comp_wang,
+    normalizedAffineCover_comp_circleProductMap_fixed m phi hpow d,
+    ← integralSingularHomologyMap_comp_wang,
+    baseMultiply_positiveCircleProductGenerator, map_zsmul]
+  rfl
+
+
+
+
+
+
+
+end SphereSixComplex.CyclicMappingTorus.Cross
+
+end
+
+end

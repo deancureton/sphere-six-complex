@@ -1,8 +1,8 @@
 module
 
-public import SphereSixComplex.Paper.Topology.EstablishedPaperSectionSevenAffineRegularLiftCompletion
-public import SphereSixComplex.Paper.Topology.CuspAttachmentHomology
-public import SphereSixComplex.Prerequisites.Topology.HomologySphereRecognition
+public import SphereSixComplex.Elliptic.Band.OverlapCompletion
+public import SphereSixComplex.Cusp.Homology.AttachmentHomology
+public import SphereSixComplex.Prerequisites.Topology.Sphere.ClassicalRecognition
 
 /-!
 # Comparator trusted-axiom imports

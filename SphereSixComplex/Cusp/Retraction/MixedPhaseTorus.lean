@@ -1,0 +1,28 @@
+module
+public import SphereSixComplex.Cusp.Sweep.FillingPhaseCircle
+public import SphereSixComplex.Prerequisites.Topology.Torus.CircleProductSwap
+import all SphereSixComplex.Periods.Matrix
+
+@[expose] public section
+noncomputable section
+open AlgebraicTopology
+open scoped ContinuousMap
+namespace SphereSixComplex.Geometry.AnalyticData
+open SphereSixComplex.Topology SphereSixComplex.StandardTorusHomology
+open SphereSixComplex.Periods ComplexTorus GlobalTorusFamily
+open CuspCollar CuspRadialClutchingConstruction CuspPeriodExpansion
+open PositiveCircleCross CircleProductIdentityMappingTorus
+
+
+
+
+public def cuspMixedTorusIndex : Fin 3 → Fin 4 := ![1,2,3]
+
+public def cuspFillingPhaseSweep (A : AnalyticData) (i : Fin 2) :
+    IntegralSingularHomology 1 (ActualLocalCuspFilling A.starCuspWitness) →+
+      IntegralSingularHomology 2 (ActualLocalCuspFilling A.starCuspWitness) :=
+  (integralSingularHomologyMap 2 (cuspFillingPeriodCircle A.starCuspWitness i)).comp
+    (normalizedCircleCross 1)
+
+
+end SphereSixComplex.Geometry.AnalyticData

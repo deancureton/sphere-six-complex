@@ -1,0 +1,48 @@
+module
+
+public import SphereSixComplex.Elliptic.Band.RadialCompletionData
+public import SphereSixComplex.Cusp.CollarPairProperness
+public import SphereSixComplex.TorusFamily.RealPeriodTrivialization
+public import SphereSixComplex.Cusp.Cover.BoundaryUniversalCover
+public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.StarGluing
+public import Mathlib.Algebra.Category.Grp.EpiMono
+
+public import SphereSixComplex.Cusp.Specialization.WangCoordinates
+
+/-!
+# Coordinates of the included elliptic band
+
+The canonical band inclusion maps fiber homology into the Wang coinvariant summand. The
+normalized union coordinates identify this actual map with the marked coinvariant coordinates.
+-/
+
+@[expose] public section
+
+noncomputable section
+
+open AlgebraicTopology CategoryTheory Set
+open scoped ContinuousMap
+
+namespace SphereSixComplex.Geometry.AnalyticData
+
+open SphereSixComplex.CircleMappingTorusHomologyBases
+open SphereSixComplex.LatticeData
+open SphereSixComplex.LatticeWangAlgebra
+open SphereSixComplex.CuspMonodromyCoinvariants
+open EllipticTwoDiscHomologyCoordinates
+open EllipticTwoDiscCoverData
+
+variable {A : AnalyticData} (D : A.EllipticTwoDiscCoverData)
+
+namespace EllipticTwoDiscCoverData
+
+public def canonicalBandToEllipticInteriorInclusionMap :
+    C((D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior),
+      A.ellipticInterior) :=
+  ⟨Subtype.val, continuous_subtype_val⟩
+
+end EllipticTwoDiscCoverData
+
+end SphereSixComplex.Geometry.AnalyticData
+
+end

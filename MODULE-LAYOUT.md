@@ -1,57 +1,92 @@
 # Module layout
 
-The retained library has two layers. `Prerequisites/` contains classical mathematics and reusable
-infrastructure; `Paper/` contains the selected construction, its computations, and the final
-assembly. Both retain the subject subdirectories `Analysis`, `Geometry`, `Periods`, `Topology`,
-and `TriangleGroup` where applicable.
+The library is organized by mathematical objects, following the topic-based layout of
+[MovingSofa](https://github.com/deancureton/MovingSofa). Reusable classical mathematics remains
+under `Prerequisites/`; the other directories contain the particular six-sphere construction.
+Directory names carry the context, so filenames do not repeat `Paper`, section numbers, or the
+full name of their subject.
 
-| Layer | Contents |
+## Construction
+
+| Directory | Contents |
 | --- | --- |
-| `Prerequisites/Analysis` | General analytic and holomorphic cocycle tools |
-| `Prerequisites/Geometry` | Manifold transport, quotient topology, disc and Cayley coordinates, general gluing operations |
-| `Prerequisites/Periods` | Modular functions, classical uniformization, and projective-line cohomology and torsors |
-| `Prerequisites/Topology` | Singular and cellular homology, excision, Mayer–Vietoris, Wang sequences, tori, covering spaces, van Kampen, manifold duality, and sphere recognition |
-| `Prerequisites/TriangleGroup` | The abstract source group and its classical Fuchsian geometry |
-| `Paper/` | The chosen lattice and monodromy representation, additive period construction, elliptic and cusp fillings, the selected A₂ cell model, Section 7 calculations, and final complex structure |
+| `TriangleGroup/` | The chosen representation and its action |
+| `Periods/` | Lattice, period functions, modular frames, and affine torsors |
+| `TorusFamily/` | Analytic torus families, deck quotients, and real period trivializations |
+| `Regular/` | Punctured base, regular covers, period transport, and central homology |
+| `Elliptic/` | Elliptic fillings, logarithmic gauges, collars, bands, disc circles, and homology |
+| `Cusp/` | Cusp filling, straightening, retraction, specialization, Wang sequence, and sweeps |
+| `Toric/` | The A₂ model, positive part, honeycomb cells, central fiber, and boundary |
+| `Construction/` | Gluing the pieces, separation, compactness, and complex structure |
+| `Gluing/` | Open-cover identifications, intersections, and connectedness |
+| `FundamentalGroup/` | Cover geometry and van Kampen for the glued space |
+| `Homology/` | Global first and second homology, Euler characteristic, and sphere comparison |
 
-Classification follows the mathematical statement. A theorem about arbitrary mapping tori or
-CW complexes belongs to the prerequisites even if it was introduced while proving Section 7.
-A theorem specifying the selected lattice, the particular period transformation laws, the A₂
-cell labels, or the construction's attaching maps belongs to the paper layer. A classical
-calculation for a standard torus, sphere, or Fuchsian triangle belongs to the prerequisites even
-when its dimension or triangle orders are fixed.
+All paths in this table are relative to `SphereSixComplex/`. Larger topics have subdirectories:
+for example, `Elliptic/DiscCircle/` contains the filling relations, `Elliptic/Band/` contains
+band comparisons, and `Toric/CentralFiber/` contains the cell model's homology calculations.
 
-Declaration retention is rooted at `sphere_six_admits_complex_structure` and `mathoverflow_1973`,
-the two Comparator statements. The layers organize their surviving dependencies, including
-elaboration support; they are not a commitment to preserve every auxiliary result previously
-written for the project. Blueprint and historical documentation do not add mathematical roots.
+## Prerequisites
 
-Mixed modules have been split at these interfaces. For example, the general torus homology,
-finite cyclic mapping-torus, equivariant retraction, cellular-boundary algebra, and compact
-complex-threefold homology results are independent modules. Their adapters to the selected
-periods, filling models, and cell labels remain with the paper. Small local proof helpers stay
-with their applications.
+| Directory under `Prerequisites/` | Contents |
+| --- | --- |
+| `Algebra/` | Integral presentations, exact sequences, and basis calculations |
+| `Analysis/` | Analytic and holomorphic cocycle tools |
+| `Geometry/` | General manifold, quotient, gluing, and complex-disc constructions |
+| `Periods/` | Modular functions and classical uniformization |
+| `Topology/` | Covering spaces, homotopies, CW complexes, singular homology, Mayer–Vietoris, mapping tori, Hurewicz, manifolds, spheres, and tori |
+| `TriangleGroup/` | Abstract source group and classical Fuchsian geometry |
 
-## Imports
+Topology is subdivided by these subjects. Singular homology has separate `Subdivision/` and
+`Excision/` directories; uniformization separates branched maps, lifting, reflection, the
+modular j-function, and source geometry.
+
+Classification follows the mathematical statement. General results about mapping tori or CW
+complexes belong to the prerequisites. Results specifying the selected lattice, A₂ cell labels,
+or particular attaching maps belong with the construction. The prerequisite layer imports no
+construction modules or aggregates; `scripts/check-imports.py` enforces this boundary.
+
+## Entry points
 
 ```lean
-import SphereSixComplex.Prerequisites -- retained reusable prerequisites
-import SphereSixComplex.Paper         -- retained paper modules and their dependencies
-import SphereSixComplex               -- the retained development
+import SphereSixComplex.Final          -- the final complex-structure theorem
+import SphereSixComplex.Construction   -- all retained construction modules
+import SphereSixComplex.Prerequisites  -- all retained reusable prerequisites
+import SphereSixComplex                -- the entire retained development
 ```
 
-For a smaller import, select an individual module, for example
-`SphereSixComplex.Prerequisites.Topology.StandardTorusHomology` or
-`SphereSixComplex.Paper.Final`.
+For smaller imports, select a specific module, such as
+`SphereSixComplex.Elliptic.DiscCircle.FirstHomology` or
+`SphereSixComplex.Prerequisites.Topology.Torus.Homology`.
+`Final.lean` assembles the homology comparison and smooth sphere recognition; `Solution.lean`
+exports the two fixed Comparator endpoints.
 
-The initial folder separation preserved declaration names. Naming cleanup follows
-[NAMING.md](NAMING.md), and mathematical interfaces follow [API-DESIGN.md](API-DESIGN.md).
-Some prerequisite declarations still retain
-historical namespaces containing `Paper` or `SectionSeven`; these names do not express an import
-dependency. Module imports use the new paths. No compatibility copies of the old modules are
-kept.
+## Maintenance
 
-`scripts/check-imports.py` enforces that every module is built, every project import exists, and
-prerequisites import no paper module or aggregate. Thus the prerequisite library can be used
-independently. The axiom audit and Comparator track the current declaration names and unchanged
-trust boundary; see [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md).
+Use a mathematical object or result for a new module's name. Put closely related files in its
+topic directory rather than adding construction-history prefixes. Generalize reusable results
+into `Prerequisites/` when their statements support it. See [NAMING.md](NAMING.md) and
+[API-DESIGN.md](API-DESIGN.md) for declaration naming and mathematical interfaces.
+
+The reorganization preserves declaration names, statements, and proof bodies. Some historical
+namespaces still contain `Paper` or `SectionSeven`; these do not describe module paths. Old
+module paths have no compatibility copies. Imports, including `public import` and `import all`,
+retain their original order and visibility.
+
+The retained development is rooted at `sphere_six_admits_complex_structure` and
+`mathoverflow_1973`. Documentation does not add mathematical roots. The import checker also
+ensures every library module is reachable from `Main.lean`; the axiom audit and Comparator check
+the unchanged trust boundary described in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md).
+
+## Reorganization checkpoint
+
+The 2026-10-05 reorganization moved 713 modules. The library retains 733 modules and 161,912
+source lines; its largest directory now contains 29 files rather than 248. A source comparison
+verified all 745 tracked Lean files unchanged except for import paths, with the ordered import
+graph preserved. No declaration names or proof bodies changed.
+
+Validation passed: full root build (9,761 jobs), Blueprint build (10,114 jobs), post-Blueprint
+root build, all 263 Blueprint declaration checks, import/layer and placeholder checks, strict
+recursive axiom audit, and Comparator's default Lean kernel replay. Existing warnings remain.
+Comparator's macOS runner verifies functionality without Linux process isolation. Builds used
+nice 15 and at most three compiler workers. No build-speed improvement is claimed.
