@@ -77,7 +77,7 @@ public theorem compactPhaseOrbit_homotopy_eq_of_fundamentalDomain
         compactPhaseOrbit M r P.positivePart (l, q) →
       compactPhaseOrbit M r P.positivePart (k, R.homotopy (s, p)) =
         compactPhaseOrbit M r P.positivePart (l, R.homotopy (s, q)) := by
-  letI := P.positiveDeckAction
+  let := P.positiveDeckAction
   intro R
   exact (compactPhaseOrbit_fiberwise_iff_stabilizerMonotone_of_fundamentalDomain
     P hfundamental R).mpr (compactPhaseStabilizerMonotone_of_retraction P R)

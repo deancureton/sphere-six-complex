@@ -109,7 +109,7 @@ theorem chamberClosureDiscInverse_ne_sourceCuspCircle_of_ne_cusp
     rw [S.closureEquiv.apply_symm_apply, hpole] at himage
     exact hqne (congrArg Subtype.val himage)
   · rw [chamberClosureDiscInverse]
-    simp only [dif_neg hq]
+    simp only [dite_eq_right hq]
     exact (sourceCuspCircle S).coe_ne_zero.symm
 
 /-- The filled reciprocal scalar on the compactified source chamber. -/
@@ -203,9 +203,9 @@ theorem sourceCuspVerticalRay_eventually_mem_sourceOpenChamber :
     ∀ᶠ y : ℝ in Filter.atTop, sourceCuspVerticalRay y ∈ sourceOpenChamber := by
   filter_upwards [eventually_gt_atTop (2 : ℝ)] with y hy
   have hs : 0 < Real.sqrt 2 := Real.sqrt_pos.2 (by norm_num)
-  simp only [sourceCuspVerticalRay, sourceOpenChamber, Set.mem_setOf_eq,
+  simp only [sourceCuspVerticalRay, sourceOpenChamber, Set.mem_ofPred_eq,
     Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
-    Complex.I_re, Complex.I_im, mul_zero, zero_mul, sub_zero, mul_one, add_zero,
+    Complex.I_re, Complex.I_im, mul_zero, sub_zero, mul_one, add_zero,
     normSq_apply]
   constructor
   · linarith
@@ -282,8 +282,8 @@ theorem fuchsianCoordinateReciprocal_periodic (C : FuchsianOrbifoldCoordinate) :
   have him_add : (z + (sourceCuspWidth : ℂ)).im = z.im := by simp
   by_cases hz : 0 < z.im
   · have hzadd : 0 < (z + (sourceCuspWidth : ℂ)).im := by simpa [him_add] using hz
-    rw [fuchsianCoordinateReciprocal, dif_pos hzadd,
-      fuchsianCoordinateReciprocal, dif_pos hz]
+    rw [fuchsianCoordinateReciprocal, dite_eq_left hzadd,
+      fuchsianCoordinateReciprocal, dite_eq_left hz]
     let zp : UpperHalfPlane := ⟨z + (sourceCuspWidth : ℂ), hzadd⟩
     let z0 : UpperHalfPlane := ⟨z, hz⟩
     have hact : fuchsianSourceAction g₀ • zp = z0 := by
@@ -296,8 +296,8 @@ theorem fuchsianCoordinateReciprocal_periodic (C : FuchsianOrbifoldCoordinate) :
     rw [hact] at hinv
     exact congrArg Inv.inv hinv.symm
   · have hzadd : ¬ 0 < (z + (sourceCuspWidth : ℂ)).im := by simpa [him_add] using hz
-    rw [fuchsianCoordinateReciprocal, dif_neg hzadd,
-      fuchsianCoordinateReciprocal, dif_neg hz]
+    rw [fuchsianCoordinateReciprocal, dite_eq_right hzadd,
+      fuchsianCoordinateReciprocal, dite_eq_right hz]
 
 /-- The canonical source cusp parameter tends to the completed cusp point. -/
 theorem fuchsianSourceCuspQ_tendsto :
@@ -332,7 +332,7 @@ theorem fuchsianCoordinateReciprocal_eventually_differentiableAt
   have heq : fuchsianCoordinateReciprocal C =ᶠ[nhds z]
       (fun w => (C.coordinate (UpperHalfPlane.ofComplex w))⁻¹) := by
     filter_upwards [UpperHalfPlane.isOpen_upperHalfPlaneSet.mem_nhds hzim] with w hw
-    rw [fuchsianCoordinateReciprocal, dif_pos hw,
+    rw [fuchsianCoordinateReciprocal, dite_eq_left hw,
       UpperHalfPlane.ofComplex_apply_of_im_pos hw]
   exact hinv_diff.congr_of_eventuallyEq heq
 
@@ -356,7 +356,7 @@ theorem fuchsianCoordinateReciprocal_zeroAtFilter_of_bounded_of_seed
     calc
       (fuchsianCoordinateReciprocal C ∘ sourceCuspVerticalRay) y =
           (C.coordinate ⟨sourceCuspVerticalRay y, him⟩)⁻¹ := by
-        rw [Function.comp_apply, fuchsianCoordinateReciprocal, dif_pos him]
+        rw [Function.comp_apply, fuchsianCoordinateReciprocal, dite_eq_left him]
       _ = (F (sourceCuspVerticalRay y))⁻¹ :=
         congrArg Inv.inv (hcoordinate ⟨sourceCuspVerticalRay y, him⟩)
       _ = (sourceScalarTriangleMap S (sourceCuspVerticalRay y))⁻¹ :=
@@ -647,7 +647,7 @@ theorem mem_closure_sourceScalarCuspStrip_inter_im_gt {z : ℂ}
           (by nlinarith : 0 < 1 + Real.sqrt 2 / 2)
         nlinarith
       · exact hstrip
-    · simpa only [Set.mem_setOf_eq, him] using hA
+    · simpa only [Set.mem_ofPred_eq, him] using hA
   apply closure_mono hsegment
   exact segment_subset_closure_openSegment
     (left_mem_segment ℝ z p)
@@ -1057,7 +1057,7 @@ theorem fuchsianCoordinateReciprocal_eventually_ne_zero_of_seed
       hwleft hwright hwhigh
   have hwpos : 0 < w.im := lt_trans (by norm_num) hwhigh
   have hrw : fuchsianCoordinateReciprocal C w ≠ 0 := by
-    rw [fuchsianCoordinateReciprocal, dif_pos hwpos, hcoordinate]
+    rw [fuchsianCoordinateReciprocal, dite_eq_left hwpos, hcoordinate]
     exact inv_ne_zero hFw
   have heq := (fuchsianCoordinateReciprocal_periodic C).sub_int_mul_eq (x := z) n
   change fuchsianCoordinateReciprocal C w = fuchsianCoordinateReciprocal C z at heq
@@ -1101,7 +1101,7 @@ theorem fuchsianCoordinateReciprocal_eventually_norm_lt_one_on_cuspStrip
   calc
     ‖fuchsianCoordinateReciprocal C z‖ =
         ‖(C.coordinate ⟨z, him⟩)⁻¹‖ := by
-      rw [fuchsianCoordinateReciprocal, dif_pos him]
+      rw [fuchsianCoordinateReciprocal, dite_eq_left him]
     _ = ‖(F z)⁻¹‖ := congrArg norm (congrArg Inv.inv (hcoordinate ⟨z, him⟩))
     _ = ‖(sourceScalarRightDoubleMap S z)⁻¹‖ :=
       congrArg norm (congrArg Inv.inv (heq hz))

@@ -290,7 +290,7 @@ theorem sourceScalarRightDoubleMap_fundamental_fibers
         ← sourceScalarRightDoubleMap_eq_seed_of_re_le_public S hw.2.1]
       exact hzw
     have heq := sourceScalarTriangleMap_injective_on_fundamentalTriangle S hz hw hseed
-    exact ⟨1, by simpa [heq]⟩
+    exact ⟨1, by simp [heq]⟩
   · let w₀ : UpperHalfPlane := sourceRightUHP w
     have hw₀ : w₀ ∈ fundamentalTriangle :=
       sourceRightUHP_mem_fundamentalTriangle_of_mem_right_public hw
@@ -328,7 +328,7 @@ theorem sourceScalarRightDoubleMap_fundamental_fibers
     have heq := sourceScalarTriangleMap_injective_on_fundamentalTriangle S hz₀ hw₀ hseed
     have hzw' : z = w := by
       simpa [z₀, w₀] using congrArg sourceRightUHP heq
-    exact ⟨1, by simpa [hzw']⟩
+    exact ⟨1, by simp [hzw']⟩
 
 
 end SphereSixComplex.Periods.SourceChamberTopology

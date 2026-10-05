@@ -131,7 +131,7 @@ public theorem nonemptyFiniteChainBarycenter_apply {n : ℕ}
     nonemptyFiniteChainBarycenter A i =
       if ULift.up i ∈ A.finset then (A.finset.card : ℝ)⁻¹ else 0 := by
   classical
-  letI : Nonempty A.finset := A.nonempty.to_subtype
+  let : Nonempty A.finset := A.nonempty.to_subtype
   unfold nonemptyFiniteChainBarycenter
   simp only [stdSimplex.map_coe, FunOnFinite.linearMap_apply_apply]
   by_cases hi : ULift.up i ∈ A.finset
@@ -200,7 +200,7 @@ public theorem nonemptyFiniteChainBarycenter_face
     apply ULift.down_injective
     exact Fin.succAbove_right_injective (congrArg ULift.down hab)
   have hcard : (A.map g).finset.card = A.finset.card := by
-    letI : DecidableEq (ULift.{0} (Fin (n + 2))) := Classical.decEq _
+    let : DecidableEq (ULift.{0} (Fin (n + 2))) := Classical.decEq _
     unfold NonemptyFiniteChains.map
     exact Finset.card_image_of_injective A.finset hginj
   ext y

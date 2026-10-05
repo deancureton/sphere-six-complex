@@ -83,12 +83,12 @@ theorem exists_fundamentalTriangle_cuspExponential_eq_of_frontier_ne_cusp
   let z : UpperHalfPlane := ⟨zc, by simpa [zc] using hyp⟩
   refine ⟨z, ?_, ?_⟩
   · change -Real.sqrt 2 / 2 ≤ zc.re ∧ zc.re ≤ 1 / 2 ∧ 1 ≤ normSq zc
-    simp only [zc, Complex.add_re, ofReal_re, Complex.mul_re, Complex.mul_im, ofReal_im,
-      I_re, I_im, mul_zero, zero_mul, sub_zero, add_zero, Complex.add_im, mul_one, zero_add]
+    simp only [zc, Complex.add_re, ofReal_re, Complex.mul_re, ofReal_im,
+      I_re, I_im, mul_zero, sub_zero, add_zero, mul_one]
     refine ⟨hxl, hxr, ?_⟩
     rw [normSq_apply]
-    simp only [zc, Complex.add_re, ofReal_re, Complex.mul_re, Complex.mul_im, ofReal_im,
-      I_re, I_im, mul_zero, zero_mul, sub_zero, add_zero, Complex.add_im, mul_one, zero_add]
+    simp only [Complex.add_re, ofReal_re, Complex.mul_re, Complex.mul_im, ofReal_im,
+      I_re, I_im, mul_zero, sub_zero, add_zero, Complex.add_im, mul_one, zero_add]
     have hy0 : 0 ≤ y := hyp.le
     have hmul : 0 ≤ (y - semicircleHeight x) * (y + semicircleHeight x) :=
       mul_nonneg (sub_nonneg.mpr hyge) (add_nonneg hy0 hh0)

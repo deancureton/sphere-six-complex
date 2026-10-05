@@ -51,31 +51,31 @@ private def orderFourShearAsFourTorus : StdTorus 4 ≃ₜ StdTorus 4 where
 private def orderThreeShearInteger : (Fin 4 → ℤ) ≃ₗ[ℤ] (Fin 4 → ℤ) where
   toFun u := ![-u 0, u 1 - 2 * u 0, u 2 + 4 * u 0, u 3]
   invFun u := ![-u 0, u 1 - 2 * u 0, u 2 + 4 * u 0, u 3]
-  left_inv u := by funext i; fin_cases i <;> simp <;> ring
-  right_inv u := by funext i; fin_cases i <;> simp <;> ring
+  left_inv u := by funext i; fin_cases i <;> simp
+  right_inv u := by funext i; fin_cases i <;> simp
   map_add' x y := by funext i; fin_cases i <;> simp <;> ring
   map_smul' n x := by funext i; fin_cases i <;> simp <;> ring
 
 private def orderFourShearInteger : (Fin 4 → ℤ) ≃ₗ[ℤ] (Fin 4 → ℤ) where
   toFun u := ![u 0, u 1 - 3 * u 0, u 2 + 3 * u 0, u 3]
   invFun u := ![u 0, u 1 + 3 * u 0, u 2 - 3 * u 0, u 3]
-  left_inv u := by funext i; fin_cases i <;> simp <;> ring
-  right_inv u := by funext i; fin_cases i <;> simp <;> ring
+  left_inv u := by funext i; fin_cases i <;> simp
+  right_inv u := by funext i; fin_cases i <;> simp
   map_add' x y := by funext i; fin_cases i <;> simp <;> ring
   map_smul' n x := by funext i; fin_cases i <;> simp <;> ring
 
 private def orderThreeShearReal : (Fin 4 → ℝ) ≃+ (Fin 4 → ℝ) where
   toFun u := ![-u 0, u 1 - 2 * u 0, u 2 + 4 * u 0, u 3]
   invFun u := ![-u 0, u 1 - 2 * u 0, u 2 + 4 * u 0, u 3]
-  left_inv u := by funext i; fin_cases i <;> simp <;> ring
-  right_inv u := by funext i; fin_cases i <;> simp <;> ring
+  left_inv u := by funext i; fin_cases i <;> simp
+  right_inv u := by funext i; fin_cases i <;> simp
   map_add' x y := by funext i; fin_cases i <;> simp <;> ring
 
 private def orderFourShearReal : (Fin 4 → ℝ) ≃+ (Fin 4 → ℝ) where
   toFun u := ![u 0, u 1 - 3 * u 0, u 2 + 3 * u 0, u 3]
   invFun u := ![u 0, u 1 + 3 * u 0, u 2 - 3 * u 0, u 3]
-  left_inv u := by funext i; fin_cases i <;> simp <;> ring
-  right_inv u := by funext i; fin_cases i <;> simp <;> ring
+  left_inv u := by funext i; fin_cases i <;> simp
+  right_inv u := by funext i; fin_cases i <;> simp
   map_add' x y := by funext i; fin_cases i <;> simp <;> ring
 
 private def orderThreeShearLift :
@@ -86,13 +86,12 @@ private def orderThreeShearLift :
   map_projection r := by
     funext i
     fin_cases i <;>
-      simp [orderThreeShearAsFourTorus, orderThreeStandardGammaShear,
-        StandardTorusHomology.fourTorusSplit, orderThreeShearReal, standardFourTorusProjection]
-    all_goals rw [← QuotientAddGroup.mk_nsmul]; congr 1 <;> norm_num
+      simp [orderThreeShearAsFourTorus, orderThreeShearReal, standardFourTorusProjection]
+    all_goals rw [← QuotientAddGroup.mk_nsmul]; congr 1; norm_num
   map_integer n := by
     funext i
     fin_cases i <;>
-      norm_num [orderThreeShearReal, orderThreeShearInteger, integerToReal] <;> ring
+      norm_num [orderThreeShearReal, orderThreeShearInteger, integerToReal]
 
 private def orderFourShearLift :
     StandardFourTorusEquivariantLift
@@ -102,13 +101,12 @@ private def orderFourShearLift :
   map_projection r := by
     funext i
     fin_cases i <;>
-      simp [orderFourShearAsFourTorus, orderFourStandardGammaShear,
-        StandardTorusHomology.fourTorusSplit, orderFourShearReal, standardFourTorusProjection]
-    all_goals rw [← QuotientAddGroup.mk_nsmul]; congr 1 <;> norm_num
+      simp [orderFourShearAsFourTorus, orderFourShearReal, standardFourTorusProjection]
+    all_goals rw [← QuotientAddGroup.mk_nsmul]; congr 1; norm_num
   map_integer n := by
     funext i
     fin_cases i <;>
-      norm_num [orderFourShearReal, orderFourShearInteger, integerToReal] <;> ring
+      norm_num [orderFourShearReal, orderFourShearInteger, integerToReal]
 
 private theorem orderThreeShear_homologyTwo (x) :
     gammaProductHomologyTwo

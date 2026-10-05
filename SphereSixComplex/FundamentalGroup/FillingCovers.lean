@@ -573,7 +573,7 @@ public theorem ellipticFourBoundaryCover_simplyConnected :
   infer_instance
 
 /-- Canonical inverse-meridian boundary deck data for the actual order-three collar. -/
-@[expose] public noncomputable def ellipticThreeBoundaryDeckData :
+public noncomputable def ellipticThreeBoundaryDeckData :
     UnwrappedCyclicAffineBoundaryDeckData 3 Lattice
       (OrderThreeAffineMappingTorusDeck A.periods) where
   translation := affineTorusMappingTorusDeckTranslation
@@ -608,7 +608,7 @@ public theorem ellipticFourBoundaryCover_simplyConnected :
     rw [(rhoLambda g₁).apply_symm_apply, map_neg, rhoLambda_g₁_apply, A₁_epsilon]
 
 /-- Canonical inverse-meridian boundary deck data for the actual order-four collar. -/
-@[expose] public noncomputable def ellipticFourBoundaryDeckData :
+public noncomputable def ellipticFourBoundaryDeckData :
     UnwrappedCyclicAffineBoundaryDeckData 4 Lattice
       (OrderFourAffineMappingTorusDeck A.periods) where
   translation := affineTorusMappingTorusDeckTranslation
@@ -735,9 +735,9 @@ public theorem lift_equivariant
       E.lift (@SMul.smul _ _ A.ellipticThreeBoundaryAction.toSMul g z) =
         @SMul.smul _ _ E.fillingAction.toSMul
           (A.ellipticThreeBoundaryDeckData.fillingDeckMap g) (E.lift z) := by
-  letI := A.ellipticThreeBoundaryAction
-  letI := E.fillingAction
-  letI := A.ellipticThreeBoundaryCover_simplyConnected
+  let := A.ellipticThreeBoundaryAction
+  let := E.fillingAction
+  let := A.ellipticThreeBoundaryCover_simplyConnected
   exact SphereSixComplex.Topology.quotientCover_equivariant_of_eq_at
     A.ellipticThreeBoundaryProjection
     A.ellipticThreeFillingProjection
@@ -761,9 +761,9 @@ public theorem lift_equivariant
       E.lift (@SMul.smul _ _ A.ellipticFourBoundaryAction.toSMul g z) =
         @SMul.smul _ _ E.fillingAction.toSMul
           (A.ellipticFourBoundaryDeckData.fillingDeckMap g) (E.lift z) := by
-  letI := A.ellipticFourBoundaryAction
-  letI := E.fillingAction
-  letI := A.ellipticFourBoundaryCover_simplyConnected
+  let := A.ellipticFourBoundaryAction
+  let := E.fillingAction
+  let := A.ellipticFourBoundaryCover_simplyConnected
   exact SphereSixComplex.Topology.quotientCover_equivariant_of_eq_at
     A.ellipticFourBoundaryProjection
     A.ellipticFourFillingProjection

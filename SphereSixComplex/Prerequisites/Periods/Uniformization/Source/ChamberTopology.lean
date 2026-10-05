@@ -86,7 +86,7 @@ theorem verticalShear_image_sourceOpenChamber :
   ext w
   constructor
   · rintro ⟨z, ⟨hl, hr, hi, hn⟩, rfl⟩
-    simp only [flatOpenChamber, mem_setOf_eq, verticalShear_re, verticalShear_im]
+    simp only [flatOpenChamber, mem_ofPred_eq, verticalShear_re, verticalShear_im]
     exact ⟨hl, hr, sub_pos.mpr ((source_normSq_iff_height hl hr hi).mp hn)⟩
   · rintro ⟨hl, hr, hi⟩
     let z : ℂ := (verticalShear semicircleHeight continuous_semicircleHeight).symm w
@@ -121,7 +121,7 @@ theorem flatOpenChamber_nonempty : flatOpenChamber.Nonempty := by
   norm_num
 
 theorem flatOpenChamber_isSimplyConnected : IsSimplyConnected flatOpenChamber := by
-  letI : ContractibleSpace flatOpenChamber :=
+  let : ContractibleSpace flatOpenChamber :=
     flatOpenChamber_convex.contractibleSpace flatOpenChamber_nonempty
   show SimplyConnectedSpace flatOpenChamber
   infer_instance
@@ -152,7 +152,7 @@ theorem cuspExponential_continuous (width : ℝ) : Continuous (cuspExponential w
   unfold cuspExponential
   fun_prop
 
-theorem cuspExponential_differentiable (width : ℝ) (hwidth : width ≠ 0) :
+theorem cuspExponential_differentiable (width : ℝ) :
     Differentiable ℂ (cuspExponential width) := by
   unfold cuspExponential
   fun_prop
@@ -194,7 +194,6 @@ theorem cuspExponential_injOn_re_interval {width l r : ℝ} (hwidth : 0 < width)
   intro z hz w hw hzw
   obtain ⟨n, hn⟩ := (cuspExponential_eq_iff_exists_int hwidth.ne' z w).mp hzw
   have hre := congrArg Complex.re hn
-  push_cast at hre
   norm_num [Complex.mul_re] at hre
   have hnlt : (n : ℝ) < 1 := by
     apply (mul_lt_mul_iff_of_pos_right hwidth).mp
@@ -249,11 +248,11 @@ theorem sourceBoundedChamber_isSimplyConnected :
     IsSimplyConnected sourceBoundedChamber := by
   exact TauCeti.isSimplyConnected_image_of_differentiableOn_of_injOn
     sourceOpenChamber_isOpen sourceOpenChamber_isSimplyConnected
-    (cuspExponential_differentiable _ (by positivity)).differentiableOn
+    (cuspExponential_differentiable _).differentiableOn
     source_cuspExponential_injOn
 
 
-theorem norm_cuspExponential (width : ℝ) (hwidth : width ≠ 0) (z : ℂ) :
+theorem norm_cuspExponential (width : ℝ) (z : ℂ) :
     ‖cuspExponential width z‖ = Real.exp (-2 * Real.pi * z.im / width) := by
   simpa only [cuspExponential, Function.Periodic.qParam] using
     Function.Periodic.norm_qParam width z

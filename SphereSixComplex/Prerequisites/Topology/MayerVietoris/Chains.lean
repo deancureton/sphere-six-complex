@@ -126,14 +126,14 @@ public noncomputable abbrev coverUnion {X : TopCat} (U V : Opens X) :=
   singularOpenSubcomplex U ⊔ singularOpenSubcomplex V
 
 /-- Meet and join give a bicartesian square in the lattice of singular subcomplexes. -/
-public def coverSubcomplexBicartSq {X : TopCat} (U V : Opens X) :
+public theorem coverSubcomplexBicartSq {X : TopCat} (U V : Opens X) :
     SSet.Subcomplex.BicartSq (coverIntersection U V)
       (singularOpenSubcomplex U) (singularOpenSubcomplex V) (coverUnion U V) where
   sup_eq := rfl
   inf_eq := rfl
 
 /-- The meet--join square is a pushout square of simplicial sets. -/
-public noncomputable def coverSubcomplexIsPushout {X : TopCat} (U V : Opens X) :
+public theorem coverSubcomplexIsPushout {X : TopCat} (U V : Opens X) :
     IsPushout
       (SSet.Subcomplex.homOfLE (coverSubcomplexBicartSq U V).le₁₂)
       (SSet.Subcomplex.homOfLE (coverSubcomplexBicartSq U V).le₁₃)
@@ -159,7 +159,16 @@ public instance integralSimplicialChains_preservesMonomorphisms :
     apply +allowSynthFailures Functor.map_mono
 
 /-- Applying integral chains to the meet--join square again gives a pushout. -/
-public noncomputable def coverChainIsPushout {X : TopCat} (U V : Opens X) :=
+public theorem coverChainIsPushout {X : TopCat} (U V : Opens X) :
+    IsPushout
+      (integralSimplicialChains.map (SSet.Subcomplex.homOfLE
+        (coverSubcomplexBicartSq U V).le₁₂))
+      (integralSimplicialChains.map (SSet.Subcomplex.homOfLE
+        (coverSubcomplexBicartSq U V).le₁₃))
+      (integralSimplicialChains.map (SSet.Subcomplex.homOfLE
+        (coverSubcomplexBicartSq U V).le₂₄))
+      (integralSimplicialChains.map (SSet.Subcomplex.homOfLE
+        (coverSubcomplexBicartSq U V).le₃₄)) :=
   (coverSubcomplexIsPushout U V).map integralSimplicialChains
 
 /-- The alternating intersection-to-pieces map followed by the sum-to-union map. -/
@@ -189,10 +198,10 @@ public theorem coverChainShortComplex_exact {X : TopCat} (U V : Opens X) :
 /-- In fact the chain-level meet--join sequence is short exact. -/
 public theorem coverChainShortComplex_shortExact {X : TopCat} (U V : Opens X) :
     (coverChainShortComplex U V).ShortExact := by
-  letI : Mono (integralSimplicialChains.map
+  let : Mono (integralSimplicialChains.map
       (SSet.Subcomplex.homOfLE (coverSubcomplexBicartSq U V).le₁₂)) := by
     infer_instance
-  letI : Mono (coverChainShortComplex U V).f := by
+  let : Mono (coverChainShortComplex U V).f := by
     change Mono (biprod.lift
       (integralSimplicialChains.map
         (SSet.Subcomplex.homOfLE (coverSubcomplexBicartSq U V).le₁₂))

@@ -46,7 +46,7 @@ public instance constructedHasCuspPhaseSpreading
     (W : ActualPuncturedCuspCollarWitness N constructedModel) : HasCuspPhaseSpreading W := by
   let Q := constructedPolarHoneycombConstruction W
   let P := Q.toPolarHoneycombData
-  letI := P.positiveDeckAction
+  let := P.positiveDeckAction
   let R := P.positiveEquivariantStrongDeformationRetraction
   exact ⟨⟨⟨P, FrozenLocalCuspPhaseSpreadingData.ofPolarPhaseData
     (compactPhaseOrbit_prod_isQuotientMap constructedModel W.localWitness.radius P)

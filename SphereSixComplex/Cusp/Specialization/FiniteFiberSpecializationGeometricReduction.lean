@@ -113,6 +113,7 @@ public theorem totalHomotopyEquiv_comp_markedFiberToPuncturedCusp
           finiteBouquetMappingTorusFiberInclusion (fun _ : Unit ↦ G.clutching) y))) = _
   rw [G.totalHomeomorph.apply_symm_apply, openRadialIntervalProdHomotopyEquiv_apply]
 
+omit [HasCuspPhaseSpreading W] in
 private theorem specializationHomologyOneMap_apply
     (G : ActualCuspRadialClutchingData W)
     (y : let _ := G.fiberTopology;
@@ -138,6 +139,7 @@ private theorem specializationHomologyTwoMap_apply
           ((integralSingularHomologyEquivOfHomotopyEquiv 2 G.totalHomotopyEquiv).symm y)) := by
   rfl
 
+omit [HasCuspPhaseSpreading W] in
 /-- The degree-one specialization map on a fibre class is the homology map of the literal marked
 fibre inclusion into the filling. -/
 public theorem specializationHomologyOneMap_fiberInclusion

@@ -101,7 +101,7 @@ theorem modularDeckHomeomorph_inv (g : Delta) :
     modularDeckHomeomorph g⁻¹ = (modularDeckHomeomorph g).symm := by
   ext τ
   have hτ : (modularTargetAction g⁻¹) τ = (modularTargetAction g).symm τ := by
-    simpa using DFunLike.congr_fun (map_inv modularTargetAction g) τ
+    simp
   exact congrArg ((↑) : UpperHalfPlane → ℂ) hτ
 
 /-- Applying `g⁻¹` after `g` recovers the original solution germ. -/

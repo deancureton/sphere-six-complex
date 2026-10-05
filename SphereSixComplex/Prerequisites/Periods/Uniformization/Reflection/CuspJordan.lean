@@ -31,7 +31,7 @@ theorem cuspExponential_eq_cuspPolar (width : ℝ) (hwidth : width ≠ 0)
     cuspExponential width ((x : ℂ) + (y : ℂ) * Complex.I) =
       cuspPolar width h (x, Real.exp (-2 * Real.pi * (y - h x) / width)) := by
   rw [cuspPolar, cuspExponential, cuspExponential]
-  simp only [Prod.snd, Prod.fst, Complex.ofReal_exp]
+  simp only [Complex.ofReal_exp]
   rw [← Complex.exp_add]
   congr 1
   have hw : (width : ℂ) ≠ 0 := by exact_mod_cast hwidth
@@ -62,7 +62,6 @@ theorem cuspPolar_eq_cuspExponential (width : ℝ) (hwidth : width ≠ 0)
   congr 1
   have hpi : (Real.pi : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero
   field_simp [show (width : ℂ) ≠ 0 by exact_mod_cast hwidth, hpi]
-  push_cast
   ring_nf
   simp [Complex.I_sq]
 
@@ -100,7 +99,7 @@ theorem mem_cuspRectangleBoundary_iff {l r : ℝ} (hlr : l ≤ r) (p : ℝ × �
       p ∈ closedCuspRectangle l r ∧ (p.1 = l ∨ p.1 = r ∨ p.2 = 1) := by
   rcases p with ⟨x, t⟩
   simp only [cuspRectangleBoundary, closedCuspRectangle, mem_union, mem_prod, mem_singleton_iff,
-    mem_Icc, Prod.fst, Prod.snd]
+    mem_Icc]
   aesop
 
 theorem cuspPolar_injOn_positiveClosedCuspStrip {width l r : ℝ} (hwidth : width ≠ 0)
@@ -306,8 +305,7 @@ theorem range_cuspRadialPath_inter_range_cuspOuterPath_left {width l r : ℝ}
       _ = cuspRadialPath width h l 1 := congrArg _ (Subtype.ext hs1)
       _ = cuspPolar width h (l, 1) := Path.target _
   · rintro rfl
-    exact ⟨by simpa using mem_range_self (f := cuspRadialPath width h l) (1 : unitInterval),
-      by simpa using mem_range_self (f := cuspOuterPath width h l r hh) (0 : unitInterval)⟩
+    exact ⟨by simp, by simp⟩
 
 theorem range_cuspOuterPath_inter_range_cuspRadialPath_right {width l r : ℝ}
     (hwidth : width ≠ 0) (h : ℝ → ℝ) (hh : Continuous h) (hlr : l < r)
@@ -344,8 +342,7 @@ theorem range_cuspOuterPath_inter_range_cuspRadialPath_right {width l r : ℝ}
       _ = cuspRadialPath width h r 1 := congrArg _ (Subtype.ext ht1)
       _ = cuspPolar width h (r, 1) := Path.target _
   · rintro rfl
-    exact ⟨by simpa using mem_range_self (f := cuspOuterPath width h l r hh) (1 : unitInterval),
-      by simpa using mem_range_self (f := cuspRadialPath width h r) (1 : unitInterval)⟩
+    exact ⟨by simp, by simp⟩
 
 theorem range_cuspRadialPath_left_inter_right {width l r : ℝ}
     (hwidth : width ≠ 0) (h : ℝ → ℝ) (hlr : l < r)
@@ -373,8 +370,7 @@ theorem range_cuspRadialPath_left_inter_right {width l r : ℝ}
       (by simpa only [cuspRadialPath_apply] using hs.trans ht.symm)
     exact (hlr.ne (congrArg Prod.fst hp)).elim
   · rintro rfl
-    exact ⟨by simpa using mem_range_self (f := cuspRadialPath width h l) (0 : unitInterval),
-      by simpa using mem_range_self (f := cuspRadialPath width h r) (0 : unitInterval)⟩
+    exact ⟨by simp, by simp⟩
 
 theorem range_cuspRadialPath (width : ℝ) (h : ℝ → ℝ) (x : ℝ) :
     range (cuspRadialPath width h x) = cuspPolar width h '' ({x} ×ˢ Icc 0 1) := by
@@ -428,12 +424,8 @@ theorem range_cuspLeftOuterPath_inter_range_cuspRadialPath_right {width l r : �
         exact ⟨ho, hr⟩
       simpa using hm
   · rintro (rfl | rfl)
-    · exact ⟨Or.inl (by simpa using
-          mem_range_self (f := cuspRadialPath width h l) (0 : unitInterval)),
-        by simpa using mem_range_self (f := cuspRadialPath width h r) (0 : unitInterval)⟩
-    · exact ⟨Or.inr (by simpa using
-          mem_range_self (f := cuspOuterPath width h l r hh) (1 : unitInterval)),
-        by simpa using mem_range_self (f := cuspRadialPath width h r) (1 : unitInterval)⟩
+    · exact ⟨Or.inl (by simp), by simp⟩
+    · exact ⟨Or.inr (by simp), by simp⟩
 
 theorem isJordanCurve_cuspPolar_boundary {width l r : ℝ}
     (hwidth : width ≠ 0) (h : ℝ → ℝ) (hh : Continuous h) (hlr : l < r)
@@ -506,7 +498,7 @@ def cuspBallHeight (width epsilon : ℝ) : ℝ :=
 theorem norm_cuspExponential_lt_iff_height {width epsilon : ℝ}
     (hwidth : 0 < width) (hepsilon : 0 < epsilon) (z : ℂ) :
     ‖cuspExponential width z‖ < epsilon ↔ cuspBallHeight width epsilon < z.im := by
-  rw [norm_cuspExponential width hwidth.ne' z]
+  rw [norm_cuspExponential width z]
   rw [← Real.lt_log_iff_exp_lt hepsilon]
   unfold cuspBallHeight
   constructor
@@ -523,7 +515,7 @@ theorem sourceOpenChamber_eq_heightEpigraph :
     sourceOpenChamber =
       {z : ℂ | -Real.sqrt 2 / 2 < z.re ∧ z.re < 1 / 2 ∧ semicircleHeight z.re < z.im} := by
   ext z
-  simp only [sourceOpenChamber, mem_setOf_eq]
+  simp only [sourceOpenChamber, mem_ofPred_eq]
   constructor
   · rintro ⟨hl, hr, hi, hn⟩
     exact ⟨hl, hr, (source_normSq_iff_height hl hr hi).mp hn⟩
@@ -570,7 +562,7 @@ theorem sourceBoundedChamber_eq_cuspPolar_image :
     refine ⟨(x : ℂ) + (y : ℂ) * Complex.I, ?_, ?_⟩
     · rw [sourceOpenChamber_eq_heightEpigraph]
       simp only [mem_ofPred_eq, Complex.add_re, ofReal_re, Complex.mul_re, Complex.mul_im, ofReal_im,
-        I_re, I_im, mul_zero, zero_mul, sub_zero, add_zero, Complex.add_im, mul_one, zero_add]
+        I_re, I_im, mul_zero, sub_zero, add_zero, Complex.add_im, mul_one, zero_add]
       refine ⟨hl, hr, ?_⟩
       dsimp [y]
       have hlog : Real.log t < 0 := Real.log_neg ht0 ht1

@@ -185,12 +185,12 @@ public noncomputable def fundamentalGroupData
 public theorem fundamentalGroupMap_surjective
     (D : ChosenCyclicAffineFillingCoverModel m Λ B N) :
     Function.Surjective D.fundamentalGroupMap := by
-  letI := D.boundaryDeckGroup
-  letI := D.fillingDeckGroup
-  letI := D.boundaryCoverTopology
-  letI := D.fillingCoverTopology
-  letI := D.boundaryAction
-  letI := D.fillingAction
+  let := D.boundaryDeckGroup
+  let := D.fillingDeckGroup
+  let := D.boundaryCoverTopology
+  let := D.fillingCoverTopology
+  let := D.boundaryAction
+  let := D.fillingAction
   exact D.fundamentalGroupData.map_surjective
 
 
@@ -313,12 +313,12 @@ public noncomputable def vanishing
 public theorem fundamentalGroupMap_surjective
     (D : ChosenToricFillingCoverModel Λ K B N) :
     Function.Surjective D.fundamentalGroupMap := by
-  letI := D.boundaryDeckGroup
-  letI := D.fillingDeckGroup
-  letI := D.boundaryCoverTopology
-  letI := D.fillingCoverTopology
-  letI := D.boundaryAction
-  letI := D.fillingAction
+  let := D.boundaryDeckGroup
+  let := D.fillingDeckGroup
+  let := D.boundaryCoverTopology
+  let := D.fillingCoverTopology
+  let := D.boundaryAction
+  let := D.fillingAction
   exact D.fundamentalGroupData.map_surjective
 
 /-- The exact kernel of the toric filling inclusion. -/
@@ -327,12 +327,12 @@ public theorem fundamentalGroupMap_kernel
     D.fundamentalGroupMap.ker = Subgroup.normalClosure
       (Set.range (fun k ↦ Additive.toMul (D.translation (D.vanishing k))) ∪
         {D.meridian}) := by
-  letI := D.boundaryDeckGroup
-  letI := D.fillingDeckGroup
-  letI := D.boundaryCoverTopology
-  letI := D.fillingCoverTopology
-  letI := D.boundaryAction
-  letI := D.fillingAction
+  let := D.boundaryDeckGroup
+  let := D.fillingDeckGroup
+  let := D.boundaryCoverTopology
+  let := D.fillingCoverTopology
+  let := D.boundaryAction
+  let := D.fillingAction
   exact D.fundamentalGroupData.ker_map
 
 /-- Every selected toric vanishing translation is killed by the filling inclusion. -/

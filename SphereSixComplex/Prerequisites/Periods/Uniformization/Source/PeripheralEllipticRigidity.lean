@@ -272,8 +272,7 @@ private theorem conjugator_bottomRow_norm (c d : Delta)
   let T : QuadraticInteger := -1 + (1 + Zsqrtd.sqrtd) * S
   have htT : T ^ 2 = (2 : QuadraticInteger) := by exact ht
   have htre := congrArg Zsqrtd.re htT
-  simp only [pow_two, Zsqrtd.re_mul, Zsqrtd.re_ofNat,
-    Zsqrtd.im_ofNat] at htre
+  simp only [pow_two, Zsqrtd.re_mul, Zsqrtd.re_ofNat] at htre
   norm_num at htre
   have hTreSq : T.re ^ 2 < (2 : ℤ) ^ 2 := by
     nlinarith [sq_nonneg T.im]
@@ -329,7 +328,7 @@ private theorem conjugator_bottomRow_norm (c d : Delta)
         simp only [Zsqrtd.re_mul, Zsqrtd.im_mul, Zsqrtd.re_add,
           Zsqrtd.im_add, Zsqrtd.re_sub, Zsqrtd.im_sub,
           Zsqrtd.re_one, Zsqrtd.im_one, Zsqrtd.re_sqrtd,
-          Zsqrtd.im_sqrtd, Zsqrtd.re_neg, Zsqrtd.im_neg,
+          Zsqrtd.im_sqrtd, Zsqrtd.re_neg,
           Zsqrtd.re_ofNat, Zsqrtd.im_ofNat] at hre him ⊢
         omega
       · have hre := congrArg Zsqrtd.re hmul
@@ -337,7 +336,7 @@ private theorem conjugator_bottomRow_norm (c d : Delta)
         simp only [Zsqrtd.re_mul, Zsqrtd.im_mul, Zsqrtd.re_add,
           Zsqrtd.im_add, Zsqrtd.re_sub, Zsqrtd.im_sub,
           Zsqrtd.re_one, Zsqrtd.im_one, Zsqrtd.re_sqrtd,
-          Zsqrtd.im_sqrtd, Zsqrtd.re_neg, Zsqrtd.im_neg,
+          Zsqrtd.im_sqrtd, Zsqrtd.im_neg,
           Zsqrtd.re_ofNat, Zsqrtd.im_ofNat] at hre him ⊢
         omega
     have hre := congrArg Zsqrtd.re hS
@@ -359,7 +358,6 @@ private theorem quadratic_row_eq_unit_cases (r s : QuadraticInteger)
   have hre := congrArg Zsqrtd.re h
   simp only [pow_two, Zsqrtd.re_add, Zsqrtd.re_mul,
     Zsqrtd.re_one] at hre
-  norm_num at hre
   have hqRe : 0 ≤ r.re ^ 2 + r.re * s.re + s.re ^ 2 := by
     nlinarith [sq_nonneg (r.re + s.re), sq_nonneg r.re, sq_nonneg s.re]
   have hqIm : 0 ≤ r.im ^ 2 + r.im * s.im + s.im ^ 2 := by
@@ -437,8 +435,7 @@ private theorem elliptic_pair_eq_conjugates
     rw [h, one_mul] at hxy
     rw [hxy] at hy4
     have hab := congrArg deltaAb hy4
-    simp only [map_pow, map_one, map_mul, deltaAb_g1, deltaAb_g2,
-      Prod.fst_mul, Prod.snd_mul, Prod.fst_one, Prod.snd_one] at hab
+    simp only [map_pow, map_one, map_mul, deltaAb_g1, deltaAb_g2] at hab
     exact (by decide :
       Multiplicative.ofAdd (1 : ZMod 3) ^ 4 ≠ 1)
         (congrArg Prod.fst hab)
@@ -447,8 +444,7 @@ private theorem elliptic_pair_eq_conjugates
     rw [h, mul_one] at hxy
     rw [hxy] at hx3
     have hab := congrArg deltaAb hx3
-    simp only [map_pow, map_one, map_mul, deltaAb_g1, deltaAb_g2,
-      Prod.fst_mul, Prod.snd_mul, Prod.fst_one, Prod.snd_one] at hab
+    simp only [map_pow, map_one, map_mul, deltaAb_g1, deltaAb_g2] at hab
     exact (by decide :
       Multiplicative.ofAdd (1 : ZMod 4) ^ 3 ≠ 1)
         (congrArg Prod.snd hab)

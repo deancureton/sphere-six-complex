@@ -110,11 +110,11 @@ public theorem BiholomorphicFourPieceStarData.gluing_atlas_compatible
     letI := A.nonemptyPieceOfCollars hcollar
     letI := C.complexCharts
     GluingAtlasCompatible (I := modelWithCornersSelf ℂ ComplexModel) (n := ∞) A.glueData := by
-  letI := C.centralCharts
-  letI (i : Fin 3) := C.fillingCharts i
-  letI := A.nonemptyPieceOfCollars hcollar
-  letI := C.complexCharts
-  letI := C.isManifold_piece hcollar
+  let := C.centralCharts
+  let (i : Fin 3) := C.fillingCharts i
+  let := A.nonemptyPieceOfCollars hcollar
+  let := C.complexCharts
+  let := C.isManifold_piece hcollar
   refine gluingAtlasCompatible_of_crossPiece A.glueData ?_
   refine crossPieceGluingCompatible_of_pieceTransition_contMDiffOn A.glueData ?_
   intro i j hij
@@ -158,7 +158,6 @@ public theorem BiholomorphicFourPieceStarData.gluing_atlas_compatible
               (((A.collarEquiv k).symm ⟨x, hx'⟩ : A.centralCollar k) : A.central) = x := by
             show C.collar k (((A.collarEquiv k).symm ⟨x, hx'⟩ : A.centralCollar k) : A.central) = x
             rw [C.collar_apply k ((A.collarEquiv k).symm ⟨x, hx'⟩)]
-            change ((A.collarEquiv k) ((A.collarEquiv k).symm ⟨x, hx'⟩) : A.filling k) = x
             rw [Homeomorph.apply_symm_apply]
           have hinv : (C.collar k).toOpenPartialHomeomorph.symm x =
               (((A.collarEquiv k).symm ⟨x, hx'⟩ : A.centralCollar k) : A.central) := by

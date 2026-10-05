@@ -27,9 +27,9 @@ namespace SphereSixComplex.BinaryOpenCover
 /-- Corestricting the singular map of an open inclusion to its range is an isomorphism. -/
 public noncomputable instance singularOpenCorestriction_isIso {X : TopCat} (U : Opens X) :
     IsIso (singularOpenCorestriction U) := by
-  letI : Mono (Opens.inclusion' U) :=
+  let : Mono (Opens.inclusion' U) :=
     (TopCat.mono_iff_injective (Opens.inclusion' U)).2 Subtype.val_injective
-  letI : Mono (TopCat.toSSet.map (Opens.inclusion' U)) := by infer_instance
+  let : Mono (TopCat.toSSet.map (Opens.inclusion' U)) := by infer_instance
   change IsIso
     (SSet.Subcomplex.toRange (TopCat.toSSet.map (Opens.inclusion' U)))
   infer_instance

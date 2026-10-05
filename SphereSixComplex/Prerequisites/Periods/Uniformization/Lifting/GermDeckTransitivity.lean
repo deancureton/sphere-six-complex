@@ -157,7 +157,7 @@ theorem eventuallyEq_of_regular_covering_lifts
   have hL₂ : Continuous L₂ := by
     apply Continuous.subtype_mk
     exact continuousOn_iff_continuous_domRestrict.mp hτ₂cont
-  letI : PreconnectedSpace V := Subtype.preconnectedSpace hVpre
+  let : PreconnectedSpace V := Subtype.preconnectedSpace hVpre
   have hbase : modularRegularCoordinate ∘ L₁ = modularRegularCoordinate ∘ L₂ := by
     funext w
     apply Subtype.ext

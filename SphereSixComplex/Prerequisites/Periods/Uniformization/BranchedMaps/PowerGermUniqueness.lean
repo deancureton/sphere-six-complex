@@ -36,7 +36,7 @@ theorem AnalyticAt.exists_linear_normalForm_of_deriv_ne_zero
   have huderiv : u a = deriv f a := by
     have hd := Filter.EventuallyEq.deriv_eq hfactor'
     have hleft : deriv (fun z ↦ f z - f a) a = deriv f a := by
-      simpa using hf.differentiableAt.deriv_sub_const (f a)
+      simp
     have hright : deriv (fun z ↦ (z - a) * u z) a = u a := by
       have hprod := ((hasDerivAt_id a).sub_const a).mul hu.differentiableAt.hasDerivAt
       have hfun : (fun z ↦ (z - a) * u z) = (fun z ↦ z - a) * u := by

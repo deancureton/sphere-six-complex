@@ -252,6 +252,7 @@ public noncomputable def basepointIso :
     FundamentalGroup X' (cm.baseMap (p base)) ≃* FundamentalGroup X' (q (cm.lift base)) :=
   (eqToIso (congr_arg FundamentalGroupoid.mk (cm.commutes base))).conj
 
+omit [SimplyConnectedSpace E] [SimplyConnectedSpace E'] in
 public theorem mapOfEq_eq (γ : FundamentalGroup X (p base)) :
     FundamentalGroup.mapOfEq cm.baseMap (cm.commutes base) γ =
       basepointIso cm base (FundamentalGroup.map cm.baseMap (p base) γ) :=

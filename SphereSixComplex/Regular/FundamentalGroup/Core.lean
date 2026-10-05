@@ -331,7 +331,7 @@ public theorem exists_geometricCentralTranslationReindexing :
       {A.cuspCentralBase} :=
     ⟨A.cuspRegularRepresentative,
       A.cuspRegularRepresentative_projects⟩
-  letI fiberAction : MulAction Delta
+  let fiberAction : MulAction Delta
       ((regularFamilyQuotientMap A.periods) ⁻¹'
         {A.cuspCentralBase}) :=
     hp.mulActionFiber A.cuspCentralBase

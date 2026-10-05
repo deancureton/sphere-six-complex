@@ -99,7 +99,7 @@ theorem exists_sourceChamber_closureHomeomorph :
       (fun _ _ ↦ rfl)).trans (congrArg closure hgbij.image_eq)
   have hclosedBij : BijOn g (closedBall 0 1) (closure sourceBoundedChamber) :=
     himage ▸ hginj.bijOn_image
-  letI : CompactSpace (closedBall (0 : ℂ) 1) :=
+  let : CompactSpace (closedBall (0 : ℂ) 1) :=
     isCompact_iff_compactSpace.mp (isCompact_closedBall (0 : ℂ) 1)
   let e : closedBall (0 : ℂ) 1 ≃ₜ closure sourceBoundedChamber :=
     Continuous.homeoOfEquivCompactToT2 (f := hclosedBij.equiv g)

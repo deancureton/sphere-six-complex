@@ -133,7 +133,7 @@ private lemma ambientLiftedEisensteinSix_analyticOrderAt
     analyticOrderAt (ambientLiftedEisensteinSix E) z =
       if E.sourceCoordinate.coordinate z = 1 then (2 : ℕ∞) else 0 := by
   by_cases hz : E.sourceCoordinate.coordinate z = 1
-  · simp only [hz, if_pos]
+  · simp only [hz, ite_eq_left]
     exact ambientLiftedEisensteinSix_analyticOrderAt_of_coordinate_eq_one E z hz
   · simp only [hz]
     exact (ambientLiftedEisensteinSix_analyticAt E z).analyticOrderAt_eq_zero.mpr

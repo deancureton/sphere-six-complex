@@ -96,7 +96,7 @@ local instance instProperlyDiscontinuousSMulPSL2Z :
       ProperlyDiscontinuousSMul.finite_disjoint_inter_image hK hL
     have hBpre : B = sl2zToSLRZ ⁻¹' C := by
       ext g
-      simp only [B, C, Set.mem_setOf_eq, Set.mem_preimage, sl2zToSLRZ_smul]
+      simp only [B, C, Set.mem_ofPred_eq, Set.mem_preimage, sl2zToSLRZ_smul]
     have hB : B.Finite := by
       rw [hBpre]
       exact hC.preimage sl2zToSLRZ_injective.injOn
@@ -107,9 +107,9 @@ local instance instProperlyDiscontinuousSMulPSL2Z :
       · intro hg
         obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective g
         refine ⟨a, ?_, rfl⟩
-        simpa only [B, Set.mem_setOf_eq, UpperHalfPlane.pslMk_smul] using hg
+        simpa only [B, Set.mem_ofPred_eq, UpperHalfPlane.pslMk_smul] using hg
       · rintro ⟨a, ha, rfl⟩
-        simpa only [B, Set.mem_setOf_eq, UpperHalfPlane.pslMk_smul] using ha
+        simpa only [B, Set.mem_ofPred_eq, UpperHalfPlane.pslMk_smul] using ha
     rw [hquot]
     exact hB.image _
 
@@ -148,7 +148,7 @@ theorem fiberForm_qExpansion_coeff_zero (c : ℂ) :
   have hE : (UpperHalfPlane.qExpansion 1
       (ModularForm.E₄ : UpperHalfPlane → ℂ)).coeff 0 = 1 :=
     EisensteinSeries.E_qExpansion_coeff_zero (by norm_num) ⟨2, rfl⟩
-  simpa [pow_succ, PowerSeries.coeff_mul, hE]
+  simp [pow_succ, PowerSeries.coeff_mul, hE]
 
 /-- No fibre form is identically zero. -/
 theorem fiberForm_ne_zero (c : ℂ) :
@@ -157,7 +157,7 @@ theorem fiberForm_ne_zero (c : ℂ) :
   intro h
   have hc := fiberForm_qExpansion_coeff_zero c
   rw [h, UpperHalfPlane.qExpansion_zero] at hc
-  simpa using hc
+  simp at hc
 
 /-- Every fibre form has order zero at the cusp. -/
 theorem fiberForm_cuspOrder (c : ℂ) :
@@ -186,7 +186,7 @@ theorem fiberForm_eq_zero_iff (c : ℂ) (z : UpperHalfPlane) :
 
 /-- The weight-six Eisenstein series vanishes at the order-two elliptic point. -/
 theorem E₆_at_I : ModularForm.E₆ UpperHalfPlane.I = 0 := by
-  letI : SlashInvariantFormClass (ModularForm SLZ 6)
+  let : SlashInvariantFormClass (ModularForm SLZ 6)
       (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (⊤ : Subgroup SL(2, ℤ))) 6 := by
     rw [← MonoidHom.range_eq_map]
     infer_instance
@@ -220,7 +220,7 @@ theorem coordinate_at_I :
 /-- The weight-four Eisenstein series vanishes at the translated order-three point. -/
 theorem E₄_at_ellipticThreeParameter :
     ModularForm.E₄ ellipticThreeParameter = 0 := by
-  letI : SlashInvariantFormClass (ModularForm SLZ 4)
+  let : SlashInvariantFormClass (ModularForm SLZ 4)
       (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (⊤ : Subgroup SL(2, ℤ))) 4 := by
     rw [← MonoidHom.range_eq_map]
     infer_instance
@@ -592,7 +592,7 @@ noncomputable def hasExactHolomorphicBranchAt_of_order
     | coe n =>
         rw [haord, ENat.map_natCast] at hmapped
         have hn : n = order := by exact_mod_cast WithTop.coe_eq_coe.mp hmapped.symm
-        simpa [haord, hn]
+        simp [hn]
   have hex := hA.analyticOrderAt_eq_natCast.mp hanaOrder
   let g : ℂ → ℂ := Classical.choose hex
   have hg : AnalyticAt ℂ g (center : ℂ) := (Classical.choose_spec hex).1
@@ -727,7 +727,7 @@ theorem exists_coordinate_eq_of_ne_zero_one {c : ℂ} (hc0 : c ≠ 0) (hc1 : c �
     simpa [ord] using fiberForm_nonEllipticSum_eq_one hc0 hc1
   have hex : ∃ q, 0 < ord q := by
     by_contra h
-    push_neg at h
+    push Not at h
     have hz : ∀ q, ord q = 0 := by
       intro q
       have hn : 0 ≤ ord q := by simpa [ord] using fiberForm_orbitOrder_nonneg c q

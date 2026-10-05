@@ -25,6 +25,6 @@ public theorem mathoverflow_1973 :
         (unitSphere 6) inferInstance atlas := by
   obtain ⟨c, hc, -⟩ := SphereSixComplex.sphere_six_admits_complex_structure
   refine ⟨c, ?_⟩
-  letI : ChartedSpace ComplexModel (unitSphere 6) := c
-  letI : IsManifold 𝓘(ℂ, ComplexModel) ∞ (unitSphere 6) := hc
+  let : ChartedSpace ComplexModel (unitSphere 6) := c
+  let : IsManifold 𝓘(ℂ, ComplexModel) ∞ (unitSphere 6) := hc
   infer_instance

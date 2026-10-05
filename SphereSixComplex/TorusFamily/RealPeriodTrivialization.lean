@@ -50,7 +50,7 @@ public theorem periodCoordinates_parameterMap_continuous :
     exact (contDiffAt_map_inverse (n := 0) (e z)).continuousAt.comp
       (f := fun z ↦ (e z : RealPeriods →L[ℝ] ComplexTwoSpace)) he.continuousAt
   convert! (hi.comp continuous_fst).clm_apply continuous_snd using 1
-  simp only [ContinuousLinearMap.inverse_equiv, ContinuousLinearEquiv.coe_coe]
+  simp only [ContinuousLinearMap.inverse_equiv]
   rfl
 
 /-- Write a vector in the moving real period basis and rebuild it in the fixed basis over `z₀`. -/

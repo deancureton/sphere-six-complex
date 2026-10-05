@@ -59,7 +59,7 @@ public theorem twicePuncturedComplexLeft_union_right :
     twicePuncturedComplexLeft ∪ twicePuncturedComplexRight = Set.univ := by
   ext z
   simp only [twicePuncturedComplexLeft, twicePuncturedComplexRight,
-    mem_union, mem_setOf_eq, mem_univ, iff_true]
+    mem_union, mem_ofPred_eq, mem_univ, iff_true]
   by_cases hz : z.1.re < 2 / 3
   · exact Or.inl hz
   · right
@@ -125,7 +125,7 @@ public def twicePuncturedComplexOverlapHomeomorphStrip :
 /-- The overlap is contractible, so it contributes no relation in based van Kampen. -/
 public theorem twicePuncturedComplexOverlap_contractible :
     ContractibleSpace twicePuncturedComplexOverlap := by
-  letI : ContractibleSpace complexOpenVerticalStrip :=
+  let : ContractibleSpace complexOpenVerticalStrip :=
     complexOpenVerticalStrip_convex.contractibleSpace
       complexOpenVerticalStrip_nonempty
   exact twicePuncturedComplexOverlapHomeomorphStrip.contractibleSpace
@@ -133,7 +133,7 @@ public theorem twicePuncturedComplexOverlap_contractible :
 /-- In particular, the overlap is path-connected. -/
 public theorem twicePuncturedComplexOverlap_isPathConnected :
     IsPathConnected twicePuncturedComplexOverlap := by
-  letI : ContractibleSpace twicePuncturedComplexOverlap :=
+  let : ContractibleSpace twicePuncturedComplexOverlap :=
     twicePuncturedComplexOverlap_contractible
   exact isPathConnected_iff_pathConnectedSpace.mpr inferInstance
 

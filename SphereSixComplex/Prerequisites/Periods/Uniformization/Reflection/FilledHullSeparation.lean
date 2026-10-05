@@ -38,7 +38,6 @@ theorem isSimpleClosedCurve_of_isJordanCurve {C : Set E2'}
       set q : UnitAddCircle := e' ⟨c, hc⟩
       have ht := (equivIco 1 0 q).2
       refine ⟨(equivIco 1 0 q).1, Ico_subset_Icc_self (by simpa using ht), ?_⟩
-      change (e'.symm (↑(equivIco 1 0 q).1 : UnitAddCircle) : E2') = c
       have hcircle : (↑(equivIco 1 0 q).1 : UnitAddCircle) = q := by
         apply (equivIco 1 0).injective
         rw [equivIco_coe_eq ht]
@@ -90,8 +89,7 @@ theorem isJordanCurve_subset_closure_filledHull_diff_e2 {J : Set E2'}
   have hrank : 1 < Module.rank ℝ E2' := by
     have hrankeq : Module.rank ℝ E2' = 2 :=
       (Module.rank_eq_ofNat_iff_finrank_eq_ofNat 2).2 (by
-        simpa [E2', E2] using
-          (finrank_euclideanSpace_fin (n := 2) (𝕜 := ℝ)))
+        simp [E2', E2])
     rw [hrankeq]
     norm_num
   have hbounded : IsBounded J := isSimpleClosedCurve_isCompact hJsimple |>.isBounded

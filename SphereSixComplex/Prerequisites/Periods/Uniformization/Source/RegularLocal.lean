@@ -431,7 +431,6 @@ theorem orbitAssembledScalar_mdifferentiableAt_of_representative_mem_rightDouble
         (fuchsianSourceAction_contMDiff g 0).continuous
     exact hc.continuousAt.eventually (sourceRightDouble_isOpen.mem_nhds hp)
   filter_upwards [hmem] with w hw
-  change orbitAssembledScalar S (w : ℂ) = localPatch w
   calc
     orbitAssembledScalar S (w : ℂ) =
         orbitAssembledScalar S

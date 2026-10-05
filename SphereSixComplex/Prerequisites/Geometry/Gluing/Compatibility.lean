@@ -127,7 +127,7 @@ public theorem gluingAtlasCompatible_of_crossPiece
   intro i j c c' hc hc'
   by_cases hij : i = j
   · subst j
-    letI : HasGroupoid (D.U i) (contDiffGroupoid n I) :=
+    let : HasGroupoid (D.U i) (contDiffGroupoid n I) :=
       (inferInstance : IsManifold I n (D.U i)).toHasGroupoid
     exact transportedPieceCharts_samePiece_compatible D _ i hc hc'
   · exact hcross i j hij c c' hc hc'

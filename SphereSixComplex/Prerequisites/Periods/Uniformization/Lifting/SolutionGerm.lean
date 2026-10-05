@@ -65,7 +65,7 @@ theorem ContinuesInsideWith.exists_upperHalfPlane_solution
 /-- The upper half-plane, viewed as its standard open subset of `ℂ`, is simply connected. -/
 theorem UpperHalfPlane.isSimplyConnected_upperHalfPlaneSet :
     IsSimplyConnected UpperHalfPlane.upperHalfPlaneSet := by
-  letI : ContractibleSpace UpperHalfPlane.upperHalfPlaneSet :=
+  let : ContractibleSpace UpperHalfPlane.upperHalfPlaneSet :=
     (convex_halfSpace_im_gt 0).contractibleSpace ⟨Complex.I, by simp⟩
   change SimplyConnectedSpace UpperHalfPlane.upperHalfPlaneSet
   exact inferInstance

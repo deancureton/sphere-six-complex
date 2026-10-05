@@ -118,7 +118,7 @@ theorem sourceFundamentalScalarConsistent_of_pairingClassification
     SourceFundamentalScalarConsistent S := by
   intro z w hz hw horbit
   rcases hclass hz hw horbit with hzw | ⟨u, hu, hunopen, hpair⟩
-  · simpa [hzw]
+  · simp [hzw]
   have hscalar :=
     sourceScalarRightDoubleMap_eq_sourceRight_of_mem_fundamental_not_open S hu hunopen
   rcases hpair with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩

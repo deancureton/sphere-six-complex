@@ -80,12 +80,12 @@ theorem sourceRightDouble_mapsTo : MapsTo sourceRight sourceRightDouble sourceRi
 theorem sourceRight_affineReflection (z : ℂ) :
     ((1 / 2 : ℂ) + I * (starRingEnd ℂ) ((z - (1 / 2 : ℂ)) / I)) = sourceRight z := by
   apply Complex.ext <;>
-    simp [sourceRight, Complex.div_re, Complex.div_im, Complex.normSq_apply]
-  <;> ring
+    simp [sourceRight, Complex.normSq_apply]
+  ring
 
 theorem sourceRight_coord_im (z : ℂ) :
     ((z - (1 / 2 : ℂ)) / I).im = 1 / 2 - z.re := by
-  simp [Complex.div_im, Complex.normSq_apply]
+  simp
 
 theorem sourceOpenChamber_subset_sourceRightDouble :
     sourceOpenChamber ⊆ sourceRightDouble := by
@@ -157,8 +157,7 @@ theorem sourceScalarTriangleMap_im_eq_zero_of_rightSide
   exact sourceScalarClosureMap_im_eq_zero_of_frontier S
     (cuspExponential_mem_source_frontier_of_rightSide hre him hnorm)
 
-private theorem sourceRightDouble_closedPositive_mapsTo
-    (S : ChamberCaratheodorySeed sourceBoundedChamber) :
+private theorem sourceRightDouble_closedPositive_mapsTo :
     MapsTo (cuspExponential (1 + Real.sqrt 2))
       (sourceRightDouble ∩ {z : ℂ | 0 ≤ ((z - (1 / 2 : ℂ)) / I).im})
       (closure sourceBoundedChamber \ {sourceCuspVertex}) := by
@@ -182,7 +181,7 @@ theorem sourceScalarTriangleMap_continuousOn_rightClosedPositive
       (sourceRightDouble ∩ {z : ℂ | 0 ≤ ((z - (1 / 2 : ℂ)) / I).im}) := by
   exact (sourceScalarClosureMap_continuousOn_away_cusp S).comp
     (cuspExponential_continuous (1 + Real.sqrt 2)).continuousOn
-    (sourceRightDouble_closedPositive_mapsTo S)
+    sourceRightDouble_closedPositive_mapsTo
 
 private theorem sourceRightDouble_openPositive_subset :
     sourceRightDouble ∩ {z : ℂ | 0 < ((z - (1 / 2 : ℂ)) / I).im} ⊆
@@ -300,7 +299,7 @@ theorem sourceLeft_affineReflection (z : ℂ) :
       (starRingEnd ℂ) ((z - (-(Real.sqrt 2 : ℂ) / 2)) / (-I))) = sourceLeft z := by
   apply Complex.ext <;>
     simp [sourceLeft, Complex.div_re, Complex.div_im, Complex.normSq_apply]
-  <;> ring
+  ring
 
 theorem sourceLeft_coord_im (z : ℂ) :
     ((z - (-(Real.sqrt 2 : ℂ) / 2)) / (-I)).im = z.re + Real.sqrt 2 / 2 := by
@@ -367,8 +366,7 @@ theorem sourceScalarTriangleMap_im_eq_zero_of_leftSide
   exact sourceScalarClosureMap_im_eq_zero_of_frontier S
     (cuspExponential_mem_source_frontier_of_leftSide hre him hnorm)
 
-private theorem sourceLeftDouble_closedPositive_mapsTo
-    (S : ChamberCaratheodorySeed sourceBoundedChamber) :
+private theorem sourceLeftDouble_closedPositive_mapsTo :
     MapsTo (cuspExponential (1 + Real.sqrt 2))
       (sourceLeftDouble ∩
         {z : ℂ | 0 ≤ ((z - (-(Real.sqrt 2 : ℂ) / 2)) / (-I)).im})
@@ -394,7 +392,7 @@ theorem sourceScalarTriangleMap_continuousOn_leftClosedPositive
         {z : ℂ | 0 ≤ ((z - (-(Real.sqrt 2 : ℂ) / 2)) / (-I)).im}) := by
   exact (sourceScalarClosureMap_continuousOn_away_cusp S).comp
     (cuspExponential_continuous (1 + Real.sqrt 2)).continuousOn
-    (sourceLeftDouble_closedPositive_mapsTo S)
+    sourceLeftDouble_closedPositive_mapsTo
 
 private theorem sourceLeftDouble_openPositive_subset :
     sourceLeftDouble ∩

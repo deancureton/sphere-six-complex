@@ -145,7 +145,8 @@ public theorem sixSphereLoopsNullhomotopic (x : SixSphere) (loop : Path x x) :
   have hdim : Module.finrank ℝ (ℝ × ℝ) < Module.finrank ℝ Ambient := by
     simp [Ambient]
   obtain ⟨w, hw⟩ :=
-    (hray_contDiff.dense_compl_range_of_finrank_lt_finrank hdim).nonempty
+    ((hray_contDiff.differentiable (by norm_num)).dense_compl_range_of_finrank_lt_finrank
+      hdim).nonempty
   have hw_range : w ∉ Set.range ray := by
     simpa using hw
   have hw_ne : w ≠ 0 := by

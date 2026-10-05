@@ -30,14 +30,14 @@ public theorem orderThreeDegreeTwoDifference_apply (x : ThreeLattice) :
   funext i
   fin_cases i <;>
     simp [orderThreeDegreeTwoDifference, orderThreeClutchingDegreeTwoMatrix,
-      Matrix.mulVec, dotProduct, Fin.sum_univ_succ] <;> ring
+      dotProduct, Fin.sum_univ_succ] <;> ring
 
 public theorem orderFourDegreeTwoDifference_apply (x : ThreeLattice) :
     orderFourDegreeTwoDifference x = ![0, -x 1 - x 2, x 0 + x 1 - x 2] := by
   funext i
   fin_cases i <;>
     simp [orderFourDegreeTwoDifference, orderFourClutchingDegreeTwoMatrix,
-      Matrix.mulVec, dotProduct, Fin.sum_univ_succ] <;> ring
+      dotProduct, Fin.sum_univ_succ]; ring
 
 public def degreeTwoCoinvariantCoordinate : ThreeLattice →ₗ[ℤ] ℤ :=
   LinearMap.proj 0

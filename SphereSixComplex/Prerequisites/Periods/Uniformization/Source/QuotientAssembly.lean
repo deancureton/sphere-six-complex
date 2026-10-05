@@ -121,7 +121,7 @@ theorem regularCoordinate_surjective :
 /-- Exact orbit fibres upgrade local conformality on the ordinary locus to a genuine covering. -/
 theorem regularCoordinate_isCoveringMap :
     IsCoveringMap (sourceRegularValueSet.restrictPreimage K.coordinate) := by
-  letI : LocallyConnectedSpace sourceRegularValueSet :=
+  let : LocallyConnectedSpace sourceRegularValueSet :=
     (show IsOpen sourceRegularValueSet by
       exact isOpen_compl_iff.mpr (isClosed_singleton.union isClosed_singleton)
       ).locallyConnectedSpace

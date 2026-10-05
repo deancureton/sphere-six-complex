@@ -356,9 +356,9 @@ theorem analyticOrderNatAt_le_card_of_local_fiber_parametrization
     refine ⟨a, ?_⟩
     have hmem : T a y.1 ∈ E := ha.symm ▸ x.2
     apply Subtype.ext
-    simp [φ, hmem, ha]
+    simp [φ, ha]
   have hEfinite : E.Finite := by simpa only [E] using hfinite
-  letI : Fintype E := hEfinite.fintype
+  let : Fintype E := hEfinite.fintype
   have hle : Fintype.card E ≤ Fintype.card α :=
     Fintype.card_le_of_surjective φ hφsurj
   rw [Set.fintypeCard_eq_ncard,
@@ -374,14 +374,11 @@ theorem ellipticChartFunction_order_le_stabilizer_card
     (embed : α → Delta)
     (coordinate : UpperHalfPlane → ℂ)
     (hcoordinate : MDiff coordinate)
-    (hinvariant : ∀ g z,
-      coordinate (fuchsianSourceAction g • z) = coordinate z)
     (hfibres : ∀ z w,
       coordinate z = coordinate w ↔
         ∃ g : Delta, fuchsianSourceAction g • z = w)
-    (center other : UpperHalfPlane) (value otherValue : ℂ)
+    (center : UpperHalfPlane) (value otherValue : ℂ)
     (hcenter : coordinate center = value)
-    (hother : coordinate other = otherValue)
     (hvalues : value ≠ otherValue)
     (hregular_of_ne : ∀ z,
       coordinate z ≠ value → coordinate z ≠ otherValue →
@@ -565,8 +562,8 @@ noncomputable def automatic_branch_one
   let H : ℂ → ℂ := fun w ↦
     ellipticChartFunction coordinate fuchsianOneFixedPoint w - 0
   obtain ⟨hfinite, hbound⟩ := ellipticChartFunction_order_le_stabilizer_card
-    (α := CyclicThree) Monoid.Coprod.inl coordinate hcoordinate hinvariant hfibres
-    fuchsianOneFixedPoint fuchsianTwoFixedPoint 0 1 hone htwo (by norm_num)
+    (α := CyclicThree) Monoid.Coprod.inl coordinate hcoordinate hfibres
+    fuchsianOneFixedPoint 0 1 hone (by norm_num)
     (fun z hz0 hz1 ↦
       isFuchsianRegularPoint_of_coordinate_ne_ellipticValues coordinate hinvariant
         hone htwo hz0 hz1)
@@ -622,8 +619,8 @@ noncomputable def automatic_branch_two
   let H : ℂ → ℂ := fun w ↦
     ellipticChartFunction coordinate fuchsianTwoFixedPoint w - 1
   obtain ⟨hfinite, hbound⟩ := ellipticChartFunction_order_le_stabilizer_card
-    (α := CyclicFour) Monoid.Coprod.inr coordinate hcoordinate hinvariant hfibres
-    fuchsianTwoFixedPoint fuchsianOneFixedPoint 1 0 htwo hone (by norm_num)
+    (α := CyclicFour) Monoid.Coprod.inr coordinate hcoordinate hfibres
+    fuchsianTwoFixedPoint 1 0 htwo (by norm_num)
     (fun z hz1 hz0 ↦
       isFuchsianRegularPoint_of_coordinate_ne_ellipticValues coordinate hinvariant
         hone htwo hz0 hz1)

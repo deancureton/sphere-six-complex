@@ -144,10 +144,10 @@ public theorem coverSmallAffineSubdivisionComponents_commute
     (AddCommGrpCat.of ℤ)
   let A := coverSmallAffineSubdivisionComponent X U
   let B := affineSingularSubdivisionComponent X
-  haveI : Mono I := by
+  have : Mono I := by
     dsimp [I]
     exact coverSmallIntegralSingularChainInclusion_mono X U
-  haveI : Mono (I.f n) := by
+  have : Mono (I.f n) := by
     change Mono ((HomologicalComplex.eval AddCommGrpCat
       (ComplexShape.down ℕ) n).map I)
     infer_instance

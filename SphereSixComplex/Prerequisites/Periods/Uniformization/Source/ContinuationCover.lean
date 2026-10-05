@@ -87,7 +87,7 @@ private theorem mem_sourceLeftDouble_of_leftSide {z : ℂ}
     z ∈ sourceLeftDouble := by
   have hs : 0 ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
   have href : sourceLeft z = z := by
-    apply Complex.ext <;> simp [sourceLeft, hre] <;> ring
+    apply Complex.ext <;> simp [sourceLeft, hre]; ring
   exact ⟨by linarith, by linarith, hi, hn, by simpa [href] using hn⟩
 
 private theorem mem_sourceRightDouble_of_rightSide {z : ℂ}
@@ -95,7 +95,7 @@ private theorem mem_sourceRightDouble_of_rightSide {z : ℂ}
     z ∈ sourceRightDouble := by
   have hs : 0 ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
   have href : sourceRight z = z := by
-    apply Complex.ext <;> simp [sourceRight, hre] <;> norm_num
+    apply Complex.ext <;> simp [sourceRight, hre]; norm_num
   exact ⟨by linarith, by linarith, hi, hn, by simpa [href] using hn⟩
 
 /-- The three explicit Schwarz doubles cover the closed source triangle except at its two finite

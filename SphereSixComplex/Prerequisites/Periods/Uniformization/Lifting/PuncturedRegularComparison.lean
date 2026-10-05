@@ -125,7 +125,7 @@ theorem hasPuncturedRegularComparison_of_eventually_regular
   have hVnonempty : V.Nonempty := by
     by_contra hVempty
     rw [not_nonempty_iff_eq_empty.mp hVempty] at hVfreq
-    simpa using hVfreq
+    simp at hVfreq
   obtain ⟨w₀, hw₀⟩ := hVnonempty
   refine ⟨V, w₀, hVpre, hw₀, hpcont, hqcont, ?_, ?_, ?_, hVfreq⟩
   · intro w hw

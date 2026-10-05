@@ -662,7 +662,7 @@ lemma ambientNormalizedTauDeriv_analyticOrderAt
     analyticOrderAt (ambientNormalizedTauDeriv E) z =
       if E.sourceCoordinate.coordinate z = 1 then (1 : ℕ∞) else 0 := by
   by_cases hz1 : E.sourceCoordinate.coordinate z = 1
-  · simp only [hz1, if_pos]
+  · simp only [hz1, ite_eq_left]
     exact ambientNormalizedTauDeriv_analyticOrderAt_of_coordinate_eq_one E z hz1
   · simp only [hz1]
     exact (ambientNormalizedTauDeriv_analyticAt E z).analyticOrderAt_eq_zero.mpr

@@ -77,7 +77,6 @@ theorem normSq_one_sub_ge_one_of_mem_orientedFundamentalRegion {z : UpperHalfPla
 the sharp order-four height `sqrt 2 / 2`. -/
 theorem denominator_re_sq_le_half_of_bottomLeft_sq_eq_one
     (g : Delta) {z w : UpperHalfPlane}
-    (hz : z ∈ orientedFundamentalRegion)
     (hw : w ∈ orientedFundamentalRegion)
     (hc : positiveEmbedding (deltaBottomRow g).1 ^ 2 = 1)
     (hgw : fuchsianSourceAction g • z = w) :
@@ -217,7 +216,7 @@ theorem deltaBottomRow_snd_cases_of_fst_eq_one
   have hcSq : positiveEmbedding (deltaBottomRow g).1 ^ 2 = 1 := by
     rw [hc]
     norm_num
-  have hqSq := denominator_re_sq_le_half_of_bottomLeft_sq_eq_one g hz hw hcSq hgw
+  have hqSq := denominator_re_sq_le_half_of_bottomLeft_sq_eq_one g hw hcSq hgw
   rw [hc] at hqSq
   norm_num at hqSq
   change (z.re + d) ^ 2 ≤ 1 / 2 at hqSq
@@ -256,7 +255,7 @@ theorem deltaBottomRow_snd_cases_of_fst_eq_neg_one
   have hcSq : positiveEmbedding (deltaBottomRow g).1 ^ 2 = 1 := by
     rw [hc]
     norm_num
-  have hqSq := denominator_re_sq_le_half_of_bottomLeft_sq_eq_one g hz hw hcSq hgw
+  have hqSq := denominator_re_sq_le_half_of_bottomLeft_sq_eq_one g hw hcSq hgw
   rw [hc] at hqSq
   norm_num at hqSq
   change (-z.re + d) ^ 2 ≤ 1 / 2 at hqSq
@@ -397,7 +396,7 @@ private theorem deltaBottomRow_ne_one_one (g : Delta) :
   let w := deltaNormalForm g
   by_cases hw : w = Monoid.CoprodI.Word.empty
   · simp [w, deltaBottomRow, wordBottomRow, wordMatrix, hw,
-      Monoid.CoprodI.Word.empty, Matrix.one_apply] at hc
+      Monoid.CoprodI.Word.empty] at hc
   · obtain ⟨i, j, v, hv⟩ := Monoid.CoprodI.NeWord.of_word w hw
     apply neWord_bottomRow_ne_one_one v
     constructor
@@ -533,9 +532,9 @@ private theorem neWord_bottomRow_ne_one_neg_sqrtd {i j : Bool}
         all_goals
           norm_num [na, hna, quadraticOne, pow_two, pow_succ,
             Matrix.one_apply, Matrix.mul_apply, Fin.sum_univ_succ] at hd'
-        all_goals first
-          | (have hbad := congrArg Zsqrtd.re hc'; norm_num at hbad)
-          | (have hbad := congrArg Zsqrtd.im hd'; norm_num at hbad)
+        all_goals
+          have hbad := congrArg Zsqrtd.im hd'
+          norm_num at hbad
       · have hk : k = true := by cases k <;> simp_all
         subst k
         have hmatrix := neWordMatrix_eq_init_mul_factorMatrix' w p hkj hwprod
@@ -627,9 +626,9 @@ private theorem neWord_bottomRow_ne_neg_one_sqrtd {i j : Bool}
         all_goals
           norm_num [na, hna, quadraticOne, pow_two, pow_succ,
             Matrix.one_apply, Matrix.mul_apply, Fin.sum_univ_succ] at hd'
-        all_goals first
-          | (have hbad := congrArg Zsqrtd.re hc'; norm_num at hbad)
-          | (have hbad := congrArg Zsqrtd.im hd'; norm_num at hbad)
+        all_goals
+          have hbad := congrArg Zsqrtd.im hd'
+          norm_num at hbad
       · have hk : k = true := by cases k <;> simp_all
         subst k
         have hmatrix := neWordMatrix_eq_init_mul_factorMatrix' w p hkj hwprod
@@ -1120,7 +1119,7 @@ private theorem gTwo_cube_smul_eq_sourceLeftUHP_of_normSq_eq_one
   rw [SphereSixComplex.TriangleGroup.FuchsianPingPong.gTwo_cube_apply]
   change -Real.sqrt 2 - 1 / (z : ℂ) = sourceLeft (z : ℂ)
   apply Complex.ext <;>
-    simp [sourceLeft, Complex.div_re, Complex.div_im, hnorm]
+    simp [sourceLeft, hnorm]
 
 private theorem gOne_sq_smul_eq_sourceRightUHP_of_normSq_one_sub_eq_one
     (z : UpperHalfPlane) (hnorm : normSq (1 - (z : ℂ)) = 1) :
@@ -1131,7 +1130,7 @@ private theorem gOne_sq_smul_eq_sourceRightUHP_of_normSq_one_sub_eq_one
   rw [SphereSixComplex.TriangleGroup.FuchsianPingPong.gOne_sq_apply]
   change 1 / (1 - (z : ℂ)) = sourceRight (z : ℂ)
   apply Complex.ext <;>
-    simp [sourceRight, Complex.div_re, Complex.div_im, hnorm]
+    simp [sourceRight, hnorm]
 
 /-! ## The order-four vertices -/
 
@@ -1499,7 +1498,6 @@ private theorem source_oriented_pairing_of_bottomRow_eq_one_zero_or_neg
   have hs2 := sqrt_two_sq
   have hwidth := cuspWidth_pos
   have hnLowerReal : (0 : ℝ) ≤ n := by
-    change (0 : ℝ) ≤ (n : ℝ)
     unfold cuspWidth at hre hwidth
     nlinarith
   have hnUpperReal : (n : ℝ) < 2 := by
@@ -1597,7 +1595,6 @@ private theorem source_oriented_pairing_of_bottomRow_eq_one_neg_one_or_neg
   have hs2 := sqrt_two_sq
   have hwidth := cuspWidth_pos
   have hnLowerReal : (-1 : ℝ) < n := by
-    change (-1 : ℝ) < (n : ℝ)
     unfold cuspWidth at hre hwidth
     nlinarith [hzRight.1, hwre.1]
   have hnUpperReal : (n : ℝ) ≤ 1 := by
@@ -1779,7 +1776,6 @@ theorem source_oriented_pairing_of_bottomLeft_eq_zero_unconditional
   have hs : 0 ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
   have hwidth : 0 < cuspWidth := cuspWidth_pos
   have hnLower : (-1 : ℝ) ≤ n := by
-    change (-1 : ℝ) ≤ (n : ℝ)
     unfold cuspWidth at hre hwidth
     nlinarith
   have hnUpper : (n : ℝ) ≤ 1 := by

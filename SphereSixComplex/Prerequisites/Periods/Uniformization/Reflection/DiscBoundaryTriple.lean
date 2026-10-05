@@ -52,7 +52,7 @@ theorem boundaryCayley_im (zeta z : ℂ) :
   unfold boundaryCayley
   rw [Complex.div_im]
   simp only [Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im,
-    zero_mul, one_mul, sub_zero, Complex.add_re, Complex.add_im, Complex.sub_re,
+    zero_mul, one_mul, Complex.add_re, Complex.add_im, Complex.sub_re,
     Complex.sub_im]
   simp only [Complex.normSq_apply]
   ring

@@ -361,8 +361,7 @@ public theorem exists_regular_height (U : SphereSixComplex.Periods.TriangleUnifo
   obtain ⟨M₁, hM₁⟩ := exists_orbit_height_bound U.zOne
   obtain ⟨M₂, hM₂⟩ := exists_orbit_height_bound U.zTwo
   refine ⟨max (max M₁ M₂) 1, le_max_right _ _, ?_⟩
-  intro z hz
-  intro g
+  intro z hz g
   constructor
   · intro hgz
     have hzeq : z = fuchsianSourceAction g⁻¹ • U.zOne := by
@@ -579,7 +578,7 @@ public theorem orbitClosure_regular
       image_closure_subset_closure_image hcont
     exact (closure_mono (hinvariant g)) (h1 ⟨z, hz, rfl⟩)
   have hnot := hclosed hmem
-  simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_and, not_lt] at hnot
+  simp only [Set.mem_compl_iff, Set.mem_ofPred_eq, not_and, not_lt] at hnot
   constructor
   · intro hone
     rw [hone, hzOne, fuchsianOneFixedPoint_im] at hnot
@@ -645,10 +644,9 @@ public theorem exists_zpow_g₀_of_sourceQ_eq {z w : UpperHalfPlane} (h : source
   rw [sourceQ, sourceQ, cuspQ, cuspQ, Complex.exp_eq_exp_iff_exists_int] at h
   obtain ⟨n, hn⟩ := h
   have hpi : (Real.pi : ℂ) ≠ 0 := by
-    simpa using Complex.ofReal_ne_zero.mpr Real.pi_ne_zero
+    simp
   have hkey : (z : ℂ) = (w : ℂ) + n * (1 + Real.sqrt 2) := by
     field_simp at hn
-    push_cast at hn ⊢
     linear_combination hn
   refine ⟨-n, ?_⟩
   apply UpperHalfPlane.coe_injective
@@ -702,7 +700,7 @@ public theorem exists_lift_height_bound (Y : ℝ) :
   refine ⟨T, ?_⟩
   intro s hs hTs
   by_contra hcon
-  push_neg at hcon
+  push Not at hcon
   obtain ⟨n, hstrip, him⟩ := exists_zpow_g₀_mem_strip (N.lift s)
   have hmemK : fuchsianSourceAction (g₀ ^ n) • N.lift s ∈ K := by
     refine ⟨hstrip, ?_, ?_⟩

@@ -234,7 +234,7 @@ theorem continuesInsideWith_of_deck_transitive
         upperHalfPlaneSolutionEtaleBase j C U q →
       ∃ i, deck i p = q) :
     ContinuesInsideWith f₀ U z₀ (IsUpperHalfPlaneSolutionGerm j C) := by
-  letI : LocallyConnectedSpace U := hU.locallyConnectedSpace
+  let : LocallyConnectedSpace U := hU.locallyConnectedSpace
   have hcov : IsCoveringMap (upperHalfPlaneSolutionEtaleBase j C U) :=
     Topology.isCoveringMap_of_deck_transitive
       (upperHalfPlaneSolutionEtaleBase j C U)

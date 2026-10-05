@@ -92,10 +92,10 @@ private theorem openSubtypeVal_isLocalDiffeomorph
           left_inv' := by
             intro y _
             apply Subtype.ext
-            exact congrArg Subtype.val (dif_pos y.2)
+            exact congrArg Subtype.val (dite_eq_left y.2)
           right_inv' := by
             intro y hy
-            exact congrArg Subtype.val (dif_pos hy) }
+            exact congrArg Subtype.val (dite_eq_left hy) }
       open_source := isOpen_univ
       open_target := U.isOpen
       contMDiffOn_toFun := contMDiff_subtype_val.contMDiffOn
@@ -104,8 +104,8 @@ private theorem openSubtypeVal_isLocalDiffeomorph
         rw [← ContMDiffWithinAt.subtypeVal_comp_iff U inv U y]
         apply contMDiffWithinAt_id.congr
         · intro z hz
-          exact congrArg Subtype.val (dif_pos hz)
-        · exact congrArg Subtype.val (dif_pos hy) }
+          exact congrArg Subtype.val (dite_eq_left hz)
+        · exact congrArg Subtype.val (dite_eq_left hy) }
   exact PartialDiffeomorph.isLocalDiffeomorphAt
     (I := modelWithCornersSelf ℂ V) (J := modelWithCornersSelf ℂ V)
     (n := ∞) phi trivial
@@ -130,10 +130,10 @@ private theorem openSubtypeVal_isLocalDiffeomorph_model
           left_inv' := by
             intro y _
             apply Subtype.ext
-            exact congrArg Subtype.val (dif_pos y.2)
+            exact congrArg Subtype.val (dite_eq_left y.2)
           right_inv' := by
             intro y hy
-            exact congrArg Subtype.val (dif_pos hy) }
+            exact congrArg Subtype.val (dite_eq_left hy) }
       open_source := isOpen_univ
       open_target := U.isOpen
       contMDiffOn_toFun := contMDiff_subtype_val.contMDiffOn
@@ -142,8 +142,8 @@ private theorem openSubtypeVal_isLocalDiffeomorph_model
         rw [← ContMDiffWithinAt.subtypeVal_comp_iff U inv U y]
         apply contMDiffWithinAt_id.congr
         · intro z hz
-          exact congrArg Subtype.val (dif_pos hz)
-        · exact congrArg Subtype.val (dif_pos hy) }
+          exact congrArg Subtype.val (dite_eq_left hz)
+        · exact congrArg Subtype.val (dite_eq_left hy) }
   exact PartialDiffeomorph.isLocalDiffeomorphAt
     (I := I) (J := I) (n := ∞) phi trivial
 
@@ -549,8 +549,8 @@ public theorem isLocalDiffeomorph_denseCuspExponentialCover_radius (r : ℝ) :
     IsLocalDiffeomorph (modelWithCornersSelf ℂ AdditiveCuspCover)
       (modelWithCornersSelf ℂ ComplexModel) ∞
       (fun p : additiveCuspRadiusCover r ↦ denseCuspExponentialCover p) := by
-  letI := additiveCuspRadiusCoverCharts r
-  letI := denseTorusCharts
+  let := additiveCuspRadiusCoverCharts r
+  let := denseTorusCharts
   intro p
   exact IsLocalDiffeomorphAt.comp (modelWithCornersSelf ℂ ComplexModel) DenseTorus
     (openSubtypeVal_isLocalDiffeomorph

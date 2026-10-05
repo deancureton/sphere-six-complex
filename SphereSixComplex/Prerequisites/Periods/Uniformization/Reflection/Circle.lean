@@ -166,7 +166,7 @@ theorem sourceCircle_re (z : ℂ) :
 
 theorem sourceCircle_normSq (z : ℂ) :
     normSq (sourceCircle z) = (normSq z)⁻¹ := by
-  simp [sourceCircle, Complex.normSq_inv, Complex.normSq_conj]
+  simp [sourceCircle, Complex.normSq_conj]
 
 theorem sourceCircleDouble_mapsTo : MapsTo sourceCircle sourceCircleDouble sourceCircleDouble := by
   intro z hz
@@ -324,8 +324,7 @@ theorem sourceScalarTriangleMap_im_eq_zero_of_circleSide
   exact sourceScalarClosureMap_im_eq_zero_of_frontier S
     (cuspExponential_mem_source_frontier_of_circleSide hl hr hi hnorm)
 
-private theorem sourceCircleCayleyChart_closedPositive_mapsTo
-    (S : ChamberCaratheodorySeed sourceBoundedChamber) :
+private theorem sourceCircleCayleyChart_closedPositive_mapsTo :
     MapsTo (cuspExponential (1 + Real.sqrt 2))
       (sourceCircleCayleyChart.source ∩
         {z : ℂ | 0 ≤ (sourceCircleCayleyChart z).im})
@@ -361,7 +360,7 @@ private theorem sourceScalarTriangleMap_continuousOn_circleClosedPositive
         {z : ℂ | 0 ≤ (sourceCircleCayleyChart z).im}) := by
   exact (sourceScalarClosureMap_continuousOn_away_cusp S).comp
     (cuspExponential_continuous (1 + Real.sqrt 2)).continuousOn
-    (sourceCircleCayleyChart_closedPositive_mapsTo S)
+    sourceCircleCayleyChart_closedPositive_mapsTo
 
 private theorem sourceScalarTriangleMap_differentiableOn_circlePositive
     (S : ChamberCaratheodorySeed sourceBoundedChamber) :
@@ -417,7 +416,7 @@ theorem sourceScalarCircleDoubleMap_differentiableOn
       (differentiableOn_id : DifferentiableOn ℂ id (Set.univ : Set ℂ))
   · exact sourceCircleCayleyChart_target_conj
   · intro w hw
-    simpa [sourceScalarTargetLineChart] using hw
+    simp [sourceScalarTargetLineChart]
   · intro z hz
     simp [sourceScalarTargetLineChart]
   · exact sourceScalarTriangleMap_continuousOn_circleClosedPositive S
@@ -437,7 +436,7 @@ theorem sourceScalarCircleDoubleMap_reflection
   have h := TauCeti.chartedSchwarzReflection_sourceReflection
     sourceCircleCayleyChart sourceScalarTargetLineChart (sourceScalarTriangleMap S)
     sourceCircleCayleyChart_target_conj
-    (by intro w hw; simpa [sourceScalarTargetLineChart] using hw)
+    (by intro w hw; simp [sourceScalarTargetLineChart])
     (by intro w hw; simp [sourceScalarTargetLineChart])
     (by
       intro w hw hcoord

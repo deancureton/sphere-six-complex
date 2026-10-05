@@ -29,7 +29,7 @@ private def orderThreeExtension : StdTorus 4 ≃ₜ StdTorus 4 where
   invFun u := Fin.cons (u 0) (orderThreeThreeTorusClutching.symm (Fin.tail u))
   left_inv u := by
     funext i
-    fin_cases i <;> simp [orderThreeThreeTorusClutching, Fin.tail] <;> abel
+    fin_cases i <;> simp [orderThreeThreeTorusClutching, Fin.tail]; abel
   right_inv u := by
     funext i
     fin_cases i <;> simp [orderThreeThreeTorusClutching, Fin.tail]
@@ -51,31 +51,31 @@ private def orderFourExtension : StdTorus 4 ≃ₜ StdTorus 4 where
 private def orderThreeIntegerExtension : (Fin 4 → ℤ) ≃ₗ[ℤ] (Fin 4 → ℤ) where
   toFun u := ![u 0, u 2, -u 1 - u 2, u 1 + u 3]
   invFun u := ![u 0, -u 1 - u 2, u 1, u 3 + u 1 + u 2]
-  left_inv u := by funext i; fin_cases i <;> simp <;> ring
-  right_inv u := by funext i; fin_cases i <;> simp <;> ring
+  left_inv u := by funext i; fin_cases i <;> simp; ring
+  right_inv u := by funext i; fin_cases i <;> simp
   map_add' x y := by funext i; fin_cases i <;> simp <;> ring
   map_smul' n x := by funext i; fin_cases i <;> simp <;> ring
 
 private def orderFourIntegerExtension : (Fin 4 → ℤ) ≃ₗ[ℤ] (Fin 4 → ℤ) where
   toFun u := ![u 0, -u 2, u 1, u 2 + u 3]
   invFun u := ![u 0, u 2, -u 1, u 3 + u 1]
-  left_inv u := by funext i; fin_cases i <;> simp <;> ring
-  right_inv u := by funext i; fin_cases i <;> simp <;> ring
+  left_inv u := by funext i; fin_cases i <;> simp
+  right_inv u := by funext i; fin_cases i <;> simp
   map_add' x y := by funext i; fin_cases i <;> simp <;> ring
-  map_smul' n x := by funext i; fin_cases i <;> simp <;> ring
+  map_smul' n x := by funext i; fin_cases i <;> simp; ring
 
 private def orderThreeRealExtension : (Fin 4 → ℝ) ≃+ (Fin 4 → ℝ) where
   toFun u := ![u 0, u 2, -u 1 - u 2, u 1 + u 3]
   invFun u := ![u 0, -u 1 - u 2, u 1, u 3 + u 1 + u 2]
-  left_inv u := by funext i; fin_cases i <;> simp <;> ring
-  right_inv u := by funext i; fin_cases i <;> simp <;> ring
+  left_inv u := by funext i; fin_cases i <;> simp; ring
+  right_inv u := by funext i; fin_cases i <;> simp
   map_add' x y := by funext i; fin_cases i <;> simp <;> ring
 
 private def orderFourRealExtension : (Fin 4 → ℝ) ≃+ (Fin 4 → ℝ) where
   toFun u := ![u 0, -u 2, u 1, u 2 + u 3]
   invFun u := ![u 0, u 2, -u 1, u 3 + u 1]
-  left_inv u := by funext i; fin_cases i <;> simp <;> ring
-  right_inv u := by funext i; fin_cases i <;> simp <;> ring
+  left_inv u := by funext i; fin_cases i <;> simp
+  right_inv u := by funext i; fin_cases i <;> simp
   map_add' x y := by funext i; fin_cases i <;> simp <;> ring
 
 private def orderThreeExtensionLift :
@@ -90,7 +90,7 @@ private def orderThreeExtensionLift :
   map_integer n := by
     funext i
     fin_cases i <;>
-      norm_num [orderThreeRealExtension, orderThreeIntegerExtension, integerToReal] <;> ring
+      norm_num [orderThreeRealExtension, orderThreeIntegerExtension, integerToReal]
 
 private def orderFourExtensionLift :
     StandardFourTorusEquivariantLift
@@ -104,7 +104,7 @@ private def orderFourExtensionLift :
   map_integer n := by
     funext i
     fin_cases i <;>
-      norm_num [orderFourRealExtension, orderFourIntegerExtension, integerToReal] <;> ring
+      norm_num [orderFourRealExtension, orderFourIntegerExtension, integerToReal]
 
 private theorem orderThreeExtension_comp_tailInclusion :
     (orderThreeExtension : C(StdTorus 4, StdTorus 4)).comp

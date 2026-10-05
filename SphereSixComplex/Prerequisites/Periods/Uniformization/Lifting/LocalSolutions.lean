@@ -93,7 +93,6 @@ theorem transport_localSolution_along_sourceAction
     sourceActionComplex_analyticAt g⁻¹ y.im_pos
   have haValue : a (y : ℂ) = (x : ℂ) := by
     apply congrArg ((↑) : UpperHalfPlane → ℂ)
-    change fuchsianSourceAction g⁻¹ • UpperHalfPlane.ofComplex (y : ℂ) = x
     rw [UpperHalfPlane.ofComplex_apply, ← hxy, map_inv]
     exact (fuchsianSourceAction g).symm_apply_apply x
   have hfAt : AnalyticAt ℂ f (a (y : ℂ)) := by rw [haValue]; exact hfan

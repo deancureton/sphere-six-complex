@@ -132,8 +132,7 @@ theorem scalarTriangleDiscMap_differentiableOn
   exact ((hcayley.sub_const _).div_const _).differentiableWithinAt
 
 theorem scalarTriangleDiscMap_differentiableOn_ne_pole
-    (pole first second : Circle) (hfirst : first ≠ pole) (hsecond : second ≠ pole)
-    (hfinite : first ≠ second) :
+    (pole first second : Circle) :
     DifferentiableOn ℂ (scalarTriangleDiscMap pole first second)
       {z : ℂ | z ≠ pole} := by
   intro z hz
@@ -148,11 +147,11 @@ theorem scalarTriangleDiscMap_im_eq_zero
   rw [scalarTriangleDiscMap, Complex.div_im]
   have hc := boundaryCayley_im_eq_zero (Circle.norm_coe pole) (Circle.norm_coe z)
   simp only [Complex.sub_re, Complex.sub_im, Complex.ofReal_re, Complex.ofReal_im,
-    sub_zero, mul_zero, zero_mul, Complex.normSq_ofReal, hc, zero_mul, zero_sub]
+    sub_zero, mul_zero, zero_mul, Complex.normSq_ofReal, hc]
   simp
 
 theorem scalarTriangleDiscMap_first
-    {pole first second : Circle} (hfirst : first ≠ pole) :
+    {pole first second : Circle} :
     scalarTriangleDiscMap pole first second first = 0 := by
   rw [scalarTriangleDiscMap, boundaryCayley_circle_eq_ofReal]
   simp
@@ -182,13 +181,13 @@ def chamberClosureDiscInverse {Ω : Set ℂ} (S : ChamberCaratheodorySeed Ω) (q
 theorem chamberClosureDiscInverse_apply_of_mem {Ω : Set ℂ}
     (S : ChamberCaratheodorySeed Ω) {q : ℂ} (hq : q ∈ closure Ω) :
     chamberClosureDiscInverse S q = (S.closureEquiv.symm ⟨q, hq⟩ : ℂ) := by
-  simp only [chamberClosureDiscInverse, dif_pos hq]
+  simp only [chamberClosureDiscInverse, dite_eq_left hq]
 
 
 theorem chamberClosureDiscInverse_continuousOn {Ω : Set ℂ}
     (S : ChamberCaratheodorySeed Ω) :
     ContinuousOn (chamberClosureDiscInverse S) (closure Ω) := by
-  rw [continuousOn_iff_continuous_restrict]
+  rw [continuousOn_iff_continuous_domRestrict]
   have hc : Continuous fun q : closure Ω ↦
       ((S.closureEquiv.symm q : closedBall (0 : ℂ) 1) : ℂ) :=
     continuous_subtype_val.comp S.closureEquiv.symm.continuous
@@ -258,7 +257,7 @@ theorem sourceScalarClosureMap_orderThree
   rw [sourceScalarClosureMap, Function.comp_apply,
     chamberClosureDiscInverse_boundaryPreimage S sourceBoundedChamber_isOpen _
       sourceOrderThreeVertex_mem_frontier]
-  exact scalarTriangleDiscMap_first (sourceOrderThreeCircle_ne_cusp S)
+  exact scalarTriangleDiscMap_first
 
 theorem sourceScalarClosureMap_otherElliptic
     (S : ChamberCaratheodorySeed sourceBoundedChamber) :
@@ -302,10 +301,8 @@ theorem sourceScalarClosureMap_continuousOn_away_cusp
     ContinuousOn (sourceScalarClosureMap S)
       (closure sourceBoundedChamber \ {sourceCuspVertex}) := by
   have hout := (scalarTriangleDiscMap_differentiableOn_ne_pole
-    (sourceCuspCircle S) (sourceOrderThreeCircle S) (sourceOtherEllipticCircle S)
-    (sourceOrderThreeCircle_ne_cusp S) (sourceOtherEllipticCircle_ne_cusp S)
-    (sourceOrderThreeCircle_ne_otherElliptic S)).continuousOn
-  exact hout.comp (chamberClosureDiscInverse_continuousOn S |>.mono diff_subset)
+    (sourceCuspCircle S) (sourceOrderThreeCircle S) (sourceOtherEllipticCircle S)).continuousOn
+  exact hout.comp (chamberClosureDiscInverse_continuousOn S |>.mono sdiff_subset)
     (fun q hq ↦ chamberClosureDiscInverse_ne_sourceCuspCircle S hq.1 (by simpa using hq.2))
 
 def sourceScalarOpenChamberMap
@@ -394,7 +391,7 @@ theorem sourceScalarOpenChamberMap_differentiableOn
     (hfinite : sourceOrderThreeCircle S ≠ sourceOtherEllipticCircle S) :
     DifferentiableOn ℂ (sourceScalarOpenChamberMap S) sourceOpenChamber := by
   have hexp : DifferentiableOn ℂ (cuspExponential (1 + Real.sqrt 2)) sourceOpenChamber :=
-    (cuspExponential_differentiable _ (by positivity)).differentiableOn
+    (cuspExponential_differentiable _).differentiableOn
   have hInv : DifferentiableOn ℂ
       (Function.invFunOn S.map (ball (0 : ℂ) 1)) sourceBoundedChamber := by
     have h := TauCeti.DifferentiableOn.invFunOn

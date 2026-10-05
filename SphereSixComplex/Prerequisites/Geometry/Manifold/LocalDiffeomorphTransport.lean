@@ -77,7 +77,7 @@ public theorem isLocalDiffeomorph_of_comp_isOpenEmbedding {f : M → N}
     (h : letI := hg.singletonChartedSpace; IsLocalDiffeomorph I J n (g ∘ f)) :
     letI := hg.singletonChartedSpace
     IsLocalDiffeomorph I J n f := by
-  letI := hg.singletonChartedSpace
+  let := hg.singletonChartedSpace
   intro x
   obtain ⟨Φ, hxΦ, hΦ⟩ := h x
   set e := hg.toOpenPartialHomeomorph g with he

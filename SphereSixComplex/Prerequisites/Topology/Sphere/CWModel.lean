@@ -83,17 +83,17 @@ private noncomputable def topCellCharacteristic :
   source := Metric.ball (0 : SixVector) 1
   target := openTopCell.target
   map_source' x hx := by
-    rw [topCellValue, if_pos hx]
+    rw [topCellValue, ite_eq_left hx]
     exact openTopCell.map_source (openTopCell_source.symm ▸ hx)
   map_target' x hx := by
     exact openTopCell_source ▸ openTopCell.map_target hx
   left_inv' x hx := by
-    rw [topCellValue, if_pos hx]
+    rw [topCellValue, ite_eq_left hx]
     exact openTopCell.left_inv (openTopCell_source.symm ▸ hx)
   right_inv' x hx := by
     have hsource : openTopCell.symm x ∈ Metric.ball (0 : SixVector) 1 :=
       openTopCell_source ▸ openTopCell.map_target hx
-    rw [topCellValue, if_pos hsource]
+    rw [topCellValue, ite_eq_left hsource]
     exact openTopCell.right_inv hx
 
 private theorem topCellCharacteristic_source :
@@ -174,7 +174,7 @@ private theorem topCellCharacteristic_image_closedBall :
     have hzBall : z ∈ Metric.ball (0 : SixVector) 1 :=
       openUnitBall_target ▸ openUnitBall.map_source hySource
     refine ⟨z, Metric.ball_subset_closedBall hzBall, ?_⟩
-    simp only [topCellCharacteristic, topCellValue, if_pos hzBall, openTopCell_apply]
+    simp only [topCellCharacteristic, topCellValue, ite_eq_left hzBall, openTopCell_apply]
     rw [show openUnitBall.symm z = y from openUnitBall.left_inv hySource]
 
 /-- The unique zero-cell, placed at infinity. -/

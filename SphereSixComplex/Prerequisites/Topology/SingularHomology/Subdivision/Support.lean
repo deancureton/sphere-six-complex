@@ -474,8 +474,8 @@ public theorem exists_zero_dimensional_ancestry_depth_subordinate
     funext j
     have hj : j = 0 := Fin.eq_zero j
     subst j
-    have hwone : w 0 = 1 := by simpa using w.property.2
-    have hw₀one : w₀ 0 = 1 := by simpa using w₀.property.2
+    have hwone : w 0 = 1 := by simp
+    have hw₀one : w₀ 0 = 1 := by simp
     exact hwone.trans hw₀one.symm
   simpa [hw] using hi
 

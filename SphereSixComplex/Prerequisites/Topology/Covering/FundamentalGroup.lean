@@ -29,8 +29,7 @@ public theorem map_fundamentalGroupMulEquivOfPath {A B : Type*} [TopologicalSpac
   show _ = ((Groupoid.isoEquivHom _ _).symm
       (Path.Homotopic.Quotient.mk (p.map f.continuous))).conj
       ((FundamentalGroupoid.map f).map γ)
-  simp only [Iso.conj_apply, Groupoid.isoEquivHom_symm_apply_inv,
-    Groupoid.isoEquivHom_symm_apply_hom]
+  simp only [Iso.conj_apply]
   congr 1
   rw [Functor.map_inv]
   exact (Groupoid.inv_eq_inv _).symm
@@ -97,6 +96,8 @@ public theorem exists_lift (H : Subgroup (FundamentalGroup Y base)) {P : Set Y} 
         exact h)
   exact ⟨g, hg₀, fun z => congrFun hgcomp z⟩
 
+omit [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
+  [SemilocallySimplyConnectedSpace Y] in
 /-- Transporting the base lift along a path moves the recovered subgroup accordingly. -/
 public theorem mem_range_mapOfEq_of_path {Q : Type*} [TopologicalSpace Q] (q : C(Q, Y))
     {e₀ e₁ : Q} (σ : Path e₀ e₁) {y₀ y₁ : Y} (h₀ : q e₀ = y₀) (h₁ : q e₁ = y₁)

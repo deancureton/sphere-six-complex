@@ -175,6 +175,8 @@ public def piece (D : PaperVanKampenFourPieceCover base) : Fin 4 → Set Y
   | 3 => D.ellipticFour
 
 
+omit [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
+  [SemilocallySimplyConnectedSpace Y] in
 public theorem piece_covers (D : PaperVanKampenFourPieceCover base) (y : Y) :
     ∃ i, D.piece i ∈ nhds y := by
   have hy : y ∈ D.core ∪ D.cusp ∪ D.ellipticThree ∪ D.ellipticFour := by
@@ -185,6 +187,8 @@ public theorem piece_covers (D : PaperVanKampenFourPieceCover base) (y : Y) :
   · exact ⟨2, (D.ellipticThree_isOpen).mem_nhds hy⟩
   · exact ⟨3, (D.ellipticFour_isOpen).mem_nhds hy⟩
 
+omit [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
+  [SemilocallySimplyConnectedSpace Y] in
 /-- The filling lifts agree with the core lift on the overlap. -/
 public theorem lift_agree {Q : Type*} [TopologicalSpace Q] (q : C(Q, Y))
     (hq : IsCoveringMap q) {P : Set Y} (hP : IsPathConnected (D.core ∩ P))
@@ -206,6 +210,8 @@ public theorem lift_agree {Q : Type*} [TopologicalSpace Q] (q : C(Q, Y))
   have := hq.eq_of_comp_eq hcont₁ hcont₂ hcomp ⟨pt, hpt⟩ hagree
   exact congrFun this ⟨x, hx⟩
 
+omit [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
+  [SemilocallySimplyConnectedSpace Y] in
 /-- The identity induces the identity on the fundamental group, so its image is everything. -/
 public theorem range_map_id : (FundamentalGroup.map (ContinuousMap.id Y) base).range = ⊤ := by
   rw [MonoidHom.range_eq_top]

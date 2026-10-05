@@ -44,7 +44,7 @@ public theorem torusEmbedding_torusCoordinates
     have hp' : p ∈ {q | M.t q ≠ 0} := hp
     rw [← M.torus_range] at hp'
     exact hp'
-  simp only [torusCoordinates, dif_pos h]
+  simp only [torusCoordinates, dite_eq_left h]
   exact Classical.choose_spec h
 
 public theorem torusCoordinates_unique

@@ -207,7 +207,7 @@ public theorem zeroSection_fundamentalGroupToMulOpposite
           (hpB.isCoveringMap.monodromy γ eB : RegularBase (U := U)) :=
       congrArg (regularFamilyZeroSection F) hbase
     _ = _ := by
-      convert hnat.symm using 1 <;> congr 2
+      convert hnat.symm using 1; congr 2
 
 /-- A loop in the labelled vector-bundle cover contributes, after passage to the central
 family, only a zero-section base loop. -/
@@ -358,7 +358,7 @@ public theorem centralFundamentalGroup_generated_by_translations_and_zeroSection
     (hpE.fundamentalGroupToMulOpposite eE γ)
   have hzeroDeck : hpE.fundamentalGroupToMulOpposite eE (zeroMap β) =
       hpB.fundamentalGroupToMulOpposite eB β := by
-    convert zeroSection_fundamentalGroupToMulOpposite F hsource hproper b β using 1 <;>
+    convert zeroSection_fundamentalGroupToMulOpposite F hsource hproper b β using 1;
       congr 2
   let κ := γ * (zeroMap β)⁻¹
   have hκker : κ ∈ (hpE.fundamentalGroupToMulOpposite eE).ker := by
@@ -378,7 +378,7 @@ public theorem centralFundamentalGroup_generated_by_translations_and_zeroSection
     Additive.toMul (regularFamilyTranslationAtZero F b a)
   have hτdeck : hpI.fundamentalGroupToMulOpposite eI τ =
       MulOpposite.op (regularFamilyPeriodGroupElement F a) := by
-    convert regularFamilyTranslationAtZero_deck F hproper b a using 1 <;>
+    convert regularFamilyTranslationAtZero_deck F hproper b a using 1;
       congr 2
   have hδdeck : hpI.fundamentalGroupToMulOpposite eI δ =
       MulOpposite.op (regularFamilyPeriodGroupElement F a) := by
@@ -391,7 +391,7 @@ public theorem centralFundamentalGroup_generated_by_translations_and_zeroSection
     rw [map_mul, map_inv, hδdeck, hτdeck]
     simp
   have hrange := regularFamily_innerKernel_map_mem_zeroSection_range
-    F hproper b r (by convert hrdeck using 1 <;> congr 2)
+    F hproper b r (by convert hrdeck using 1; congr 2)
   have hrK : FundamentalGroup.map (regularFamilyQuotientMap F)
       (regularFamilyZeroSection F b) r ∈ K := by
     apply Subgroup.subset_closure
@@ -582,7 +582,6 @@ public theorem markedCentralFundamentalGroup_generated_by_translations_and_zeroS
   apply top_unique
   intro g _
   obtain ⟨δ, rfl⟩ := E.surjective g
-  change E δ ∈ K
   apply hle
   rw [hgen]
   trivial

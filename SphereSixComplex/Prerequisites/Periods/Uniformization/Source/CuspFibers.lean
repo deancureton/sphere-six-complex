@@ -234,8 +234,8 @@ theorem fuchsianCoordinateReciprocal_high_fibers_of_seed
   have hw₀pos : 0 < w₀.im := lt_trans (by norm_num) hw₀mem.2.2
   have hF₀ : F z₀ = F w₀ := by
     apply inv_injective
-    rw [fuchsianCoordinateReciprocal, dif_pos hz₀pos,
-      fuchsianCoordinateReciprocal, dif_pos hw₀pos] at hr₀
+    rw [fuchsianCoordinateReciprocal, dite_eq_left hz₀pos,
+      fuchsianCoordinateReciprocal, dite_eq_left hw₀pos] at hr₀
     simpa only [hcoordinate] using hr₀
   have hzw₀ : z₀ = w₀ :=
     globalScalar_injOn_halfOpenCuspStrip S F hF hseed hz₀mem hw₀mem hF₀

@@ -164,7 +164,7 @@ theorem norm_halfPlaneToDiscAt_map_le
     simp only [f, q, p, Function.comp_apply, discToHalfPlaneAt_zero]
     rw [show UpperHalfPlane.ofComplex (a : ℂ) = a by
       apply UpperHalfPlane.coe_injective
-      simpa using UpperHalfPlane.ofComplex_apply a]
+      simp]
     rw [hab]
     simp [halfPlaneToDiscAt]
   let ξ : ℂ := halfPlaneToDiscAt a (z : ℂ)
@@ -176,7 +176,7 @@ theorem norm_halfPlaneToDiscAt_map_le
   have hof : UpperHalfPlane.ofComplex (p ξ) = z := by
     apply UpperHalfPlane.coe_injective
     rw [hpinv]
-    simpa using UpperHalfPlane.ofComplex_apply z
+    simp
   simpa only [f, q, p, ξ, Function.comp_apply, hof] using hbound
 
 

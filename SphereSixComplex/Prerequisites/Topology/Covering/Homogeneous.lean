@@ -170,9 +170,9 @@ theorem isCoveringMap_of_deck_transitive [LocallyConnectedSpace X]
     rw [himage, (deck (label e)).isOpen_image]
     exact (φ.isOpen_symm_image_iff_of_subset_target (hWV.trans hVφ)).symm
 
-  letI : Nonempty E := ⟨e₀⟩
-  letI : Nonempty fiber := ⟨⟨e₀, he₀fiber⟩⟩
-  letI : DiscreteTopology fiber :=
+  let : Nonempty E := ⟨e₀⟩
+  let : Nonempty fiber := ⟨⟨e₀, he₀fiber⟩⟩
+  let : DiscreteTopology fiber :=
     (IsDiscrete.of_openPartialHomeomorph f subset_rfl fun e _ ↦ by
       obtain ⟨ψ, heψ, hψ⟩ := hloc e
       exact ⟨ψ, heψ, hψ.symm⟩).1

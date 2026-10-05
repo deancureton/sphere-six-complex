@@ -115,7 +115,7 @@ public theorem standardThreeTorusDegreeOneCoordinateHom_coordinateClass (j : Fin
   change standardFourTorusCoordinateHom
       (standardFourTorusCoordinateHomologyClass j.succ) i.succ = _
   rw [standardFourTorusCoordinateHom_coordinateHomologyClass]
-  fin_cases i <;> fin_cases j <;> simp [Pi.single_apply]
+  fin_cases i <;> fin_cases j <;> simp
 
 public theorem standardThreeTorusDegreeOneCoordinateHom_surjective :
     Function.Surjective standardThreeTorusDegreeOneCoordinateHom := by

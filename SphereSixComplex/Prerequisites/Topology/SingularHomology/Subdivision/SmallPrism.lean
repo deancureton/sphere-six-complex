@@ -117,10 +117,10 @@ public theorem coverSmallAffinePrismComponent_identity_succ
         𝟙 ((coverSmallIntegralSingularChainComplex X U).X (n + 1)) := by
   let I := SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι
     (AddCommGrpCat.of ℤ)
-  haveI : Mono I := by
+  have : Mono I := by
     dsimp [I]
     exact coverSmallIntegralSingularChainInclusion_mono X U
-  haveI : Mono (I.f (n + 1)) := by
+  have : Mono (I.f (n + 1)) := by
     change Mono ((HomologicalComplex.eval AddCommGrpCat
       (ComplexShape.down ℕ) (n + 1)).map I)
     infer_instance
@@ -191,10 +191,10 @@ public theorem coverSmallAffinePrismComponent_identity_zero :
         𝟙 ((coverSmallIntegralSingularChainComplex X U).X 0) := by
   let I := SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι
     (AddCommGrpCat.of ℤ)
-  haveI : Mono I := by
+  have : Mono I := by
     dsimp [I]
     exact coverSmallIntegralSingularChainInclusion_mono X U
-  haveI : Mono (I.f 0) := by
+  have : Mono (I.f 0) := by
     change Mono ((HomologicalComplex.eval AddCommGrpCat
       (ComplexShape.down ℕ) 0).map I)
     infer_instance

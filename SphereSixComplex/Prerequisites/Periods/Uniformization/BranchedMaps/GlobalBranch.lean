@@ -28,6 +28,7 @@ namespace ContinuesInsideWith
 
 variable {f₀ : ℂ → E} {U : Set ℂ} {z₀ : ℂ} {P : ℂ → (ℂ → E) → Prop}
 
+omit [CompleteSpace E] in
 /-- Forgetting the preserved relation gives Tau Ceti's ordinary continuability hypothesis. -/
 theorem toContinuesInside (H : ContinuesInsideWith f₀ U z₀ P) :
     ContinuesInside f₀ U z₀ := by
