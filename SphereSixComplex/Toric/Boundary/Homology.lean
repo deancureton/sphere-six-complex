@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Toric.Boundary.Cover
-public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.IntegralSequence
 public import SphereSixComplex.Prerequisites.Topology.Sphere.PositiveHomology
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.ComplexUnits
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.DiscreteProduct

@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Elliptic.Homology.HomologyGenerators
 public import SphereSixComplex.Elliptic.Homology.DegreeTwoRelations
 public import SphereSixComplex.Elliptic.Sweep.ProjectedFourthSweeps
 public import SphereSixComplex.Homology.FourthTranslationGenerators

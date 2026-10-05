@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Cusp.FundamentalGroup.MarkedLoop
-import Mathlib.Analysis.Complex.BranchLogRoot
 
 /-!
 # Winding of the actual marked cusp coordinate

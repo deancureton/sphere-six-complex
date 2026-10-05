@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.SectionCorrection
-public import SphereSixComplex.Toric.Phase.Retraction
 public import SphereSixComplex.Cusp.Specialization.RadialClutching
 
 /-!

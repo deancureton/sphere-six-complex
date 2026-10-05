@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Subdivision.Affine
-public import Mathlib.Topology.MetricSpace.Pseudo.Lemmas
 
 /-!
 # Lebesgue numbers for pullbacks along singular simplices

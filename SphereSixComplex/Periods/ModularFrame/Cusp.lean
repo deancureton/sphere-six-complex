@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Periods.FuchsianCuspNormalization
-import Mathlib.NumberTheory.ModularForms.EisensteinSeries.QExpansion
 
 /-!
 # Exact completed-cusp germ of the lifted modular frame

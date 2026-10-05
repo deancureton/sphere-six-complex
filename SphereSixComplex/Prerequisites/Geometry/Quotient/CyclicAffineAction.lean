@@ -1,7 +1,6 @@
 module
 
 public import Mathlib.Geometry.Manifold.Instances.Quotient
-public import Mathlib.Data.ZMod.Basic
 public import Mathlib.GroupTheory.SpecificGroups.Cyclic
 
 noncomputable section

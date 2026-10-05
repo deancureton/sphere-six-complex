@@ -6,7 +6,6 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.Exact
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.ExactMonodromy
 import all SphereSixComplex.Prerequisites.Geometry.ComplexDisc.EllipticCoordinates
 import all SphereSixComplex.Prerequisites.Geometry.Quotient.Slice
-public import Mathlib.Analysis.Complex.RemovableSingularity
 import all Mathlib.Analysis.Complex.RemovableSingularity
 
 @[expose] public section

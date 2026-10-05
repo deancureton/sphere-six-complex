@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Cusp.PeriodExpansion
-import Mathlib.Analysis.Complex.CauchyIntegral
 
 /-!
 # The phase-corrected action on a local cusp neighbourhood

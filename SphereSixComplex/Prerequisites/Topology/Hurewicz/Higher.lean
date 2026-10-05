@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.SphereMap
 public import SphereSixComplex.Prerequisites.Topology.Sphere.CubicalEquiv
-public import Mathlib.Topology.Category.TopCat.Sphere
-public import Mathlib.Topology.Homotopy.HomotopyGroup
 
 /-!
 # A general higher-Hurewicz boundary

@@ -1,7 +1,6 @@
 module
 
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.Product
-public import Mathlib.Topology.Homotopy.Path
 
 @[expose] public section
 

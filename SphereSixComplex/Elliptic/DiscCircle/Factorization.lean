@@ -2,9 +2,7 @@ module
 
 public import SphereSixComplex.Construction.OpenEmbeddingGluing
 public import SphereSixComplex.Periods.FuchsianModularLift.Ramification
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.Branch
 public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.PowerFactorization
-public import SphereSixComplex.Prerequisites.Topology.SingularHomology.FreeLoop
 public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.TwicePuncturedReflection
 
 @[expose] public section

@@ -1,14 +1,10 @@
 module
 
 public import SphereSixComplex.Periods.ModularFrame.Basic
-import SphereSixComplex.Periods.FuchsianCuspNormalization
 import SphereSixComplex.Periods.ModularFrame.Cusp
 import SphereSixComplex.Periods.ModularFrame.EisensteinSixRoot
 import SphereSixComplex.Periods.FuchsianModularLift.Ramification
 import all SphereSixComplex.Periods.Uniformization
-import Mathlib.NumberTheory.ModularForms.Derivative
-import Mathlib.Analysis.Complex.BranchLogRoot
-import Mathlib.Analysis.Complex.CauchyIntegral
 
 open scoped Manifold
 

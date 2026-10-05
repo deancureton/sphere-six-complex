@@ -1,9 +1,6 @@
 module
 
 public import Mathlib.Topology.IsLocalHomeomorph
-public import Mathlib.Topology.Compactness.LocallyCompact
-public import Mathlib.Topology.Algebra.ConstMulAction
-public import Mathlib.Topology.Order.Compact
 public import Mathlib.Topology.Instances.Real.Lemmas
 
 /-!

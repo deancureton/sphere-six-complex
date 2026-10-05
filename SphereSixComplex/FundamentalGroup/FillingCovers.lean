@@ -1,13 +1,7 @@
 module
 
-public import SphereSixComplex.FundamentalGroup.AffineTransport
-public import SphereSixComplex.FundamentalGroup.Generators
-public import SphereSixComplex.FundamentalGroup.CoreData
-public import SphereSixComplex.FundamentalGroup.CoverProperties
 public import SphereSixComplex.Cusp.Cover.FillingComparison
 public import SphereSixComplex.Regular.Cover.MappingTorusUniversalCover
-public import SphereSixComplex.Construction.FillingPieces
-public import SphereSixComplex.TorusFamily.FiberFundamentalGroup
 public import SphereSixComplex.Prerequisites.Topology.Covering.EquivarianceExtension
 
 /-!
@@ -23,15 +17,6 @@ cusp naturality, with explicit cusp translation and meridian equations.
 noncomputable section
 
 open Set Topology
-
-namespace SphereSixComplex.Topology
-namespace PaperVanKampenFourPieceCover
-
-variable {Y : Type*} [TopologicalSpace Y] {base : Y}
-
-
-end PaperVanKampenFourPieceCover
-end SphereSixComplex.Topology
 
 namespace SphereSixComplex
 

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Collar.OpenPush
-public import Mathlib.Topology.Instances.NNReal.Lemmas
 public import Mathlib.Topology.OpenPartialHomeomorph.Composition
 
 @[expose] public section

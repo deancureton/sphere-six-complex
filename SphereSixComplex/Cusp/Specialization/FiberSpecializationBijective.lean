@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Cusp.Specialization.ClutchingCoordinates
 public import SphereSixComplex.Cusp.Specialization.FiberSpecializationColumns
 public import SphereSixComplex.Prerequisites.Algebra.PrimitiveFourColumnBasis
 public import SphereSixComplex.Cusp.Specialization.BoundaryMixedCoordinates

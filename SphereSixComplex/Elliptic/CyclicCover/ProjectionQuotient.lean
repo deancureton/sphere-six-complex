@@ -5,9 +5,6 @@ public import SphereSixComplex.Elliptic.Homology.ReducedFiberFirstHomology
 open Topology
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
-end SphereSixComplex.AffineCyclicQuotientHomology
-
-namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
 open SphereSixComplex.AffineCyclicQuotientHomology
 
@@ -75,9 +72,5 @@ public theorem complexTwoReducedCentralFiberProjection_isQuotientMap
       ((RadialEllipticActionData.centralFiberCoverSourceHomeomorph D).symm ∘
         torusProjection p))
   exact hcentral.comp (hsource.comp htorus)
-
-end SphereSixComplex.AffineCyclicQuotientHomology
-
-namespace SphereSixComplex.AffineCyclicQuotientHomology
 
 end SphereSixComplex.AffineCyclicQuotientHomology

@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.Whitehead
 public import SphereSixComplex.Elliptic.Homology.TorusBasis
-public import SphereSixComplex.Cusp.Homology.AttachmentCover
-public import SphereSixComplex.Construction.OpenEmbeddingGluing
 
 /-!
 # The two-disc cover of the elliptic interior

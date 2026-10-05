@@ -1,8 +1,6 @@
 module
 
 public import Mathlib.Geometry.Manifold.LocalDiffeomorph
-public import Mathlib.Geometry.Manifold.ContMDiff.Basic
-public import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
 public import Mathlib.Analysis.Calculus.InverseFunctionTheorem.ContDiff
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 

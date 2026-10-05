@@ -4,7 +4,6 @@ public import SphereSixComplex.Prerequisites.Topology.MappingTorus.WangExactness
 public import Mathlib.Algebra.Homology.SingleHomology
 public import Mathlib.Topology.Covering.AddCircle
 public import Mathlib.Topology.Homotopy.Lifting
-public import Mathlib.Topology.Instances.AddCircle.Real
 
 /-!
 # Lift degree on first homology of the standard circle

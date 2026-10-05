@@ -6,7 +6,6 @@ Authors: Paul Lezeau
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.Gluing.Atlas
-public import Mathlib.Topology.OpenPartialHomeomorph.Constructions
 public import Mathlib.Geometry.Manifold.ContMDiff.Atlas
 
 /-!

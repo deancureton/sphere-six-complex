@@ -3,9 +3,6 @@ module
 public import Mathlib.MeasureTheory.Integral.CircleIntegral
 
 public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.TwicePuncturedCover
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
-public import Mathlib.Analysis.SpecialFunctions.Complex.CircleMap
-public import Mathlib.CategoryTheory.Endomorphism
 
 /-!
 # Marked meridians in the twice-punctured complex plane

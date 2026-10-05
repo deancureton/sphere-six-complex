@@ -10,10 +10,7 @@ module
 
 public import SphereSixComplex.Prerequisites.Analysis.CauchyGreen
 public import Mathlib.Analysis.Complex.CauchyIntegral
-public import Mathlib.Analysis.Normed.Field.Lemmas
 public import Mathlib.MeasureTheory.Measure.Haar.Unique
-public import Mathlib.Tactic.GCongr
-public import Mathlib.Tactic.Linarith
 
 @[expose] public section
 

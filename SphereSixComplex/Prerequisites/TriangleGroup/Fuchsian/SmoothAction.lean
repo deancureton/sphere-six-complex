@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.Action
 public import Mathlib.Analysis.Complex.UpperHalfPlane.Manifold
-public import Mathlib.Geometry.Manifold.Notation
 import all SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 
 /-!

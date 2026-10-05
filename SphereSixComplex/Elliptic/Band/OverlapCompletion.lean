@@ -1,7 +1,5 @@
 module
 
-public import SphereSixComplex.Elliptic.Band.OverlapCompletionData
-public import SphereSixComplex.Elliptic.Band.OverlapInterleaving
 public import SphereSixComplex.Elliptic.Band.HomologyComparison
 
 /-!

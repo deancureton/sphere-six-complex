@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.EquivariantDescent
 public import SphereSixComplex.Elliptic.Band.SideHomotopyEquivalence
 public import SphereSixComplex.Prerequisites.Topology.Gluing.RestrictedOrbitQuotient
 

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Covering.AffineVanKampen
-public import Mathlib.GroupTheory.QuotientGroup.Defs
 public import Mathlib.GroupTheory.SemidirectProduct
 
 /-!

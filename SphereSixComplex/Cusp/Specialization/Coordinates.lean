@@ -1,5 +1,4 @@
 module
-public import SphereSixComplex.Cusp.Specialization.ClutchingCoordinates
 public import SphereSixComplex.Cusp.Specialization.FiberSpecializationBijective
 
 @[expose] public section

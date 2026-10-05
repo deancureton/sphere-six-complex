@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.WangPresentation
 public import Mathlib.Topology.Homotopy.Lifting
-public import Mathlib.Algebra.Group.Subgroup.MulOppositeLemmas
 
 /-!
 # Established fundamental-group inputs for affine torus gluings

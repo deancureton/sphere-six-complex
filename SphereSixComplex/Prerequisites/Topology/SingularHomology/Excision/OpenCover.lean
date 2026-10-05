@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Subdivision.RelativeMesh
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Subdivision.Support
-public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.QuasiIso
 
 /-!
 # Small-chain approximation for open covers

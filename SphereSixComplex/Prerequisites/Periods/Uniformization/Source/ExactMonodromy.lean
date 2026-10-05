@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.MonodromyAssembly
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.MonodromyAssembly
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.FundamentalConsistency
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.FundamentalConsistency

@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyZero
 public import Mathlib.Algebra.Homology.HomologySequence
 public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
-public import Mathlib.CategoryTheory.Abelian.Exact
 
 /-! # Integral singular chains and induced chain maps -/
 

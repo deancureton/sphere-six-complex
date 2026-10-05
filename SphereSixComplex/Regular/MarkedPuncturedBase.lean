@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Elliptic.Band.BaseCoordinate
 public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.TwicePuncturedGenerators
-public import SphereSixComplex.TriangleGroup.FuchsianProperFreeness
-public import TauCeti.AlgebraicTopology.FundamentalGroup.Homeomorph
 
 /-!
 # The marked ordinary base and zero section of the central family

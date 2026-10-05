@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Subdivision.LowDegrees
-public import Mathlib.Algebra.Group.Subgroup.ZPowers.Basic
 
 /-!
 # Barycentric fundamental chains in all degrees

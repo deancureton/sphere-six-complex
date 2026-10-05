@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Toric.CentralFiber.AttachingHomology
-public import SphereSixComplex.Prerequisites.Algebra.ExactSplitting
-public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.OpenCover
 
 /-! # Mayer–Vietoris for the radial cover of the central fiber -/
 

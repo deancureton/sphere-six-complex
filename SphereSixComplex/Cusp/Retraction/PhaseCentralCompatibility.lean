@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Cusp.Sweep.FillingPhaseCircle
-public import SphereSixComplex.Toric.CentralFiber.CompactAction
 
 @[expose] public section
 noncomputable section

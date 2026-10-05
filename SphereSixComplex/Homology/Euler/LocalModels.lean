@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.SixDimensionalModel
 
 public import SphereSixComplex.Elliptic.Homology.ReducedFiberMappingTorusHomology
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.BouquetEulerCharacteristic
 public import SphereSixComplex.Homology.Euler.LocalCalculation
 public import SphereSixComplex.Homology.FourTorus
 

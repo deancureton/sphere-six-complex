@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.HexagonBoundary
-public import Mathlib.Analysis.Convex.PathConnected
 
 @[expose] public section
 noncomputable section

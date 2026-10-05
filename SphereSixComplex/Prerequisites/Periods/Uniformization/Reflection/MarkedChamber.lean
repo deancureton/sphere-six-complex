@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.Caratheodory
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.Caratheodory
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.DiscBoundaryTriple
-import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.DiscBoundaryTriple
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.DiscBoundaryTriple
 
 @[expose] public section

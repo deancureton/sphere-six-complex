@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Toric.Phase.CompactPhaseCorrection
-public import Mathlib.Topology.Maps.Proper.Basic
 
 @[expose] public section
 

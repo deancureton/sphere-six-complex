@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologySphere
-public import Mathlib.LinearAlgebra.Matrix.Notation
 
 /-!
 # The finite integral calculations in Section 7

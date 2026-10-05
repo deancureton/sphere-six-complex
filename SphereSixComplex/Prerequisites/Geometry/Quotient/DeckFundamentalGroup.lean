@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.Quotient.Manifold
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup
 public import Mathlib.Topology.Homotopy.Lifting
 
 /-!

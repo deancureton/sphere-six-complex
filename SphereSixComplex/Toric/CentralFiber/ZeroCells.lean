@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Cusp.CentralFiber.CellStructure
-public import SphereSixComplex.Toric.Model.CarrierProperties
 
 /-!
 # The zero-cells of the standard `A₂` central-fibre quotient

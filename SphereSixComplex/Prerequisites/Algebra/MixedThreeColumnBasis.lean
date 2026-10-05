@@ -1,7 +1,5 @@
 module
 
-public import Mathlib.Algebra.Group.Equiv.Basic
-public import Mathlib.Algebra.Group.Pi.Basic
 public import Mathlib.Data.Fin.VecNotation
 public import Mathlib.Data.Fintype.Fin
 public import Mathlib.Tactic.FinCases

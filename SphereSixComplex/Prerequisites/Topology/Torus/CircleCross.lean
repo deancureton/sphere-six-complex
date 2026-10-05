@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.CircleProduct
-public import SphereSixComplex.Prerequisites.Topology.Torus.Homology
 
 /-!
 # Positive circle cross-products

@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Cusp.Wang.NormalizedPathHomotopy
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.CircleSweep
 
 @[expose] public section
 noncomputable section

@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Toric.Positive.InteriorProjection
 public import SphereSixComplex.Elliptic.Collar.FundamentalDomainTransport
-public import Mathlib.Topology.Instances.AddCircle.Real
 
 @[expose] public section
 noncomputable section

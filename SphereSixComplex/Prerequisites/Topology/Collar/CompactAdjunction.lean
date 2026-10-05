@@ -1,7 +1,5 @@
 module
 
-public import Mathlib.Topology.Homeomorph.Lemmas
-public import Mathlib.Topology.Constructions.SumProd
 public import Mathlib.Topology.LocalAtTarget
 
 /-! # Recovering a compact space as an adjunction space -/

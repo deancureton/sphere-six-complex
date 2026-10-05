@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Elliptic.Collar.FourthGaugeCompatibility
-public import SphereSixComplex.Elliptic.Cover.FillingRealPeriodRadial
 
 @[expose] public section
 noncomputable section

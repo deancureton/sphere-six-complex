@@ -2,11 +2,7 @@ module
 
 public import Mathlib.Algebra.Homology.QuasiIso
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Relative
-public import Mathlib.Analysis.Normed.Module.Ball.Homeomorph
 public import Mathlib.Topology.Compactification.OnePoint.Sphere
-public import Mathlib.Algebra.Homology.Homotopy
-public import Mathlib.AlgebraicTopology.SimplicialSet.Subcomplex
-public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
 
 /-!
 # Small singular chains for excision

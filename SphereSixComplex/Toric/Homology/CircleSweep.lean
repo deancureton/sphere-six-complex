@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.CircleCross
-public import SphereSixComplex.Prerequisites.Topology.Hurewicz.ChainInverse
 public import SphereSixComplex.Toric.ContinuousTorusAction
 
 @[expose] public section

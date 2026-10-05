@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Elliptic.Band.Trivialization
 public import SphereSixComplex.Elliptic.Band.HomologyAlignment
 public import SphereSixComplex.Cusp.Wang.Boundary
-public import SphereSixComplex.Cusp.Wang.PullbackComparison
 
 /-!
 # The affine radial geometry and marked homology data

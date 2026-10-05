@@ -2,9 +2,7 @@ module
 
 public import TauCeti.Analysis.Complex.Conformal.Reflection.Arc
 public import TauCeti.Analysis.Complex.Conformal.Reflection.Injective
-import TauCeti.Analysis.Complex.Conformal.Reflection.Arc
 import all TauCeti.Analysis.Complex.Conformal.Reflection.Arc
-import TauCeti.Analysis.Complex.Conformal.Reflection.Injective
 import all TauCeti.Analysis.Complex.Conformal.Reflection.Injective
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.TriangleGeometry
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.TriangleGeometry

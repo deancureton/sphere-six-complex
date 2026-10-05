@@ -2,9 +2,7 @@ module
 
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.Triangle
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.Triangle
-public import Mathlib.Topology.OpenPartialHomeomorph.IsImage
 import all Mathlib.Topology.OpenPartialHomeomorph.IsImage
-public import TauCeti.Analysis.Complex.Conformal.Reflection.Arc
 import all TauCeti.Analysis.Complex.Conformal.Reflection.Arc
 
 @[expose] public section

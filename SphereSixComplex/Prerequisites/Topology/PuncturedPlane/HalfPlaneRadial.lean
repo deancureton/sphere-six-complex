@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.StrongDeformationRetraction
-public import Mathlib.Analysis.Complex.Basic
 
 /-!
 # Radial geometry of punctured affine half-planes

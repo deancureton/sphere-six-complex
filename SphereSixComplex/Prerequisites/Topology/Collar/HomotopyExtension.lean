@@ -2,8 +2,6 @@ module
 
 public import Mathlib.Geometry.Manifold.Bordism
 public import Mathlib.Geometry.Manifold.Instances.Icc
-public import Mathlib.Geometry.Manifold.SmoothEmbedding
-public import Mathlib.Geometry.Manifold.Diffeomorph
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Equivalence
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Pushout
 

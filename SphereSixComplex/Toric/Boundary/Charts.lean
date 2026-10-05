@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Toric.CentralFiber.OneCells
 import all SphereSixComplex.Toric.CentralFiber.OneCells
 
 public import SphereSixComplex.Toric.Boundary.FaceCoverage

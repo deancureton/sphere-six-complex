@@ -3,10 +3,8 @@ module
 public import SphereSixComplex.Toric.Boundary.Homology
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.TwoSliceBoundary
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.BoundaryCoordinates
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.ProductBoundaryGenerator
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.CircleCross
 public import SphereSixComplex.Prerequisites.Topology.Torus.CircleProductSwap
-public import Mathlib.Analysis.Convex.PathConnected
 public import SphereSixComplex.Toric.Boundary.Action
 import all SphereSixComplex.Prerequisites.Topology.MappingTorus.TwoSliceBoundary
 import all SphereSixComplex.Prerequisites.Topology.MappingTorus.IntervalClutching

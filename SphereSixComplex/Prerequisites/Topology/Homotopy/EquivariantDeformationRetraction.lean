@@ -1,7 +1,6 @@
 module
 
 public import Mathlib.Topology.Homotopy.Basic
-public import Mathlib.Topology.Algebra.MulAction
 
 @[expose] public section
 noncomputable section

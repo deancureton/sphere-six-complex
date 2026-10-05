@@ -4,7 +4,6 @@ public import SphereSixComplex.Periods.Invariant
 public import SphereSixComplex.Prerequisites.Periods.ModularUniformization
 import all SphereSixComplex.Prerequisites.Periods.ModularUniformization
 import all SphereSixComplex.Periods.Matrix
-import Mathlib.Geometry.Manifold.Notation
 
 /-!
 # Analytic period functions

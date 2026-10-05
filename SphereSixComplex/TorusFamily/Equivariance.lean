@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.TorusFamily.Basic
-public import Mathlib.Topology.Homeomorph.Quotient
 
 /-!
 # Equivariance of the torus family

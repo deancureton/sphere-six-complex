@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Cusp.Wang.NormalizedCylinderBoundary
-public import SphereSixComplex.Regular.Transport.IntegerPeriodCircle
 
 @[expose] public section
 noncomputable section

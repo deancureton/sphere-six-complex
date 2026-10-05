@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.OrbifoldCoordinate
-public import Mathlib.Topology.ContinuousMap.Basic
-public import Mathlib.Analysis.Complex.RemovableSingularity
 import all SphereSixComplex.Periods.FuchsianModularLift.Ramification
 
 /-!

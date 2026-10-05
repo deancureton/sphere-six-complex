@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Collar.Adjunction
-public import Mathlib.Topology.Homotopy.Equiv
 public import Mathlib.Analysis.Convex.Contractible
 public import Mathlib.Analysis.Normed.Module.Convex
 

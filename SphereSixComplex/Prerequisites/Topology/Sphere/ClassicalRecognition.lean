@@ -1,9 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Hurewicz.SphereMap
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.Higher
-public import SphereSixComplex.Prerequisites.Topology.Hurewicz.Whitehead
-public import Mathlib.Topology.Homotopy.HomotopyGroup
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
 public import SphereSixComplex.Prerequisites.Topology.Manifold.Triangulation
 

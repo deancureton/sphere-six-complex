@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Periods.FuchsianModularParameterExistence
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.OrbifoldCoordinate
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.Uniformization
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Lifting.Existence

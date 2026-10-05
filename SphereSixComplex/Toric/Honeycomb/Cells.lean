@@ -1,10 +1,7 @@
 module
 
 public import SphereSixComplex.Toric.Phase.HoneycombReduction
-public import Mathlib.Algebra.Order.Round
-public import Mathlib.Data.Int.Interval
 public import Mathlib.Data.Pi.Interval
-public import SphereSixComplex.Prerequisites.Topology.Gluing.LocallyFiniteClosedCover
 
 /-!
 # Periodic planar cells for the constructed A₂ honeycomb

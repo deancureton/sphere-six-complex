@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.FundamentalGroup.AffineTransport
-public import SphereSixComplex.FundamentalGroup.Generators
 public import SphereSixComplex.Cusp.FundamentalGroup.CentralNaturality
 
 /-!

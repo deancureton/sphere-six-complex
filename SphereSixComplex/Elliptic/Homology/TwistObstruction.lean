@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Periods.LatticeData
-public import Mathlib.Data.ZMod.Basic
 
 /-!
 # The integer twist obstruction

@@ -1,6 +1,5 @@
 module
 
-public import Mathlib.Topology.Connected.LocallyConnected
 import all Mathlib.Topology.Connected.LocallyConnected
 public import Mathlib.Topology.Covering.Basic
 import all Mathlib.Topology.Covering.Basic

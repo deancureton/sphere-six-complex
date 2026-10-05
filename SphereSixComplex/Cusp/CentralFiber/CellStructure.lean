@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Cusp.Retraction.Descent
-public import Mathlib.GroupTheory.GroupAction.SubMulAction
-public import Mathlib.Topology.Maps.OpenQuotient
 
 /-!
 # The central-fibre orbit quotient

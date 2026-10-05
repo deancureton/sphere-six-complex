@@ -1,8 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.MappingCylinderGluing
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.MappingCylinder
-public import Mathlib.Topology.ContinuousOn
 public import Mathlib.Topology.PartitionOfUnity
 
 /-!

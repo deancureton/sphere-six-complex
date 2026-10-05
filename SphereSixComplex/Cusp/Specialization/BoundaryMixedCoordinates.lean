@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Cusp.Specialization.BoundaryMixedTori
-public import SphereSixComplex.Toric.CentralFiber.HomologyCoordinates
 
 @[expose] public section
 noncomputable section

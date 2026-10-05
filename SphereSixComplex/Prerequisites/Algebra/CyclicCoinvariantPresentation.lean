@@ -1,8 +1,6 @@
 module
 
 public import Mathlib.LinearAlgebra.Quotient.Basic
-public import Mathlib.LinearAlgebra.Prod
-public import Mathlib.LinearAlgebra.Span.Basic
 
 @[expose] public section
 noncomputable section

@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.ModularParameter
 public import Mathlib.NumberTheory.ModularForms.LevelOne.GradedRing
-public import Mathlib.NumberTheory.ModularForms.Discriminant
-import Mathlib.Geometry.Manifold.Notation
 
 open Matrix UpperHalfPlane
 open scoped Manifold MatrixGroups ModularForm

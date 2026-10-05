@@ -1,8 +1,6 @@
 module
 
 public import Mathlib.Topology.Homotopy.Contractible
-public import Mathlib.Topology.UnitInterval
-public import Mathlib.Topology.Homeomorph.Lemmas
 public import Mathlib.Tactic
 
 @[expose] public section

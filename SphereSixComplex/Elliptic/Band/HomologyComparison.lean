@@ -1,15 +1,9 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.ProductSlice
-public import SphereSixComplex.Elliptic.LogarithmicGauge.Homeomorph
-public import SphereSixComplex.TorusFamily.RealPeriodTrivialization
-public import SphereSixComplex.Construction.EllipticCentralEscape
 public import SphereSixComplex.Elliptic.DiscCircle.Gluing
 public import SphereSixComplex.Elliptic.Band.CayleyBounds
-public import SphereSixComplex.Elliptic.Band.OverlapInterleaving
 public import SphereSixComplex.Regular.Transport.Fiber
-public import SphereSixComplex.Regular.Cover.SideRegions
-public import SphereSixComplex.Regular.Cover.RadialEquivalence
 
 @[expose] public section
 

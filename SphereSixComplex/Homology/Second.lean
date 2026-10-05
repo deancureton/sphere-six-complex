@@ -3,9 +3,7 @@ module
 public import SphereSixComplex.Elliptic.Homology.HomologyOne
 public import SphereSixComplex.Homology.First
 public import SphereSixComplex.Cusp.Homology.AttachmentHomology
-public import SphereSixComplex.Cusp.Homology.AttachingMap
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.FiniteRank
-public import Mathlib.LinearAlgebra.Pi
 
 @[expose] public section
 noncomputable section

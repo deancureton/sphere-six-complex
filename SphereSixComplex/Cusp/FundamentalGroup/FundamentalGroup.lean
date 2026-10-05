@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Elliptic.FundamentalGroup.Relators
-public import Mathlib.GroupTheory.Subgroup.Centralizer
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.SimplyConnected
 
 @[expose] public section

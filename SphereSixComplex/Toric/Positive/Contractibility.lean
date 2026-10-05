@@ -6,7 +6,6 @@ Authors: Dean Cureton
 module
 
 public import SphereSixComplex.Toric.Phase.HoneycombReduction
-import Mathlib.Analysis.Convex.Contractible
 
 /-!
 # Contractibility reduction for the constructed positive part

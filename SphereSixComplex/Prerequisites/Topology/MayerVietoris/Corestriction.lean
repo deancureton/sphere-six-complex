@@ -6,7 +6,6 @@ Authors: Paul Lezeau
 module
 
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.Chains
-public import Mathlib.CategoryTheory.Limits.Constructions.EpiMono
 
 /-!
 # Singular chains of an open subspace and its image subcomplex

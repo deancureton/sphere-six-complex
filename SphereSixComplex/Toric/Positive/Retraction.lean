@@ -1,9 +1,7 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.StrongDeformationRetraction
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.HomotopyExtension
 public import SphereSixComplex.Cusp.LocalPhaseAction
-public import Mathlib.Analysis.Complex.Circle
 
 /-!
 # Positive-part retraction for the standard infinite `A₂` toric model

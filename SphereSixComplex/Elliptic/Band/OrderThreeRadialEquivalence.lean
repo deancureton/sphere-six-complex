@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Regular.Cover.RadialEquivalence
 public import SphereSixComplex.Regular.Cover.SideRegions
 
 /-!

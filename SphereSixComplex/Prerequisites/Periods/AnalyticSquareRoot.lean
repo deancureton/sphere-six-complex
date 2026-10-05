@@ -1,10 +1,7 @@
 module
 
 public import Mathlib.Analysis.Complex.BranchLogRoot
-public import Mathlib.Analysis.Calculus.Deriv.Slope
-public import Mathlib.Analysis.Complex.CauchyIntegral
 public import Mathlib.Analysis.Complex.UpperHalfPlane.Manifold
-public import Mathlib.Analysis.Convex.Contractible
 public import Mathlib.Analysis.Meromorphic.NormalForm
 import all Mathlib.Analysis.Complex.BranchLogRoot
 import all Mathlib.Analysis.Calculus.Deriv.Slope

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Subdivision.Mesh
-public import Mathlib.Algebra.FreeAbelianGroup.Finsupp
 
 /-!
 # Support of iterated affine subdivision

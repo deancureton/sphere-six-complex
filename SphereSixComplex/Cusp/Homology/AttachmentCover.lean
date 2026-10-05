@@ -1,10 +1,6 @@
 module
 
 public import SphereSixComplex.Homology.MayerVietoris
-public import SphereSixComplex.Homology.IntegralCalculation
-public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.StarGluing
-public import Mathlib.Algebra.Homology.ShortComplex.Ab
-public import Mathlib.Algebra.Category.Grp.Zero
 
 
 /-! # The final cusp attachment cover -/

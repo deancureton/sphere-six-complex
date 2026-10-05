@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.NormalizedSplitting
 public import SphereSixComplex.Cusp.Specialization.Coordinates
 public import SphereSixComplex.Elliptic.TwoDisc.HomologyCoordinates
 

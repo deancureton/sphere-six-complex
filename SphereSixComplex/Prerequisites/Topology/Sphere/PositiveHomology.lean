@@ -6,11 +6,9 @@ Authors: Paul Lezeau
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Sphere.SmoothRecognition
-public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologySphere
 public import Mathlib.Algebra.Category.Grp.Zero
 public import Mathlib.Topology.Separation.Connected
 public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
-public import Mathlib.Topology.Homotopy.Contractible
 
 /-!
 # Positive integral homology

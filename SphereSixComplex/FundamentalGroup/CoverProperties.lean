@@ -1,11 +1,7 @@
 module
 
 public import SphereSixComplex.Construction.CompactThreefold
-public import SphereSixComplex.Gluing.Connected
 public import SphereSixComplex.Homology.Euler.Assembly
-public import SphereSixComplex.Homology.Euler.LocalModels
-public import SphereSixComplex.FundamentalGroup.Cover
-public import SphereSixComplex.FundamentalGroup.Generators
 
 /-!
 # Van Kampen inputs for the actual analytic star

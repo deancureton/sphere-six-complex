@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.Tessellation
 public import Mathlib.NumberTheory.Zsqrtd.Basic
-public import Mathlib.LinearAlgebra.Matrix.ProjectiveSpecialLinearGroup
 
 /-!
 # Quadratic-integer arithmetic for the Fuchsian action

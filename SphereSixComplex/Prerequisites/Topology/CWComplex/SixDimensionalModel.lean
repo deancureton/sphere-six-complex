@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.EulerCharacteristic
 public import SphereSixComplex.Prerequisites.Topology.Sphere.SmoothRecognition
-public import Mathlib.Topology.Homotopy.Equiv
 
 @[expose] public section
 noncomputable section

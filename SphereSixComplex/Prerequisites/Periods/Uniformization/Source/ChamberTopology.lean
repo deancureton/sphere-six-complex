@@ -2,17 +2,13 @@ module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.FundamentalDomain
 import all SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.FundamentalDomain
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 import all Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
-public import Mathlib.Analysis.Complex.Convex
 import all Mathlib.Analysis.Complex.Convex
 public import Mathlib.Analysis.Complex.CoveringMap
 import all Mathlib.Analysis.Complex.CoveringMap
 public import Mathlib.Analysis.Complex.Periodic
 import all Mathlib.Analysis.Complex.Periodic
-public import Mathlib.Analysis.Convex.Contractible
 import all Mathlib.Analysis.Convex.Contractible
-public import Mathlib.Analysis.SpecialFunctions.Complex.Log
 import all Mathlib.Analysis.SpecialFunctions.Complex.Log
 public import TauCeti.Analysis.Complex.Conformal.ImageSimplyConnected
 import all TauCeti.Analysis.Complex.Conformal.ImageSimplyConnected

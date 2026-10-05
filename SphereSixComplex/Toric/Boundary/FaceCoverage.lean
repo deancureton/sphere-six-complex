@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Toric.Phase.CompactPhaseCorrection
-public import Mathlib.Analysis.Complex.Polynomial.Basic
 
 @[expose] public section
 

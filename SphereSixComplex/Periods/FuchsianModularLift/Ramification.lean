@@ -1,14 +1,7 @@
 module
 
-import TauCeti.Analysis.Complex.Conformal.LocalDegree
 
-import Mathlib.Analysis.Analytic.Order
-import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
-import Mathlib.RingTheory.RootsOfUnity.Complex
-import Mathlib.Topology.Algebra.Module.PerfectSpace
-import Mathlib.Topology.IsLocalHomeomorph
-import Mathlib.Tactic
 public import SphereSixComplex.Periods.FuchsianModularLift
 
 public section

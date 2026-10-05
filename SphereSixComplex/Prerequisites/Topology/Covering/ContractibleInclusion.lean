@@ -1,11 +1,9 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.SubspaceInclusion
-public import Mathlib.Topology.Homotopy.Lifting
 public import Mathlib.Topology.CWComplex.Classical.Basic
 public import TauCeti.AlgebraicTopology.EilenbergMacLane.Covering
 public import TauCeti.Topology.Homotopy.HomotopyGroup.BasepointChange
-public import Mathlib.Topology.Homotopy.Contractible
 
 /-!
 # Contractible regular covers and `K(G, 1)` quotients

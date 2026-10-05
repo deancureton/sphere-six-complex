@@ -1,7 +1,6 @@
 module
 
 public import Mathlib.Topology.Homotopy.Contractible
-public import Mathlib.Topology.CompactOpen
 public import Mathlib.Topology.Algebra.Module.Basic
 
 @[expose] public section

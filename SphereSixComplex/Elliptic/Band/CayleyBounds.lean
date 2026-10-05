@@ -1,7 +1,5 @@
 module
 public import SphereSixComplex.Elliptic.Band.MarkedDisc
-public import SphereSixComplex.Elliptic.Band.StripLift
-public import SphereSixComplex.Regular.Cover.RadialEquivalence
 public import SphereSixComplex.Elliptic.Collar.PathSheet
 /-!
 # Identity-collar bounds for the normalized affine strip

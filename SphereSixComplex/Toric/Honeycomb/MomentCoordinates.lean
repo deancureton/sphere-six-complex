@@ -6,7 +6,6 @@ Authors: Dean Cureton
 module
 
 public import SphereSixComplex.Toric.Positive.Contractibility
-import Mathlib.Topology.Maps.Proper.Basic
 
 /-!
 # Moment coordinates for the constructed A₂ positive carrier

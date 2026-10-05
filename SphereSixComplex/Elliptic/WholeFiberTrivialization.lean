@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Elliptic.LocalTrivialization
-public import Mathlib.Geometry.Manifold.LocalDiffeomorph
-public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.Basic
 
 /-!
 # Whole-fibre elliptic trivializations

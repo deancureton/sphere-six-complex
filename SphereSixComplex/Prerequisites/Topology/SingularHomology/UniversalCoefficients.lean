@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Cohomology
 public import Mathlib.Algebra.Category.ModuleCat.Ext.HasExt
-public import Mathlib.Algebra.Category.ModuleCat.Projective
 public import Mathlib.CategoryTheory.Abelian.Projective.Dimension
 public import Mathlib.LinearAlgebra.FreeModule.PID
 

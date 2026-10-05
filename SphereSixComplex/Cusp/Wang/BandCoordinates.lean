@@ -1,11 +1,6 @@
 module
 
 public import SphereSixComplex.Elliptic.Band.RadialCompletionData
-public import SphereSixComplex.Cusp.CollarPairProperness
-public import SphereSixComplex.TorusFamily.RealPeriodTrivialization
-public import SphereSixComplex.Cusp.Cover.BoundaryUniversalCover
-public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.StarGluing
-public import Mathlib.Algebra.Category.Grp.EpiMono
 
 public import SphereSixComplex.Cusp.Specialization.WangCoordinates
 

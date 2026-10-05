@@ -3,14 +3,8 @@ module
 public import SphereSixComplex.Prerequisites.Geometry.Gluing.FourPieceStar
 public import SphereSixComplex.Prerequisites.Topology.Gluing.FiniteIntersections
 public import SphereSixComplex.Homology.OpenCoverExactSequence
-public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyZero
 public import SphereSixComplex.Homology.IntegralCalculation
-public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.StarGluing
-public import Mathlib.Algebra.Homology.ShortComplex.Ab
-public import Mathlib.Algebra.Category.Grp.Zero
-public import SphereSixComplex.Prerequisites.Topology.Sphere.PositiveHomology
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
-public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.OpenCover
 
 /-! # The four-piece open cover induced by a star gluing -/
 

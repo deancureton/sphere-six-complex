@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Elliptic.Cover.ReducedCentralFiberCoverModels
-public import SphereSixComplex.Elliptic.Homology.TorusBasisEquivalences
 
 /-!
 # Integral homology bases for the elliptic period tori

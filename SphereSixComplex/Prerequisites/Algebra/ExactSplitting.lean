@@ -2,7 +2,6 @@ module
 
 public import Mathlib.Algebra.Category.ModuleCat.Biproducts
 public import Mathlib.Algebra.Module.Projective
-public import Mathlib.Algebra.Exact.Basic
 
 @[expose] public section
 

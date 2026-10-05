@@ -6,11 +6,8 @@ public import TauCeti.Analysis.Normed.Module.FilledHull
 import all TauCeti.Analysis.Normed.Module.FilledHull
 public import TauCeti.Topology.JordanCurve.Basic
 import all TauCeti.Topology.JordanCurve.Basic
-public import Mathlib.Analysis.Normed.Module.Connected
 import all Mathlib.Analysis.Normed.Module.Connected
-public import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import all Mathlib.Analysis.SpecialFunctions.Complex.Circle
-public import Mathlib.Topology.Homeomorph.Lemmas
 import all Mathlib.Topology.Homeomorph.Lemmas
 
 @[expose] public section

@@ -6,11 +6,8 @@ Authors: Paul Lezeau
 module
 
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.Corestriction
-public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.Chains
-public import Mathlib.Algebra.Category.Grp.EpiMono
 public import Mathlib.Algebra.Category.Grp.Zero
 public import Mathlib.Algebra.Homology.HomologySequenceLemmas
-public import Mathlib.Algebra.Homology.HomologySequence
 public import Mathlib.Algebra.Homology.ShortComplex.Ab
 
 /-!

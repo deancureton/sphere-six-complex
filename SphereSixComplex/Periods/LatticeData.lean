@@ -1,10 +1,6 @@
 module
 
-public import Mathlib.Data.Matrix.Basic
-public import Mathlib.LinearAlgebra.Matrix.Notation
-public import Mathlib.LinearAlgebra.Matrix.ToLin
 public import Mathlib.Tactic
-public import Mathlib.Tactic.NormDet
 
 /-!
 # Lattice and monodromy data

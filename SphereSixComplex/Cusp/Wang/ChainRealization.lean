@@ -1,9 +1,6 @@
 module
 
 public import SphereSixComplex.Elliptic.Band.RadialCompletionData
-public import SphereSixComplex.Cusp.CollarPairProperness
-public import SphereSixComplex.TorusFamily.RealPeriodTrivialization
-public import SphereSixComplex.Cusp.Cover.BoundaryUniversalCover
 
 /-!
 # Chain realization of the cusp Wang boundary

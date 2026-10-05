@@ -38,9 +38,6 @@ public theorem correctedPlaneTile_zero_zero (i : Fin 6)
       planeNextVertexOffset, planeMidpointOffset,
       cellPreviousIndex, hp] <;> ring
 
-open SphereSixComplex.Geometry.CuspCombinatorics
-open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
-
 end Construction
 
 open SphereSixComplex.Geometry.CuspCombinatorics
@@ -52,8 +49,6 @@ public def boundaryZeroOneTarget : Fin 6 → ChartIndex :=
 
 public def boundaryZeroZeroTarget : Fin 6 → ChartIndex :=
   ![(false, 0), (true, -e₁), (false, 0), (true, -e₂), (false, 0), (true, 0)]
-
-open SphereSixComplex.Geometry.CuspCollar
 
 end Construction
 

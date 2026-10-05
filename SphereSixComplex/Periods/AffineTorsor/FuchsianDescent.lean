@@ -1,12 +1,10 @@
 module
 
-public import SphereSixComplex.Periods.ModularFrame.Basic
 public import SphereSixComplex.Periods.AffineTorsor.MuTorsor
 public import SphereSixComplex.Periods.ModularFrame.Construction
 public import SphereSixComplex.Periods.AffineTorsor.StandardFrameDescent
 import all SphereSixComplex.Periods.Functions
 import all SphereSixComplex.Prerequisites.Periods.FuchsianModularParameterExistence
-import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.Tessellation
 
 /-!
 # Exact modular-form input for the additive Fuchsian torsors

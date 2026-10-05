@@ -1,13 +1,10 @@
 module
 
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.Circle
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.Circle
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.FundamentalFibers
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.FundamentalFibers
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.SeedInjective
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.RightInjective
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.RightInjective
-public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.TriangleGeometry
 import all SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.TriangleGeometry
 public import TauCeti.Analysis.Complex.Conformal.Continuation.Basic
 import all TauCeti.Analysis.Complex.Conformal.Continuation.Basic

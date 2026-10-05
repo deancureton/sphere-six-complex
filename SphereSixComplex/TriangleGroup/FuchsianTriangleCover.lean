@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.TriangleGeometry
 public import SphereSixComplex.Periods.Uniformization
-public import SphereSixComplex.Prerequisites.Periods.FuchsianCompactGeometry
 
 noncomputable section
 

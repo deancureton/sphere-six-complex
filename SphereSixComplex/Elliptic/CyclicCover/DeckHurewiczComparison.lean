@@ -6,9 +6,6 @@ public import SphereSixComplex.Elliptic.CyclicCover.QuotientCovering
 open AlgebraicTopology MulOpposite Topology
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
-end SphereSixComplex.AffineCyclicQuotientHomology
-
-namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
 open SphereSixComplex.AffineCyclicQuotientHomology
 
@@ -52,9 +49,5 @@ public noncomputable def deckHurewiczComparison
   · exact projectedStraightPeriodLoop_homologyClass_eq_coverProjectionLatticeMap P
 
 end
-
-end SphereSixComplex.AffineCyclicQuotientHomology
-
-namespace SphereSixComplex.AffineCyclicQuotientHomology
 
 end SphereSixComplex.AffineCyclicQuotientHomology

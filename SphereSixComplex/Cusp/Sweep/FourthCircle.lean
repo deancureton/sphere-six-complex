@@ -26,8 +26,6 @@ public theorem cuspFourthCircle_real (x : PeriodDomain) (t : ℝ) :
       additiveTorusProjection x.1 (t • periodVector x.1 ![0,0,0,1]) := by
   simpa only [cuspFourthCircle, fourthCoordinate_eq] using cuspCoordinateCircle_real x 3 t
 
-open SphereSixComplex.Topology.FixedTopologicalCircleWangBoundary
-
 end SphereSixComplex.Geometry.CuspRadialClutchingConstruction
 end
 end

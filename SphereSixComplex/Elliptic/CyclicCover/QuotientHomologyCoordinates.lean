@@ -1,7 +1,5 @@
 module
 
-public import SphereSixComplex.Elliptic.Homology.TorusBasis
-public import SphereSixComplex.Elliptic.Homology.MultipleFiberCoinvariants
 
 public import SphereSixComplex.Elliptic.Homology.FirstHomologyPresentation
 
@@ -59,7 +57,5 @@ public def affineCyclicCentralFiberCoverSourceHomologyBasis
     FourTorusHomologyBasis (RadialEllipticActionData.CentralFiberCoverSource D) :=
   (StandardTorusHomology.additiveTorusHomologyBasis p P.fullRank).homeomorph
     (RadialEllipticActionData.centralFiberCoverSourceHomeomorph D)
-
-variable {U : Periods.TriangleUniformization} (F : Periods.PeriodFunctions U)
 
 end SphereSixComplex.AffineCyclicQuotientHomology

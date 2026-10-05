@@ -4,7 +4,6 @@ public import SphereSixComplex.Prerequisites.Topology.Collar.HalfSpace
 public import SphereSixComplex.Prerequisites.Topology.Collar.OrthantHalfSpace
 public import SphereSixComplex.Toric.Positive.QuadrantManifold
 public import SphereSixComplex.Prerequisites.Topology.Collar.Existence
-public import Mathlib.Topology.Metrizable.Urysohn
 
 @[expose] public section
 

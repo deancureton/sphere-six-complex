@@ -2,9 +2,6 @@ module
 
 public import SphereSixComplex.Toric.Positive.RelativeCWData
 public import SphereSixComplex.Prerequisites.Topology.Manifold.CornersCWComplex
-public import Mathlib.Topology.CWComplex.Classical.Finite
-import SphereSixComplex.Prerequisites.Geometry.Quotient.Manifold
-import SphereSixComplex.Prerequisites.Geometry.Quotient.Topology
 
 /-!
 # Relative CW attachments for the constructed positive quotient

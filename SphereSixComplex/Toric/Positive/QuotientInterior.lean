@@ -1,7 +1,6 @@
 module
 public import SphereSixComplex.Prerequisites.Topology.Collar.CoveringHalfSpace
 public import SphereSixComplex.Toric.Positive.LocalCollars
-public import SphereSixComplex.Toric.Positive.RelativeCW
 
 @[expose] public section
 noncomputable section

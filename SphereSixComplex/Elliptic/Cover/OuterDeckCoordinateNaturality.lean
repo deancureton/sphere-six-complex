@@ -1,5 +1,4 @@
 module
-public import SphereSixComplex.Prerequisites.Topology.Covering.MonodromyTransport
 public import SphereSixComplex.Regular.FundamentalGroup.Core
 
 @[expose] public section

@@ -1,5 +1,4 @@
 module
-public import SphereSixComplex.Homology.FourthTranslation
 public import SphereSixComplex.Elliptic.Homology.HomologyGenerators
 public import SphereSixComplex.Elliptic.Homology.HomologyGeneration
 public import SphereSixComplex.Elliptic.Homology.HomologyGeneratorAlignment

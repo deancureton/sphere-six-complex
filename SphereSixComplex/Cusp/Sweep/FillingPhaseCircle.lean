@@ -1,7 +1,6 @@
 module
 public import SphereSixComplex.Cusp.FundamentalGroup.FiniteFiberCoordinateTori
 public import SphereSixComplex.Toric.Homology.CircleSweep
-public import SphereSixComplex.Prerequisites.Topology.Torus.CircleExponential
 public import SphereSixComplex.Cusp.Cover.FillingSquare
 
 @[expose] public section

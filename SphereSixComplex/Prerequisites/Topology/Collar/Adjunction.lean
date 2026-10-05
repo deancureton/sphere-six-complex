@@ -3,8 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.Collar.CompactAdjunction
 public import Mathlib.Analysis.Normed.Module.Ball.RadialEquiv
 public import Mathlib.Topology.Homotopy.Basic
-public import Mathlib.Topology.CompactOpen
-public import Mathlib.Tactic.Ring
 
 /-! # Radial coordinates and expansion on ball attachments -/
 

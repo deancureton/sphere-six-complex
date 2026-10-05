@@ -11,7 +11,6 @@ public import SphereSixComplex.Prerequisites.Analysis.CauchyGreen
 public import SphereSixComplex.Prerequisites.Analysis.NormalizedCocycle
 public import Mathlib.Analysis.Complex.CauchyIntegral
 public import Mathlib.Analysis.Complex.Conformal
-public import Mathlib.Tactic.LinearCombination
 
 @[expose] public section
 

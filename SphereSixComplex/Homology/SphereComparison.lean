@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Construction.CompactThreefold
 public import SphereSixComplex.Homology.Euler.Assembly
-public import SphereSixComplex.Homology.Euler.MayerVietoris
-public import SphereSixComplex.Prerequisites.Topology.Manifold.ComplexThreefoldHomology
 
 open scoped ContDiff Manifold
 

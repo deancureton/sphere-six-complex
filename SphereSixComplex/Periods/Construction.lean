@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Periods.FuchsianModularLift
-public import SphereSixComplex.Periods.SchurCompactness
-public import SphereSixComplex.Periods.Uniformization
 public import SphereSixComplex.TriangleGroup.FuchsianTriangleCover
 import all SphereSixComplex.Periods.Functions
 import all SphereSixComplex.Periods.Uniformization

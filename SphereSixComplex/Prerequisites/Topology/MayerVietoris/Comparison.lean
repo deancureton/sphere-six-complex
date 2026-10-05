@@ -7,7 +7,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.MapNaturality
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.OpenCover
-public import Mathlib.Algebra.Homology.HomologicalComplexBiprod
 
 /-!
 # Assembly of the ordinary open-cover Mayer--Vietoris comparison

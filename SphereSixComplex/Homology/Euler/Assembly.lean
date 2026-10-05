@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Homology.Euler.Collars
 public import SphereSixComplex.Regular.Homology.Euler
 public import SphereSixComplex.Toric.CentralFiber.Euler
 

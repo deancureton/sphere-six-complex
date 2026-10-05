@@ -1,7 +1,6 @@
 module
 
 public import Mathlib.Geometry.Manifold.Instances.Real
-public import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
 public import Mathlib.Topology.CWComplex.Classical.Basic
 
 /-!

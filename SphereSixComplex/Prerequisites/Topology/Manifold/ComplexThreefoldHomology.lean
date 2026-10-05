@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.Manifold.OrientedHomology
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
-public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
 
 @[expose] public section
 noncomputable section

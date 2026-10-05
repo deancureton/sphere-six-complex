@@ -2,10 +2,6 @@ module
 
 public import SphereSixComplex.Cusp.PeriodExpansion
 import all SphereSixComplex.Periods.Uniformization
-import Mathlib.Analysis.Complex.Periodic
-import Mathlib.Analysis.Analytic.Order
-import Mathlib.Analysis.SpecialFunctions.Complex.LogDeriv
-import Mathlib.NumberTheory.ModularForms.QExpansion
 
 /-!
 # Normalizing the Fuchsian cusp coordinate

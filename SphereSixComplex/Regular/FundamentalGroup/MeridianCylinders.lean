@@ -1,9 +1,6 @@
 module
 public import SphereSixComplex.Elliptic.Band.MarkedDisc
-public import SphereSixComplex.Elliptic.Band.OverlapCompletionData
-public import SphereSixComplex.Elliptic.Band.OverlapInterleaving
 public import SphereSixComplex.Regular.Transport.PeriodCircleSideSupport
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.TwoSliceBoundary
 
 @[expose] public section
 noncomputable section

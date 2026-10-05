@@ -3,8 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.EquivariantDeformationRetraction
 public import SphereSixComplex.Prerequisites.Topology.Collar.HomotopyExtension
 public import SphereSixComplex.Prerequisites.Topology.Covering.ContractibleInclusion
-public import Mathlib.Topology.Homotopy.Lifting
-public import Mathlib.Topology.CWComplex.Classical.Basic
 import SphereSixComplex.Prerequisites.Topology.Homotopy.Relative
 
 /-!

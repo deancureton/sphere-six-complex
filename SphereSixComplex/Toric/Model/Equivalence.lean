@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Toric.Model.Basic
-public import Mathlib.Topology.Separation.Hausdorff
 
 @[expose] public section
 noncomputable section

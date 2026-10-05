@@ -1,11 +1,7 @@
 module
 
 public import SphereSixComplex.Periods.AffineTorsor.AnalyticDescent
-public import Mathlib.Algebra.Polynomial.Laurent
-public import Mathlib.Geometry.Manifold.Instances.Real
-import Mathlib.Analysis.Complex.RemovableSingularity
 public import SphereSixComplex.Periods.FuchsianModularLift.CuspBounds
-import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.Tessellation
 import all SphereSixComplex.Periods.Functions
 
 /-!

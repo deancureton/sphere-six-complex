@@ -1,8 +1,6 @@
 module
 
-public import SphereSixComplex.Construction.OpenEmbeddingGluing
 public import SphereSixComplex.Elliptic.Homology.TorusBasis
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.WangPresentation
 
 /-!
 # Mapping-torus adapters for the three paper collars

@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Subdivision.SmallChains
-public import Mathlib.Analysis.Convex.Contractible
 public import Mathlib.Algebra.Homology.ShortComplex.Ab
 
 /-!

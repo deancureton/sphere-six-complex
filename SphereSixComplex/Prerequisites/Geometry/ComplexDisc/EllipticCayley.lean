@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.EllipticCoordinates
-public import Mathlib.Analysis.Complex.UpperHalfPlane.Manifold
 public import Mathlib.Geometry.Manifold.MFDeriv.SpecificFunctions
 
 /-!

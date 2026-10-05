@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Elliptic.DiscCircle.Homology
 public import SphereSixComplex.Elliptic.DiscCircle.Gauge
-public import SphereSixComplex.TorusFamily.RealPeriodTrivialization
 public import SphereSixComplex.Regular.MarkedPuncturedBase
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.LoopProduct
 

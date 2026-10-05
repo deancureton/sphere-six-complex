@@ -13,13 +13,7 @@ public import Mathlib.Analysis.Calculus.ContDiff.Convolution
 public import Mathlib.Analysis.SpecialFunctions.Pow.Integral
 public import Mathlib.Analysis.SpecialFunctions.PolarCoord
 public import Mathlib.MeasureTheory.Integral.CircleIntegral
-public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
-public import Mathlib.Tactic.Convert
-public import Mathlib.Tactic.FieldSimp
-public import Mathlib.Tactic.FunProp
-public import Mathlib.Tactic.NormNum
-public import Mathlib.Tactic.Ring
 
 @[expose] public section
 

@@ -1,5 +1,4 @@
 module
-public import SphereSixComplex.TriangleGroup.Representation
 import all SphereSixComplex.TriangleGroup.Representation
 public import SphereSixComplex.Elliptic.TwoDisc.MayerVietoris
 /-! These identities audit the lattice classes in a signed two-slice comparison. They do not

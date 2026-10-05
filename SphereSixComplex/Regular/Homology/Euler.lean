@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Homeomorph
 public import SphereSixComplex.Homology.Euler.Collars
 public import SphereSixComplex.Elliptic.Band.OverlapInterleaving
-public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.OpenCover
 
 /-!
 # The central family from its affine two-region cover

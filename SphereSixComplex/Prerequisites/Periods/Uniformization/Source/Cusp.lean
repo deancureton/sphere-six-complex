@@ -4,9 +4,7 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.Funda
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.FundamentalFibers
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.QuotientAssembly
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.QuotientAssembly
-public import Mathlib.NumberTheory.ModularForms.QExpansion
 import all Mathlib.NumberTheory.ModularForms.QExpansion
-public import TauCeti.Analysis.Complex.Conformal.LocalDegree
 import all TauCeti.Analysis.Complex.Conformal.LocalDegree
 
 @[expose] public section

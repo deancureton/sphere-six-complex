@@ -9,9 +9,6 @@ noncomputable section
 open Set Topology
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
-end SphereSixComplex.AffineCyclicQuotientHomology
-
-namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
 open SphereSixComplex.AffineCyclicQuotientHomology
 
@@ -446,9 +443,6 @@ public theorem affineCyclicRadialFilling_isQuotientCoveringMap
 
 end SphereSixComplex.AffineCyclicQuotientHomology
 
-namespace SphereSixComplex.AffineCyclicQuotientHomology
-
-end SphereSixComplex.AffineCyclicQuotientHomology
 
 end
 

@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.Collar.AdjunctionEquiv
 public import SphereSixComplex.Prerequisites.Topology.Torus.Homology
-public import Mathlib.Topology.Algebra.GroupWithZero
 public import SphereSixComplex.Prerequisites.Topology.Torus.CircleExponential
 public section
 open Set Topology ContinuousMap

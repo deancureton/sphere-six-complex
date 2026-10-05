@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.TorusFamily.DeckQuotient
-public import Mathlib.Topology.LocallyFinite
 import all SphereSixComplex.TorusFamily.DeckQuotient
 import all SphereSixComplex.TorusFamily.Global
 

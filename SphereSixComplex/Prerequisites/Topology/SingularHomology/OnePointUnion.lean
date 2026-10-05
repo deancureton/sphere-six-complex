@@ -3,9 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.OpenCover
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.ConnectedDegreeZero
 public import SphereSixComplex.Prerequisites.Topology.Sphere.PositiveHomology
-public import Mathlib.Topology.Compactification.OnePoint.Sphere
-public import Mathlib.Geometry.Manifold.Instances.Sphere
-public import Mathlib.Analysis.Normed.Module.Connected
 
 @[expose] public section
 noncomputable section

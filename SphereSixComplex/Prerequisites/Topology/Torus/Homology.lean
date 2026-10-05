@@ -1,9 +1,7 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.WangExactness
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.Identity
 public import SphereSixComplex.Prerequisites.Algebra.ExactSplitting
-public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.ConnectedDegreeZero
 public import SphereSixComplex.Prerequisites.Topology.Torus.CircleDegree
 public import SphereSixComplex.Prerequisites.Geometry.IntegerRealPeriodCoordinates
 

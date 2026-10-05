@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.Gluing.Atlas
-public import Mathlib.Topology.Separation.Hausdorff
 
 /-!
 # Hausdorff gluing from a closed identification relation

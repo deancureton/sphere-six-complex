@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.Manifold.PoincareUniversalCoefficients
 public import Mathlib.LinearAlgebra.Dimension.Localization
-public import Mathlib.RingTheory.Finiteness.Finsupp
 
 /-!
 # Truncated integral-homology Euler characteristics

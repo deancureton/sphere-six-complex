@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Cusp.Specialization.PeriodCoordinates
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.FiberSlice
-public import SphereSixComplex.TorusFamily.RealPeriodTrivialization
 
 /-!
 # The radial clutching datum of the actual cusp collar

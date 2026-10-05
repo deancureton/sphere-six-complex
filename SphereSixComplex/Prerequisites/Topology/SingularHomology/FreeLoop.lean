@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.BasepointTransport
-public import Mathlib.Topology.Homotopy.Path
 public import TauCeti.AlgebraicTopology.FundamentalGroup.Homeomorph
 
 /-! # First homology of freely homotopic loops -/

@@ -2,7 +2,6 @@ module
 
 public import Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import all Mathlib.Analysis.Complex.UpperHalfPlane.Basic
-public import Mathlib.Analysis.Complex.UnitDisc.Basic
 import all Mathlib.Analysis.Complex.UnitDisc.Basic
 public import TauCeti.Analysis.Complex.UnitDisc.Basic
 import all TauCeti.Analysis.Complex.UnitDisc.Basic

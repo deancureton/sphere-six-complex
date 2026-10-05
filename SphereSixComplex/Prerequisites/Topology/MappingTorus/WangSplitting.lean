@@ -1,20 +1,10 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.WangPresentation
-public import Mathlib.Algebra.Module.Projective
 
 @[expose] public section
 noncomputable section
 namespace SphereSixComplex
-
-namespace WangHomologyPresentation
-
-variable {HighRelations High Total LowRelations Low : Type*}
-  [AddCommGroup HighRelations] [AddCommGroup High] [AddCommGroup Total]
-  [AddCommGroup LowRelations] [AddCommGroup Low]
-
-
-end WangHomologyPresentation
 
 namespace CircleMappingTorusHomologyBases
 

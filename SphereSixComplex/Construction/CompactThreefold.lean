@@ -3,10 +3,7 @@ module
 public import SphereSixComplex.Construction.BiholomorphicGluing
 public import SphereSixComplex.Prerequisites.Geometry.Gluing.CompactStar
 public import SphereSixComplex.Cusp.FillingConnected
-public import SphereSixComplex.Construction.GluingNonempty
 public import SphereSixComplex.Construction.Compactness
-public import SphereSixComplex.Construction.Hausdorff
-public import SphereSixComplex.Construction.PieceTopology
 
 /-!
 # The compact complex star of the analytic family

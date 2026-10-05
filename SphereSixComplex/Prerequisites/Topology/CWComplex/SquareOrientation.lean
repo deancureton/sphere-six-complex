@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.SquareBoundary
 public import SphereSixComplex.Prerequisites.Topology.Torus.Homology
 public import SphereSixComplex.Prerequisites.Topology.Sphere.PositiveHomology
-public import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 
 @[expose] public section
 noncomputable section

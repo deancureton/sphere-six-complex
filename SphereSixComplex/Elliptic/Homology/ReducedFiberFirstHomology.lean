@@ -18,17 +18,6 @@ open AlgebraicTopology
 noncomputable section
 
 namespace SphereSixComplex.AffineCyclicQuotientHomology
-
-open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily
-open Geometry.EllipticFamilySpecialization Geometry.EllipticFixedPointCriterion
-open LatticeData Periods TriangleGroup
-open EllipticFilling
-open MultipleFiberCoinvariants SphereSixComplex.Topology.TwistObstruction
-
-
-end SphereSixComplex.AffineCyclicQuotientHomology
-
-namespace SphereSixComplex.AffineCyclicQuotientHomology
 open SphereSixComplex SphereSixComplex.Topology
 open SphereSixComplex.AffineCyclicQuotientHomology
 open Geometry Geometry.AnalyticTorusFamily Geometry.ComplexTorus Geometry.GlobalTorusFamily

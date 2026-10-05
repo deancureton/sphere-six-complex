@@ -3,7 +3,6 @@ module
 public import Mathlib.Topology.Category.TopCat.EffectiveEpi
 public import Mathlib.Topology.Homotopy.Equiv
 public import Mathlib.Topology.Homotopy.TopCat.Basic
-public import Mathlib.Topology.CompactOpen
 
 /-!
 # Homotopy equivalences induced by strong deformation retracts in topological pushouts

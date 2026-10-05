@@ -6,7 +6,6 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.T
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.Triangle
 public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.TriangleGeometry
 import all SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.TriangleGeometry
-public import Mathlib.Analysis.Complex.OpenMapping
 import all Mathlib.Analysis.Complex.OpenMapping
 
 @[expose] public section

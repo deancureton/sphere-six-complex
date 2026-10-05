@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.Branch
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.Branch
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.Cusp
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.Cusp
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.CuspFibers
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.CuspFibers

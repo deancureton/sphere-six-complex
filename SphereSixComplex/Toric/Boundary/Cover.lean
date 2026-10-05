@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Toric.Boundary.Model
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Quotient
-public import Mathlib.Topology.Algebra.GroupWithZero
 
 @[expose] public section
 noncomputable section

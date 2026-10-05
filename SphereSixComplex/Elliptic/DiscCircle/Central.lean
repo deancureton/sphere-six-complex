@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Regular.FundamentalGroup.Peripheral
-public import SphereSixComplex.Prerequisites.Topology.Hurewicz.BasepointTransport
 public import SphereSixComplex.Elliptic.DiscCircle.Factorization
 
 @[expose] public section

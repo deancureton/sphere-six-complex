@@ -1,12 +1,6 @@
 module
 public import SphereSixComplex.Homology.First
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.CircleCross
-public import SphereSixComplex.Cusp.Cover.BoundaryQuotient
-public import SphereSixComplex.FundamentalGroup.Cover
 public import SphereSixComplex.Elliptic.Sweep.FourthInteriorTranslation
-public import SphereSixComplex.Cusp.Sweep.FillingPhaseCircle
-public import SphereSixComplex.Cusp.Cover.BoundaryUniversalCover
-public import SphereSixComplex.Gluing.Connected
 @[expose] public section
 noncomputable section
 open Set Topology

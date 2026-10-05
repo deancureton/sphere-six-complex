@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.ChainModel
-public import Mathlib.Topology.CWComplex.Classical.Finite
-public import Mathlib.Topology.Homotopy.Equiv
 public import SphereSixComplex.Prerequisites.Topology.Manifold.Orientation
 
 /-!

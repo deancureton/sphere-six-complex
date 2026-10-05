@@ -1,9 +1,7 @@
 module
 
 public import SphereSixComplex.Elliptic.LogarithmicGauge.Homeomorph
-public import SphereSixComplex.Elliptic.VaryingFamilyQuotient
 public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.EllipticStabilizers
-public import SphereSixComplex.TriangleGroup.FuchsianProperFreeness
 public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.SmoothAction
 import all SphereSixComplex.TriangleGroup.Representation
 import all SphereSixComplex.TorusFamily.Basic

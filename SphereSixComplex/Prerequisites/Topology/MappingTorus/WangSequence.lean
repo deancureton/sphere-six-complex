@@ -1,10 +1,7 @@
 module
 
-public import Mathlib.LinearAlgebra.Matrix.ToLin
 public import Mathlib.Tactic
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.ConnectedDegreeZero
-public import Mathlib.Algebra.Exact.Basic
-public import Mathlib.Topology.Constructions
 
 /-!
 # Wang presentations for bundles over finite bouquets: definitions

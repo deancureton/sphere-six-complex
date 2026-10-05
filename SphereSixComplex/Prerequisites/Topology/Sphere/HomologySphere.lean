@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Basic
 public import Mathlib.Algebra.Category.Grp.Abelian
-public import Mathlib.Algebra.Category.Grp.Colimits
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 public import Mathlib.AlgebraicTopology.SingularHomology.Basic
 

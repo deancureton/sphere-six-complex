@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 public import Mathlib.Analysis.Complex.UpperHalfPlane.MoebiusAction
-public import Mathlib.GroupTheory.OrderOfElement
 import all SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 
 /-!

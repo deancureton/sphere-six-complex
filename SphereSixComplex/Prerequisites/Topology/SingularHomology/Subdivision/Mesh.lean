@@ -2,8 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Subdivision.LebesgueNumber
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.QuasiIso
-public import Mathlib.Analysis.Normed.Module.Convex
-public import Mathlib.Analysis.SpecificLimits.Basic
 
 /-!
 # Mesh estimates for affine barycentric subdivision

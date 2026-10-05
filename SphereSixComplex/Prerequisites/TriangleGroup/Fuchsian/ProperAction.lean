@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.BinaryIndexedCoprod
-public import Mathlib.Topology.Algebra.ConstMulAction
 public import Mathlib.Analysis.Complex.UpperHalfPlane.Topology
 import all SphereSixComplex.Prerequisites.TriangleGroup.FreeProductTorsion
 

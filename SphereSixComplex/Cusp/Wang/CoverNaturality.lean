@@ -1,11 +1,6 @@
 module
 
 public import SphereSixComplex.Elliptic.TwoDisc.NormalizedSplitting
-public import SphereSixComplex.Cusp.Specialization.CollarMappingTorus
-public import SphereSixComplex.Elliptic.TwoDisc.HomologyCoordinates
-public import SphereSixComplex.Cusp.CentralFiber.Homology
-public import SphereSixComplex.Cusp.Retraction.PhaseSpreading
-public import SphereSixComplex.Gluing.Connected
 public import SphereSixComplex.Elliptic.TwoDisc.CoverRealization
 
 

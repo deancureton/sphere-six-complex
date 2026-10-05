@@ -4,7 +4,6 @@ public import SphereSixComplex.Prerequisites.Periods.FuchsianModularParameter
 public import SphereSixComplex.Prerequisites.Periods.LocalOrbifoldCompatibility
 public import SphereSixComplex.Prerequisites.TriangleGroup.FreeProductTorsion
 public import Mathlib.Geometry.Manifold.LocalDiffeomorph
-public import Mathlib.Topology.Covering.Basic
 import all SphereSixComplex.Prerequisites.Periods.FuchsianModularParameter
 
 /-!

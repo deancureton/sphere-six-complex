@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Lifting.ContinuationCriterion
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Lifting.ContinuationCriterion
-public import Mathlib.Analysis.Normed.Module.RCLike.Real
 import all Mathlib.Analysis.Normed.Module.RCLike.Real
 
 @[expose] public section

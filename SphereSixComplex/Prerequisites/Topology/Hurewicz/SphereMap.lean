@@ -9,7 +9,6 @@ public import SphereSixComplex.Prerequisites.Topology.Hurewicz.Whitehead
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.DegreeZero
 public import SphereSixComplex.Prerequisites.Topology.Sphere.CWModel
 public import SphereSixComplex.Prerequisites.Topology.Sphere.PositiveHomology
-public import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
 
 /-!
 # Direction-correct Hurewicz--Whitehead recognition stages

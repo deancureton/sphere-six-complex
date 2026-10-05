@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.Basic
-public import Mathlib.Topology.UnitInterval
 
 open Set
 open scoped ContinuousMap

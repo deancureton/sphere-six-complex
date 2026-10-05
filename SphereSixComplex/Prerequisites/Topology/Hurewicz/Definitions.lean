@@ -1,8 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Torus.CircleDegree
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup
-public import Mathlib.GroupTheory.Abelianization.Defs
 
 /-!
 # Definitions for the first Hurewicz theorem

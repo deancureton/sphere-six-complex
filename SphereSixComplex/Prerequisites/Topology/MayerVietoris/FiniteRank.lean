@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.OpenCover
-public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 
 /-!
 # Homology vanishing from Mayer--Vietoris and equal finite ranks

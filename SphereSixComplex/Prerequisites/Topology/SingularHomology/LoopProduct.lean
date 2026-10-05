@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.FreeLoopProduct
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.FreeLoop
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 
 @[expose] public section
 noncomputable section

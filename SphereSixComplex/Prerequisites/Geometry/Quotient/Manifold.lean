@@ -1,6 +1,5 @@
 module
 
-public import Mathlib.Geometry.Manifold.ContMDiff.Atlas
 public import Mathlib.Geometry.Manifold.Instances.Quotient
 public import Mathlib.Geometry.Manifold.LocalDiffeomorph
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph

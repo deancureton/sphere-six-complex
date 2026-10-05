@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.CircleProduct
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.CoverCrossBoundary
 
 import all SphereSixComplex.Prerequisites.Topology.Hurewicz.ChainInverse

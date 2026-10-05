@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Elliptic.CyclicCover.CoverDegreeTwoInvariance
-public import Mathlib.LinearAlgebra.Dual.Basis
 
 /-! # Projected coordinate tori in the elliptic fibers -/
 

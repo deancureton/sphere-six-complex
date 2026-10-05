@@ -6,7 +6,6 @@ Authors: Paul Lezeau
 module
 
 public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
-public import Mathlib.Algebra.Category.Grp.Colimits
 public import Mathlib.Algebra.Homology.ShortComplex.Ab
 
 /-!

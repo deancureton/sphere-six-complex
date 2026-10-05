@@ -1,6 +1,5 @@
 module
 
-public import Mathlib.Topology.Homotopy.LocallyContractible
 public import Mathlib.Analysis.Normed.Module.Convex
 public import Mathlib.Analysis.Convex.Contractible
 public import Mathlib.Geometry.Manifold.ChartedSpace

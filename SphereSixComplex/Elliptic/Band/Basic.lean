@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Elliptic.Band.BaseCoordinate
-public import Mathlib.Topology.FiberBundle.IsHomeomorphicTrivialBundle
 
 /-!
 # Affine central band definitions

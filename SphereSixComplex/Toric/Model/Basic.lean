@@ -4,7 +4,6 @@ public import SphereSixComplex.Cusp.Filling
 public import ChallengeDefs
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 import Mathlib.Topology.Algebra.IsOpenUnits
-import Mathlib.Geometry.Manifold.Algebra.Structures
 
 /-!
 # The standard infinite `A₂` toric model

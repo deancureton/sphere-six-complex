@@ -46,11 +46,4 @@ end
 end
 
 @[expose] public section
-noncomputable section
-open scoped ContinuousMap
-namespace SphereSixComplex.Geometry.AnalyticData
-open GlobalTorusFamily TriangleGroup SphereSixComplex.Topology
-
-end SphereSixComplex.Geometry.AnalyticData
-end
 end

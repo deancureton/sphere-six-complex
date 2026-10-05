@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Cusp.Wang.FiberSlice
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.FiberSlice
 public import SphereSixComplex.Cusp.Specialization.WangCoordinates
 
 @[expose] public section

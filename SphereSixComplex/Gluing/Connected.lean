@@ -3,8 +3,6 @@ module
 public import SphereSixComplex.Cusp.FillingConnected
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.ConnectedDegreeZero
 public import SphereSixComplex.Homology.Euler.MayerVietoris
-public import Mathlib.Analysis.Convex.Basic
-public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 /-!
 # Connectivity and overlap identification for the analytic star

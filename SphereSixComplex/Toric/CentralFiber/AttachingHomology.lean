@@ -4,7 +4,6 @@ public import SphereSixComplex.Prerequisites.Topology.MappingTorus.CircleCross
 public import SphereSixComplex.Toric.Boundary.Action
 public import SphereSixComplex.Toric.CentralFiber.CoverMaps
 public import SphereSixComplex.Toric.Boundary.AttachingLoop
-public import SphereSixComplex.Prerequisites.Topology.Sphere.PositiveHomology
 
 @[expose] public section
 noncomputable section

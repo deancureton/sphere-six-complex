@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.Identity
 public import SphereSixComplex.Prerequisites.Topology.Torus.Homology
 
 /-!

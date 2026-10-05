@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Construction.CentralFamilyTopology
 public import SphereSixComplex.Prerequisites.Geometry.Quotient.DeckFundamentalGroup
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
 
 /-!
 # Fundamental-group generators from a fixed fibre of the global torus family

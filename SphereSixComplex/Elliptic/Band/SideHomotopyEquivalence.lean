@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.NumeratedCover
 public import SphereSixComplex.Elliptic.Band.RadialCompletionData
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.Equivalence
 
 /-!
 # Homotopy equivalences for the affine elliptic sides

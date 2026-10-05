@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.CyclicPuncturedProduct
 public import SphereSixComplex.Prerequisites.Topology.Torus.Homology
 
 @[expose] public section

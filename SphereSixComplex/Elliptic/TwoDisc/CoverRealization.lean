@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Elliptic.TwoDisc.Cover
-public import SphereSixComplex.Elliptic.Cover.FillingRealPeriodRadial
 
 /-!
 # Concrete pieces of the Section 7 elliptic two-disc cover

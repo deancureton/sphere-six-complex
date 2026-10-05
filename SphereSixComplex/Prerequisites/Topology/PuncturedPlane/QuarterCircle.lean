@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.RadialPath
-public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 
 @[expose] public section
 noncomputable section

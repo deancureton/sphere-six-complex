@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Algebra.FiniteExactSequenceEuler
 public import SphereSixComplex.Prerequisites.Topology.Torus.FourTorusHomology
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.WangPresentation
-public import Mathlib.Analysis.Convex.PathConnected
 
 /-!
 # Euler characteristic of finite-bouquet mapping tori

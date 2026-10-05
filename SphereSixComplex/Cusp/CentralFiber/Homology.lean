@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Toric.CentralFiber.HomologyCoordinates
-public import SphereSixComplex.Cusp.Retraction.CentralModel
 public import SphereSixComplex.Cusp.Homology.DeckHomologyOne
 
 /-! # Integral homology of the cusp filling

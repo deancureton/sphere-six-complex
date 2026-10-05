@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Cusp.Specialization.RadialClutching
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.FixedLoopSweep
 
 
 @[expose] public section

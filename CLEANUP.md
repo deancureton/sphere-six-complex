@@ -32,7 +32,10 @@ construction. Verbatim audit output is in `.ci/cleanup/baseline-axioms.log`.
   snippet checks. No toolchain upgrade is planned.
 
 The inventory and file assignments are stored under `.ci/cleanup/`. All compiler
-work runs at nice 15, with at most three active workers. The user reports the
+work runs at nice 15, with at most three active checker groups. Builds use
+`LEAN_NUM_THREADS=3`; this is not a verified hard core cap. Direct profiling uses
+explicit `lean -j1` after observing that the environment variable alone did not
+keep direct Lean runs single-threaded. The user reports the
 machine will be mostly idle for the timing comparison. Dependency caches are
 retained; `lake clean sphere-six-complex` cleans only the root package (this
 Lake version's `clean` command accepts package names, not library names).
@@ -43,12 +46,13 @@ Lake version's `clean` command accepts package names, not library names).
 - [x] 1: remove project warnings in independent file batches; record any fixes
   that would cross the declaration-statement fence before applying them.
 - [x] 2: repeat the endpoint dependency audit, protecting elaboration support.
-- [ ] 3: check unused imports and orphaned scaffolding; rebuild consumers.
+- [x] 3: check unused imports and orphaned scaffolding; rebuild consumers.
 - [x] 4: optional broad proof golfing is skipped; focus on warnings and measured costs.
 - [ ] 5: profile the slowest modules and their import floors; optimize only measured costs.
 - [x] 6: wholesale-Mathlib slimming has no candidates.
 - [ ] 7: compare clean before/after builds under the same worker/priority limits.
-- [ ] 8: assess whether the existing import, placeholder, and axiom gates need a new guard.
+- [x] 8: existing CI builds and import/placeholder/axiom gates retained; optional
+  additional drift guard not added. Upstream warnings prevent a blanket warning-as-error gate.
 
 Only the main agent runs Lake builds. Workers use Lean LSP for proof iteration.
 Every editing checkpoint gets a root build, the relevant auxiliary checks, the
@@ -116,3 +120,39 @@ helpers gives 16,498. There are no missing modules or source-range mismatches,
 and no removable declaration ranges or modules. The two unresolved references
 are linter-option metadata, not mathematical dependencies. Both endpoint proofs
 have explicit dependency edges into the construction. The independent second trace reproduced all counts and found no deletions.
+
+## Imports and scaffolding
+
+Native `lake shake --keep-public` produced remove-only suggestions. Excluding
+aggregate modules and the trusted Challenge module leaves 558 import lines in
+228 implementation files. All non-import source text was checked unchanged;
+module reachability and prerequisite layering still pass. The full consumer
+build passed with zero project warnings. A reviewed follow-up removes 88 lines
+of empty sections and trailing opens/variables from 13 files, preserving
+proofs, signatures, docstrings, and attributes. Eight changed files passed LSP;
+the full scaffold rebuild passed with zero project warnings. Import/layer,
+placeholder, and protected-file checks passed again. Blueprint and the exact recursive axiom audit passed. The second Shake pass
+reports only the two aggregate modules and trusted Challenge import retained by
+policy; no implementation-file suggestions remain. Comparator accepted both
+endpoints with the unchanged trust boundary. The post-Blueprint root build
+also passed.
+
+## Performance triage
+
+Plain `lean -j1` profiles at nice 15 identify costs beyond import loading:
+
+| Module | Wall seconds | User CPU seconds | Import-only wall |
+| --- | ---: | ---: | ---: |
+| Source/CuspWordCentralizer | 22.40 | 20.50 | 3.34 |
+| Source/SidePairingClassification | 42.14 | 39.69 | 4.12 |
+| Honeycomb/PositiveNeighbor | 49.06 | 45.57 | 3.37 |
+| Honeycomb/SameCellMissingOrbit | 37.19 | 34.37 | 4.28 |
+| Topology/Torus/Homology | 13.64 | 11.65 | 3.74 |
+| Homology/First | 19.72 | 17.22 | 5.08 |
+
+These diagnostic runs shared the machine with other checks and are not the
+final A/B benchmark. Lightweight declaration profiles identify large-context
+`simp_all`, repeated arithmetic preprocessing, and two expensive parallel
+rewrites in first homology. Full tactic traces substantially perturb timings
+and can exceed heartbeats; plain runs pass without overrides. Torus homology's
+costs are diffuse and lower priority. No performance edits are included yet.

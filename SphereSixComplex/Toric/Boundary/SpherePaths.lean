@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Toric.CentralFiber.Attachment
-public import SphereSixComplex.Toric.Boundary.Model
 public import SphereSixComplex.Toric.Positive.BoundaryPaths
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.OnePointUnion
 import all SphereSixComplex.Toric.Boundary.Charts

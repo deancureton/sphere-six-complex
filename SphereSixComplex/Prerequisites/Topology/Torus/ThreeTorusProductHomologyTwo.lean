@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.CyclicProduct
-public import SphereSixComplex.Prerequisites.Topology.Torus.Homology
 
 /-!
 # Degree-two coordinates on circle times the standard three-torus

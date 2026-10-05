@@ -81,10 +81,6 @@ public theorem orderFourHOneNaturality : ∀ x : Lattice,
         ((orderFourCentralFiberCoverSourceHomologyBasis F).degreeOne.symm x)) =
       orderFourLatticeProjectionCoordinates x := orderFourFixedHOneBasis_projection F
 
-namespace EllipticDegreeTwoPullbackBases
-
-end EllipticDegreeTwoPullbackBases
-
 end SphereSixComplex.Topology.FiniteCoverPerfectPairing
 
 end

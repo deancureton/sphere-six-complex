@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.OpenCover
-public import Mathlib.AlgebraicTopology.CechNerve
 
 /-! # Finite intersections of a cover -/
 

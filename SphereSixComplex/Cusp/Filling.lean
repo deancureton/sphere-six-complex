@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Cusp.Combinatorics
 public import Mathlib.Geometry.Manifold.Instances.Quotient
 public import Mathlib.Geometry.Manifold.LocalDiffeomorph
-public import Mathlib.Geometry.Manifold.ContMDiff.Atlas
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 /-!

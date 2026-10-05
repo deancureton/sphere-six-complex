@@ -3,10 +3,7 @@ module
 public import SphereSixComplex.Construction.AnalyticData
 public import SphereSixComplex.TorusFamily.FuchsianRegular
 public import SphereSixComplex.Construction.ComplexModelRechart
-public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.EllipticCayley
-public import Mathlib.Analysis.Normed.Module.Ball.Homeomorph
 public import Mathlib.SetTheory.Cardinal.Free
-public import Mathlib.Topology.Bases
 
 /-!
 # Topology of the paper's central family

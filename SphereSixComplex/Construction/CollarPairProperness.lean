@@ -4,7 +4,6 @@ public import SphereSixComplex.Prerequisites.Geometry.Gluing.StarClosedRelation
 public import SphereSixComplex.Construction.PieceHausdorff
 public import SphereSixComplex.Construction.ComplexStructure
 public import SphereSixComplex.TorusFamily.CompactOverBase
-public import Mathlib.Topology.Maps.Proper.CompactlyGenerated
 
 /-!
 # Properness criteria for paired collar maps

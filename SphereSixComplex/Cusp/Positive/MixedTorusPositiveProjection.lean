@@ -1,8 +1,6 @@
 module
-public import SphereSixComplex.Cusp.Retraction.MixedPhaseTorus
 public import SphereSixComplex.Cusp.Specialization.BoundaryMixedTori
 public import SphereSixComplex.Cusp.Positive.PhaseVanishing
-public import SphereSixComplex.Cusp.Retraction.PhaseCentralCompatibility
 
 @[expose] public section
 noncomputable section

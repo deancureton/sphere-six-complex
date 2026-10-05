@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Elliptic.DiscCircle.Relation
 public import SphereSixComplex.Elliptic.Homology.DiscPeriodHomology
 public import SphereSixComplex.Elliptic.DiscCircle.Base
 

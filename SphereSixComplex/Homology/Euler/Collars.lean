@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.BouquetEulerCharacteristic
 public import SphereSixComplex.Cusp.Specialization.Coordinates
 
 /-!

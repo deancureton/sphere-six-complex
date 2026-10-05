@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Elliptic.Cover.OrderFourRadialFillingLift
 public import SphereSixComplex.Elliptic.Cover.FillingRealPeriodCoverTransport
 
 @[expose] public section

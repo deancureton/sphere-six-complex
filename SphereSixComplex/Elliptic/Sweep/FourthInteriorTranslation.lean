@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Elliptic.Collar.FourthCollarCompatibility
-public import SphereSixComplex.Elliptic.Band.BaseCoordinate
 
 @[expose] public section
 noncomputable section

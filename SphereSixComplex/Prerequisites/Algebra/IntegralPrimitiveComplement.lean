@@ -2,8 +2,6 @@ module
 
 public import Mathlib.Algebra.Module.LinearMap.Defs
 public import Mathlib.Algebra.BigOperators.Pi
-public import Mathlib.Data.Fin.Tuple.Basic
-public import Mathlib.Algebra.Group.Prod
 public import Mathlib.Algebra.Ring.Int.Units
 public import Mathlib.Tactic.Abel
 public import Mathlib.Tactic.Ring

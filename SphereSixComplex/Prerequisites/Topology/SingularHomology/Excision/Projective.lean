@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.SmallChains
 public import Mathlib.Algebra.Homology.DerivedCategory.KProjective
-public import Mathlib.Algebra.Category.Grp.ZModuleEquivalence
 public import Mathlib.Algebra.Category.ModuleCat.Projective
 
 /-!

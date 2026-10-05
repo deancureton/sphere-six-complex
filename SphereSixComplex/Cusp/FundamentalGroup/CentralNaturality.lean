@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.FundamentalGroup.CoreData
 
-public import SphereSixComplex.Cusp.Cover.BoundaryUniversalCover
 public import SphereSixComplex.FundamentalGroup.CoverProperties
 
 /-!

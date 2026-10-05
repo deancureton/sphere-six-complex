@@ -1,8 +1,6 @@
 module
 
-public import SphereSixComplex.TorusFamily.RealPeriodTrivialization
 public import SphereSixComplex.Homology.CollarMappingTori
-public import SphereSixComplex.Elliptic.Collar.FundamentalDomainTransport
 
 /-!
 # Angular fundamental domains for the elliptic collars

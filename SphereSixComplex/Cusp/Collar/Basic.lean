@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Toric.Model.QuantitativeRegions
 public import SphereSixComplex.Cusp.Neighborhood.Existence
-public import SphereSixComplex.TorusFamily.Regular
 public import SphereSixComplex.TorusFamily.FuchsianRegular
 
 /-!

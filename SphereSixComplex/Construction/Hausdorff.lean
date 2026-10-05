@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Cusp.CollarPairProperness
 public import SphereSixComplex.Construction.EllipticCentralEscape
-public import SphereSixComplex.Prerequisites.Geometry.Gluing.StarClosedRelation
 
 /-!
 # Hausdorffness of the concrete four-piece star

@@ -1,8 +1,6 @@
 module
 
 public import Mathlib.Geometry.Manifold.Instances.Real
-public import Mathlib.Topology.Instances.NNReal.Lemmas
-public import Mathlib.Algebra.Order.Group.MinMax
 public import Mathlib.Tactic
 
 @[expose] public section

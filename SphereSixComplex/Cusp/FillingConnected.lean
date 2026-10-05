@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Construction.PieceTopology
-public import Mathlib.Analysis.Convex.PathConnected
 
 /-!
 # Connectedness of the local cusp filling

@@ -1,9 +1,7 @@
 module
 
 public import SphereSixComplex.Periods.FuchsianModularLift
-public import Mathlib.Algebra.Polynomial.Laurent
 public import Mathlib.Geometry.Manifold.Instances.Real
-import Mathlib.Analysis.Complex.RemovableSingularity
 public import SphereSixComplex.Periods.TorsorAlgebra
 import all SphereSixComplex.Periods.Uniformization
 

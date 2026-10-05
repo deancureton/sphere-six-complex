@@ -3,7 +3,6 @@ module
 public import SphereSixComplex.Periods.LatticeData
 public import SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 import all SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
-public import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
 
 /-!
 # The abstract triangle-group representation

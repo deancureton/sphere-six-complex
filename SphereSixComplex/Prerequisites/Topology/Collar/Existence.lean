@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Collar.OpenPush
-public import Mathlib.Topology.Metrizable.Basic
 
 /-!
 # Brown's collaring theorem

@@ -1,11 +1,7 @@
 module
 
-public import Mathlib.Algebra.BigOperators.Fin
-public import Mathlib.Algebra.Exact.Basic
 public import Mathlib.LinearAlgebra.Dimension.Localization
 public import Mathlib.LinearAlgebra.FreeModule.StrongRankCondition
-public import Mathlib.RingTheory.Finiteness.Finsupp
-public import Mathlib.RingTheory.Noetherian.Basic
 
 /-!
 # Euler characteristic of finite exact sequences over the integers
