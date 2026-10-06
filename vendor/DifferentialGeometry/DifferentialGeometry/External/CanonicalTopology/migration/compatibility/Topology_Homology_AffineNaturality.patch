@@ -1,0 +1,8 @@
+--- canonical-topology/Poincare/Topology/Homology/AffineNaturality.lean
++++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/AffineNaturality.lean
+@@ -18 +18 @@
+-    (v : ι → E) (t : stdSimplex ℝ ι) :
++    (v : ι → E) (t : Convexity.StdSimplex ℝ ι) :
+@@ -20 +20 @@
+-  change f (∑ i, t.val i • v i) = ∑ i, t.val i • f (v i)
++  change f (∑ i, t.weights i • v i) = ∑ i, t.weights i • f (v i)

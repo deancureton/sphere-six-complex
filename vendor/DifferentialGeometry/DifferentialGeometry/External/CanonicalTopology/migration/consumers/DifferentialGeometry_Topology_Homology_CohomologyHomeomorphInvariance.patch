@@ -1,0 +1,5 @@
+--- before
++++ after
+@@ -1 +1 @@
+-import DifferentialGeometry.Topology.Homology.CochainMaps
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.CochainMaps

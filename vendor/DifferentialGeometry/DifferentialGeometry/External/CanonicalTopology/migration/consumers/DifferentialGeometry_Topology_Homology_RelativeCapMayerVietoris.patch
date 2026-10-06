@@ -1,0 +1,8 @@
+--- before
++++ after
+@@ -2 +2 @@
+-import DifferentialGeometry.Topology.Homology.RelativeCapToAbsoluteHomology
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RelativeCapToAbsoluteHomology
+@@ -6 +6 @@
+-import DifferentialGeometry.Topology.Homology.OpenExcision
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.OpenExcision

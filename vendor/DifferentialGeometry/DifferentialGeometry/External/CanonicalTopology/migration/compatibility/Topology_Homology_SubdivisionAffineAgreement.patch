@@ -1,0 +1,11 @@
+--- canonical-topology/Poincare/Topology/Homology/SubdivisionAffineAgreement.lean
++++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/SubdivisionAffineAgreement.lean
+@@ -40 +40,7 @@
+-  rfl
++  apply ContinuousMap.ext
++  intro z
++  obtain ⟨t, rfl⟩ := (liftedSimplexHomeomorph.{u} n).surjective z
++  change affineSimplexMap v
++      ((liftedSimplexHomeomorph.{u} n).symm (liftedSimplexHomeomorph.{u} n t)) =
++    affineSimplexMap v t
++  rw [Homeomorph.symm_apply_apply]

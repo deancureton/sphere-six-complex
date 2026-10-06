@@ -1,0 +1,11 @@
+--- before
++++ after
+@@ -1,4 +1,4 @@
+-import DifferentialGeometry.Topology.Homology.SmallCycles
+-import DifferentialGeometry.Topology.Homology.ChainCokernelElements
+-import DifferentialGeometry.Topology.Homology.RelativeFunctoriality
+-import DifferentialGeometry.Topology.Homology.TwoSetSmallChains
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SmallCycles
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.ChainCokernelElements
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RelativeFunctoriality
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.TwoSetSmallChains

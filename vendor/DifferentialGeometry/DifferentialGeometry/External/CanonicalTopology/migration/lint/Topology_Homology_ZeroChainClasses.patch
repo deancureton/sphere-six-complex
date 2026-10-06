@@ -1,0 +1,5 @@
+--- before
++++ after
+@@ -17 +17 @@
+-instance integralZeroCycles_module : Module ℤ (LinearMap.ker ((integralSingularChains X).sc 0).g.hom) :=
++instance integralZeroCyclesModule : Module ℤ (LinearMap.ker ((integralSingularChains X).sc 0).g.hom) :=

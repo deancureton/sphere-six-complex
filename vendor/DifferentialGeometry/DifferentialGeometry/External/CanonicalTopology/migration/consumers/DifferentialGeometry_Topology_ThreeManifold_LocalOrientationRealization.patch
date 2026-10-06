@@ -1,0 +1,7 @@
+--- before
++++ after
+@@ -3,2 +3,2 @@
+-import DifferentialGeometry.Topology.Homology.LocalCompactHomology
+-import DifferentialGeometry.Topology.Homology.ManifoldFundamentalClass
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.LocalCompactHomology
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.ManifoldFundamentalClass

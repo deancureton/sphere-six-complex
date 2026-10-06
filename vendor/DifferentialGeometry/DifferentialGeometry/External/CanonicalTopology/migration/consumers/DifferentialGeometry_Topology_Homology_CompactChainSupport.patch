@@ -1,0 +1,11 @@
+--- before
++++ after
+@@ -6,4 +6,4 @@
+-import DifferentialGeometry.Topology.Homology.ChainSupport
+-import DifferentialGeometry.Topology.Homology.CarrierRestriction
+-import DifferentialGeometry.Topology.Homology.Cycles
+-import DifferentialGeometry.Topology.Homology.RelativeMaps
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.ChainSupport
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.CarrierRestriction
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.Cycles
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RelativeMaps

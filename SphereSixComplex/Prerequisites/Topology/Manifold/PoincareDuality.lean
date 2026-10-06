@@ -1,43 +1,40 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Cohomology
-public import SphereSixComplex.Prerequisites.Topology.Manifold.Orientation
+public import SphereSixComplex.Prerequisites.Topology.SingularHomology.ModuleComparison
+public import DifferentialGeometry.Topology.Homology.CompactlySupportedCohomology.Manifold
 
 /-!
-# Integral Poincaré duality
+# Integral Poincaré duality for simply connected compact manifolds
 
-This file isolates integral Poincaré duality for arbitrary compact oriented manifolds without
-boundary.  It is independent of the dimension-six application.
+The cap-product theorem and the compact-support comparison are proved in
+DifferentialGeometry. The coefficient-category comparison identifies their groups
+with this project's integral singular homology and cohomology.
 -/
 
 @[expose] public section
-
 noncomputable section
-
-open scoped ContDiff Manifold
+open scoped Manifold
 
 namespace SphereSixComplex
+open IntegralSingularComparison
 
-/-- The group-level integral Poincaré duality theorem for every compact, second-countable,
-Hausdorff, oriented real `C¹` manifold without boundary, in arbitrary finite dimension.
-
-For every `0 ≤ k ≤ d`, the theorem supplies the additive equivalence
-`H^k(X; ℤ) ≃ H_{d-k}(X; ℤ)`.  The `Nonempty` wrapper deliberately does not claim that the
-chosen equivalence is canonical: cap products and fundamental classes are not yet constructed in
-the project. -/
-public axiom PoincareDuality.nonempty_addEquiv
-    (d : ℕ) (E X : Type)
+/-- Integral duality for a compact simply connected real C¹ manifold. -/
+public theorem PoincareDuality.nonempty_addEquiv_of_simplyConnected (E X : Type)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
-    [TopologicalSpace X] [ChartedSpace E X]
-    [T2Space X] [SecondCountableTopology X]
-    (hManifold : IsManifold (modelWithCornersSelf ℝ E) 1 X)
-    (hOrientation : SmoothAtlasOrientation d E X)
-    (hCompact : CompactSpace X) :
-    ∀ k : Fin (d + 1), Nonempty
-      (IntegralSingularCohomology k.1 X ≃+ IntegralSingularHomology (d - k.1) X)
+    [TopologicalSpace X] [T2Space X] [ChartedSpace E X]
+    [IsManifold 𝓘(ℝ, E) 1 X] [SimplyConnectedSpace X] [CompactSpace X]
+    (k m : ℕ) (hkm : k + m = Module.finrank ℝ E) :
+    Nonempty (SphereSixComplex.IntegralSingularCohomology k X ≃+
+      SphereSixComplex.IntegralSingularHomology m X) := by
+  obtain ⟨_, _, _, D, ⟨_, hbij⟩, _⟩ :=
+    DifferentialGeometry.Topology.exists_integralCompactlySupportedCohomology_cap_bijective_of_simplyConnected
+      (E := E) (M := X) k m hkm
+  let e := LinearEquiv.ofBijective
+    (DifferentialGeometry.Topology.integralCompactlySupportedToSingularCohomology k X)
+    (DifferentialGeometry.Topology.integralCompactlySupportedToSingularCohomology_bijective
+      (X := X) k)
+  exact ⟨(cohomologyEquiv X k).symm.trans
+    (e.symm.toAddEquiv.trans ((LinearEquiv.ofBijective D hbij).toAddEquiv.trans
+      (homologyIso X m).addCommGroupIsoToAddEquiv))⟩
 
 end SphereSixComplex
-
-end
-
-end

@@ -1,0 +1,5 @@
+--- before
++++ after
+@@ -2 +2 @@
+-import DifferentialGeometry.Topology.Homology.TwoPointReducedZero
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.TwoPointReducedZero

@@ -13,7 +13,6 @@
     "SphereSixComplex.Hurewicz.exists_map",
     "SphereSixComplex.CWType.homological_whitehead",
     "SphereSixComplex.SmoothSixSphere.poincare",
-    "SphereSixComplex.PoincareDuality.nonempty_addEquiv",
     "SphereSixComplex.IntegralCohomology.universal_coefficients",
     "SphereSixComplex.SmoothManifold.finiteCWModel",
     "SphereSixComplex.CWPair.whitehead",

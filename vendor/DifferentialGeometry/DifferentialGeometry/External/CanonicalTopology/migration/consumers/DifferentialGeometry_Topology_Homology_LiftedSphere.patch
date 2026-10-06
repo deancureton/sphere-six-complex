@@ -1,0 +1,8 @@
+--- before
++++ after
+@@ -1 +1 @@
+-import DifferentialGeometry.Topology.Homology.SphereTopHomology
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SphereTopHomology
+@@ -19 +19 @@
+-instance liftedSphereSpace_innerProductSpace (n : ℕ) :
++instance liftedSphereSpaceInnerProductSpace (n : ℕ) :

@@ -1,0 +1,5 @@
+--- before
++++ after
+@@ -8 +8 @@
+-import DifferentialGeometry.Topology.Homology.SphereTopHomology
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SphereTopHomology

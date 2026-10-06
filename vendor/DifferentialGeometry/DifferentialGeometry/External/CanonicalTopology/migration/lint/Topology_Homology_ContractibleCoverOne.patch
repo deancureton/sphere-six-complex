@@ -1,0 +1,5 @@
+--- before
++++ after
+@@ -16 +16 @@
+-instance integralRelativeZeroKernel_module (A : Set X) :
++instance integralRelativeZeroKernelModule (A : Set X) :

@@ -1,0 +1,7 @@
+--- before
++++ after
+@@ -0,0 +1 @@
++import DifferentialGeometry.Topology.Homology.Relative.Basic
+@@ -2 +3 @@
+-import DifferentialGeometry.Topology.Homology.EuclideanLocalVanishing
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.EuclideanLocalVanishing

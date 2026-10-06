@@ -1,0 +1,13 @@
+--- canonical-topology/Poincare/Topology/Homology/SimplexPushFaces.lean
++++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/SimplexPushFaces.lean
+@@ -24 +24,9 @@
+-  rfl
++  obtain ⟨t, rfl⟩ := (liftedSimplexHomeomorph.{u} n).surjective z
++  simp only [ContinuousMap.comp_apply, liftedSimplexBodyMap_apply]
++  change integralSingularSimplexEquiv n X _
++      ((liftedSimplexHomeomorph.{u} n).symm (liftedSimplexHomeomorph.{u} n t)) =
++    integralSingularSimplexEquiv (n + 1) X σ
++      ((liftedSimplexHomeomorph.{u} (n + 1)).symm
++        (liftedSimplexHomeomorph.{u} (n + 1) (Convexity.StdSimplex.map i.succAbove t)))
++  simp only [Homeomorph.symm_apply_apply]
++  exact TopCat.toSSetObjEquiv_δ_apply σ i t

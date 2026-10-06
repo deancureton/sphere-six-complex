@@ -1,0 +1,5 @@
+--- before
++++ after
+@@ -19 +19 @@
+-instance integralSingularCycles_module (n : ℕ) (X : Type u) [TopologicalSpace X] :
++instance integralSingularCyclesModule (n : ℕ) (X : Type u) [TopologicalSpace X] :

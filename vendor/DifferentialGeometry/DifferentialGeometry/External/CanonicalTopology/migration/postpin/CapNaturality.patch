@@ -1,0 +1,19 @@
+--- before
++++ after
+@@ -5 +4,0 @@
+-
+@@ -17 +16 @@
+-    (k m : ℕ) (f : ContinuousMap X Y) (hf : Topology.IsOpenEmbedding f)
++    (k m : ℕ) (f : ContinuousMap X Y) (hf : _root_.Topology.IsOpenEmbedding f)
+@@ -48 +47 @@
+-    (k : ℕ) (f : ContinuousMap X Y) (hf : Topology.IsOpenEmbedding f)
++    (k : ℕ) (f : ContinuousMap X Y) (hf : _root_.Topology.IsOpenEmbedding f)
+@@ -68 +67 @@
+-    (k m : ℕ) (f : ContinuousMap X Y) (hf : Topology.IsOpenEmbedding f)
++    (k m : ℕ) (f : ContinuousMap X Y) (hf : _root_.Topology.IsOpenEmbedding f)
+@@ -96 +95 @@
+-    (k m : ℕ) (f : ContinuousMap X Y) (hf : Topology.IsOpenEmbedding f)
++    (k m : ℕ) (f : ContinuousMap X Y) (hf : _root_.Topology.IsOpenEmbedding f)
+@@ -126 +125 @@
+-    (k m : ℕ) (f : ContinuousMap X Y) (hf : Topology.IsOpenEmbedding f)
++    (k m : ℕ) (f : ContinuousMap X Y) (hf : _root_.Topology.IsOpenEmbedding f)

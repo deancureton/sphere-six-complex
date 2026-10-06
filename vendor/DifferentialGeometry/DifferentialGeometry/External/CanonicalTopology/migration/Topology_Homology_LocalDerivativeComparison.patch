@@ -1,0 +1,23 @@
+--- before
++++ after
+@@ -136,2 +136,2 @@
+-        (show integralRelativeHomologyMap (n + 1) h hhp =
+-          integralRelativeHomologyMap (n + 1) g hgp from hcompare n)
++        ((hcompare n : integralRelativeHomologyMap (n + 1) h hhp =
++          integralRelativeHomologyMap (n + 1) g hgp))
+@@ -219 +219 @@
+-    (show ContinuousAt (fun x : E => a + x) 0 from by fun_prop).preimage_mem_nhds
++    ((by fun_prop : ContinuousAt (fun x : E => a + x) 0)).preimage_mem_nhds
+@@ -222 +222 @@
+-    (hc.comp' (show ContinuousOn (fun x : E => a + x) t from by fun_prop)
++    (hc.comp' ((by fun_prop : ContinuousOn (fun x : E => a + x) t))
+@@ -224 +224 @@
+-      (show ContinuousOn (fun _ : E => f a) t from continuousOn_const)
++      ((continuousOn_const : ContinuousOn (fun _ : E => f a) t))
+@@ -372 +372 @@
+-        (show (e.symm ∘ e : E → E) =ᶠ[𝓝 a] id from e.eventually_left_inverse ha)
++        ((e.eventually_left_inverse ha : (e.symm ∘ e : E → E) =ᶠ[𝓝 a] id))
+@@ -381,2 +381 @@
+-          (show (e ∘ e.symm : E → E) =ᶠ[𝓝 (e a)] id from
+-            e.eventually_right_inverse (e.map_source ha))
++          ((e.eventually_right_inverse (e.map_source ha) : (e ∘ e.symm : E → E) =ᶠ[𝓝 (e a)] id))

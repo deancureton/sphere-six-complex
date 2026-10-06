@@ -1,0 +1,5 @@
+--- before
++++ after
+@@ -4 +4 @@
+-import DifferentialGeometry.Topology.Homology.SimplexMaps
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SimplexMaps

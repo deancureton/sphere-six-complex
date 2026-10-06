@@ -14,7 +14,7 @@ to both Comparator environments and catalogs every exact assumption. Nothing imp
 ## Status
 
 The headline theorem is source-sorry-free. Its trust boundary consists of Lean's three standard
-logical axioms and eight general classical results, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
+logical axioms and seven general classical results, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
 and checked by the allowlists in `scripts/`. No paper-specific axioms remain. The two `sorry`s
 in `Challenge.lean` are Comparator challenge declarations and are not imported by the solution.
 
@@ -35,6 +35,8 @@ First homology vanishes directly from the local elliptic and cusp relations. The
 Mayer–Vietoris map is then a surjection between free abelian groups of the same rank, hence an
 isomorphism; exactness gives vanishing second homology. The geometric Euler calculation,
 Poincaré duality and universal coefficients determine the remaining homology groups.
+Cellular comparison, compact collaring, and simply-connected integral Poincaré duality
+are now proved using imported developments; see [UPGRADE.md](UPGRADE.md).
 
 Finite-fibre specialization is proved in both degrees. In degree two, the actual mixed torus
 columns and the positive projection prove an integral isomorphism. Its inverse defines the
@@ -65,6 +67,9 @@ This formalization depends on:
 
 - [Mathlib](https://github.com/leanprover-community/mathlib4)
 - [Tau Ceti](https://github.com/TauCetiProject/TauCeti)
+- the integral duality development in [DifferentialGeometry](https://github.com/qinz1yang/differential-geometry),
+  derived in part from Ayush Khaitan's CanonicalTopology project; see the
+  [selected dependency and module port](vendor/DifferentialGeometry/README.md)
 - the [Jordan Curve Theorem project](https://github.com/epfl-lara/jordan-curve-theorem)
 - Thomas Zhu's fundamental-groupoid van Kampen development in Mathlib
   [PR #41603](https://github.com/leanprover-community/mathlib4/pull/41603)

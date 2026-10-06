@@ -47,6 +47,7 @@ jobs:
             .lake/packages
             blueprint/.lake/build
             vendor/VanKampen/.lake/build
+            vendor/DifferentialGeometry/.lake/build
           key: lean-shared-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'blueprint/lean-toolchain', 'blueprint/lake-manifest.json') }}-${{ github.sha }}
           restore-keys: |
             lean-shared-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'blueprint/lean-toolchain', 'blueprint/lake-manifest.json') }}-

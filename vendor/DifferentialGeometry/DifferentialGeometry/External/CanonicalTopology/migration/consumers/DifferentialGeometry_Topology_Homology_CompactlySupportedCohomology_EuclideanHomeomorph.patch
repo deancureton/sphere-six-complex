@@ -1,0 +1,7 @@
+--- before
++++ after
+@@ -1,2 +1,2 @@
+-import DifferentialGeometry.Topology.Homology.CompactlySupportedCohomology.Euclidean
+-import DifferentialGeometry.Topology.Homology.CompactlySupportedCohomology.CapNaturality
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.CompactlySupportedCohomology.Euclidean
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.CompactlySupportedCohomology.CapNaturality

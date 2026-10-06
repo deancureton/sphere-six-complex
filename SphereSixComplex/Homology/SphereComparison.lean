@@ -12,6 +12,8 @@ open OpenEmbeddingStarData
 /-- Vanishing first and second homology, together with the geometric Euler calculation,
 identifies the integral homology of the glued threefold with that of the six-sphere. -/
 public theorem star_nonempty_homologyEquiv_sixSphere_of_lowDegrees (P : AnalyticData)
+    [SimplyConnectedSpace
+      (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData)]
     (hOne : Subsingleton (IntegralSingularHomology 1
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData)))
     (hTwo : Subsingleton (IntegralSingularHomology 2

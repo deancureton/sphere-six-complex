@@ -1,6 +1,5 @@
 module
 
-
 public import SphereSixComplex.Elliptic.Band.RadialCompletion
 public import SphereSixComplex.Homology.Second
 public import SphereSixComplex.Elliptic.Homology.HomologyVanishing
@@ -25,20 +24,21 @@ public theorem star_homologyTwo_subsingleton :
   star_homologyTwo_subsingleton_of_interior P.affineRadialCompletionInput
     (ellipticInterior_homologyTwo_eq_zero P.affineRadialCompletionInput)
 
-/-- Low-degree vanishing and the Euler calculation give the integral homology of the six-sphere. -/
-public theorem star_nonempty_homologyEquiv_sixSphere :
-    ∀ k, Nonempty
-      (IntegralSingularHomology k
-        (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) ≃+
-      IntegralSingularHomology k SixSphere) :=
-  P.star_nonempty_homologyEquiv_sixSphere_of_lowDegrees
-    P.star_homologyOne_subsingleton P.star_homologyTwo_subsingleton
-
 /-- The cusp relations make the fundamental group abelian, and vanishing first homology kills it. -/
 public theorem star_simplyConnectedSpace :
     SimplyConnectedSpace
       (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) := by
   let _ := P.star_homologyOne_subsingleton
   exact P.star_simplyConnectedSpace_of_homologyOne_subsingleton P.cuspCentralNaturality
+
+/-- Low-degree vanishing and the Euler calculation give the integral homology of the six-sphere. -/
+public theorem star_nonempty_homologyEquiv_sixSphere :
+    ∀ k, Nonempty
+      (IntegralSingularHomology k
+        (GluedSpace P.openEmbeddingStarData.toFourPieceStarGluingData.glueData) ≃+
+      IntegralSingularHomology k SixSphere) := by
+  let _ := P.star_simplyConnectedSpace
+  exact P.star_nonempty_homologyEquiv_sixSphere_of_lowDegrees
+    P.star_homologyOne_subsingleton P.star_homologyTwo_subsingleton
 
 end SphereSixComplex.Geometry.AnalyticData

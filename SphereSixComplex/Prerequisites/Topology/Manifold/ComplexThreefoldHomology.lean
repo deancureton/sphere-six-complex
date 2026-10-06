@@ -1,6 +1,8 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Manifold.OrientedHomology
+public import SphereSixComplex.Prerequisites.Topology.Manifold.Homology
+public import SphereSixComplex.Prerequisites.Topology.Manifold.RestrictScalars
+public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
 
 @[expose] public section
@@ -9,13 +11,12 @@ open AlgebraicTopology CategoryTheory
 open scoped ContDiff Manifold
 namespace SphereSixComplex
 
-/-- Classical compact oriented-manifold homology specialized to a complex threefold.
+/-- Compact simply connected manifold homology specialized to a complex threefold.
 
-The complex atlas is converted to a real smooth atlas on the same model carrier. Its orientation
-is constructed from the complex transition maps, whose real determinants are positive. -/
+The complex atlas is converted to a real smooth atlas on the same model carrier. -/
 public noncomputable def ComplexThreefold.integralPoincareUCT
     (X : Type) [TopologicalSpace X] [ChartedSpace ComplexModel X]
-    [T2Space X] [SecondCountableTopology X]
+    [T2Space X] [SecondCountableTopology X] [SimplyConnectedSpace X]
     (hManifold : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ X)
     (hCompact : CompactSpace X) :
     IntegralPoincareUCTData.Six X := by
@@ -26,10 +27,9 @@ public noncomputable def ComplexThreefold.integralPoincareUCT
   have hdim : Module.finrank ℝ ComplexModel = 6 := by
     rw [finrank_real_of_complex]
     norm_num [ComplexModel]
-  let hOrientation : SmoothAtlasOrientation 6 ComplexModel X :=
-    hdim ▸ smoothAtlasOrientationOfComplex hComplexOne
-  exact SmoothAtlasOrientation.integralPoincareUCT
-    6 ComplexModel X hRealOne hOrientation hCompact
+  change IntegralPoincareUCTData 6 X
+  exact hdim ▸ SmoothManifold.integralPoincareUCT
+    ComplexModel X hRealOne hCompact
 
 /-- Degree-zero homology of a connected complex manifold is infinite cyclic. -/
 public noncomputable def connectedComplexManifoldHomologyZeroEquivInteger
@@ -42,11 +42,11 @@ public noncomputable def connectedComplexManifoldHomologyZeroEquivInteger
   exact (asIso ((TopCat.of X).singularHomology₀ε (AddCommGrpCat.of ℤ)))
     |>.addCommGroupIsoToAddEquiv
 
-/-- A compact connected complex threefold with vanishing first and second integral homology
+/-- A compact simply connected complex threefold with vanishing first and second integral homology
 and Euler characteristic two has the integral homology of the six-sphere. -/
 public theorem ComplexThreefold.nonempty_homologyEquiv_sixSphere
     (X : Type) [TopologicalSpace X] [ChartedSpace ComplexModel X]
-    [T2Space X] [SecondCountableTopology X]
+    [T2Space X] [SecondCountableTopology X] [SimplyConnectedSpace X]
     [IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ X]
     [CompactSpace X] [ConnectedSpace X]
     (hOne : Subsingleton (IntegralSingularHomology 1 X))

@@ -1,0 +1,296 @@
+module
+
+public import DifferentialGeometry.External.CanonicalTopology.Topology.Algebra.Module.Pairing
+public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SphereCohomologyVanishing
+public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SphereTopHomology
+public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.CapContractibleCover
+public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.ContractiblePairOne
+public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.OneDimensionalLocalCapDuality
+public import Mathlib.Algebra.Group.Int.Units
+public import Mathlib.Topology.Homeomorph.Lemmas
+
+@[expose] public section
+
+universe u v w
+
+noncomputable section
+
+namespace DifferentialGeometry.Topology
+
+open Set Metric
+
+private theorem exists_local_cap_bijective_of_homeomorph_finrank_one
+    {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    (hd : Module.finrank ℝ E = 1)
+    {Y : Type u} [TopologicalSpace Y] (e : E ≃ₜ Y) :
+    ∃ c : integralRelativeHomology 1 ({e 0}ᶜ : Set Y),
+      Function.Bijective (fun α : integralRelativeCohomology 1 ({e 0}ᶜ : Set Y) =>
+        integralRelativeCohomologyCapToAbsolute ({e 0}ᶜ : Set Y) 1 0 α c) := by
+  let _ := e.symm.contractibleSpace
+  let f : ContinuousMap E Y := ⟨e, e.continuous⟩
+  have hf : MapsTo f ({0}ᶜ : Set E) ({e 0}ᶜ : Set Y) :=
+    fun _ hx => e.injective.ne hx
+  let h := e.subtype (p := fun x : E => x ∈ ({0}ᶜ : Set E))
+    (q := fun y : Y => y ∈ ({e 0}ᶜ : Set Y))
+    (fun x => e.injective.ne_iff.symm)
+  have hcoh : Function.Bijective (integralRelativeCohomologyMap 1 f hf) := by
+    apply integralRelativeCohomologyMap_bijective_of_absolute_and_subspace
+    · intro n
+      exact integralSingularCohomologyMap_bijective_of_homotopyEquiv e.toHomotopyEquiv n
+    · intro n
+      exact integralSingularCohomologyMap_bijective_of_homotopyEquiv h.toHomotopyEquiv n
+  obtain ⟨c, hc⟩ := exists_integralLocalHomology_cap_bijective_of_finrank_one E hd
+  refine ⟨integralRelativeHomologyMap 1 f hf c, ?_⟩
+  exact integralRelativeCohomologyCapToAbsolute_bijective_map 1 0 f hf
+    (integralSingularHomologyZeroMapEquiv f).bijective hcoh c hc
+
+end DifferentialGeometry.Topology
+
+end
+
+noncomputable section
+
+namespace DifferentialGeometry.Topology
+
+open Set Metric
+
+private theorem exists_circle_cap_bijective
+    (E : Type u) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
+    (hd : Module.finrank ℝ E = 2) :
+    ∃ c : integralSingularHomology 1 (sphere (0 : E) 1),
+      Function.Bijective (fun α : integralSingularCohomology 1 (sphere (0 : E) 1) =>
+        integralSingularCohomologyCapProduct 1 0 α c) := by
+  let v := unitSpherePointOfFinrankPos (E := E) (by omega)
+  let _ := unitSphere_pathConnected_of_finrank (E := E) (by omega)
+  let _ := spherePuncture_contractible v
+  let _ := spherePuncture_contractible (-v)
+  let A : Set (sphere (0 : E) 1) := {v}ᶜ
+  let B : Set (sphere (0 : E) 1) := {-v}ᶜ
+  let I := subspaceIntersection A B
+  let V := (ℝ ∙ ((-v : sphere (0 : E) 1) : E))ᗮ
+  let e : V ≃ₜ B := (spherePunctureHomeomorph (-v)).symm
+  have he0 : e 0 = (⟨v, unitSphere_ne_antipode v⟩ : B) := by
+    apply (spherePunctureHomeomorph (-v)).injective
+    change spherePunctureHomeomorph (-v)
+      ((spherePunctureHomeomorph (-v)).symm 0) = _
+    rw [(spherePunctureHomeomorph (-v)).apply_symm_apply]
+    exact (stereographic_neg_apply v).symm
+  have heI : ({e 0}ᶜ : Set B) = I := by
+    ext y
+    change (y ≠ e 0) ↔ (y.val ≠ v)
+    rw [he0]
+    exact not_congr Subtype.ext_iff
+  have hex := exists_local_cap_bijective_of_homeomorph_finrank_one
+    (unitSpherePoleHyperplane_finrank 1 hd (-v)) e
+  rw [heI] at hex
+  obtain ⟨d, hdCap⟩ := hex
+  let dA := integralRelativeHomologyMap 1 (singularSubspaceInclusion B)
+    (subspaceIntersection_mapsTo A B) d
+  have hdA : Function.Bijective (fun α : integralRelativeCohomology 1 A =>
+      integralRelativeCohomologyCapToAbsolute A 1 0 α dA) :=
+    integralRelativeCohomologyCapToAbsolute_bijective_map 1 0
+      (singularSubspaceInclusion B) (subspaceIntersection_mapsTo A B)
+      (integralSingularHomologyZeroMapEquiv (singularSubspaceInclusion B)).bijective
+      (integralRelativeCohomologyMap_openExcision 1 A B
+        isOpen_compl_singleton isOpen_compl_singleton (spherePunctures_cover v)) d hdCap
+  let eH := (integralAbsoluteToRelativeOneIsoOfContractible A).toLinearEquiv
+  let c := eH.symm dA
+  have hc : integralAbsoluteToRelative 1 A c = dA := eH.apply_symm_apply dA
+  let g := fun α : integralSingularCohomology 1 (sphere (0 : E) 1) =>
+    integralSingularCohomologyCapProduct 1 0 α c
+  have heq : (fun α : integralRelativeCohomology 1 A =>
+      integralRelativeCohomologyCapToAbsolute A 1 0 α dA) =
+      g ∘ integralRelativeToAbsoluteCohomology 1 A := by
+    funext α
+    rw [← hc, integralRelativeCohomologyCapToAbsolute_absoluteToRelative]
+    rfl
+  rw [heq] at hdA
+  exact ⟨c, (Function.Bijective.of_comp_iff g
+    (integralRelativeToAbsoluteCohomology_bijective_of_contractibleSpace 0 A)).mp hdA⟩
+
+end DifferentialGeometry.Topology
+
+end
+
+noncomputable section
+
+namespace DifferentialGeometry.Topology
+
+open Set Metric
+
+private theorem integralZeroAugmentation_cap_bijective_homotopyEquiv_symm
+    {X Y : Type u} [TopologicalSpace X] [TopologicalSpace Y]
+    (n : ℕ) (e : ContinuousMap.HomotopyEquiv X Y) (c : integralSingularHomology n Y)
+    (hc : Function.Bijective (fun α : integralSingularCohomology n Y =>
+      integralZeroAugmentation (integralSingularCohomologyCapProduct n 0 α c))) :
+    Function.Bijective (fun α : integralSingularCohomology n X =>
+      integralZeroAugmentation (integralSingularCohomologyCapProduct n 0 α
+        ((integralSingularHomologyHomotopyEquiv n e).symm c))) := by
+  let x := (integralSingularHomologyHomotopyEquiv n e).symm c
+  have hx : integralSingularHomologyMap n e.toFun x = c :=
+    (integralSingularHomologyHomotopyEquiv n e).apply_symm_apply c
+  let f := fun α : integralSingularCohomology n X =>
+    integralZeroAugmentation (integralSingularCohomologyCapProduct n 0 α x)
+  have heq : f ∘ integralSingularCohomologyMap n e.toFun =
+      fun β : integralSingularCohomology n Y =>
+        integralZeroAugmentation (integralSingularCohomologyCapProduct n 0 β c) := by
+    funext β
+    change integralZeroAugmentation (integralSingularCohomologyCapProduct n 0
+      (integralSingularCohomologyMap n e.toFun β) x) = _
+    calc
+      _ = integralZeroAugmentation (integralSingularHomologyMap 0 e.toFun
+          (integralSingularCohomologyCapProduct n 0
+            (integralSingularCohomologyMap n e.toFun β) x)) :=
+        (LinearMap.congr_fun (integralZeroAugmentation_natural e.toFun) _).symm
+      _ = _ := by
+        rw [integralSingularCohomologyCapProduct_natural]
+        change integralZeroAugmentation (integralSingularCohomologyCapProduct n 0 β
+          (integralSingularHomologyMap n e.toFun x)) = _
+        rw [hx]
+  apply (Function.Bijective.of_comp_iff f
+    (integralSingularCohomologyMap_bijective_of_homotopyEquiv e n)).mp
+  change Function.Bijective (f ∘ integralSingularCohomologyMap n e.toFun)
+  rw [heq]
+  exact hc
+
+private theorem exists_sphere_cap_pairing_bijective
+    (n : ℕ) (E : Type u) [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] (hd : Module.finrank ℝ E = n + 2) :
+    ∃ c : integralSingularHomology (n + 1) (sphere (0 : E) 1),
+      Function.Bijective (fun α : integralSingularCohomology (n + 1) (sphere (0 : E) 1) =>
+        integralZeroAugmentation (integralSingularCohomologyCapProduct (n + 1) 0 α c)) := by
+  induction n generalizing E with
+  | zero =>
+      let _ := unitSphere_pathConnected_of_finrank (E := E) (by omega)
+      obtain ⟨c, hc⟩ := exists_circle_cap_bijective E hd
+      exact ⟨c, integralConnectedZeroAugmentationEquiv.bijective.comp hc⟩
+  | succ n ih =>
+      let v := unitSpherePointOfFinrankPos (E := E) (by omega)
+      let _ := spherePuncture_contractible v
+      let _ := spherePuncture_contractible (-v)
+      let V := (ℝ ∙ ((-v : sphere (0 : E) 1) : E))ᗮ
+      obtain ⟨d, hdCap⟩ := ih V (unitSpherePoleHyperplane_finrank (n + 2) (by omega) (-v))
+      let e := spherePoleIntersectionHomotopyEquiv v
+      let x := (integralSingularHomologyHomotopyEquiv (n + 1) e).symm d
+      have hx := integralZeroAugmentation_cap_bijective_homotopyEquiv_symm (n + 1) e d hdCap
+      let h := integralHomologyContractibleCoverEquiv n {v}ᶜ {-v}ᶜ
+        isOpen_compl_singleton isOpen_compl_singleton (spherePunctures_cover v)
+      let c := h.symm x
+      refine ⟨c, (integralZeroAugmentation_cap_bijective_contractibleCover_iff n {v}ᶜ {-v}ᶜ
+        isOpen_compl_singleton isOpen_compl_singleton (spherePunctures_cover v) c).mpr ?_⟩
+      change Function.Bijective (fun β => integralZeroAugmentation
+        (integralSingularCohomologyCapProduct (n + 1) 0 β (h c)))
+      have hc : h c = x := h.apply_symm_apply x
+      rw [hc]
+      exact hx
+
+end DifferentialGeometry.Topology
+
+end
+
+noncomputable section
+
+namespace DifferentialGeometry.Topology
+
+private theorem cap_bijective_at_sphere_generator
+    (n : ℕ) (E : Type u) [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] (hd : Module.finrank ℝ E = n + 2) :
+    Function.Bijective (fun α : integralSingularCohomology (n + 1) (Metric.sphere (0 : E) 1) =>
+      integralSingularCohomologyCapProduct (n + 1) 0 α
+        ((integralSphereTopHomologyEquiv n E hd).symm 1)) := by
+  let _ := unitSphere_pathConnected_of_finrank (E := E) (by omega)
+  obtain ⟨c, hc⟩ := exists_sphere_cap_pairing_bijective n E hd
+  let B := fun α : integralSingularCohomology (n + 1) (Metric.sphere (0 : E) 1) =>
+    integralZeroAugmentation.toAddMonoidHom.comp
+      ((integralSingularCohomologyCapProduct (n + 1) 0 α).toAddMonoidHom)
+  have h := additive_pairing_bijective_at_generator B
+    (integralSphereTopHomologyEquiv n E hd).toAddEquiv c hc
+  exact (Function.Bijective.of_comp_iff' integralConnectedZeroAugmentationEquiv.bijective _).mp h
+
+end DifferentialGeometry.Topology
+
+end
+
+noncomputable section
+
+namespace DifferentialGeometry.Topology
+
+theorem integralSingularCohomologyCapProduct_sphere_bijective_iff
+    (n : ℕ) (E : Type u) [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] (hd : Module.finrank ℝ E = n + 2)
+    (c : integralSingularHomology (n + 1) (Metric.sphere (0 : E) 1)) :
+    Function.Bijective (fun α : integralSingularCohomology (n + 1) (Metric.sphere (0 : E) 1) =>
+      integralSingularCohomologyCapProduct (n + 1) 0 α c) ↔
+        integralSphereTopHomologyEquiv n E hd c = 1 ∨
+          integralSphereTopHomologyEquiv n E hd c = -1 := by
+  let _ := unitSphere_pathConnected_of_finrank (E := E) (by omega)
+  let B := fun α : integralSingularCohomology (n + 1) (Metric.sphere (0 : E) 1) =>
+    integralZeroAugmentation.toAddMonoidHom.comp
+      ((integralSingularCohomologyCapProduct (n + 1) 0 α).toAddMonoidHom)
+  have hb : Function.Bijective (fun α => B α ((integralSphereTopHomologyEquiv n E hd).symm 1)) :=
+    integralConnectedZeroAugmentationEquiv.bijective.comp
+      (cap_bijective_at_sphere_generator n E hd)
+  have h := additive_pairing_bijective_iff_isUnit B
+    (integralSphereTopHomologyEquiv n E hd).toAddEquiv hb c
+  exact (Function.Bijective.of_comp_iff' integralConnectedZeroAugmentationEquiv.bijective
+    (fun α => integralSingularCohomologyCapProduct (n + 1) 0 α c)).symm.trans
+      (h.trans Int.isUnit_iff)
+
+end DifferentialGeometry.Topology
+
+end
+
+namespace DifferentialGeometry.Topology
+
+theorem integralSphereTopHomologyEquiv_cap_bijective
+    (n : ℕ) (E : Type u) [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] (hd : Module.finrank ℝ E = n + 2) :
+    Function.Bijective (fun α : integralSingularCohomology (n + 1) (Metric.sphere (0 : E) 1) =>
+      integralSingularCohomologyCapProduct (n + 1) 0 α
+        ((integralSphereTopHomologyEquiv n E hd).symm 1)) :=
+  (integralSingularCohomologyCapProduct_sphere_bijective_iff n E hd _).mpr
+    (Or.inl ((integralSphereTopHomologyEquiv n E hd).apply_symm_apply 1))
+
+end DifferentialGeometry.Topology
+
+noncomputable section
+
+namespace DifferentialGeometry.Topology
+
+open CategoryTheory Metric Module
+
+theorem integralSphereTopHomologyEquiv_cap_bijective_of_add_eq
+    (n k m : ℕ) (E : Type u) [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] (hd : finrank ℝ E = n + 2) (hkm : k + m = n + 1) :
+    Function.Bijective (fun α : integralSingularCohomology k (sphere (0 : E) 1) =>
+      integralSingularCohomologyCapProduct k m α
+        ((eqToHom (congrArg (fun j => integralSingularHomology j (sphere (0 : E) 1)) hkm.symm))
+          ((integralSphereTopHomologyEquiv n E hd).symm 1))) := by
+  by_cases hk : k = 0
+  · subst k
+    have hm : m = n + 1 := by omega
+    subst m
+    let _ := unitSphere_pathConnected_of_finrank (E := E) (by omega)
+    apply (integralSingularCohomologyCapProduct_zero_bijective_iff _ _).mpr
+    rw [← ModuleCat.comp_apply, eqToHom_trans]
+    let e := integralSphereTopHomologyEquiv n E hd
+    change Function.Bijective (fun z : ℤ => z • e.symm 1)
+    have heq : (fun z : ℤ => z • e.symm 1) = e.symm := by
+      funext z
+      apply e.injective
+      rw [map_zsmul, e.apply_symm_apply, e.apply_symm_apply]
+      simp only [zsmul_eq_mul, mul_one, Int.cast_id]
+    rw [heq]
+    exact e.symm.bijective
+  by_cases hm : m = 0
+  · subst m
+    have hk : k = n + 1 := by omega
+    subst k
+    exact integralSphereTopHomologyEquiv_cap_bijective n E hd
+  let _ := integralSphereCohomology_subsingleton (n + 1) k E hd hk (by omega)
+  let _ := integralSphereHomology_subsingleton (n + 1) m E hd hm (by omega)
+  exact ⟨fun _ _ _ => Subsingleton.elim _ _, fun β => ⟨0, Subsingleton.elim _ β⟩⟩
+
+end DifferentialGeometry.Topology
+
+end

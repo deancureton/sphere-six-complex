@@ -1,0 +1,5 @@
+--- before
++++ after
+@@ -4 +4 @@
+-import DifferentialGeometry.Topology.LoopSpace.SpanningDisk
++import DifferentialGeometry.External.CanonicalTopology.Topology.LoopSpace.SpanningDisk

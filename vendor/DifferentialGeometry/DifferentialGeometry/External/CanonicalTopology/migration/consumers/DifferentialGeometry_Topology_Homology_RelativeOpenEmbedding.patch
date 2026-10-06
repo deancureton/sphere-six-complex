@@ -1,0 +1,7 @@
+--- before
++++ after
+@@ -1,2 +1,2 @@
+-import DifferentialGeometry.Topology.Homology.OpenExcision
+-import DifferentialGeometry.Topology.Homology.RelativeHomeomorphism
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.OpenExcision
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RelativeHomeomorphism

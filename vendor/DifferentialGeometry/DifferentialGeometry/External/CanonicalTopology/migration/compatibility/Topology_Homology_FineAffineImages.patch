@@ -1,0 +1,5 @@
+--- canonical-topology/Poincare/Topology/Homology/FineAffineImages.lean
++++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/FineAffineImages.lean
+@@ -29 +29 @@
+-    (t : stdSimplex ℝ (Fin (n + 1))) :
++    (t : Convexity.StdSimplex ℝ (Fin (n + 1))) :

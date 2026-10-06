@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.ChainModel
-public import SphereSixComplex.Prerequisites.Topology.Manifold.Orientation
+public import Mathlib.Geometry.Manifold.IsManifold.ExtChartAt
 public import SphereSixComplex.Prerequisites.Topology.Sphere.SmoothRecognition
 
 /-!

@@ -6,12 +6,10 @@ public import SphereSixComplex.Prerequisites.Topology.Manifold.Triangulation
 public import SphereSixComplex.Prerequisites.Topology.Manifold.PoincareUniversalCoefficients
 
 /-!
-# Integral homology of compact smooth oriented manifolds
+# Integral homology of compact simply connected manifolds
 
-This file derives the reduced homological interface used by Section 7 from three independent,
-dimension-generic classical inputs: smooth triangulation, the integral UCT, and integral Poincare
-duality.  The orientation input itself is concrete atlas data and is proved for complex manifolds
-in `SmoothAtlasOrientation`.
+This file combines smooth triangulation and the integral UCT with proved Poincaré duality
+for simply connected compact manifolds.
 -/
 
 @[expose] public section
@@ -20,20 +18,21 @@ open scoped ContDiff Manifold
 
 namespace SphereSixComplex
 
-/-- The homological consequences of smooth triangulation, the integral UCT, and integral Poincare
-duality for a compact smooth oriented manifold without boundary. -/
-public noncomputable def SmoothAtlasOrientation.integralPoincareUCT
-    (d : ℕ) (E X : Type)
+/-- Integral homology data for a simply connected compact manifold. -/
+public noncomputable def SmoothManifold.integralPoincareUCT
+    (E X : Type)
     [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [TopologicalSpace X] [ChartedSpace E X]
-    [T2Space X] [SecondCountableTopology X]
+    [T2Space X] [SecondCountableTopology X] [SimplyConnectedSpace X]
     (hManifold : IsManifold (modelWithCornersSelf ℝ E) 1 X)
-    (hOrientation : SmoothAtlasOrientation d E X)
     (hCompact : CompactSpace X) :
-    IntegralPoincareUCTData d X := by
-  let P := PoincareDuality.nonempty_addEquiv d E X hManifold hOrientation hCompact
-  let M0 := SmoothManifold.finiteCWModel E X hManifold hCompact
-  let M : CWType.FiniteModelOfDimension d X := hOrientation.dimension_eq ▸ M0
+    IntegralPoincareUCTData (Module.finrank ℝ E) X := by
+  let _ := hManifold
+  let _ := hCompact
+  have P (k : Fin (Module.finrank ℝ E + 1)) : Nonempty
+      (IntegralSingularCohomology k.1 X ≃+ IntegralSingularHomology (Module.finrank ℝ E - k.1) X) :=
+    PoincareDuality.nonempty_addEquiv_of_simplyConnected E X k.1 (Module.finrank ℝ E - k.1) (by omega)
+  let M := SmoothManifold.finiteCWModel E X hManifold hCompact
   refine {
     topEquivDualZero := ?_
     complementEquivDual := ?_

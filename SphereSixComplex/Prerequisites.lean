@@ -223,7 +223,7 @@ public import SphereSixComplex.Prerequisites.Topology.Homotopy.EquivariantDescen
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.EquivariantDeformationRetraction
 public import SphereSixComplex.Prerequisites.Topology.Covering.AffineVanKampen
 public import SphereSixComplex.Prerequisites.Topology.Covering.AffineFillingModels
-public import SphereSixComplex.Prerequisites.Topology.Manifold.OrientedHomology
+public import SphereSixComplex.Prerequisites.Topology.Manifold.Homology
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.First
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.NumeratedCover
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Recognition
@@ -271,6 +271,7 @@ public import SphereSixComplex.Prerequisites.Topology.Manifold.PoincareDuality
 public import SphereSixComplex.Prerequisites.Topology.Manifold.PoincareUniversalCoefficients
 public import SphereSixComplex.Prerequisites.Algebra.IntegralPrimitiveComplement
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Cohomology
+public import SphereSixComplex.Prerequisites.Topology.SingularHomology.ModuleComparison
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.UniversalCoefficients
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.IntervalClutching
 public import SphereSixComplex.Prerequisites.Topology.Collar.HalfSpace
@@ -336,7 +337,7 @@ public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.DegreeZero
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Subdivision.LebesgueNumber
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
-public import SphereSixComplex.Prerequisites.Topology.Manifold.Orientation
+public import SphereSixComplex.Prerequisites.Topology.Manifold.RestrictScalars
 public import SphereSixComplex.Prerequisites.Topology.Sphere.SmoothRecognition
 
 

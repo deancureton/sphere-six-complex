@@ -12,7 +12,7 @@ statements remain fixed. `Scratch/` is outside this task.
   results; remove the unused general comparison axiom; repeat gates.
 - [x] Use compact Brown collaring on the quotient and covering homotopy lifting
   upstairs; remove collar axiom; repeat gates.
-- [ ] Integrate simply-connected integral Poincare duality with coefficient and
+- [x] Integrate simply-connected integral Poincare duality with coefficient and
   cochain bridges; remove duality axiom; repeat gates.
 
 Only the main agent runs Lake builds. Local compiler work runs at nice 15 with
@@ -77,3 +77,33 @@ ledger tracks implemented work and gate results, not source-audit promises.
   five for the construction. The exact audit and regenerated catalog pass.
 - Comparator passes with Lean's default kernel; the updated Blueprint introduction
   also compiles against the proved collar dependency.
+
+## Simply-connected duality checkpoint
+
+- Integrated the proved compact-support and cap-product duality results from
+  DifferentialGeometry at `788efe97894474c032de6dfb1289d515f613d15a`.
+  The selected 221-module dependency is in `vendor/DifferentialGeometry` with
+  licenses, original hashes, attribution and an exact module-system port patch.
+- The upstream legacy file format cannot be imported by this project's module
+  files. The port adds module/export headers, adjusts helper visibility and
+  qualification, and imports one Mathlib implementation for an existing unfolding
+  proof. It preserves mathematical statements and proof steps up to those renames.
+- Explicit chain, homology, cochain and cohomology isomorphisms connect its lifted
+  integer module coefficients to this project's additive-group complexes. The
+  new duality theorem and cohomology adapter have only the three standard axioms.
+- Simple connectedness is proved independently before homology-sphere comparison.
+  Internal consumers now use that hypothesis. The redundant orientation bundle
+  and orientation proofs are deleted; only the general real-restriction lemma
+  remains in `Manifold/RestrictScalars.lean`.
+- The full project build passes (10,346 jobs). Exact compiled closures contain
+  seven mathematical axioms for the final theorems and four for the construction,
+  with the three standard axioms in each. Allowlists and the generated catalog agree.
+- Import/layer checks pass for 734 project modules. The placeholder gate includes
+  both vendored libraries and finds only the two intentional Challenge placeholders.
+- Independent review confirmed the coefficient comparisons, dimension transport,
+  acyclic proof order, all 221 original hashes and reversibility of the port patch.
+- Comparator accepts both unchanged endpoint statements with Lean's default kernel
+  under the exact seven-result classical boundary.
+- Final Blueprint site generation passes, including HTML index, manifest and
+  HTML-cache checks. Static inventory finds exactly seven project axioms, all
+  reachable from the final theorem, with no additional unused axioms.

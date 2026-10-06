@@ -1,0 +1,25 @@
+--- before
++++ after
+@@ -3 +3 @@
+-import DifferentialGeometry.Topology.Homology.Homotopy
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.Homotopy
+@@ -87,2 +87 @@
+-def SphereHurewiczTwoCanonical (X : Type u) [TopologicalSpace X]
+-    [SimplyConnectedSpace X] : Prop :=
++def SphereHurewiczTwoCanonical (X : Type u) [TopologicalSpace X] : Prop :=
+@@ -91,2 +90 @@
+-def SphereHurewiczThreeCanonical (X : Type u) [TopologicalSpace X]
+-    [SimplyConnectedSpace X] : Prop :=
++def SphereHurewiczThreeCanonical (X : Type u) [TopologicalSpace X] : Prop :=
+@@ -96 +94 @@
+-theorem sphereHurewicz_two_isomorphism_iff_canonical_generator [SimplyConnectedSpace X] :
++theorem sphereHurewicz_two_isomorphism_iff_canonical_generator :
+@@ -107 +105 @@
+-theorem sphereHurewicz_three_isomorphism_iff_canonical_generator [SimplyConnectedSpace X] :
++theorem sphereHurewicz_three_isomorphism_iff_canonical_generator :
+@@ -119 +117 @@
+-theorem sphereHurewicz_two_isomorphism_of_canonical_generator [SimplyConnectedSpace X]
++theorem sphereHurewicz_two_isomorphism_of_canonical_generator
+@@ -128 +126 @@
+-theorem sphereHurewicz_three_isomorphism_of_canonical_generator [SimplyConnectedSpace X]
++theorem sphereHurewicz_three_isomorphism_of_canonical_generator

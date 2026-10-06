@@ -1,0 +1,11 @@
+--- before
++++ after
+@@ -2,4 +2,4 @@
+-import DifferentialGeometry.Topology.Homology.TwoSetSmallChains
+-import DifferentialGeometry.Topology.Homology.SubdivisionSmallness
+-import DifferentialGeometry.Topology.Homology.CarrierRestriction
+-import DifferentialGeometry.Topology.Homology.SubspaceCarriers
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.TwoSetSmallChains
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SubdivisionSmallness
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.CarrierRestriction
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SubspaceCarriers

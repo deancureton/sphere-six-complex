@@ -1,0 +1,16 @@
+--- before
++++ after
+@@ -6 +6 @@
+-import DifferentialGeometry.Topology.Homology.CarrierRestriction
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.CarrierRestriction
+@@ -8,5 +8,5 @@
+-import DifferentialGeometry.Topology.Homology.ModuleHomologyMaps
+-import DifferentialGeometry.Topology.Homology.RelativeMaps
+-import DifferentialGeometry.Topology.Homology.SimplexMaps
+-import DifferentialGeometry.Topology.Homology.SmallCycles
+-import DifferentialGeometry.Topology.Homology.TwoSetSmallChains
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.ModuleHomologyMaps
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RelativeMaps
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SimplexMaps
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SmallCycles
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.TwoSetSmallChains

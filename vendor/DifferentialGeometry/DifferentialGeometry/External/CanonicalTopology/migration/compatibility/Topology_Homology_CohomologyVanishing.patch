@@ -1,0 +1,17 @@
+--- canonical-topology/Poincare/Topology/Homology/CohomologyVanishing.lean
++++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/CohomologyVanishing.lean
+@@ -22 +22 @@
+-    rw [if_pos (by omega)]
++    rw [ite_eq_left (by omega)]
+@@ -26 +26 @@
+-    rw [if_pos rfl]
++    rw [ite_eq_left rfl]
+@@ -35 +35 @@
+-    rw [hin, if_pos he]
++    rw [hin, ite_eq_left he]
+@@ -38 +38 @@
+-    rw [hout, if_pos (Nat.even_add_one.mpr he)] at hx
++    rw [hout, ite_eq_left (Nat.even_add_one.mpr he)] at hx
+@@ -84 +84 @@
+-      ⟨Pi.single (0 : Fin (n + 1)) 1, single_mem_stdSimplex ℝ 0⟩)
++      (Convexity.StdSimplex.single 0))

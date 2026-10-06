@@ -1,0 +1,7 @@
+--- before
++++ after
+@@ -1,2 +1,2 @@
+-import DifferentialGeometry.Topology.Homology.Homotopy
+-import DifferentialGeometry.Topology.Homology.SimplexBoundary
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.Homotopy
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SimplexBoundary

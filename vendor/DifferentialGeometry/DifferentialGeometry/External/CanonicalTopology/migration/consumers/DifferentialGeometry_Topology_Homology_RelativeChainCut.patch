@@ -1,0 +1,7 @@
+--- before
++++ after
+@@ -6,2 +6,2 @@
+-import DifferentialGeometry.Topology.Homology.SmallCycles
+-import DifferentialGeometry.Topology.Homology.TwoSetSmallChains
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SmallCycles
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.TwoSetSmallChains

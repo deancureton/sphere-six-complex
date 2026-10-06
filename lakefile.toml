@@ -17,6 +17,10 @@ subDir = "HOLLight-Lean"
 name = "VanKampen"
 path = "vendor/VanKampen"
 
+[[require]]
+name = "DifferentialGeometry"
+path = "vendor/DifferentialGeometry"
+
 # Keep Mathlib last so its transitive dependency pins take precedence.
 [[require]]
 name = "mathlib"

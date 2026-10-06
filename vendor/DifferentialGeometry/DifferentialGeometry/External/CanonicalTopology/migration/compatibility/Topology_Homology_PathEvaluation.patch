@@ -1,0 +1,15 @@
+--- canonical-topology/Poincare/Topology/Homology/PathEvaluation.lean
++++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/PathEvaluation.lean
+@@ -18 +18 @@
+-theorem integralPathSimplex_apply (p : Path x y) (t : stdSimplex ℝ (Fin 2)) :
++theorem integralPathSimplex_apply (p : Path x y) (t : Convexity.StdSimplex ℝ (Fin 2)) :
+@@ -20,2 +20,2 @@
+-      p (stdSimplexHomeomorphUnitInterval t) := by
+-  exact congrArg (fun f : C(stdSimplex ℝ (Fin 2), X) => f t)
++      p (Convexity.StdSimplex.homeomorphI t) := by
++  exact congrArg (fun f : C(Convexity.StdSimplex ℝ (Fin 2), X) => f t)
+@@ -23,2 +23,2 @@
+-      (p.toContinuousMap.comp ⟨stdSimplexHomeomorphUnitInterval,
+-        stdSimplexHomeomorphUnitInterval.continuous⟩))
++      (p.toContinuousMap.comp ⟨Convexity.StdSimplex.homeomorphI,
++        Convexity.StdSimplex.homeomorphI.continuous⟩))

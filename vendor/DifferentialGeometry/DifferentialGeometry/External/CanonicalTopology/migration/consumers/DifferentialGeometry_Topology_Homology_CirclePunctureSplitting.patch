@@ -1,0 +1,5 @@
+--- before
++++ after
+@@ -3 +3 @@
+-import DifferentialGeometry.Topology.Homology.SphereRank
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SphereRank

@@ -1,0 +1,11 @@
+--- before
++++ after
+@@ -9 +9 @@
+-import DifferentialGeometry.Topology.Homology.SphereTopHomology
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SphereTopHomology
+@@ -153 +153 @@
+-    [T2Space M] [CompactSpace M] [ConnectedSpace M] (x₀ : M) :
++    [T2Space M] [ConnectedSpace M] (x₀ : M) :
+@@ -205 +205 @@
+-    [T2Space M] [CompactSpace M] [ConnectedSpace M] (x₀ : M)
++    [T2Space M] [ConnectedSpace M] (x₀ : M)

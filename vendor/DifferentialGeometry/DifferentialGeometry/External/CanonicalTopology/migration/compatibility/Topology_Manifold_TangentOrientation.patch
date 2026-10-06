@@ -1,0 +1,14 @@
+--- canonical-topology/Poincare/Topology/Manifold/TangentOrientation.lean
++++ DifferentialGeometry/External/CanonicalTopology/Topology/Manifold/TangentOrientation.lean
+@@ -89 +89 @@
+-    simp only [b, dif_pos hx, Basis.map_apply, IsLocalFrameOn.toBasisAt_coe]
++    simp only [b, dite_eq_left hx, Basis.map_apply, IsLocalFrameOn.toBasisAt_coe]
+@@ -97 +97 @@
+-  simpa only [b, dif_pos (hV x hx).1, dif_pos hpT, Basis.orientation_map, A, e] using heq
++  simpa only [b, dite_eq_left (hV x hx).1, dite_eq_left hpT, Basis.orientation_map, A, e] using heq
+@@ -225 +225 @@
+-  rw [tangentChartFiberEquiv, dif_pos hx]
++  rw [tangentChartFiberEquiv, dite_eq_left hx]
+@@ -239 +239 @@
+-  rw [Orientation.map_symm, tangentChartFiberEquiv, dif_pos hx,
++  rw [Orientation.map_symm, tangentChartFiberEquiv, dite_eq_left hx,

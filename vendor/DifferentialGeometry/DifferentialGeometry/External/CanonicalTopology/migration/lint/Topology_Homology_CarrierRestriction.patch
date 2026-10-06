@@ -1,0 +1,5 @@
+--- before
++++ after
+@@ -17 +17 @@
+-instance integralSingularChainsIn_module (n : ℕ) (A : Set X) :
++instance integralSingularChainsInModule (n : ℕ) (A : Set X) :

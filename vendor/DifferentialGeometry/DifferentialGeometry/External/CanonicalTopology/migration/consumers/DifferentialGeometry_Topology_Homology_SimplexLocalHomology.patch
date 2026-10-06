@@ -1,0 +1,5 @@
+--- before
++++ after
+@@ -3 +3 @@
+-import DifferentialGeometry.Topology.Homology.RelativeHomeomorphism
++import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RelativeHomeomorphism
