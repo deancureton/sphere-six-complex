@@ -4,10 +4,8 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-# The Blueprint is its own Lake workspace, so the cache fetched by the root build does not populate
-# this workspace's copy of Mathlib.
 if [[ "${BLUEPRINT_SKIP_CACHE_GET:-0}" != "1" ]]; then
-  lake exe cache get
+  bash ../scripts/get-mathlib-cache.sh
 fi
 lake exe vbp build
 

@@ -16,6 +16,8 @@ jobs:
   build:
     name: Build Blueprint Site
     runs-on: ubuntu-latest
+    env:
+      LEAN_NUM_THREADS: "3"
     steps:
       - uses: actions/checkout@v5
       - uses: actions/configure-pages@v6
@@ -23,29 +25,34 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-      - name: Prepare Lean dependency caches
+      - name: Share pinned dependencies with Blueprint
         run: |
-          lake exe cache get
-          (cd blueprint && lake exe cache get)
+          cmp lean-toolchain blueprint/lean-toolchain
+          jq -e -s '
+            (.[0].packages | map({key: .name, value: .}) | from_entries) as $root |
+            all(.[1].packages[]; . as $pkg |
+              if $root | has($pkg.name) then
+                [$pkg.type, $pkg.url, $pkg.rev, $pkg.subDir] ==
+                [$root[$pkg.name].type, $root[$pkg.name].url,
+                 $root[$pkg.name].rev, $root[$pkg.name].subDir]
+              else true end)
+          ' lake-manifest.json blueprint/lake-manifest.json
+          mkdir -p blueprint/.lake .lake/packages
+          ln -s ../../.lake/packages blueprint/.lake/packages
       - name: Restore incremental Lean build cache
         uses: actions/cache@v4
         with:
           path: |
             .lake/build
-            .lake/packages/TauCeti/.lake/build
-            .lake/packages/JordanCurveTheorem/HOLLight-Lean/.lake/build
+            .lake/packages
             blueprint/.lake/build
-            blueprint/.lake/packages/VersoBlueprint/.lake/build
-            blueprint/.lake/packages/verso/.lake/build
-            blueprint/.lake/packages/verso-slides/.lake/build
-            blueprint/.lake/packages/illuminate/.lake/build
-            blueprint/.lake/packages/MD4Lean/.lake/build
-            blueprint/.lake/packages/subverso/.lake/build
-            blueprint/.lake/packages/TauCeti/.lake/build
-            blueprint/.lake/packages/JordanCurveTheorem/HOLLight-Lean/.lake/build
-          key: lean-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'blueprint/lean-toolchain', 'blueprint/lake-manifest.json') }}-${{ github.sha }}
+          key: lean-shared-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'blueprint/lean-toolchain', 'blueprint/lake-manifest.json') }}-${{ github.sha }}
           restore-keys: |
-            lean-build-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'blueprint/lean-toolchain', 'blueprint/lake-manifest.json') }}-
+            lean-shared-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'blueprint/lean-toolchain', 'blueprint/lake-manifest.json') }}-
+      - name: Prepare compatible Lean dependency caches
+        run: |
+          bash scripts/get-mathlib-cache.sh
+          (cd blueprint && bash ../scripts/get-mathlib-cache.sh)
       - name: Build formalization
         run: lake build
       - name: Check import coverage
