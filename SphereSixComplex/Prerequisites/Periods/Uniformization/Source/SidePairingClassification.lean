@@ -989,13 +989,13 @@ theorem bottomRowDenominatorNormSq_ge_one_of_maps_oriented
     · have h := normSq_one_sub_ge_one_of_mem_orientedFundamentalRegion hz
       rw [hc, hd]
       norm_num [normSq_apply] at h ⊢
-      nlinarith
+      nlinarith only [h]
     · have h := normSq_sqrtd_add_ge_one_of_mem_orientedFundamentalRegion hz
       simpa [hc, hd] using h
     · have h := normSq_sub_one_add_sqrtd_ge_one_of_mem_orientedFundamentalRegion hz
       rw [hc, hd]
       norm_num [normSq_apply] at h ⊢
-      nlinarith
+      nlinarith only [h]
   · rcases deltaBottomRow_snd_four_cases_of_fst_eq_neg_one g hz hw hc hgw with
       hd | hd | hd | hd
     · have h := normSq_ge_one_of_mem_orientedFundamentalRegion hz
@@ -1003,15 +1003,15 @@ theorem bottomRowDenominatorNormSq_ge_one_of_maps_oriented
     · have h := normSq_one_sub_ge_one_of_mem_orientedFundamentalRegion hz
       rw [hc, hd]
       norm_num [normSq_apply] at h ⊢
-      nlinarith
+      nlinarith only [h]
     · have h := normSq_sqrtd_add_ge_one_of_mem_orientedFundamentalRegion hz
       rw [hc, hd]
       norm_num [normSq_apply] at h ⊢
-      nlinarith
+      nlinarith only [h]
     · have h := normSq_sub_one_add_sqrtd_ge_one_of_mem_orientedFundamentalRegion hz
       rw [hc, hd]
       norm_num [normSq_apply] at h ⊢
-      nlinarith
+      nlinarith only [h]
   · have him := sqrt_two_div_two_le_im_of_mem_orientedFundamentalRegion hz
     have hspos := sqrt_two_pos
     have hs2 := sqrt_two_sq
@@ -1182,10 +1182,12 @@ private theorem eq_fuchsianTwoFixedPoint_of_normSq_sqrtd_add_eq_one
   have hnorm' : (z.re + Real.sqrt 2) ^ 2 + z.im ^ 2 = 1 := by
     simpa [normSq_apply, pow_two] using hnorm
   have hre : z.re = -Real.sqrt 2 / 2 := by
-    nlinarith [sq_nonneg (z.re + Real.sqrt 2 - Real.sqrt 2 / 2),
+    nlinarith only [hnorm', hreBounds.1, himLower, hspos, hs2,
+      sq_nonneg (z.re + Real.sqrt 2 - Real.sqrt 2 / 2),
       sq_nonneg (z.im - Real.sqrt 2 / 2)]
   have him : z.im = Real.sqrt 2 / 2 := by
-    nlinarith [sq_nonneg (z.im - Real.sqrt 2 / 2)]
+    nlinarith only [hnorm', hre, himLower, hspos, hs2,
+      sq_nonneg (z.im - Real.sqrt 2 / 2)]
   apply UpperHalfPlane.coe_injective
   apply Complex.ext
   · simpa [fuchsianTwoFixedPoint] using hre
@@ -1202,16 +1204,17 @@ private theorem eq_sourceFarRightVertex_of_normSq_sub_far_eq_one
   have hnorm' : (z.re - (1 + Real.sqrt 2)) ^ 2 + z.im ^ 2 = 1 := by
     simpa [normSq_apply, pow_two] using hnorm
   have hre : z.re = 1 + Real.sqrt 2 / 2 := by
-    nlinarith [sq_nonneg
+    nlinarith only [hnorm', hreBounds.2, himLower, hspos, hs2, sq_nonneg
       (z.re - (1 + Real.sqrt 2) + Real.sqrt 2 / 2),
       sq_nonneg (z.im - Real.sqrt 2 / 2)]
   have him : z.im = Real.sqrt 2 / 2 := by
-    nlinarith [sq_nonneg (z.im - Real.sqrt 2 / 2)]
+    nlinarith only [hnorm', hre, himLower, hspos, hs2,
+      sq_nonneg (z.im - Real.sqrt 2 / 2)]
   apply UpperHalfPlane.coe_injective
   apply Complex.ext
   · simp [sourceFarRightVertex, sourceRightUHP, sourceRight,
       fuchsianTwoFixedPoint]
-    nlinarith
+    linarith only [hre]
   · simp [sourceFarRightVertex, sourceRightUHP, sourceRight,
       fuchsianTwoFixedPoint]
     exact him
@@ -1261,31 +1264,16 @@ theorem source_oriented_pairing_of_bottomLeft_eq_sqrtd
           (z = sourceRightUHP u ∧ w = u)) := by
   have himEq := im_eq_of_maps_oriented g hz hw hgw
   have hzlow := sqrt_two_div_two_le_im_of_mem_orientedFundamentalRegion hz
-  have hwlow := sqrt_two_div_two_le_im_of_mem_orientedFundamentalRegion hw
-  let N := normSq
-    (positiveEmbedding (deltaBottomRow g).1 * (z : ℂ) +
-      positiveEmbedding (deltaBottomRow g).2)
-  have hNpos : 0 < N := bottomRowDenominatorNormSq_deltaBottomRow_pos g z
-  have hformula := fuchsianSourceAction_im_eq_div_wordBottomNormSq g z
-  rw [hgw] at hformula
-  change w.im = z.im / N at hformula
-  have hNmul : N * w.im = z.im := by
-    have h := (eq_div_iff hNpos.ne').mp hformula
-    nlinarith
-  have hNlower : 2 * z.im ^ 2 ≤ N := by
-    dsimp only [N]
-    rw [hc, positiveEmbedding_apply]
-    norm_num [normSq_apply]
-    nlinarith [sqrt_two_sq,
-      sq_nonneg (Real.sqrt 2 * z.re + positiveEmbedding (deltaBottomRow g).2)]
-  have hprod : z.im * w.im ≤ 1 / 2 := by
-    nlinarith [z.im_pos, w.im_pos]
-  have hprodLower := half_le_im_mul_im_of_mem_orientedFundamentalRegion hz hw
-  have hspos := sqrt_two_pos
-  have hs2 := sqrt_two_sq
-  have hzIm : z.im = Real.sqrt 2 / 2 := by nlinarith
-  have hwIm : w.im = Real.sqrt 2 / 2 := by nlinarith
-  exact source_oriented_pairing_of_both_im_eq_min hz hw hzIm hwIm
+  have hN := bottomRowDenominatorNormSq_eq_one_of_maps_oriented g hz hw hgw
+  rw [hc, positiveEmbedding_apply] at hN
+  generalize positiveEmbedding (deltaBottomRow g).2 = d at hN
+  norm_num [normSq_apply] at hN
+  have hbound : (Real.sqrt 2 * z.im) ^ 2 ≤ 1 := by
+    nlinarith only [hN, sq_nonneg (Real.sqrt 2 * z.re + d)]
+  rw [mul_pow, sqrt_two_sq] at hbound
+  have hzIm : z.im = Real.sqrt 2 / 2 := by
+    nlinarith only [hbound, hzlow, sqrt_two_pos, sqrt_two_sq]
+  exact source_oriented_pairing_of_both_im_eq_min hz hw hzIm (himEq.symm.trans hzIm)
 
 theorem source_oriented_pairing_of_bottomLeft_eq_neg_sqrtd
     (g : Delta) {z w : UpperHalfPlane}
@@ -1300,31 +1288,16 @@ theorem source_oriented_pairing_of_bottomLeft_eq_neg_sqrtd
           (z = sourceRightUHP u ∧ w = u)) := by
   have himEq := im_eq_of_maps_oriented g hz hw hgw
   have hzlow := sqrt_two_div_two_le_im_of_mem_orientedFundamentalRegion hz
-  have hwlow := sqrt_two_div_two_le_im_of_mem_orientedFundamentalRegion hw
-  let N := normSq
-    (positiveEmbedding (deltaBottomRow g).1 * (z : ℂ) +
-      positiveEmbedding (deltaBottomRow g).2)
-  have hNpos : 0 < N := bottomRowDenominatorNormSq_deltaBottomRow_pos g z
-  have hformula := fuchsianSourceAction_im_eq_div_wordBottomNormSq g z
-  rw [hgw] at hformula
-  change w.im = z.im / N at hformula
-  have hNmul : N * w.im = z.im := by
-    have h := (eq_div_iff hNpos.ne').mp hformula
-    nlinarith
-  have hNlower : 2 * z.im ^ 2 ≤ N := by
-    dsimp only [N]
-    rw [hc, map_neg, positiveEmbedding_apply]
-    norm_num [normSq_apply]
-    nlinarith [sqrt_two_sq,
-      sq_nonneg (-(Real.sqrt 2 * z.re) + positiveEmbedding (deltaBottomRow g).2)]
-  have hprod : z.im * w.im ≤ 1 / 2 := by
-    nlinarith [z.im_pos, w.im_pos]
-  have hprodLower := half_le_im_mul_im_of_mem_orientedFundamentalRegion hz hw
-  have hspos := sqrt_two_pos
-  have hs2 := sqrt_two_sq
-  have hzIm : z.im = Real.sqrt 2 / 2 := by nlinarith
-  have hwIm : w.im = Real.sqrt 2 / 2 := by nlinarith
-  exact source_oriented_pairing_of_both_im_eq_min hz hw hzIm hwIm
+  have hN := bottomRowDenominatorNormSq_eq_one_of_maps_oriented g hz hw hgw
+  rw [hc, map_neg, positiveEmbedding_apply] at hN
+  generalize positiveEmbedding (deltaBottomRow g).2 = d at hN
+  norm_num [normSq_apply] at hN
+  have hbound : (Real.sqrt 2 * z.im) ^ 2 ≤ 1 := by
+    nlinarith only [hN, sq_nonneg (-(Real.sqrt 2 * z.re) + d)]
+  rw [mul_pow, sqrt_two_sq] at hbound
+  have hzIm : z.im = Real.sqrt 2 / 2 := by
+    nlinarith only [hbound, hzlow, sqrt_two_pos, sqrt_two_sq]
+  exact source_oriented_pairing_of_both_im_eq_min hz hw hzIm (himEq.symm.trans hzIm)
 
 /-! ## Equal bottom rows differ by a cusp translation -/
 
@@ -1470,7 +1443,7 @@ private theorem source_oriented_pairing_of_bottomRow_eq_one_zero_or_neg
     rcases hrow with hrow | hrow <;>
       rw [hrow] at hN <;>
       norm_num [normSq_apply] at hN ⊢ <;>
-      nlinarith
+      nlinarith only [hN]
   have hzFund :=
     mem_fundamentalTriangle_of_mem_oriented_of_normSq_eq_one hz hnorm
   have hcompare : deltaBottomRow g = deltaBottomRow (g₂ ^ 3) ∨
@@ -1499,10 +1472,10 @@ private theorem source_oriented_pairing_of_bottomRow_eq_one_zero_or_neg
   have hwidth := cuspWidth_pos
   have hnLowerReal : (0 : ℝ) ≤ n := by
     unfold cuspWidth at hre hwidth
-    nlinarith
+    nlinarith only [hre, hzFundLeft, hwre.1, hspos, hwidth]
   have hnUpperReal : (n : ℝ) < 2 := by
     unfold cuspWidth at hre hwidth
-    nlinarith [hzFund.2.1, hwre.2]
+    nlinarith only [hre, hzFund.2.1, hwre.2, hspos, hwidth]
   have hnLower : (0 : ℤ) ≤ n := by exact_mod_cast hnLowerReal
   have hnUpper : n < (2 : ℤ) := by exact_mod_cast hnUpperReal
   have hncases : n = 0 ∨ n = 1 := by omega
@@ -1512,19 +1485,19 @@ private theorem source_oriented_pairing_of_bottomRow_eq_one_zero_or_neg
     apply Complex.ext
     · change z.re = w.re
       norm_num [cuspWidth] at hre
-      nlinarith [hzFundLeft, hwre.1]
+      linarith only [hre, hzFundLeft, hwre.1]
     · exact him
   · right
     refine ⟨z, hzFund, ?_, Or.inl ⟨rfl, ?_⟩⟩
     · rintro ⟨_, _, _, hopenNorm⟩
-      nlinarith
+      exact (not_lt_of_ge hnorm.le) hopenNorm
     · apply UpperHalfPlane.coe_injective
       apply Complex.ext
       · change w.re = (sourceRight (z : ℂ)).re
         rw [sourceRight_re]
         change w.re = 1 - z.re
         norm_num [cuspWidth] at hre
-        linarith
+        linarith only [hre]
       · simpa [sourceRight] using him.symm
 
 private theorem sourceRightUHP_mem_fundamentalTriangle_of_mem_right
@@ -1569,7 +1542,7 @@ private theorem source_oriented_pairing_of_bottomRow_eq_one_neg_one_or_neg
     rcases hrow with hrow | hrow <;>
       rw [hrow] at hN <;>
       norm_num [normSq_apply] at hN ⊢ <;>
-      nlinarith
+      nlinarith only [hN]
   have hzRight :=
     mem_rightFundamentalTriangle_of_mem_oriented_of_normSq_one_sub_eq_one hz hnorm
   have hcompare : deltaBottomRow g = deltaBottomRow (g₁ ^ 2) ∨
@@ -1596,10 +1569,10 @@ private theorem source_oriented_pairing_of_bottomRow_eq_one_neg_one_or_neg
   have hwidth := cuspWidth_pos
   have hnLowerReal : (-1 : ℝ) < n := by
     unfold cuspWidth at hre hwidth
-    nlinarith [hzRight.1, hwre.1]
+    nlinarith only [hre, hzRight.1, hwre.1, hspos, hwidth]
   have hnUpperReal : (n : ℝ) ≤ 1 := by
     unfold cuspWidth at hre hwidth
-    nlinarith [hzRight.2.1, hwre.2]
+    nlinarith only [hre, hzRight.2.1, hwre.2, hspos, hwidth]
   have hnLower : (-1 : ℤ) < n := by exact_mod_cast hnLowerReal
   have hnUpper : n ≤ (1 : ℤ) := by exact_mod_cast hnUpperReal
   have hncases : n = 0 ∨ n = 1 := by omega
@@ -1620,19 +1593,19 @@ private theorem source_oriented_pairing_of_bottomRow_eq_one_neg_one_or_neg
         rw [sourceRight_re]
         change w.re = 1 - z.re
         norm_num [cuspWidth] at hre
-        linarith
+        linarith only [hre]
       · dsimp only [u]
         simpa [sourceRight] using him.symm
     refine ⟨u, huFund, ?_, Or.inr ⟨?_, hwu⟩⟩
     · rintro ⟨_, _, _, hopenNorm⟩
-      nlinarith
+      exact (not_lt_of_ge huNorm.le) hopenNorm
     · exact (sourceRightUHP_involutive z).symm
   · left
     apply UpperHalfPlane.coe_injective
     apply Complex.ext
     · change z.re = w.re
       norm_num [cuspWidth] at hre
-      nlinarith [hzRight.2.1, hwre.2]
+      nlinarith only [hre, hzRight.2.1, hwre.2, hspos, hwidth]
     · exact him
 
 private theorem source_oriented_pairing_of_bottomRow_sqrtd_center

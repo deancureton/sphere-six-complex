@@ -57,6 +57,7 @@ public theorem correctedPlaneTile_neighbor_zero_two_iff
         planeVertexOffset, planeMidpointOffset,
         planeNextMidpointOffset, e₁] at h0 h1
       norm_num [div_eq_mul_inv] at h0 h1
+      field_simp at h0 h1
       refine ⟨by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],
         by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],
         by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2]⟩
@@ -140,6 +141,7 @@ public theorem correctedPlaneTile_neighbor_five_three_iff
         planeVertexOffset, planeMidpointOffset,
         planeNextMidpointOffset, e₁] at h0 h1
       norm_num [div_eq_mul_inv] at h0 h1
+      field_simp at h0 h1
       refine ⟨by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],
         by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],
         by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2]⟩
@@ -219,6 +221,7 @@ public theorem correctedPlaneTile_neighbor_five_two_iff
         planeVertexOffset, planeMidpointOffset,
         planeNextMidpointOffset, e₁] at h0 h1
       norm_num [div_eq_mul_inv] at h0 h1
+      field_simp at h0 h1
       refine ⟨by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],
         by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],
         by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],

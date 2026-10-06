@@ -61,12 +61,12 @@ private theorem sameQuadrant_pair_bottomLeft_zero
   have hnb : nb = 1 ∨ nb = 2 ∨ nb = 3 := by omega
   rcases hna with hna | hna <;> rcases hnb with hnb | hnb | hnb
   all_goals
-    rcases hrow with hrow | hrow
-  all_goals
     have hre := congrArg Zsqrtd.re hzero
     have him := congrArg Zsqrtd.im hzero
     norm_num [factorMatrix, na, nb, hna, hnb, quadraticOne, quadraticTwo, pow_two, pow_succ,
       Matrix.mul_apply, Fin.sum_univ_succ] at hre him
+  all_goals
+    rcases hrow with hrow | hrow
   all_goals
     simp only [CoeffNonnegative, CoeffNonpositive] at hrow
   all_goals first
@@ -119,12 +119,12 @@ private theorem oppositeQuadrant_pair_bottomLeft_zero
   have hna : na = 1 ∨ na = 2 := by omega
   rcases hnb with hnb | hnb | hnb <;> rcases hna with hna | hna
   all_goals
-    rcases hrow with hrow | hrow
-  all_goals
     have hre := congrArg Zsqrtd.re hzero
     have him := congrArg Zsqrtd.im hzero
     norm_num [factorMatrix, na, nb, hna, hnb, quadraticOne, quadraticTwo, pow_two, pow_succ,
       Matrix.mul_apply, Fin.sum_univ_succ] at hre him
+  all_goals
+    rcases hrow with hrow | hrow
   all_goals
     simp only [CoeffNonnegative, CoeffNonpositive] at hrow
   all_goals first
@@ -311,14 +311,18 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
             rfl
           · exact (hkj rfl).elim
         · have hlj : l = j := by
-            cases l <;> cases k <;> cases j <;> simp_all
+            cases l <;> cases k <;> cases j <;>
+              first | rfl | exact (hlk rfl).elim | exact (hkj rfl).elim
           subst l
           have hpmatrix := neWordMatrix_eq_init_mul_factorMatrix p q hlk hpprod
           have hwmatrix := neWordMatrix_eq_init_mul_factorMatrix w p hkj hwprod
           have hqShort : q.toList.length < n := by omega
           cases j with
           | false =>
-              have hk : k = true := by cases k <;> simp_all
+              have hk : k = true := by
+                cases k
+                · exact (hkj rfl).elim
+                · rfl
               subst k
               have hrow : OppositeQuadrantRow
                   (neWordMatrix q 1 0) (neWordMatrix q 1 1) := by
@@ -335,7 +339,7 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
                 w.last (BinaryIndexedCoprod.NeWord.last_ne_one w) hpairZero
               have hqClass := ih q.toList.length hqShort q rfl hclassified.1
               rcases hqClass with hqForward | hqBackward
-              · simp_all
+              · exact Bool.noConfusion hqForward.2.1
               · rcases hqBackward with ⟨hi, hj, m, hm, hqprod⟩
                 refine Or.inr ⟨hi, rfl, m + 1, by omega, ?_⟩
                 rw [hwprod, hpprod, hqprod, hclassified.2.1, hclassified.2.2,
@@ -344,7 +348,10 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
                 simp only [mul_assoc]
                 rfl
           | true =>
-              have hk : k = false := by cases k <;> simp_all
+              have hk : k = false := by
+                cases k
+                · rfl
+                · exact (hkj rfl).elim
               subst k
               have hrow : SameQuadrantRow
                   (neWordMatrix q 1 0) (neWordMatrix q 1 1) := by
@@ -368,7 +375,7 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
                 unfold indexedCuspForward
                 simp only [mul_assoc]
                 rfl
-              · simp_all
+              · exact Bool.noConfusion hqBackward.2.1
 
 private theorem deltaToIndexed_product_eq_indexedCuspForward :
     deltaToIndexed (g₁ * g₂) = indexedCuspForward := by

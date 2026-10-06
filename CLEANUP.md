@@ -48,9 +48,9 @@ Lake version's `clean` command accepts package names, not library names).
 - [x] 2: repeat the endpoint dependency audit, protecting elaboration support.
 - [x] 3: check unused imports and orphaned scaffolding; rebuild consumers.
 - [x] 4: optional broad proof golfing is skipped; focus on warnings and measured costs.
-- [ ] 5: profile the slowest modules and their import floors; optimize only measured costs.
+- [x] 5: profile the slowest modules and their import floors; optimize only measured costs.
 - [x] 6: wholesale-Mathlib slimming has no candidates.
-- [ ] 7: compare clean before/after builds under the same worker/priority limits.
+- [x] 7: compare clean before/after builds under the same worker/priority limits.
 - [x] 8: existing CI builds and import/placeholder/axiom gates retained; optional
   additional drift guard not added. Upstream warnings prevent a blanket warning-as-error gate.
 
@@ -155,4 +155,94 @@ final A/B benchmark. Lightweight declaration profiles identify large-context
 `simp_all`, repeated arithmetic preprocessing, and two expensive parallel
 rewrites in first homology. Full tactic traces substantially perturb timings
 and can exceed heartbeats; plain runs pass without overrides. Torus homology's
-costs are diffuse and lower priority. No performance edits are included yet.
+costs are diffuse and lower priority. The proof-only batches passed local and whole-project validation. Adjacent plain single-worker
+measurements confirm CuspWordCentralizer at 20.42 → 10.62 user CPU seconds and
+Homology/First at 17.15 → 5.62. The former avoids repeated normalization and
+large-context Boolean simplification; the latter supplies explicit arguments
+to two rewrites. SidePairingClassification reuses an existing norm-square lemma
+to shorten two proofs by 30 lines (37.57 → 36.37 user CPU seconds). The smaller
+change is not evidence of a substantial speedup. The honeycomb context-narrowing experiment was discarded after adjacent timings
+showed no convincing gain. A different single-site experiment clears rational
+denominators once before repeated arithmetic: PositiveNeighbor improves from
+41.62 to 36.48 user CPU seconds. The two analogous sites also passed: against the one-site version, user CPU
+fell from 36.72 to 25.61 seconds. PositiveNeighbor changes only three proof
+lines. A separate SameCellFiniteIdentity reordering postpones coordinate case
+splitting until after shared normalization, reducing user CPU from 14.99 to
+12.90 seconds. Both have clean LSP, CLI, and targeted-build checks. CyclicOverlapIdentity
+adds one denominator-clearing step and improves from 15.04 to 10.89 user CPU
+seconds; its target build also passed. SameCellMissingOrbit applies the same
+normalization at two sites, improving from 34.91 to 20.23 user CPU seconds with
+clean LSP and adjacent CLI runs.
+A second SidePairingClassification pass narrows arithmetic to its actual facts,
+with adjacent timings of 34.24 → 32.43 user CPU seconds. All statements,
+names, attributes, docstrings, and imports in this performance batch are
+unchanged. An independent review checked every performance diff hunk against
+`a9439da` and confirmed that all changes are inside existing proof bodies.
+
+NeighborBoundary adds three denominator-clearing steps (18.15 → 12.25 user CPU
+seconds). CorrectedPlaneTiles hoists fourfold duplicated normalization in two
+proofs (19.70 → 10.25), and ThirdNeighbor does the same in one proof
+(11.35 → 6.18). Each passed LSP and adjacent CLI checks. EllipticCorners and
+Cells were also profiled: costs are distributed rather than concentrated in
+a clear avoidable bottleneck. They remain unchanged; this is not a claim of
+global optimality or that all files are import-bound.
+
+## Final paired benchmark
+
+The baseline checkout was `e3ab3d2` with an isolated
+copy-on-write clone of the same dependency cache. Task-owned resident Lean
+workers were closed. Both builds used nice 15 and `LEAN_NUM_THREADS=3`;
+the root package alone was cleaned. A three-minute settling interval separated
+the runs. The user reported mostly-idle machine conditions. Both builds passed,
+compiling 733 library modules without rebuilding dependency modules. Source
+fingerprints remained unchanged throughout the pair.
+
+| Measurement | Before (`e3ab3d2`) | After |
+| --- | ---: | ---: |
+| Wall seconds | 1,007.64 | 970.30 |
+| User CPU seconds | 2,445.69 | 2,350.17 |
+| System CPU seconds | 745.02 | 738.44 |
+| Sum of module wall seconds | 2,416.7 | 2,361.6 |
+| Longest project import chain seconds | 618.3 | 588.6 |
+| Project warning headers | 279 | 0 |
+
+This pair measures 3.71% less wall time and 3.91% less user CPU time. The repeat
+baseline itself was 8.90% faster than the initial baseline, so these are single
+paired observations, not a precise or reproducible whole-project speedup claim.
+The adjacent single-file measurements above give stronger evidence for the
+specific retained proof optimizations. Unchanged files also varied substantially.
+
+| Original slow modules | Before (s) | After (s) |
+| --- | ---: | ---: |
+| `Honeycomb.SameCellMissingOrbit` | 19 | 11 |
+| `Honeycomb.PositiveNeighbor` | 18 | 12 |
+| `Source.SidePairingClassification` | 15 | 15 |
+| `Honeycomb.SameCellFiniteIdentity` | 15 | 13 |
+| `Source.CuspWordCentralizer` | 14 | 7.7 |
+| `PuncturedPlane.PairOfPants` | 13 | 6 |
+| `Honeycomb.CyclicOverlapIdentity` | 13 | 10 |
+| `Honeycomb.CorrectedPlaneTiles` | 12 | 7.6 |
+| `Source.EllipticCorners` | 11 | 13 |
+| `Homology.First` | 11 | 5.8 |
+
+The final library has 733 files and 161,235 lines, 677 fewer than the baseline.
+The performance batch alone removes 17 net lines across ten files.
+
+## Final verification
+
+The clean root build, Blueprint build, subsequent root build, and 263-name
+Blueprint reference probe passed. The final endpoint dependency trace reproduced
+the earlier closure counts: zero removable declaration ranges or modules, with
+17 elaboration helpers protected. The final Shake pass suggests changes only to
+the two aggregate modules and trusted Challenge import intentionally retained by
+policy. Import reachability/layering, placeholder checks, and the exact recursive
+axiom audit passed. The toolchain, dependency pins, Comparator endpoint contracts,
+and axiom allowlists are unchanged.
+
+Comparator accepted both endpoints with Lean's default kernel and the unchanged
+allowlists. Its macOS fake-Landrun wrapper does not validate Linux process
+isolation. The temporary baseline worktree was archived after benchmarking.
+External dependency warnings and the two
+intentional Challenge placeholders remain separate from the zero project-source
+warning count. Benchmark logs, time output, dependency reports, and proof profiles
+are retained locally under `.ci/cleanup/`; this ledger records their results.

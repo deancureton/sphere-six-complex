@@ -75,17 +75,15 @@ public theorem correctedPlaneTile_thirdNeighbor_iff
       simp [Matrix.vecHead, Matrix.vecTail, correctedPlaneCenter,
         planeVertexOffset, planeMidpointOffset,
         planeNextMidpointOffset, e₁, e₂] at h0 h1
+      norm_num [div_eq_mul_inv] at h0 h1
+      field_simp at h0 h1
       have hp0eq : p.1 0 = 0 := by
-        norm_num [div_eq_mul_inv] at h0 h1
         linarith [hp0.1, hp0.2, hp1.1, hp1.2, hr0.1, hr0.2, hr1.1, hr1.2]
       have hp1eq : p.1 1 = 1 := by
-        norm_num [div_eq_mul_inv] at h0 h1
         linarith [hp0.1, hp0.2, hp1.1, hp1.2, hr0.1, hr0.2, hr1.1, hr1.2]
       have hr0eq : r.1 0 = 0 := by
-        norm_num [div_eq_mul_inv] at h0 h1
         linarith [hp0.1, hp0.2, hp1.1, hp1.2, hr0.1, hr0.2, hr1.1, hr1.2]
       have hr1eq : r.1 1 = 1 := by
-        norm_num [div_eq_mul_inv] at h0 h1
         linarith [hp0.1, hp0.2, hp1.1, hp1.2, hr0.1, hr0.2, hr1.1, hr1.2]
       exact ⟨hp0eq, hp1eq, hr0eq, hr1eq⟩
   · rintro ⟨hp0, hp1, hr0, hr1⟩

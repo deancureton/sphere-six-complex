@@ -26,7 +26,6 @@ public theorem injective_planeTile (v : ToricLattice) (i : Fin 6) :
     Function.Injective (planeTile v i) := by
   intro p q hpq
   apply Subtype.ext
-  funext k
   have hp0 := p.2 0
   have hp1 := p.2 1
   have hq0 := q.2 0
@@ -46,11 +45,12 @@ public theorem injective_planeTile (v : ToricLattice) (i : Fin 6) :
   all_goals
     have h0 := congrFun hpq 0
     have h1 := congrFun hpq 1
-    fin_cases i <;> fin_cases k <;>
+    fin_cases i <;>
       simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul,
         planeVertexOffset, planeMidpointOffset,
         planeNextMidpointOffset] at h0 h1 ⊢ <;>
       norm_num at h0 h1 ⊢ <;>
+      funext k <;> fin_cases k <;> norm_num <;>
       linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2]
 
 /-- The Laurent finite identity when both sides use the same square chart. -/

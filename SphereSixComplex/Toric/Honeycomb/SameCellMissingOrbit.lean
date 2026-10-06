@@ -56,7 +56,7 @@ public theorem planeTile_eq_secondNext_iff
       have h1 := congrFun h 1
       simp [cellNextIndex, planeVertexOffset,
         planeMidpointOffset, planeNextMidpointOffset] at h0 h1
-      norm_num [div_eq_mul_inv] at h0 h1
+      field_simp at h0 h1
       refine ⟨by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],
         by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],
         by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],
@@ -271,7 +271,8 @@ public theorem planeTile_eq_thirdNext_iff
       have h1 := congrFun h 1
       simp [cellNextIndex, planeVertexOffset,
         planeMidpointOffset, planeNextMidpointOffset] at h0 h1
-      norm_num [div_eq_mul_inv] at h0 h1
+      try field_simp at h0
+      try field_simp at h1
       refine ⟨by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],
         by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],
         by linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2],

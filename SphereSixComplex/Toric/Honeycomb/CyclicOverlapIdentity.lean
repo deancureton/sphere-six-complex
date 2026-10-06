@@ -55,6 +55,7 @@ public theorem planeTile_eq_nextIndex_iff
           planeVertexOffset, planeMidpointOffset,
           planeNextMidpointOffset] at h0 h1 <;>
         norm_num at h0 h1 <;>
+        field_simp at h0 h1 <;>
         refine ⟨?_, ?_, ?_⟩ <;>
         linarith [hp0.1, hp0.2, hp1.1, hp1.2, hq0.1, hq0.2, hq1.1, hq1.2]
   · rintro ⟨hp, hq, hpq⟩

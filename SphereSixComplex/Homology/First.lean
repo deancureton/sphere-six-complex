@@ -84,7 +84,9 @@ public theorem starHurewiczCoreHom_orderThree (A : AnalyticData) :
       (A.actualVanKampenFourPieceCover.coreFundamentalGroupMap
         (A.cuspCentralNaturality.centralToCore
           (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)))))
-  erw [A.centralToStar_hurewicz, A.centralToStar_hurewicz]
+  rw [A.centralToStar_hurewicz A.geometricCentralRhoOne,
+    A.centralToStar_hurewicz
+      (Additive.toMul (A.centralAffineCorePiOneData.translation (-epsilon)))]
   have h := EllipticDiscCircle.orderThree_star_homology_relation A A.cuspRegularCoverPoint
   rw [A.cuspPeriod_homology_eq_translation] at h
   have hi (g : FundamentalGroup A.CentralFamily A.centralAffineBase) :
@@ -105,7 +107,9 @@ public theorem starHurewiczCoreHom_orderFour (A : AnalyticData) :
       (A.actualVanKampenFourPieceCover.coreFundamentalGroupMap
         (A.cuspCentralNaturality.centralToCore
           (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon'))))
-  erw [A.centralToStar_hurewicz, A.centralToStar_hurewicz]
+  rw [A.centralToStar_hurewicz A.geometricCentralRhoTwo,
+    A.centralToStar_hurewicz
+      (Additive.toMul (A.centralAffineCorePiOneData.translation epsilon'))]
   have h := EllipticDiscCircle.orderFour_star_homology_relation A A.cuspRegularCoverPoint
   rw [A.cuspPeriod_homology_eq_translation] at h
   have hi (g : FundamentalGroup A.CentralFamily A.centralAffineBase) :
