@@ -138,7 +138,7 @@ public theorem SixSphere.has_spherical_generator_of_homology
     addMonoidHom_bijective_of_infiniteCyclic_generator_mem_range
       sourceOrientation targetOrientation
       (integralSingularHomologyMap 6 f) ⟨s, hs⟩
-  have hf : IsIso (((singularHomologyFunctor AddCommGrpCat 6).obj
+  have hf : IsIso (((singularHomologyFunctor AddCommGrpCat.{0} 6).obj
       (AddCommGrpCat.of ℤ)).map (TopCat.ofHom f)) := by
     apply (ConcreteCategory.isIso_iff_bijective _).2
     exact hfBijective
@@ -147,11 +147,11 @@ public theorem SixSphere.has_spherical_generator_of_homology
       sixSphereHomeomorphTopCatSphereSix.continuous⟩
   refine ⟨f.comp h, ?_⟩
   let _ := hf
-  have hh : IsIso (((singularHomologyFunctor AddCommGrpCat 6).obj
+  have hh : IsIso (((singularHomologyFunctor AddCommGrpCat.{0} 6).obj
       (AddCommGrpCat.of ℤ)).map (TopCat.ofHom h)) := by
     exact (homotopyEquiv_isIntegralHomologyEquivalence
       sixSphereHomeomorphTopCatSphereSix.toHomotopyEquiv) 6
-  change IsIso (((singularHomologyFunctor AddCommGrpCat 6).obj
+  change IsIso (((singularHomologyFunctor AddCommGrpCat.{0} 6).obj
     (AddCommGrpCat.of ℤ)).map (TopCat.ofHom h ≫ TopCat.ofHom f))
   rw [Functor.map_comp]
   infer_instance

@@ -43,7 +43,7 @@ private theorem homologyMap_comp {X Y Z : Type} [TopologicalSpace X] [Topologica
     integralSingularHomologyMap k (g.comp f) x =
       integralSingularHomologyMap k g (integralSingularHomologyMap k f x) := by
   change ConcreteCategory.hom
-      (((singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)).map
+      (((singularHomologyFunctor AddCommGrpCat.{0} k).obj (AddCommGrpCat.of ℤ)).map
         (TopCat.ofHom (g.comp f))) x = _
   rw [show TopCat.ofHom (g.comp f) = TopCat.ofHom f ≫ TopCat.ofHom g from rfl,
     Functor.map_comp]

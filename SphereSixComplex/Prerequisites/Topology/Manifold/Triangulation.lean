@@ -2,6 +2,7 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.ChainModel
 public import SphereSixComplex.Prerequisites.Topology.Manifold.Orientation
+public import SphereSixComplex.Prerequisites.Topology.Sphere.SmoothRecognition
 
 /-!
 # Dimension-controlled smooth triangulation
@@ -56,7 +57,7 @@ public theorem finite_homology (M : CWType.FiniteModelOfDimension d X) (k : ℕ)
   let _ := M.t2
   let _ := M.cwComplex
   let _ := M.finite
-  let CM := CellularHomology.integralComparison.objectwiseModel M.Carrier
+  let CM := integralCWCellularHomologyModel M.Carrier
   have hfin : Finite (Topology.CWComplex.cell (Set.univ : Set M.Carrier) k) :=
     Topology.CWComplex.FiniteType.finite_cell (C := (Set.univ : Set M.Carrier)) k
   have hChains : Module.Finite ℤ (CM.chainComplex.X k) :=
@@ -75,6 +76,7 @@ public theorem subsingleton_homology_of_lt (M : CWType.FiniteModelOfDimension d 
   let _ := M.topology
   let _ := M.t2
   let _ := M.cwComplex
+  let _ := M.finite
   have _ : IsEmpty (Topology.CWComplex.cell (Set.univ : Set M.Carrier) k) :=
     M.isEmpty_cell k hk
   have hCarrier := subsingleton_integralSingularHomology_of_isEmpty_cell M.Carrier k

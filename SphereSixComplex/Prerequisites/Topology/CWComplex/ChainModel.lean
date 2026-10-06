@@ -31,11 +31,12 @@ public theorem isZero_cellularChain_of_isEmpty_cell
   have : Subsingleton (M.chainComplex.X n) := (M.cellBasis n).symm.injective.subsingleton
   exact AddCommGrpCat.isZero_of_subsingleton _
 
-/-- A Hausdorff CW complex has no `n`-th integral singular homology once it has no `n`-cells. -/
+/-- A finite-dimensional Hausdorff CW complex has no `n`-th integral singular homology once it has no `n`-cells. -/
 public theorem subsingleton_integralSingularHomology_of_isEmpty_cell (n : ℕ) [T2Space Y]
+    [Topology.CWComplex.FiniteDimensional (Set.univ : Set Y)]
     [IsEmpty (Topology.CWComplex.cell (Set.univ : Set Y) n)] :
     Subsingleton (IntegralSingularHomology n Y) := by
-  obtain M := CellularHomology.integralComparison.objectwiseModel Y
+  obtain M := integralCWCellularHomologyModel Y
   have hcell : IsZero (M.chainComplex.homology n) :=
     (HomologicalComplex.ExactAt.of_isZero
       (isZero_cellularChain_of_isEmpty_cell Y M n)).isZero_homology

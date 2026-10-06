@@ -1,6 +1,6 @@
 # Allowlist for the implemented construction cone, excluding the final smooth-recognition step.
-# Its retained foundations are cellular homology, Poincare duality, integral UCT, and smooth
-# triangulation, Brown collaring, relative triangulation, and relative Whitehead.
+# Its retained foundations are Poincare duality, integral UCT, smooth triangulation,
+# Brown collaring, relative triangulation, and relative Whitehead.
 # Analytic descent is now proved from mathlib.
 # No construction-specific axioms remain; see TRUST-BOUNDARY.md for the exact contracts.
 
@@ -10,7 +10,6 @@ propext
 SphereSixComplex.PoincareDuality.nonempty_addEquiv
 SphereSixComplex.IntegralCohomology.universal_coefficients
 SphereSixComplex.SmoothManifold.finiteCWModel
-SphereSixComplex.CellularHomology.integralComparison
 
 # Retained general geometric topology; source statements are reviewed in TRUST-BOUNDARY.md.
 SphereSixComplex.CWPair.whitehead

@@ -34,7 +34,7 @@ public theorem actualCuspCentralOrbitFillingHomologyEquiv_apply
         integralSingularHomologyMap k (g.comp f) x := by
     intro X Y Z _ _ _ f g z
     exact (CategoryTheory.ConcreteCategory.congr_hom
-      (((AlgebraicTopology.singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)).map_comp
+      (((AlgebraicTopology.singularHomologyFunctor AddCommGrpCat.{0} k).obj (AddCommGrpCat.of ℤ)).map_comp
         (TopCat.ofHom f) (TopCat.ofHom g)) z).symm
   rw [hc]
   rfl

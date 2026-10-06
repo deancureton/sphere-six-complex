@@ -1,6 +1,6 @@
 # Constants in the current final-theorem trust closure.
 #
-# Lean's three standard logical axioms and ten general classical results.
+# Lean's three standard logical axioms and nine general classical results.
 # Exact contracts and sources are reviewed in TRUST-BOUNDARY.md.
 # No construction-specific axioms remain.
 
@@ -14,11 +14,10 @@ SphereSixComplex.Hurewicz.exists_map
 SphereSixComplex.CWType.homological_whitehead
 SphereSixComplex.SmoothSixSphere.poincare
 
-# Cellular comparison is normalized on skeletal cycles; disk orientations through degree two are proved.
+# Retained cohomological and smooth triangulation results.
 SphereSixComplex.PoincareDuality.nonempty_addEquiv
 SphereSixComplex.IntegralCohomology.universal_coefficients
 SphereSixComplex.SmoothManifold.finiteCWModel
-SphereSixComplex.CellularHomology.integralComparison
 
 # Retained general geometric topology; source statements are reviewed in TRUST-BOUNDARY.md.
 SphereSixComplex.CWPair.whitehead

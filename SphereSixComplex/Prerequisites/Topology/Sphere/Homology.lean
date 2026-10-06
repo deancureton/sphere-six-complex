@@ -16,12 +16,13 @@ namespace SphereSixComplex
 /-- The proved positive-degree integral homology calculation for the standard six-sphere. -/
 public theorem sixSpherePositiveHomologyInputs : SixSpherePositiveHomologyInputs := by
   let _ := sixSphereFiniteCWComplex
+  let _ := sixSphereFiniteCWModel.finite
   refine ⟨?_, fun n hn0 hn6 ↦ ?_⟩
   · let _ := sixSphereCell_isEmpty 5 (by decide) (by decide)
     let _ := sixSphereCell_isEmpty 7 (by decide) (by decide)
     let _ := sixSphereCell_unique 6 (Or.inr rfl)
     let e := IntegralCWCellularHomologyModel.homologyEquivCells SixSphereFiniteCWCarrier
-      (CellularHomology.integralComparison.objectwiseModel SixSphereFiniteCWCarrier) 5
+      (integralCWCellularHomologyModel SixSphereFiniteCWCarrier) 5
     exact ⟨((integralSingularHomologyEquiv 6 sixSphereFiniteCWHomeomorph).symm.trans e).trans
       (Finsupp.uniqueAddEquiv default)⟩
   · let _ := sixSphereCell_isEmpty n hn0 hn6

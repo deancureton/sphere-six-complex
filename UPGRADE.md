@@ -8,7 +8,7 @@ statements remain fixed. `Scratch/` is outside this task.
 
 - [x] Coordinate Lean 4.35.0-rc3, Mathlib, Tau Ceti and Blueprint dependencies;
   preserve required fork additions; repair API migration; build, audit and Comparator.
-- [ ] Replace finite-dimensional cellular-homology consumers with proved Tau Ceti
+- [x] Replace finite-dimensional cellular-homology consumers with proved Tau Ceti
   results; remove the unused general comparison axiom; repeat gates.
 - [ ] Use compact Brown collaring on the quotient and covering homotopy lifting
   upstairs; remove collar axiom; repeat gates.
@@ -46,6 +46,19 @@ ledger tracks implemented work and gate results, not source-audit promises.
   HTML index, manifest and HTML-cache output checks.
 - The pinned Comparator and exporter both build with the new compiler. No
   mathematical axiom has been discharged at this checkpoint yet.
-- The isolated finite-dimensional cellular-model constructor in
-  `.ci/upgrade/CellularModelProbe.lean` passes LSP and `#print axioms` reports
-  only the three standard axioms. It is not integrated yet.
+
+## Cellular comparison checkpoint
+
+- Replaced the general cellular comparison axiom with a proved finite-dimensional
+  cellular model from Tau Ceti. Every consumer supplies the finite-dimensional
+  hypothesis from an existing finite CW model; endpoint statements are unchanged.
+- The constructor, sphere homology inputs and finite-model homology consequences
+  have only Lean's three standard axioms. The full project builds (10,119 jobs).
+- Compiled endpoint closures contain nine mathematical axioms for the final
+  theorems and six for the construction, plus the three standard axioms in each.
+  The exact allowlists, Comparator configuration and generated catalog agree.
+- Comparator passed with Lean's default kernel. Import/layer and placeholder
+  checks pass. The source replacement removes roughly 350 lines.
+- Proof-only exactness instances stay behind a private import; concrete homology
+  functor uses specify their category universe to avoid ambiguous instance search.
+- Blueprint site generation and its HTML index, manifest and HTML-cache checks pass.

@@ -181,7 +181,7 @@ public theorem integralSingularHomologyMap_id_refl {X : Type} [TopologicalSpace 
     (x : IntegralSingularHomology k X) :
     integralSingularHomologyMap k (ContinuousMap.id X) x = x := by
   change ConcreteCategory.hom
-    (((singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)).map
+    (((singularHomologyFunctor AddCommGrpCat.{0} k).obj (AddCommGrpCat.of ℤ)).map
       (TopCat.ofHom (ContinuousMap.id X))) x = x
   rw [show TopCat.ofHom (ContinuousMap.id X) = CategoryTheory.CategoryStruct.id (TopCat.of X) from
     rfl, CategoryTheory.Functor.map_id]

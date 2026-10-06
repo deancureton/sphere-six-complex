@@ -14,7 +14,7 @@ to both Comparator environments and catalogs every exact assumption. Nothing imp
 ## Status
 
 The headline theorem is source-sorry-free. Its trust boundary consists of Lean's three standard
-logical axioms and ten general classical results, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
+logical axioms and nine general classical results, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
 and checked by the allowlists in `scripts/`. No paper-specific axioms remain. The two `sorry`s
 in `Challenge.lean` are Comparator challenge declarations and are not imported by the solution.
 

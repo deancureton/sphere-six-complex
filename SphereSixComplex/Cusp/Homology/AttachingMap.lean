@@ -33,7 +33,7 @@ public theorem integralSingularHomologyMap_comp
       (integralSingularHomologyMap k g).comp (integralSingularHomologyMap k f) := by
   ext x
   change ConcreteCategory.hom
-      (((singularHomologyFunctor AddCommGrpCat k).obj (AddCommGrpCat.of ℤ)).map
+      (((singularHomologyFunctor AddCommGrpCat.{0} k).obj (AddCommGrpCat.of ℤ)).map
         (TopCat.ofHom (g.comp f))) x = _
   rw [show TopCat.ofHom (g.comp f) = TopCat.ofHom f ≫ TopCat.ofHom g by rfl,
     Functor.map_comp]
