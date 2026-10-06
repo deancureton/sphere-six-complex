@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.Collar.HalfSpace
 public import SphereSixComplex.Prerequisites.Topology.Collar.OrthantHalfSpace
-public import SphereSixComplex.Toric.Positive.QuadrantManifold
+public import SphereSixComplex.Toric.Positive.Quotient
 
 @[expose] public section
 
@@ -12,6 +12,26 @@ open Function Set Topology
 open scoped NNReal
 
 namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction
+
+public def positiveSublevel (r : ℝ) : TopologicalSpace.Opens carrierPositivePart where
+  carrier := {x | constructedModel.t x.1 ∈ Metric.ball 0 r}
+  is_open' := Metric.isOpen_ball.preimage
+    (constructedModel.t_holomorphic.continuous.comp continuous_subtype_val)
+
+public def positiveSublevelHomeomorph (r : ℝ) :
+    positiveSublevel r ≃ₜ constructedLocalPositivePart r where
+  toFun x := ⟨⟨x.1.1, x.2⟩, (mem_constructedLocalPositivePart_iff r _).mpr x.1.2⟩
+  invFun x := ⟨⟨x.1.1, (mem_constructedLocalPositivePart_iff r _).mp x.2⟩, x.1.2⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
+  continuous_toFun := by
+    apply Continuous.subtype_mk
+    apply Continuous.subtype_mk
+    fun_prop
+  continuous_invFun := by
+    apply Continuous.subtype_mk
+    apply Continuous.subtype_mk
+    fun_prop
 
 public def carrierPositiveHalfSpaceChart (a : ChartIndex) :
     (Fin 2 → ℝ) × ℝ≥0 → carrierPositivePart :=

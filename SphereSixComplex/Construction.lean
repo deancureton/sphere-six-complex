@@ -79,8 +79,6 @@ public import SphereSixComplex.Regular.PuncturedAffineCompactCore
 public import SphereSixComplex.Regular.BaseTopology
 public import SphereSixComplex.TorusFamily.Regular
 public import SphereSixComplex.Toric.Model.Equivalence
-public import SphereSixComplex.Toric.Positive.DeckSmooth
-public import SphereSixComplex.Toric.Positive.QuadrantAtlas
 public import SphereSixComplex.Toric.Model.BarycentricTiling
 public import SphereSixComplex.Toric.Model.Carrier
 public import SphereSixComplex.Toric.Model.CarrierGeometry
@@ -175,14 +173,10 @@ public import SphereSixComplex.Toric.Honeycomb.SeparatedOverlap
 public import SphereSixComplex.Toric.Honeycomb.ThirdNeighbor
 public import SphereSixComplex.Toric.Honeycomb.MomentCoordinates
 public import SphereSixComplex.Toric.Phase.Retraction
-public import SphereSixComplex.Toric.Positive.RelativeCWData
-public import SphereSixComplex.Toric.Positive.Contractibility
 public import SphereSixComplex.Toric.Positive.BoundaryPaths
-public import SphereSixComplex.Toric.Positive.RelativeCW
+public import SphereSixComplex.Toric.Positive.Quotient
 public import SphereSixComplex.Toric.Positive.Interior
 public import SphereSixComplex.Toric.Positive.LocalCollars
-public import SphereSixComplex.Toric.Positive.QuadrantManifold
-public import SphereSixComplex.Toric.Positive.RelativeCWCompletion
 public import SphereSixComplex.Toric.Positive.SingletonBall
 public import SphereSixComplex.Toric.Phase.SingletonProduct
 public import SphereSixComplex.Toric.Phase.SingletonSurjectivity

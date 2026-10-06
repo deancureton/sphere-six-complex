@@ -1,9 +1,10 @@
 # Classical trust-boundary review
 
-The retained boundary consists of six general classical results, together with Lean's
+The retained boundary consists of four general classical results, together with Lean's
 `propext`, `Classical.choice`, and `Quot.sound`. The classical-source review was made on
-2026-09-09. Cellular comparison, collaring and Poincaré duality have since been replaced by
-checked proofs, described below. This document records the remaining assumptions and their
+2026-09-09. Cellular comparison, collaring, Poincaré duality and the required UCT cases now have
+checked proofs. An explicit geometric retraction replaces relative triangulation and
+relative Whitehead, as described below. This document records the remaining assumptions and their
 source correspondence; it does not formally prove those assumptions.
 
 Repository-relative links point to the exact Lean contracts and supporting definitions.
@@ -18,8 +19,6 @@ All names have prefix `SphereSixComplex.` unless another namespace is shown.
 | `CWType.homological_whitehead`, [ClassicalRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/ClassicalRecognition.lean) | Both spaces are simply connected and have actual CW homotopy models. The same given continuous map induces isomorphisms in every integral singular homology degree, and the conclusion makes that map a homotopy equivalence. | [Hatcher, Chapter 4, Corollary 4.33](https://pi.math.cornell.edu/~hatcher/AT/ATch4.pdf). |
 | `SmoothSixSphere.poincare`, [ClassicalRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/ClassicalRecognition.lean) | [ClassicalRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/ClassicalRecognition.lean), requires a compact smooth real six-manifold homotopy equivalent to the standard six-sphere. [SmoothRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/SmoothRecognition.lean), requests an actual diffeomorphism for the specified smooth atlas. | [Kervaire–Milnor, Groups of homotopy spheres I](https://webhomes.maths.ed.ac.uk/~v1ranick/papers/kervmiln.pdf), computation of the group of homotopy six-spheres, together with smooth h-cobordism. This is dimension-six smooth classification, not an arbitrary-dimensional smooth Poincare assertion. |
 | `SmoothManifold.finiteCWModel`, [Triangulation.lean](SphereSixComplex/Prerequisites/Topology/Manifold/Triangulation.lean) | Compact, Hausdorff, second-countable, finite-dimensional boundaryless C1 manifold. Only a finite CW homotopy model with dimension bounded by the actual real model dimension is requested. | [Whitehead, On C1-complexes](https://www.sciencedirect.com/science/chapter/edited-volume/pii/B978008009870850021X), Annals of Mathematics 41 (1940), 809–824. |
-| `CWPair.whitehead`, [StrongDeformationRetraction.lean](SphereSixComplex/Prerequisites/Topology/Homotopy/StrongDeformationRetraction.lean) | Actual relative CW inclusion; path connectedness of both spaces; actual induced bijections on the fundamental group and every higher homotopy group. [SubspaceInclusion.lean](SphereSixComplex/Prerequisites/Topology/Homotopy/SubspaceInclusion.lean), defines the conclusion as an ordinary homotopy equivalence whose inverse map is the inclusion. No covering-space or toric conclusion is assumed. | [Hatcher, Chapter 4, Theorem 4.5 and the relative CW compression argument](https://pi.math.cornell.edu/~hatcher/AT/ATch4.pdf). |
-| `ManifoldWithCorners.relativeCWComplex`, [CornersCWComplex.lean](SphereSixComplex/Prerequisites/Topology/Manifold/CornersCWComplex.lean) | Hausdorff, second-countable C1 manifold on a finite-dimensional real quadrant. Only a CW decomposition relative to the full manifold boundary is asserted, not compatibility with an arbitrary subset or prescribed stratification. Second countability and local Euclidean-quadrant structure give the needed paracompactness. | [Murayama–Shiota, Triangulation of the map of a G-manifold to its orbit space, Nagoya Math. J. 212 (2013), pp. 159–160](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/B650C32D644185E786B3DB76ABF44740/S0027763000022418a.pdf/triangulation_of_the_map_of_a_gmanifold_to_its_orbit_space.pdf). These pages explicitly allow k=1 and corners and state the Cairns–Whitehead triangulation theorem, citing Munkres. The PL manifold boundary is a subcomplex, giving the stated relative CW consequence. |
 
 ## Proved cellular comparison
 
@@ -85,9 +84,34 @@ degrees zero through three, with `H₀ ≃ ℤ`, `H₁ = 0` and `H₂ = 0` suppl
 The broader assumed splitting involving `Ext` is no longer used and has been deleted.
 The new algebraic theorem and singular adapter use only Lean's three standard axioms.
 
+## Explicit positive quotient retraction
+
+[CompactSublevels.lean](SphereSixComplex/Toric/Positive/CompactSublevels.lean) proves
+compactness of positive height sublevels using the continuous modulus projection
+from the actual cusp filling. Consequently every neighborhood of the compact boundary
+contains a sufficiently small height band.
+
+[HeightRetraction.lean](SphereSixComplex/Toric/Positive/HeightRetraction.lean) first
+pushes the space a small positive distance into its interior using the collar.
+The interior's torus-times-interval coordinates then compress height to a fixed small
+positive value. Boundary trajectories stay within the small height band throughout,
+and the endpoint lies in the collar. Projection along the collar yields a homotopy
+inverse of the boundary inclusion.
+
+[Cofibration.lean](SphereSixComplex/Prerequisites/Topology/Collar/Cofibration.lean)
+proves homotopy extension for compact collared subsets of Hausdorff spaces using an
+explicit cylinder retraction. Combined with Tau Ceti's deformation-retract theorem,
+this gives [the actual strong deformation retraction](SphereSixComplex/Toric/Positive/QuotientRetraction.lean).
+It lifts equivariantly through the existing quotient covering and supplies phase spreading.
+
+This bypasses both `CWPair.whitehead` and `ManifoldWithCorners.relativeCWComplex`;
+it does not formalize those general theorems. Their axiom declarations and the unused
+quadrant/CW proof route have been deleted. All new geometric ingredients use only
+the three standard Lean axioms.
+
 ## Scope and limits
 
-The classical-source review above is retained from the September review. The corners contract was checked against the cited primary-source PDF; the other
+The classical-source review above is retained from the September review. The
 correspondences use the standard classical results and inspection of the Lean
 contracts. This is not a formal proof of the remaining assumptions.
 
@@ -98,8 +122,8 @@ conclusion are expanded directly. See
 ## Verified dependency boundary
 
 The final theorem's compiled dependency closure contains Lean's three standard
-axioms and the six classical declarations listed above. The construction closure
-contains three classical declarations and the same three standard axioms. The exact
+axioms and the four classical declarations listed above. The construction closure
+contains only the smooth finite-CW-model assumption and the same three standard axioms. The exact
 allowlists are checked independently against those closures and Comparator's
 configuration. No construction-specific axiom remains.
 

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Toric.Positive.RelativeCW
+public import SphereSixComplex.Toric.Positive.Quotient
 public import SphereSixComplex.Toric.Honeycomb.Cells
 
 /-!

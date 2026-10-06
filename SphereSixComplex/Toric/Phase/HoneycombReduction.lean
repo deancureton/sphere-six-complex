@@ -655,8 +655,8 @@ public theorem constructedLocalModulus_compactPhase (r : ℝ) (k : CompactTorus)
   exact carrierModulus_compactTorusAction k
     (show Carrier from (p : localCarrier constructedModel r).1)
 
-/-- Assemble the fixed positive toric model from its honeycomb homeomorphism,
-contractibility, and relative CW structure. -/
+/-- Assemble the fixed positive toric model from its honeycomb homeomorphism
+and the quotient deformation retraction. -/
 public def constructedPolarHoneycombConstructionData
     {E : FuchsianModularLift} {D : FuchsianPeriodData E}
     {N : NormalizedFuchsianCuspCoordinate E D}
@@ -664,13 +664,12 @@ public def constructedPolarHoneycombConstructionData
     (honeycomb : (Fin 2 → ℝ) ≃ₜ
       {q : constructedLocalPositivePart W.localWitness.radius |
         constructedModel.t (q : localCarrier constructedModel W.localWitness.radius) = 0})
-    (hcontractible : ContractibleSpace (constructedLocalPositivePart W.localWitness.radius))
-    (hCW :
+    (R :
       letI := normalizedPositiveDeckAction N constructedModel
-        (constructedLocalPositivePart W.localWitness.radius) (constructedPositiveDeck_mem N W.localWitness.radius)
-      Topology.RelCWComplex
-        (Set.univ : Set (PolarHoneycombData.OrbitQuotient
-          (constructedLocalPositivePart W.localWitness.radius)))
+        (constructedLocalPositivePart W.localWitness.radius)
+        (constructedPositiveDeck_mem N W.localWitness.radius)
+      StrongDeformationRetraction
+        (PolarHoneycombData.OrbitQuotient (constructedLocalPositivePart W.localWitness.radius))
         (PolarHoneycombData.orbitCore
           {q : constructedLocalPositivePart W.localWitness.radius |
             constructedModel.t
@@ -684,8 +683,6 @@ public def constructedPolarHoneycombConstructionData
   honeycomb := honeycomb
   positiveDeck_mem := constructedPositiveDeck_mem N W.localWitness.radius
   quotientCovering := constructedPositiveDeck_quotientCovering W
-  positive_contractible := hcontractible
-  quotient_relativeCW := hCW
-  quotient_t2 := constructedPositiveDeck_quotient_t2 W
+  quotientRetraction := R
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

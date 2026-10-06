@@ -5,14 +5,13 @@ Authors: Dean Cureton
 -/
 module
 
-public import SphereSixComplex.Toric.Positive.Contractibility
+public import SphereSixComplex.Toric.Phase.HoneycombReduction
 
 /-!
 # Moment coordinates for the constructed A₂ positive carrier
 
 On the noncentral positive stratum the logarithmic position and the height have an explicit
-inverse, obtained by taking positive real powers. Thus the global moment-coordinate problem is
-the continuous proper extension of these coordinates across the central honeycomb.
+inverse, obtained by taking positive real powers.
 -/
 
 @[expose] public section
@@ -30,6 +29,10 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions
+
+/-- The convex moment-coordinate model of the local positive part. -/
+public def constructedPositiveMomentRegion (r : ℝ) : Set (Fin 3 → ℝ) :=
+  {x | 0 ≤ x 2 ∧ x 2 < r}
 
 namespace Construction
 

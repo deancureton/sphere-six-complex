@@ -49,17 +49,18 @@ Transport the complex atlas of the constructed threefold along the diffeomorphis
 {uses "smooth-recognition"}[smooth recognition].
 :::
 
-:::definition "classical-trust-boundary" (parent := "main_construction") (lean := "SphereSixComplex.Hurewicz.exists_map, SphereSixComplex.CWType.homological_whitehead, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.SmoothManifold.finiteCWModel, SphereSixComplex.CWPair.whitehead, SphereSixComplex.ManifoldWithCorners.relativeCWComplex")
-The final theorem depends on Lean's three standard logical axioms and six general classical
+:::definition "classical-trust-boundary" (parent := "main_construction") (lean := "SphereSixComplex.Hurewicz.exists_map, SphereSixComplex.CWType.homological_whitehead, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.SmoothManifold.finiteCWModel")
+The final theorem depends on Lean's three standard logical axioms and four general classical
 results: higher Hurewicz, homological Whitehead, smooth Poincaré in dimension six,
-finite CW models of compact smooth manifolds, Whitehead for CW pairs, and relative
-CW structures for manifolds with corners. Their exact contracts are reviewed in the repository's
+and finite CW models of compact smooth manifolds. Their exact contracts are reviewed in the repository's
 `TRUST-BOUNDARY.md`.
 
 Finite-dimensional cellular comparison and compact Brown collaring are proved using Tau Ceti.
 Integral Poincaré duality for simply connected compact manifolds is proved using the
 DifferentialGeometry development and an explicit comparison of singular chain complexes.
 The required universal-coefficient comparisons follow from splitting projective chain complexes.
+The positive quotient retracts onto its boundary core by a small collar push and height
+compression; relative triangulation and Whitehead for CW pairs are no longer assumed.
 The modular uniformization, analytic descent, toric construction, and specialized filling and
 homology computations are proved. No construction-specific axiom remains. This describes the
 mathematical dependency boundary; build and Comparator acceptance are checked separately.

@@ -1,6 +1,5 @@
 # Allowlist for the implemented construction cone, excluding the final smooth-recognition step.
-# Its retained foundations are smooth triangulation,
-# relative triangulation, and relative Whitehead.
+# Its only retained mathematical foundation is the smooth finite-CW-model theorem.
 # Analytic descent is now proved from mathlib.
 # No construction-specific axioms remain; see TRUST-BOUNDARY.md for the exact contracts.
 
@@ -8,7 +7,3 @@ Classical.choice
 Quot.sound
 propext
 SphereSixComplex.SmoothManifold.finiteCWModel
-
-# Retained general geometric topology; source statements are reviewed in TRUST-BOUNDARY.md.
-SphereSixComplex.CWPair.whitehead
-SphereSixComplex.ManifoldWithCorners.relativeCWComplex

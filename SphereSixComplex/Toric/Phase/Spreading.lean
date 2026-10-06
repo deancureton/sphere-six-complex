@@ -6,7 +6,7 @@ public import SphereSixComplex.Toric.Phase.Deck
 # Established phase spreading for the standard infinite `A₂` toric model
 
 This boundary records only the standard toric orbit, deck, and stabilizer compatibility package.
-It contains no quotient retraction, homology, Euler-characteristic, or global paper conclusion.
+The quotient retraction is supplied by the positive-part geometry.
 -/
 
 @[expose] public section
@@ -273,15 +273,11 @@ public structure PolarHoneycombConstructionData (M : Model) (r : ℝ) where
     IsQuotientCoveringMap
       (PolarHoneycombData.orbitProjection positivePart)
       (Multiplicative ParameterLattice)
-  positive_contractible : ContractibleSpace positivePart
-  quotient_relativeCW :
+  quotientRetraction :
     letI := positiveDeckAction
-    Topology.RelCWComplex
-      (Set.univ : Set (PolarHoneycombData.OrbitQuotient positivePart))
+    SphereSixComplex.StrongDeformationRetraction
+      (PolarHoneycombData.OrbitQuotient positivePart)
       (PolarHoneycombData.orbitCore central)
-  quotient_t2 :
-    letI := positiveDeckAction
-    T2Space (PolarHoneycombData.OrbitQuotient positivePart)
 
 /-- The displayed formula for the deck action makes each deck transformation continuous. -/
 public theorem PolarHoneycombConstructionData.positiveDeckContinuous
@@ -362,10 +358,7 @@ public noncomputable def PolarHoneycombConstructionData.toPolarHoneycombData
   positiveDeckContinuous := Q.positiveDeckContinuous
   quotientCovering := Q.quotientCovering
   central_preimage := Q.central_preimage
-  positive_contractible := Q.positive_contractible
-  central_contractible := Q.honeycomb.symm.contractibleSpace
-  quotient_relativeCW := Q.quotient_relativeCW
-  quotient_t2 := Q.quotient_t2
+  quotientRetraction := Q.quotientRetraction
 
 /-- The canonical positive deck action on any positive part preserved by the ambient formula. -/
 @[instance_reducible] public def normalizedPositiveDeckAction
@@ -417,16 +410,12 @@ public structure NormalizedPolarHoneycombConstructionData
     IsQuotientCoveringMap
       (PolarHoneycombData.orbitProjection positivePart)
       (Multiplicative ParameterLattice)
-  positive_contractible : ContractibleSpace positivePart
-  quotient_relativeCW :
+  quotientRetraction :
     letI := normalizedPositiveDeckAction N M positivePart positiveDeck_mem
-    Topology.RelCWComplex
-      (Set.univ : Set (PolarHoneycombData.OrbitQuotient positivePart))
+    SphereSixComplex.StrongDeformationRetraction
+      (PolarHoneycombData.OrbitQuotient positivePart)
       (PolarHoneycombData.orbitCore
         {q : positivePart | M.t (q : localCarrier M r) = 0})
-  quotient_t2 :
-    letI := normalizedPositiveDeckAction N M positivePart positiveDeck_mem
-    T2Space (PolarHoneycombData.OrbitQuotient positivePart)
 
 /-- The central honeycomb is canonically the zero locus of the height coordinate. -/
 public def NormalizedPolarHoneycombConstructionData.central
@@ -465,9 +454,7 @@ public noncomputable def
         (Additive.toMul (M.fanShear lambda) (q : M.Carrier))
     rfl
   quotientCovering := Q.quotientCovering
-  positive_contractible := Q.positive_contractible
-  quotient_relativeCW := Q.quotient_relativeCW
-  quotient_t2 := Q.quotient_t2
+  quotientRetraction := Q.quotientRetraction
 
 /-- The full polar-honeycomb datum determined by normalized construction data. -/
 public noncomputable def NormalizedPolarHoneycombConstructionData.toPolarHoneycombData

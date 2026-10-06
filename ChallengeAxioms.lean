@@ -21,7 +21,7 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 
 # Constants in the current final-theorem trust closure.
 #
-# Lean's three standard logical axioms and six general classical results.
+# Lean's three standard logical axioms and four general classical results.
 # Exact contracts and sources are reviewed in TRUST-BOUNDARY.md.
 # No construction-specific axioms remain.
 
@@ -49,7 +49,7 @@ axiom SphereSixComplex.SmoothSixSphere.poincare : ∀ (M : Type) [inst : Topolog
       (Diffeomorph (modelWithCornersSelf ℝ SphereSixComplex.RealModel)
         (modelWithCornersSelf ℝ SphereSixComplex.RealModel) M SphereSixComplex.SixSphere ↑⊤)
 
-# Retained cohomological and smooth triangulation results.
+# Retained smooth triangulation result.
 axiom SphereSixComplex.SmoothManifold.finiteCWModel : (E X : Type) →
   [inst : NormedAddCommGroup E] →
     [inst_1 : NormedSpace ℝ E] →
@@ -60,28 +60,4 @@ axiom SphereSixComplex.SmoothManifold.finiteCWModel : (E X : Type) →
               [SecondCountableTopology X] →
                 IsManifold (modelWithCornersSelf ℝ E) 1 X →
                   CompactSpace X → SphereSixComplex.CWType.FiniteModelOfDimension (Module.finrank ℝ E) X
-
-# Retained general geometric topology; source statements are reviewed in TRUST-BOUNDARY.md.
-axiom SphereSixComplex.CWPair.whitehead.{u_1} : ∀ {B : Type u_1} [inst : TopologicalSpace B] (D : Set B) (b : B)
-  (hb : b ∈ D),
-  PathConnectedSpace B →
-    PathConnectedSpace ↑D →
-      Function.Bijective
-          ⇑(FundamentalGroup.mapOfEq (SphereSixComplex.topologicalSubsetInclusionMap D)
-              (have this := rfl;
-              this)) →
-        (∀ (n : ℕ),
-            Function.Bijective
-              (HomotopyGroup.map (SphereSixComplex.topologicalSubsetInclusionMap D)
-                (have this := rfl;
-                this))) →
-          ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
-axiom SphereSixComplex.ManifoldWithCorners.relativeCWComplex.{u} : (n : ℕ) →
-  (X : Type u) →
-    [inst : TopologicalSpace X] →
-      [T2Space X] →
-        [SecondCountableTopology X] →
-          [inst_3 : ChartedSpace (EuclideanQuadrant n) X] →
-            [IsManifold (modelWithCornersEuclideanQuadrant n) 1 X] →
-              Topology.RelCWComplex Set.univ (ModelWithCorners.boundary X)
 END GENERATED AXIOM CATALOG -/

@@ -1,11 +1,12 @@
 # Axiom-elimination plan
 
-This document includes historical checkpoints. Declaration names in those records may have been
+This document records historical checkpoints. Current status is in
+[AXIOM-ELIMINATION.md](AXIOM-ELIMINATION.md) and [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md). Declaration names in those records may have been
 removed by the [two-endpoint dependency cleanup](DEAD-CODE.md); they are not a current API inventory.
 
 ## Objective
 
-The current target for the final Comparator report is Lean's three standard logical axioms and a
+The original target for the final Comparator report was Lean's three standard logical axioms and a
 small set of general classical blackboxes:
 
 \[

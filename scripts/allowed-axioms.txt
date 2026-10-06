@@ -1,6 +1,6 @@
 # Constants in the current final-theorem trust closure.
 #
-# Lean's three standard logical axioms and six general classical results.
+# Lean's three standard logical axioms and four general classical results.
 # Exact contracts and sources are reviewed in TRUST-BOUNDARY.md.
 # No construction-specific axioms remain.
 
@@ -16,7 +16,3 @@ SphereSixComplex.SmoothSixSphere.poincare
 
 # Retained smooth triangulation result.
 SphereSixComplex.SmoothManifold.finiteCWModel
-
-# Retained general geometric topology; source statements are reviewed in TRUST-BOUNDARY.md.
-SphereSixComplex.CWPair.whitehead
-SphereSixComplex.ManifoldWithCorners.relativeCWComplex

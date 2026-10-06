@@ -13,9 +13,7 @@
     "SphereSixComplex.Hurewicz.exists_map",
     "SphereSixComplex.CWType.homological_whitehead",
     "SphereSixComplex.SmoothSixSphere.poincare",
-    "SphereSixComplex.SmoothManifold.finiteCWModel",
-    "SphereSixComplex.CWPair.whitehead",
-    "SphereSixComplex.ManifoldWithCorners.relativeCWComplex"
+    "SphereSixComplex.SmoothManifold.finiteCWModel"
   ],
   "enable_nanoda": false
 }

@@ -108,19 +108,6 @@ public def positiveInteriorHomeomorph {r : ℝ} (hr : r < 1) :
   continuous_toFun := continuous_positiveInteriorCoordinate hr
   continuous_invFun := continuous_positiveInteriorInverse r
 
-public theorem positiveInteriorRegion_convex (r : ℝ) :
-    Convex ℝ (positiveInteriorRegion r) := by
-  have hl : IsLinearMap ℝ (fun x : Fin 3 → ℝ ↦ x 2) :=
-    ⟨fun _ _ ↦ rfl, fun _ _ ↦ rfl⟩
-  exact (convex_halfSpace_gt hl 0).inter (convex_halfSpace_lt hl r)
-
-public theorem positiveOffCentral_contractible {r : ℝ}
-    (hr : 0 < r) (hr1 : r < 1) : ContractibleSpace (positiveOffCentral r) := by
-  have hn : (positiveInteriorRegion r).Nonempty :=
-    ⟨fun _ ↦ r / 2, by constructor <;> linarith⟩
-  let _ := (positiveInteriorRegion_convex r).contractibleSpace hn
-  exact (positiveInteriorHomeomorph hr1).contractibleSpace
-
 end Construction
 
 end SphereSixComplex.Geometry.InfiniteA2Toric

@@ -205,7 +205,6 @@ public import SphereSixComplex.Prerequisites.Topology.Collar.CompactAdjunction
 public import SphereSixComplex.Prerequisites.Topology.Covering.CompactRepresentatives
 public import SphereSixComplex.Prerequisites.Topology.Manifold.ComplexThreefoldHomology
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.ConnectedDegreeZero
-public import SphereSixComplex.Prerequisites.Topology.Covering.ContractibleInclusion
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.RadialPath
 public import SphereSixComplex.Prerequisites.Topology.Sphere.CubicalEquiv
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Cubical
@@ -278,7 +277,6 @@ public import SphereSixComplex.Prerequisites.Topology.Collar.HalfSpace
 public import SphereSixComplex.Prerequisites.Topology.Collar.CoveringHalfSpace
 public import SphereSixComplex.Prerequisites.Topology.Gluing.LocallyFiniteClosedCover
 public import SphereSixComplex.Prerequisites.Topology.Manifold.LocallyContractible
-public import SphereSixComplex.Prerequisites.Topology.Manifold.CornersCWComplex
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Equivalence
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.MappingCylinderGluing
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.MappingCylinder
@@ -315,7 +313,6 @@ public import SphereSixComplex.Prerequisites.Topology.Covering.MonodromyTranspor
 public import SphereSixComplex.Prerequisites.Topology.Covering.MarkedLoops
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.RankOneSplitting
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.RealCover
-public import SphereSixComplex.Prerequisites.Topology.CWComplex.HomotopyExtension
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Relative
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Relative
 public import SphereSixComplex.Prerequisites.Topology.Gluing.RestrictedOrbitQuotient

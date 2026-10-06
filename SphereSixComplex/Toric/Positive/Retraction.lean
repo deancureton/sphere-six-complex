@@ -1,15 +1,13 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.CWComplex.HomotopyExtension
+public import SphereSixComplex.Prerequisites.Topology.Homotopy.StrongDeformationRetraction
 public import SphereSixComplex.Cusp.LocalPhaseAction
 
 /-!
-# Positive-part retraction for the standard infinite `A₂` toric model
+# Lifting the positive quotient retraction
 
-The standard input below records the nonnegative part, its modulus/polar description, the
-honeycomb central fibre, and the two quotient-level properties proved by the compact
-three-manifold, Whitehead, and collar argument. It deliberately contains no deformation
-retraction. The equivariant retraction is derived from the established general-topology results.
+The polar data carry a strong deformation retraction of the quotient onto its central core.
+The covering map lifts it to an equivariant retraction of the positive part.
 -/
 
 @[expose] public section
@@ -87,42 +85,17 @@ public structure PolarHoneycombData (M : Model) (r : ℝ) where
     letI := positiveDeckAction
     PolarHoneycombData.orbitProjection positivePart ⁻¹'
         PolarHoneycombData.orbitCore central = central
-  positive_contractible : ContractibleSpace positivePart
-  central_contractible : ContractibleSpace central
-  quotient_relativeCW :
+  quotientRetraction :
     letI := positiveDeckAction
-    Topology.RelCWComplex
-      (Set.univ : Set (PolarHoneycombData.OrbitQuotient positivePart))
+    SphereSixComplex.StrongDeformationRetraction
+      (PolarHoneycombData.OrbitQuotient positivePart)
       (PolarHoneycombData.orbitCore central)
-  quotient_t2 :
-    letI := positiveDeckAction
-    T2Space (PolarHoneycombData.OrbitQuotient positivePart)
 
 namespace PolarHoneycombData
 
 variable {M : Model} {r : ℝ} (P : PolarHoneycombData M r)
 
 
-
-/-- The quotient-level strong deformation retraction obtained from Whitehead plus the collar
-homotopy-extension property. -/
-public noncomputable def quotientStrongDeformationRetraction :
-    letI := P.positiveDeckAction
-    SphereSixComplex.StrongDeformationRetraction
-      (OrbitQuotient P.positivePart)
-      (orbitCore P.central) := by
-  letI := P.positiveDeckAction
-  letI := P.quotient_t2
-  let hHEP :=
-    CWPair.hasHomotopyExtensionProperty
-      (orbitCore P.central) P.quotient_relativeCW
-  let hEquiv :=
-    CWPair.homotopyEquivalence_of_contractible_cover
-        (orbitProjection P.positivePart) P.central (orbitCore P.central) P.quotientCovering
-          P.central_preimage P.positive_contractible P.central_contractible P.quotient_relativeCW
-  exact Classical.choice
-    (HasHomotopyExtensionProperty.nonempty_strongDeformationRetraction
-        (orbitCore P.central) hHEP hEquiv)
 
 /-- The positive-part strong deformation retraction, lifted equivariantly through the regular
 lattice covering. -/
@@ -134,7 +107,7 @@ public noncomputable def positiveEquivariantStrongDeformationRetraction :
   exact Classical.choice
     (EquivariantStrongDeformationRetraction.nonempty_lift
         (orbitProjection P.positivePart) P.central (orbitCore P.central) P.quotientCovering
-          P.central_preimage P.quotientStrongDeformationRetraction)
+          P.central_preimage P.quotientRetraction)
 
 end PolarHoneycombData
 
