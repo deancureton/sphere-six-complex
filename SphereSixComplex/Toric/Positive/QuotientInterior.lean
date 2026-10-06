@@ -1,6 +1,7 @@
 module
 public import SphereSixComplex.Prerequisites.Topology.Collar.CoveringHalfSpace
 public import SphereSixComplex.Toric.Positive.LocalCollars
+public import SphereSixComplex.Toric.Positive.CompactCore
 
 @[expose] public section
 noncomputable section
@@ -78,13 +79,21 @@ public theorem constructedPositiveQuotient_metrizable
   let _ : T2Space (PositiveQuotient W) := constructedPositiveDeck_quotient_t2 W
   infer_instance
 
+public def constructedPositiveQuotientCollar
+    (W : ActualPuncturedCuspCollarWitness N constructedModel) :
+    OpenTopologicalCollar (PositiveQuotient W) (positiveQuotientCore W) := by
+  let _ := constructedPositiveQuotient_metrizable W
+  let _ : CompactSpace (positiveQuotientCore W) :=
+    isCompact_iff_compactSpace.mp (isCompact_positiveQuotientCore W)
+  exact Classical.choice (LocallyCollared.nonempty_collar (positiveQuotientCore W)
+    (constructedPositiveQuotientCore_locallyCollared W))
+
 public def constructedPositiveQuotientInteriorHomotopyEquiv
     (W : ActualPuncturedCuspCollarWitness N constructedModel) :
     ContinuousMap.HomotopyEquiv (PositiveQuotient W)
       ↥((positiveQuotientCore W)ᶜ) := by
   let _ := constructedPositiveQuotient_metrizable W
-  let c := Classical.choice (LocallyCollared.nonempty_collar (positiveQuotientCore W)
-    (constructedPositiveQuotientCore_locallyCollared W))
+  let c := constructedPositiveQuotientCollar W
   let w := Classical.choice (c.nonempty_pushWeight (isClosed_positiveDeck_orbitCore W))
   exact c.interiorHomotopyEquiv w
 

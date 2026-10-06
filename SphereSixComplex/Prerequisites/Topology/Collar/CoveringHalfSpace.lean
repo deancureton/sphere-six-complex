@@ -16,7 +16,8 @@ public theorem locallyCollared_of_projected_halfSpaceChart
     (hy : (y, 0) ∈ e.source)
     (hB : ∀ z ∈ e.source, p (e z) ∈ B ↔ z.2 = 0) :
     ∃ V : Set Z, V ⊆ B ∧ p (e (y, 0)) ∈ V ∧ IsOpen {b : B | b.1 ∈ V} ∧
-      Nonempty (OpenTopologicalCollar Z V) := by
+      ∃ c : OpenTopologicalCollar Z V,
+        ∀ q, (c.chart q).1 ∈ B → q.2 = openCollarZero := by
   obtain ⟨f, hf, hpf⟩ := hp (e (y, 0))
   have hs : (y, 0) ∈ (e.trans f).source := ⟨hy, hf⟩
   have hb : ∀ z ∈ (e.trans f).source, (e.trans f) z ∈ B ↔ z.2 = 0 := by

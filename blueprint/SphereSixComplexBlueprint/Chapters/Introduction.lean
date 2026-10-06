@@ -49,15 +49,14 @@ Transport the complex atlas of the constructed threefold along the diffeomorphis
 {uses "smooth-recognition"}[smooth recognition].
 :::
 
-:::definition "classical-trust-boundary" (parent := "main_construction") (lean := "SphereSixComplex.Hurewicz.exists_map, SphereSixComplex.CWType.homological_whitehead, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.PoincareDuality.nonempty_addEquiv, SphereSixComplex.IntegralCohomology.universal_coefficients, SphereSixComplex.SmoothManifold.finiteCWModel, SphereSixComplex.CWPair.whitehead, SphereSixComplex.LocallyCollared.nonempty_collar, SphereSixComplex.ManifoldWithCorners.relativeCWComplex")
-The final theorem depends on Lean's three standard logical axioms and nine general classical
+:::definition "classical-trust-boundary" (parent := "main_construction") (lean := "SphereSixComplex.Hurewicz.exists_map, SphereSixComplex.CWType.homological_whitehead, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.PoincareDuality.nonempty_addEquiv, SphereSixComplex.IntegralCohomology.universal_coefficients, SphereSixComplex.SmoothManifold.finiteCWModel, SphereSixComplex.CWPair.whitehead, SphereSixComplex.ManifoldWithCorners.relativeCWComplex")
+The final theorem depends on Lean's three standard logical axioms and eight general classical
 results: higher Hurewicz, homological Whitehead, smooth Poincaré in dimension six, integral
 Poincaré duality, universal coefficients, finite CW models of compact smooth manifolds,
-Whitehead for CW pairs, local-to-global collaring,
-and relative CW structures for manifolds with corners. Their exact contracts are reviewed in the
+Whitehead for CW pairs, and relative CW structures for manifolds with corners. Their exact contracts are reviewed in the
 repository's `TRUST-BOUNDARY.md`.
 
-Finite-dimensional cellular comparison is proved using Tau Ceti.
+Finite-dimensional cellular comparison and compact Brown collaring are proved using Tau Ceti.
 The modular uniformization, analytic descent, toric construction, and specialized filling and
 homology computations are proved. No construction-specific axiom remains. This describes the
 mathematical dependency boundary; build and Comparator acceptance are checked separately.

@@ -1,6 +1,6 @@
 # Classical trust-boundary review
 
-Classical contracts reviewed 2026-09-09; the cellular assumption was subsequently discharged. This is a mathematical review of the exact Lean statements and their supporting definitions, not a formal proof of the retained boundary. The nine retained declarations below describe general classical results; no substantive specialization, missing hypothesis, or contradictory encoding was found. Lean's `propext`, `Classical.choice`, and `Quot.sound` are separate logical dependencies. Comparator and full-build acceptance are separate checks performed by the main agent.
+Classical contracts reviewed 2026-09-09; the cellular and collar assumptions were subsequently discharged. This is a mathematical review of the exact Lean statements and their supporting definitions, not a formal proof of the retained boundary. The eight retained declarations below describe general classical results; no substantive specialization, missing hypothesis, or contradictory encoding was found. Lean's `propext`, `Classical.choice`, and `Quot.sound` are separate logical dependencies. Comparator and full-build acceptance are separate checks performed by the main agent.
 
 Repository-relative links below are intended for a document placed at the repository root. Line references are descriptive and reflect the reviewed checkout.
 
@@ -17,7 +17,6 @@ All names have prefix `SphereSixComplex.` unless another namespace is shown.
 | `IntegralCohomology.universal_coefficients`, [UniversalCoefficients.lean](SphereSixComplex/Prerequisites/Topology/SingularHomology/UniversalCoefficients.lean), line 30 | [Cohomology.lean](SphereSixComplex/Prerequisites/Topology/SingularHomology/Cohomology.lean) defines the actual dual singular-chain complex. The obstruction is derived `Ext¹` in integer modules. Positive-degree splitting is noncanonical; no natural splitting is assumed. | [Hatcher, Chapter 3, Section 3.1, universal coefficient theorem](https://pi.math.cornell.edu/~hatcher/AT/ATch3.pdf). |
 | `SmoothManifold.finiteCWModel`, [Triangulation.lean](SphereSixComplex/Prerequisites/Topology/Manifold/Triangulation.lean), line 40 | Compact, Hausdorff, second-countable, finite-dimensional boundaryless C1 manifold. Only a finite CW homotopy model with dimension bounded by the actual real model dimension is requested. | [Whitehead, On C1-complexes](https://www.sciencedirect.com/science/chapter/edited-volume/pii/B978008009870850021X), Annals of Mathematics 41 (1940), 809–824. |
 | `CWPair.whitehead`, [StrongDeformationRetraction.lean](SphereSixComplex/Prerequisites/Topology/Homotopy/StrongDeformationRetraction.lean), line 238 | Actual relative CW inclusion; path connectedness of both spaces; actual induced bijections on the fundamental group and every higher homotopy group. [SubspaceInclusion.lean](SphereSixComplex/Prerequisites/Topology/Homotopy/SubspaceInclusion.lean), line 33, defines the conclusion as an ordinary homotopy equivalence whose inverse map is the inclusion. No covering-space or toric conclusion is assumed. | [Hatcher, Chapter 4, Theorem 4.5 and the relative CW compression argument](https://pi.math.cornell.edu/~hatcher/AT/ATch4.pdf). |
-| `LocallyCollared.nonempty_collar`, [Existence.lean](SphereSixComplex/Prerequisites/Topology/Collar/Existence.lean), line 26 | Metrizable ambient space and a relative open cover by subsets admitting collars. [OpenPush.lean](SphereSixComplex/Prerequisites/Topology/Collar/OpenPush.lean), line 18, requires a homeomorphism from `B × [0,1)` onto an open neighborhood, fixing zero. No closedness hypothesis is missing. | [Brown, Locally Flat Imbeddings of Topological Manifolds](https://www.maths.gla.ac.uk/~mpowell/Brown%20collars.pdf), Annals 75 (1962), Section II p. 332 for definitions and Theorem 1 p. 337. These pages were checked directly. |
 | `ManifoldWithCorners.relativeCWComplex`, [CornersCWComplex.lean](SphereSixComplex/Prerequisites/Topology/Manifold/CornersCWComplex.lean), line 35 | Hausdorff, second-countable C1 manifold on a finite-dimensional real quadrant. Only a CW decomposition relative to the full manifold boundary is asserted, not compatibility with an arbitrary subset or prescribed stratification. Second countability and local Euclidean-quadrant structure give the needed paracompactness. | [Murayama–Shiota, Triangulation of the map of a G-manifold to its orbit space, Nagoya Math. J. 212 (2013), pp. 159–160](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/B650C32D644185E786B3DB76ABF44740/S0027763000022418a.pdf/triangulation_of_the_map_of_a_gmanifold_to_its_orbit_space.pdf). These pages explicitly allow k=1 and corners and state the Cairns–Whitehead triangulation theorem, citing Munkres. The PL manifold boundary is a subcomplex, giving the stated relative CW consequence. |
 
 ## Proved cellular comparison
@@ -34,10 +33,24 @@ axiom and its unused interfaces have been deleted.
 The constructor and its sphere and finite-model consumers were checked with
 `#print axioms`: only `propext`, `Classical.choice`, and `Quot.sound` occur.
 
+## Proved collaring
+
+[Existence.lean](SphereSixComplex/Prerequisites/Topology/Collar/Existence.lean)
+now proves collar existence for compact locally collared subsets of Hausdorff
+spaces using Tau Ceti's compact Brown theorem. Local collars explicitly meet the
+whole boundary only on their zero slices.
+
+[CompactCore.lean](SphereSixComplex/Toric/Positive/CompactCore.lean) proves that
+the quotient core is compact by expressing it as the continuous image of six
+squares. This gives an actual quotient collar. The upstairs contractibility proof
+lifts the resulting deformation through the existing covering map; it no longer
+assumes a collar for the noncompact upstairs boundary. The compact Brown adapter,
+core compactness, quotient collar and upstairs contractibility each have only
+Lean's three standard axioms.
+
 ## Scope and limits
 
-The classical-source review above is retained from the September review. The Brown
-and corners contracts were checked against the cited primary-source PDFs; the other
+The classical-source review above is retained from the September review. The corners contract was checked against the cited primary-source PDF; the other
 correspondences use the standard classical results and inspection of the Lean
 contracts. This is not a formal proof of the remaining assumptions.
 
@@ -49,8 +62,8 @@ hypotheses and diffeomorphism conclusion are also expanded directly. See
 ## Verified dependency boundary
 
 The final theorem's compiled dependency closure contains Lean's three standard
-axioms and the nine classical declarations listed above. The construction closure
-contains six classical declarations and the same three standard axioms. The exact
+axioms and the eight classical declarations listed above. The construction closure
+contains five classical declarations and the same three standard axioms. The exact
 allowlists are checked independently against those closures and Comparator's
 configuration. No construction-specific axiom remains.
 

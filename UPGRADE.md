@@ -10,7 +10,7 @@ statements remain fixed. `Scratch/` is outside this task.
   preserve required fork additions; repair API migration; build, audit and Comparator.
 - [x] Replace finite-dimensional cellular-homology consumers with proved Tau Ceti
   results; remove the unused general comparison axiom; repeat gates.
-- [ ] Use compact Brown collaring on the quotient and covering homotopy lifting
+- [x] Use compact Brown collaring on the quotient and covering homotopy lifting
   upstairs; remove collar axiom; repeat gates.
 - [ ] Integrate simply-connected integral Poincare duality with coefficient and
   cochain bridges; remove duality axiom; repeat gates.
@@ -62,3 +62,18 @@ ledger tracks implemented work and gate results, not source-audit promises.
 - Proof-only exactness instances stay behind a private import; concrete homology
   functor uses specify their category universe to avoid ambiguous instance search.
 - Blueprint site generation and its HTML index, manifest and HTML-cache checks pass.
+
+## Compact collar checkpoint
+
+- Proved compact Brown collaring for a subset inclusion with local collars that
+  meet the whole boundary only on the zero slice. Strengthened local chart
+  witnesses supply exactly that property.
+- Proved compactness of the quotient core via its six square cells. Constructed
+  its collar and lifted the interior deformation through the covering to prove
+  upstairs contractibility. Deleted three unused declarations from the old route.
+- All four new ingredients have only Lean's three standard axioms. The full
+  project build passes (10,123 jobs), as do import/layer and placeholder checks.
+- Compiled closures contain eight mathematical axioms for the final theorems and
+  five for the construction. The exact audit and regenerated catalog pass.
+- Comparator passes with Lean's default kernel; the updated Blueprint introduction
+  also compiles against the proved collar dependency.

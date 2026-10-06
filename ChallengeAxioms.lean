@@ -21,7 +21,7 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 
 # Constants in the current final-theorem trust closure.
 #
-# Lean's three standard logical axioms and nine general classical results.
+# Lean's three standard logical axioms and eight general classical results.
 # Exact contracts and sources are reviewed in TRUST-BOUNDARY.md.
 # No construction-specific axioms remain.
 
@@ -93,9 +93,6 @@ axiom SphereSixComplex.CWPair.whitehead.{u_1} : ∀ {B : Type u_1} [inst : Topol
                 (have this := rfl;
                 this))) →
           ∀ (hCW : Topology.RelCWComplex Set.univ D), SphereSixComplex.IsHomotopyEquivalenceInclusion D
-axiom SphereSixComplex.LocallyCollared.nonempty_collar.{u_1} : ∀ {X : Type u_1} [inst : TopologicalSpace X]
-  [TopologicalSpace.MetrizableSpace X] (B : Set X),
-  SphereSixComplex.LocallyCollared B → Nonempty (SphereSixComplex.OpenTopologicalCollar X B)
 axiom SphereSixComplex.ManifoldWithCorners.relativeCWComplex.{u} : (n : ℕ) →
   (X : Type u) →
     [inst : TopologicalSpace X] →
