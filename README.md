@@ -39,7 +39,10 @@ Cellular comparison, compact collaring, and simply-connected integral Poincaré 
 are now proved using imported developments; see [UPGRADE.md](UPGRADE.md).
 The required universal-coefficient comparisons are proved by splitting projective chain
 complexes. An explicit homotopy into a collar supplies the positive quotient retraction,
-removing the relative triangulation and CW-pair Whitehead assumptions. See
+removing the relative triangulation and CW-pair Whitehead assumptions. The four-piece
+Mayer–Vietoris calculation supplies finite generation and the dimension bound directly,
+so the construction of the simply connected complex homology six-sphere uses only
+Lean’s three standard axioms. The four classical assumptions remain in sphere recognition. See
 [AXIOM-ELIMINATION.md](AXIOM-ELIMINATION.md) for the remaining work.
 
 Finite-fibre specialization is proved in both degrees. In degree two, the actual mixed torus

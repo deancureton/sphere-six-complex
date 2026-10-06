@@ -61,6 +61,9 @@ DifferentialGeometry development and an explicit comparison of singular chain co
 The required universal-coefficient comparisons follow from splitting projective chain complexes.
 The positive quotient retracts onto its boundary core by a small collar push and height
 compression; relative triangulation and Whitehead for CW pairs are no longer assumed.
+The four-piece Mayer–Vietoris calculation supplies finite generation and vanishing above
+degree six directly. The construction of the simply connected complex homology six-sphere
+uses only Lean’s three standard axioms; the four classical assumptions enter sphere recognition.
 The modular uniformization, analytic descent, toric construction, and specialized filling and
 homology computations are proved. No construction-specific axiom remains. This describes the
 mathematical dependency boundary; build and Comparator acceptance are checked separately.

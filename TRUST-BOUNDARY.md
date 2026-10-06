@@ -28,7 +28,7 @@ now constructs the cellular chain model from Tau Ceti's
 groups and identifies homology with the project's actual singular chains.
 The theorem requires a Hausdorff finite-dimensional CW complex. Every consumer
 supplies this hypothesis through an existing finite CW model, including the sphere
-model and compact smooth manifold models. The former, broader cellular comparison
+model. The constructed manifold’s homology bounds are now proved geometrically. The former, broader cellular comparison
 axiom and its unused interfaces have been deleted.
 
 The constructor and its sphere and finite-model consumers were checked with
@@ -109,6 +109,19 @@ it does not formalize those general theorems. Their axiom declarations and the u
 quadrant/CW proof route have been deleted. All new geometric ingredients use only
 the three standard Lean axioms.
 
+## Geometric homology finiteness and dimension bound
+
+[Homology/Euler/Finiteness.lean](SphereSixComplex/Homology/Euler/Finiteness.lean)
+proves finite generation and vanishing above degree six from the actual four-piece
+open cover. Each collar is a mapping torus of a four-torus and has zero sixth
+homology. The Mayer–Vietoris sequence then gives zero seventh homology at every
+attachment; its existing finiteness theorem supplies the remaining degrees.
+
+The Poincare/UCT package now records only proved duality pairings. The paper's
+homology calculation supplies finiteness and dimensional vanishing from this cover,
+so it no longer invokes smooth triangulation. The finite-CW axiom remains only in
+sphere recognition, where it supplies CW homotopy type.
+
 ## Scope and limits
 
 The classical-source review above is retained from the September review. The
@@ -123,7 +136,7 @@ conclusion are expanded directly. See
 
 The final theorem's compiled dependency closure contains Lean's three standard
 axioms and the four classical declarations listed above. The construction closure
-contains only the smooth finite-CW-model assumption and the same three standard axioms. The exact
+contains only the three standard Lean axioms. The exact
 allowlists are checked independently against those closures and Comparator's
 configuration. No construction-specific axiom remains.
 

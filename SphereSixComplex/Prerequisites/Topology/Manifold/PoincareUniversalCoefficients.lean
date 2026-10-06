@@ -23,8 +23,7 @@ dimension `d`.
 
 The first equivalence is the composite
 `H_d ≃ H^0 ≃ Hom(H_0, ℤ)`. In positive degree `k`, freeness in all lower degrees lets us
-split the chain sequences and identify cohomology with the dual of homology. The remaining
-fields are finite generation and the dimension bound. -/
+split the chain sequences and identify cohomology with the dual of homology. -/
 public structure IntegralPoincareUCTData
     (d : ℕ) (X : Type) [TopologicalSpace X] where
   /-- The top-dimensional Poincare/UCT evaluation pairing. -/
@@ -35,10 +34,6 @@ public structure IntegralPoincareUCTData
     (∀ i < k.1, Module.Free ℤ (IntegralSingularHomology i X)) →
       IntegralSingularHomology (d - k.1) X ≃+
         (IntegralSingularHomology k.1 X →+ ℤ)
-  /-- Compact smooth manifolds have finitely generated integral homology. -/
-  finite_homology : ∀ k, Module.Finite ℤ (IntegralSingularHomology k X)
-  /-- Homology vanishes above the real dimension. -/
-  subsingleton_homology_of_lt : ∀ k, d < k → Subsingleton (IntegralSingularHomology k X)
 
 /-- The dimension-six specialization used by the Section 7 calculation. -/
 public abbrev IntegralPoincareUCTData.Six
@@ -173,9 +168,8 @@ public noncomputable def homologySixEquivInt
     map_add' := by simp }
   exact T.topEquivDualZero.trans (precomp.trans evalOne)
 
-private theorem finrank_zero_of_subsingleton_finite {G : Type} [AddCommGroup G]
-    (hFinite : Module.Finite ℤ G) (hG : Subsingleton G) : Module.finrank ℤ G = 0 := by
-  let _ : Module.Finite ℤ G := hFinite
+private theorem finrank_zero_of_subsingleton {G : Type} [AddCommGroup G]
+    (hG : Subsingleton G) : Module.finrank ℤ G = 0 := by
   let _ : Subsingleton G := hG
   let _ : Module.Free ℤ G := inferInstance
   exact Module.finrank_eq_zero_of_subsingleton ℤ G
@@ -187,6 +181,7 @@ private theorem finrank_one_of_addEquiv_integer {G : Type} [AddCommGroup G]
 
 public theorem subsingleton_homology_three_of_eulerCharacteristic
     (T : Six X)
+    [Module.Finite ℤ (IntegralSingularHomology 3 X)]
     (hZero : IntegralSingularHomology 0 X ≃+ ℤ)
     (hOne : Subsingleton (IntegralSingularHomology 1 X))
     (hTwo : Subsingleton (IntegralSingularHomology 2 X))
@@ -198,19 +193,18 @@ public theorem subsingleton_homology_three_of_eulerCharacteristic
   have h0rank : Module.finrank ℤ (IntegralSingularHomology 0 X) = 1 :=
     finrank_one_of_addEquiv_integer hZero
   have h1rank : Module.finrank ℤ (IntegralSingularHomology 1 X) = 0 :=
-    finrank_zero_of_subsingleton_finite (T.finite_homology 1) hOne
+    finrank_zero_of_subsingleton hOne
   have h2rank : Module.finrank ℤ (IntegralSingularHomology 2 X) = 0 :=
-    finrank_zero_of_subsingleton_finite (T.finite_homology 2) hTwo
+    finrank_zero_of_subsingleton hTwo
   have h4rank : Module.finrank ℤ (IntegralSingularHomology 4 X) = 0 :=
-    finrank_zero_of_subsingleton_finite (T.finite_homology 4) hFour
+    finrank_zero_of_subsingleton hFour
   have h5rank : Module.finrank ℤ (IntegralSingularHomology 5 X) = 0 :=
-    finrank_zero_of_subsingleton_finite (T.finite_homology 5) hFive
+    finrank_zero_of_subsingleton hFive
   have h6rank : Module.finrank ℤ (IntegralSingularHomology 6 X) = 1 :=
     finrank_one_of_addEquiv_integer hSix
   have h3rank : Module.finrank ℤ (IntegralSingularHomology 3 X) = 0 := by
     unfold integralHomologyEulerCharacteristicSix at hEuler
     omega
-  let _ : Module.Finite ℤ (IntegralSingularHomology 3 X) := T.finite_homology 3
   let _ : Module.IsTorsionFree ℤ (IntegralSingularHomology 3 X) :=
     isTorsionFree_homology_three T hZero hOne hTwo
   exact Module.finrank_zero_iff.mp h3rank

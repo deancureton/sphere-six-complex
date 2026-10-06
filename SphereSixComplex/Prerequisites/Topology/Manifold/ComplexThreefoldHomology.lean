@@ -4,6 +4,7 @@ public import SphereSixComplex.Prerequisites.Topology.Manifold.Homology
 public import SphereSixComplex.Prerequisites.Topology.Manifold.RestrictScalars
 public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
+public import SphereSixComplex.Prerequisites.Topology.SingularHomology.EulerCharacteristic
 
 @[expose] public section
 noncomputable section
@@ -43,18 +44,21 @@ public noncomputable def connectedComplexManifoldHomologyZeroEquivInteger
     |>.addCommGroupIsoToAddEquiv
 
 /-- A compact simply connected complex threefold with vanishing first and second integral homology
-and Euler characteristic two has the integral homology of the six-sphere. -/
+and Euler characteristic two has the integral homology of the six-sphere, provided its homology
+is finitely generated and vanishes above degree six. -/
 public theorem ComplexThreefold.nonempty_homologyEquiv_sixSphere
     (X : Type) [TopologicalSpace X] [ChartedSpace ComplexModel X]
     [T2Space X] [SecondCountableTopology X] [SimplyConnectedSpace X]
     [IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ X]
     [CompactSpace X] [ConnectedSpace X]
+    (hFinite : IntegralHomologyFiniteSix X)
     (hOne : Subsingleton (IntegralSingularHomology 1 X))
     (hTwo : Subsingleton (IntegralSingularHomology 2 X))
     (hEuler : integralHomologyEulerCharacteristicSix X = 2) :
     ∀ k, Nonempty (IntegralSingularHomology k X ≃+ IntegralSingularHomology k SixSphere) := by
   let T := ComplexThreefold.integralPoincareUCT X inferInstance inferInstance
   let hZero := connectedComplexManifoldHomologyZeroEquivInteger X inferInstance
+  let _ := hFinite.finite_homology 3
   let hThree :=
     IntegralPoincareUCTData.Six.subsingleton_homology_three_of_eulerCharacteristic T
       hZero hOne hTwo hEuler
@@ -80,7 +84,7 @@ public theorem ComplexThreefold.nonempty_homologyEquiv_sixSphere
         · exact hFour
         · exact hFive
         · exact False.elim (hk6 rfl)
-      · exact T.subsingleton_homology_of_lt k (by omega)
+      · exact hFinite.subsingleton_homology_of_six_lt k (by omega)
   let := hActual
   let := sixSpherePositiveHomologyInputs.otherDegrees k hk0 hk6
   let : Unique (IntegralSingularHomology k X) := uniqueOfSubsingleton 0

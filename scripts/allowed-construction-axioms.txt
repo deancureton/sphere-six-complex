@@ -1,9 +1,6 @@
-# Allowlist for the implemented construction cone, excluding the final smooth-recognition step.
-# Its only retained mathematical foundation is the smooth finite-CW-model theorem.
-# Analytic descent is now proved from mathlib.
-# No construction-specific axioms remain; see TRUST-BOUNDARY.md for the exact contracts.
+# The implemented construction uses only Lean's three standard logical axioms.
+# The four classical recognition assumptions occur only in the final theorem.
 
 Classical.choice
 Quot.sound
 propext
-SphereSixComplex.SmoothManifold.finiteCWModel

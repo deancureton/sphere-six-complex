@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Construction.CompactThreefold
-public import SphereSixComplex.Homology.Euler.Assembly
+public import SphereSixComplex.Homology.Euler.Finiteness
 
 open scoped ContDiff Manifold
 
@@ -52,13 +52,13 @@ public theorem star_nonempty_homologyEquiv_sixSphere_of_lowDegrees (P : Analytic
   let := hManifold
   let := hConnected
   let := P.compactSpace_starGlued
-  let T := ComplexThreefold.integralPoincareUCT (GluedSpace D)
-    hManifold P.compactSpace_starGlued
+  let hFinite := P.integralHomologyFiniteSix_starGlued
   obtain ⟨hCentral, hFilling, hCollar⟩ := P.localEulerModels.localIntegralHomologyFiniteSix
   have hEuler : integralHomologyEulerCharacteristicSix (GluedSpace D) = 2 := by
     rw [integralHomologyEulerCharacteristicSix_eq_localExpression_of_homologySeven_subsingleton
-      P.openEmbeddingStarData (T.subsingleton_homology_of_lt 7 (by omega)) hCentral hFilling hCollar]
+      P.openEmbeddingStarData (hFinite.subsingleton_homology_of_six_lt 7 (by omega))
+      hCentral hFilling hCollar]
     exact P.localEulerModels.sectionSevenLocalEulerExpression_eq_two
-  exact ComplexThreefold.nonempty_homologyEquiv_sixSphere (GluedSpace D) hOne hTwo hEuler
+  exact ComplexThreefold.nonempty_homologyEquiv_sixSphere (GluedSpace D) hFinite hOne hTwo hEuler
 
 end SphereSixComplex.Geometry.AnalyticData
