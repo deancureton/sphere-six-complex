@@ -1,5 +1,7 @@
 module
 
+public import Mathlib.Analysis.Calculus.ContDiff.WithLp
+
 public import SphereSixComplex.Toric.Positive.QuadrantAtlas
 
 @[expose] public section

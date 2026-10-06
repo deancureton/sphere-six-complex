@@ -3,6 +3,7 @@
 /.ci/
 /blueprint/.lake/
 /blueprint/_out/
+/vendor/**/.lake/
 __pycache__/
 *.pyc
 .DS_Store

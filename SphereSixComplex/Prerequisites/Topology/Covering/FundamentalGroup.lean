@@ -88,7 +88,7 @@ public theorem exists_lift (H : Subgroup (FundamentalGroup Y base)) {P : Set Y} 
     IsCoveringMap.existsUnique_continuousMap_comp_eq_of_range_le
       (p := (subsetInclusion P : C(P, Y))) (q := subgroupQuotientProj base H)
       (e₀ := (⟨pt, hpt⟩ : P)) (f₀ := f₀) (x := pt)
-      (subsetInclusion P).continuous (isCoveringMap_subgroupQuotientProj base H) rfl hf₀
+      (isCoveringMap_subgroupQuotientProj base H) (subsetInclusion P).continuous rfl hf₀
       (by
         have h := hle
         rw [← TauCeti.FundamentalGroup.mapOfEq_rfl (x := (⟨pt, hpt⟩ : P))

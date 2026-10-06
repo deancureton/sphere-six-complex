@@ -154,7 +154,7 @@ public theorem exists_iteratedAffineCell_depth_subordinate
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n))) :
     ∃ m : ℕ, ∀ ancestry : List (TopAffineFlag n), ancestry.length = m →
-      ∃ i, X.toSSetObjEquiv _ x ''
+      ∃ i, singularSimplexContinuousMapEquiv X _ x ''
         Set.range (iteratedAffineCellMap n ancestry) ⊆ U i := by
   obtain ⟨δ, hδ, hLeb⟩ :=
     singularSimplex_openCover_lebesgueNumber X U hUopen hUcover n x

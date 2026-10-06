@@ -1,6 +1,6 @@
 module
 
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.VanKampen
+public import VanKampen
 public import SphereSixComplex.FundamentalGroup.Geometry
 public import SphereSixComplex.Prerequisites.Topology.Covering.FundamentalGroup
 
@@ -347,7 +347,7 @@ public theorem localFundamentalGroupImages_generate'
     exact hsCoreBase
   have hiff := IsCoveringMap.exists_continuousMap_comp_eq_iff_range_le
       (p := (id : Y → Y)) (q := subgroupQuotientProj base H) (e₀ := base)
-      (f₀ := SubgroupQuotient.basepoint base H) continuous_id hq rfl hbase
+      (f₀ := SubgroupQuotient.basepoint base H) hq continuous_id rfl hbase
   have hle : (FundamentalGroup.mapOfEq (⟨id, continuous_id⟩ : C(Y, Y)) rfl).range ≤
       (FundamentalGroup.mapOfEq
         (⟨subgroupQuotientProj base H, continuous_subgroupQuotientProj base H⟩ :

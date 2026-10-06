@@ -324,7 +324,7 @@ public theorem markedBaseMeridians_generate :
           Set (FundamentalGroup TwicePuncturedComplex
             twicePuncturedComplexBasepoint)) := by
       ext x
-      simp [eq_comm]
+      simp
     rw [hset]
     exact himage
   obtain ⟨δ, hδ, hδeq⟩ := hmap

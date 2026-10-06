@@ -313,7 +313,7 @@ public theorem localFundamentalGroupImages_generate
     (p := (id : TwicePuncturedComplex → TwicePuncturedComplex))
     (q := subgroupQuotientProj twicePuncturedComplexBasepoint H)
     (e₀ := twicePuncturedComplexBasepoint) (f₀ := e₀)
-    continuous_id hq rfl he₀
+    hq continuous_id rfl he₀
   have hle :
       (FundamentalGroup.mapOfEq
         (⟨id, continuous_id⟩ : C(TwicePuncturedComplex, TwicePuncturedComplex)) rfl).range ≤

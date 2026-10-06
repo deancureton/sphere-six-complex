@@ -10,6 +10,7 @@ public import Mathlib.Algebra.Category.Grp.Abelian
 public import Mathlib.AlgebraicTopology.SingularHomology.Basic
 public import Mathlib.AlgebraicTopology.SimplicialSet.SubcomplexColimits
 public import Mathlib.CategoryTheory.Abelian.CommSq
+public import Mathlib.CategoryTheory.Limits.MonoCoprod
 public import Mathlib.CategoryTheory.Limits.Preserves.SigmaConst
 public import Mathlib.Topology.Category.TopCat.Opens
 
@@ -96,7 +97,7 @@ public theorem singularOpenSubcomplex_inf {X : TopCat} (U V : Opens X) :
   have hb_apply (z) : xMap z = (bMap z).1 := by
     have h := congrArg (fun s ↦ X.toSSetObjEquiv n s z) hb
     exact h.symm
-  let cMap : C(stdSimplex ℝ (Fin (n.unop.len + 1)), (Opens.toTopCat X).obj (U ⊓ V)) :=
+  let cMap : C(Convexity.StdSimplex ℝ (Fin (n.unop.len + 1)), (Opens.toTopCat X).obj (U ⊓ V)) :=
     ⟨fun z ↦ ⟨xMap z, ⟨ha_apply z ▸ (aMap z).2, hb_apply z ▸ (bMap z).2⟩⟩,
       continuous_induced_rng.2 xMap.continuous⟩
   refine ⟨((Opens.toTopCat X).obj (U ⊓ V)).toSSetObjEquiv n |>.symm cMap, ?_⟩

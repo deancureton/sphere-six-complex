@@ -26,8 +26,8 @@ public noncomputable def iteratedAffineCellSingularSimplex
     (ancestry : List (TopAffineFlag n)) :
     (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n)) :=
-  (X.toSSetObjEquiv _).symm
-    ((X.toSSetObjEquiv _ x).comp (iteratedAffineCellMap n ancestry))
+  (singularSimplexContinuousMapEquiv X _).symm
+    ((singularSimplexContinuousMapEquiv X _ x).comp (iteratedAffineCellMap n ancestry))
 
 
 @[simp]
@@ -36,7 +36,7 @@ public theorem iteratedAffineCellSingularSimplex_nil
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n))) :
     iteratedAffineCellSingularSimplex X n x [] = x := by
-  apply (X.toSSetObjEquiv _).injective
+  apply (singularSimplexContinuousMapEquiv X _).injective
   rfl
 
 /-- Adding the newest flag to an ancestry is the same as restricting the parent cell by that
@@ -51,7 +51,7 @@ public theorem iteratedAffineCellSingularSimplex_cons
         (singularSimplexTopCatMap X n
           (iteratedAffineCellSingularSimplex X n x ancestry))).app _
         (affineFlagSingularSimplex n n F) := by
-  apply (X.toSSetObjEquiv _).injective
+  apply (singularSimplexContinuousMapEquiv X _).injective
   apply ContinuousMap.ext
   intro w
   rfl
@@ -208,7 +208,7 @@ public theorem iteratedAffineCellSingularSimplex_mem_coverSmall
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n)))
     (ancestry : List (TopAffineFlag n))
-    (hsmall : ∃ i, X.toSSetObjEquiv _ x ''
+    (hsmall : ∃ i, singularSimplexContinuousMapEquiv X _ x ''
       Set.range (iteratedAffineCellMap n ancestry) ⊆ U i) :
     iteratedAffineCellSingularSimplex X n x ancestry ∈
       (coverSmallSingularSubcomplex X U).obj
@@ -217,13 +217,13 @@ public theorem iteratedAffineCellSingularSimplex_mem_coverSmall
   obtain ⟨i, hi⟩ := hsmall
   let f : C(stdSimplex ℝ (Fin (n + 1)), U i) :=
     ⟨fun w ↦
-      ⟨X.toSSetObjEquiv _ x (iteratedAffineCellMap n ancestry w),
+      ⟨singularSimplexContinuousMapEquiv X _ x (iteratedAffineCellMap n ancestry w),
         hi ⟨iteratedAffineCellMap n ancestry w, ⟨w, rfl⟩, rfl⟩⟩,
       Continuous.subtype_mk
-        ((X.toSSetObjEquiv _ x).continuous.comp
+        ((singularSimplexContinuousMapEquiv X _ x).continuous.comp
           (iteratedAffineCellMap n ancestry).continuous) _⟩
-  refine ⟨i, (TopCat.toSSetObjEquiv _ _).symm f, ?_⟩
-  apply (X.toSSetObjEquiv _).injective
+  refine ⟨i, (singularSimplexContinuousMapEquiv _ _).symm f, ?_⟩
+  apply (singularSimplexContinuousMapEquiv X _).injective
   apply ContinuousMap.ext
   intro w
   rfl
@@ -234,7 +234,7 @@ public noncomputable def coverSmallIteratedAffineCellSimplex
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n)))
     (ancestry : List (TopAffineFlag n))
-    (hsmall : ∃ i, X.toSSetObjEquiv _ x ''
+    (hsmall : ∃ i, singularSimplexContinuousMapEquiv X _ x ''
       Set.range (iteratedAffineCellMap n ancestry) ⊆ U i) :
     (coverSmallSingularSubcomplex X U : SSet).obj
       (Opposite.op (SimplexCategory.mk n)) :=
@@ -248,7 +248,7 @@ public noncomputable def coverSmallAffineAncestryLiftChain
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n)))
     (hsmall : ∀ a : AffinePermutationAncestry n m,
-      ∃ i, X.toSSetObjEquiv _ x ''
+      ∃ i, singularSimplexContinuousMapEquiv X _ x ''
         Set.range (iteratedAffineCellMap n
           (affinePermutationAncestryFlags n m a)) ⊆ U i) :
     AddCommGrpCat.of ℤ ⟶
@@ -266,7 +266,7 @@ public theorem coverSmallAffineAncestryLiftChain_comp_inclusion
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n)))
     (hsmall : ∀ a : AffinePermutationAncestry n m,
-      ∃ i, X.toSSetObjEquiv _ x ''
+      ∃ i, singularSimplexContinuousMapEquiv X _ x ''
         Set.range (iteratedAffineCellMap n
           (affinePermutationAncestryFlags n m a)) ⊆ U i) :
     coverSmallAffineAncestryLiftChain X U n m x hsmall ≫
@@ -287,7 +287,7 @@ public theorem affineSingularSubdivisionIterate_generator_mem_range_of_ancestrie
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n)))
     (hsmall : ∀ a : AffinePermutationAncestry n m,
-      ∃ i, X.toSSetObjEquiv _ x ''
+      ∃ i, singularSimplexContinuousMapEquiv X _ x ''
         Set.range (iteratedAffineCellMap n
           (affinePermutationAncestryFlags n m a)) ⊆ U i) :
     (affineSingularSubdivisionIterate X m).f n
@@ -371,7 +371,7 @@ public theorem exists_affineSubdivisionIterate_mem_range_of_generator_ancestries
     (hsmall : ∀ x : (TopCat.toSSet.obj X).obj
         (Opposite.op (SimplexCategory.mk n)),
       ∃ m : ℕ, ∀ a : AffinePermutationAncestry n m,
-        ∃ i, X.toSSetObjEquiv _ x ''
+        ∃ i, singularSimplexContinuousMapEquiv X _ x ''
           Set.range (iteratedAffineCellMap n
             (affinePermutationAncestryFlags n m a)) ⊆ U i) :
     ∀ c : (integralSingularChainComplexObj X).X n,
@@ -420,7 +420,7 @@ public theorem exists_affineSubdivisionIterate_mem_range_of_ancestries
         (Opposite.op (SimplexCategory.mk n)),
       ∃ m : ℕ, ∀ ancestry : List (TopAffineFlag n),
         ancestry.length = m →
-          ∃ i, X.toSSetObjEquiv _ x ''
+          ∃ i, singularSimplexContinuousMapEquiv X _ x ''
             Set.range (iteratedAffineCellMap n ancestry) ⊆ U i) :
     ∀ c : (integralSingularChainComplexObj X).X n,
       ∃ m : ℕ, (affineSingularSubdivisionIterate X m).f n c ∈
@@ -439,7 +439,7 @@ public theorem coverSmallAffineSubdivisionEventuallySmall_of_ancestries
         (Opposite.op (SimplexCategory.mk n))),
       ∃ m : ℕ, ∀ ancestry : List (TopAffineFlag n),
         ancestry.length = m →
-          ∃ i, X.toSSetObjEquiv _ x ''
+          ∃ i, singularSimplexContinuousMapEquiv X _ x ''
             Set.range (iteratedAffineCellMap n ancestry) ⊆ U i) :
     CoverSmallAffineSubdivisionEventuallySmall X U := by
   apply coverSmallAffineSubdivisionEventuallySmall_of_iterate_mem_range X U
@@ -454,14 +454,14 @@ public theorem exists_zero_dimensional_ancestry_depth_subordinate
       (Opposite.op (SimplexCategory.mk 0))) :
     ∃ m : ℕ, ∀ ancestry : List (TopAffineFlag 0),
       ancestry.length = m →
-        ∃ i, X.toSSetObjEquiv _ x ''
+        ∃ i, singularSimplexContinuousMapEquiv X _ x ''
           Set.range (iteratedAffineCellMap 0 ancestry) ⊆ U i := by
   refine ⟨0, fun ancestry hlength ↦ ?_⟩
   cases ancestry with
   | cons F ancestry => simp at hlength
   | nil =>
   let w₀ : stdSimplex ℝ (Fin (0 + 1)) := Classical.arbitrary _
-  have hwcover : X.toSSetObjEquiv _ x w₀ ∈ ⋃ i, U i := by
+  have hwcover : singularSimplexContinuousMapEquiv X _ x w₀ ∈ ⋃ i, U i := by
     rw [hUcover]
     trivial
   simp only [Set.mem_iUnion] at hwcover

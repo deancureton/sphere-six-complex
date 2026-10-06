@@ -5,8 +5,8 @@ import all Mathlib.Analysis.Complex.UpperHalfPlane.Basic
 import all Mathlib.Analysis.Complex.UnitDisc.Basic
 public import TauCeti.Analysis.Complex.UnitDisc.Basic
 import all TauCeti.Analysis.Complex.UnitDisc.Basic
-public import TauCeti.Analysis.Complex.Conformal.InverseFunction
-import all TauCeti.Analysis.Complex.Conformal.InverseFunction
+public import TauCeti.Analysis.Complex.Conformal.Inverse.Function
+import all TauCeti.Analysis.Complex.Conformal.Inverse.Function
 
 @[expose] public section
 

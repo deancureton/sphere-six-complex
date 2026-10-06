@@ -3,6 +3,7 @@ module
 public import Mathlib.Algebra.Homology.QuasiIso
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Relative
 public import Mathlib.Topology.Compactification.OnePoint.Sphere
+public import Mathlib.CategoryTheory.Limits.MonoCoprod
 
 /-!
 # Small singular chains for excision

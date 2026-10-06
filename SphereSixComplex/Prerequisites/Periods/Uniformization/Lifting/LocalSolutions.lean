@@ -149,11 +149,11 @@ theorem exists_regular_localSolution
     have hτυ : τ = υ := e.injOn hτe hυe (by simpa only [← he] using hJ')
     exact congrArg ((↑) : UpperHalfPlane → ℂ) hτυ
   let b : OpenPartialHomeomorph ℂ ℂ :=
-    TauCeti.DifferentiableOn.toOpenPartialHomeomorph hFdiff hWopen hFinj
+    DifferentiableOn.toOpenPartialHomeomorph hFdiff hWopen hFinj
   have hbsource : b.source = W :=
-    TauCeti.DifferentiableOn.toOpenPartialHomeomorph_source hFdiff hWopen hFinj
+    DifferentiableOn.toOpenPartialHomeomorph_source hFdiff hWopen hFinj
   have hbtarget : b.target = F '' W :=
-    TauCeti.DifferentiableOn.toOpenPartialHomeomorph_target hFdiff hWopen hFinj
+    DifferentiableOn.toOpenPartialHomeomorph_target hFdiff hWopen hFinj
   have hAz : A z = F (τ₀ : ℂ) := by
     simp only [A, F, Function.comp_apply, UpperHalfPlane.ofComplex_apply]
     exact hτ₀.symm
@@ -165,7 +165,7 @@ theorem exists_regular_localSolution
     (sourceCoordinate_complex_analyticOnNhd C) z hz
   have hbinv : DifferentiableOn ℂ b.symm b.target := by
     rw [hbtarget]
-    exact TauCeti.DifferentiableOn.differentiableOn_toOpenPartialHomeomorph_symm
+    exact DifferentiableOn.differentiableOn_toOpenPartialHomeomorph_symm
       hFdiff hWopen hFinj
   have hbinvAn : AnalyticAt ℂ b.symm (A z) :=
     hbinv.analyticAt (b.open_target.mem_nhds hAzTarget)
@@ -189,7 +189,7 @@ theorem exists_regular_localSolution
   · filter_upwards [hAevent, hfIm] with w hAw hfw
     have hright := b.right_inv hAw
     have hF : F (f w) = A w := by
-      simpa [f, b, TauCeti.DifferentiableOn.toOpenPartialHomeomorph_apply]
+      simpa [f, b, DifferentiableOn.toOpenPartialHomeomorph_apply]
         using hright
     have hτ : τ w = ⟨f w, hfw⟩ :=
       UpperHalfPlane.ofComplex_apply_of_im_pos hfw

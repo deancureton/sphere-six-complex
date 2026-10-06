@@ -16,8 +16,8 @@ public import Mathlib.Algebra.Homology.TotalComplex
 public import Mathlib.Algebra.Module.MinimalAxioms
 public import Mathlib.Algebra.Polynomial.Laurent
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.VanKampen
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.VanKampen.IsColimit
+public import VanKampen
+public import VanKampen.IsColimit
 public import Mathlib.AlgebraicTopology.SimplicialSet.Finite
 public import Mathlib.AlgebraicTopology.SimplicialSet.NonsingularColimit
 public import Mathlib.AlgebraicTopology.SimplicialSet.SubcomplexColimits

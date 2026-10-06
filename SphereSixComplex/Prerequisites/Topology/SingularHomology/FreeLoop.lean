@@ -1,5 +1,7 @@
 module
 
+public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
+
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.BasepointTransport
 public import TauCeti.AlgebraicTopology.FundamentalGroup.Homeomorph
 

@@ -8,7 +8,7 @@ import all Mathlib.Analysis.Complex.UpperHalfPlane.ProperAction
 import all Mathlib.NumberTheory.ModularForms.ArithmeticSubgroups
 public import Mathlib.NumberTheory.ModularForms.ProperlyDiscontinuous
 import all Mathlib.NumberTheory.ModularForms.ProperlyDiscontinuous
-import all TauCeti.Analysis.Complex.UpperHalfPlane.PSLAction
+import all TauCeti.Analysis.Complex.UpperHalfPlane.PSL.Action
 import all TauCeti.NumberTheory.ModularForms.Order.AtCusp
 import all TauCeti.NumberTheory.ModularForms.Order.Orbits
 import all TauCeti.NumberTheory.ModularForms.Order.OrbitReduction

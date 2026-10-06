@@ -150,7 +150,7 @@ abbrev SingularSimplex (X : Type) [TopologicalSpace X] (n : ℕ) := C(simplex n,
 
 def simplexIndex (X : Type) [TopologicalSpace X] (n : ℕ) (σ : SingularSimplex X n) :
     (TopCat.toSSet.obj (TopCat.of X)).obj (Opposite.op (SimplexCategory.mk n)) :=
-  ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n))).symm σ
+  (singularSimplexContinuousMapEquiv (TopCat.of X) (.op (SimplexCategory.mk n))).symm σ
 
 def simplexChain (X : Type) [TopologicalSpace X] (n : ℕ) (σ : SingularSimplex X n) :
     chains X n :=
@@ -167,7 +167,10 @@ theorem simplexIndex_face (X : Type) [TopologicalSpace X] (n : ℕ)
     (σ : SingularSimplex X (n + 1)) (i : Fin (n + 2)) :
     (TopCat.toSSet.obj (TopCat.of X)).δ i (simplexIndex X (n + 1) σ) =
       simplexIndex X n (σ.comp (simplexFace n i)) := by
-  rfl
+  apply (singularSimplexContinuousMapEquiv (TopCat.of X) _).injective
+  have h := singularSimplexTopCatMap_delta (TopCat.of X) n
+    (simplexIndex X (n + 1) σ) i
+  exact congrArg (fun f ↦ f.hom) h.symm
 
 theorem boundary_simplex (X : Type) [TopologicalSpace X] (n : ℕ)
     (σ : SingularSimplex X (n + 1)) :
@@ -221,24 +224,24 @@ def chainLift (X : Type) [TopologicalSpace X] (n : ℕ)
         (Opposite.op (SimplexCategory.mk n)) ↦
       AddCommGrpCat.ofHom
         (zmultiplesHom ℤ
-          (f ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n)) s)))) :
+          (f (singularSimplexContinuousMapEquiv (TopCat.of X) (.op (SimplexCategory.mk n)) s)))) :
     chains X n ⟶ AddCommGrpCat.of ℤ).hom
 
 @[simp]
 theorem chainLift_simplex (X : Type) [TopologicalSpace X] (n : ℕ)
     (f : SingularSimplex X n → ℤ) (σ : SingularSimplex X n) :
     chainLift X n f (simplexChain X n σ) = f σ := by
-  have h := Sigma.ι_desc
+  have h := Sigma.ι_comp_desc
     (fun s : (TopCat.toSSet.obj (TopCat.of X)).obj
         (Opposite.op (SimplexCategory.mk n)) ↦
       AddCommGrpCat.ofHom
         (zmultiplesHom ℤ
-          (f ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n)) s))))
+          (f (singularSimplexContinuousMapEquiv (TopCat.of X) (.op (SimplexCategory.mk n)) s))))
     (simplexIndex X n σ)
   have he := congrArg (fun g : AddCommGrpCat.of ℤ ⟶ AddCommGrpCat.of ℤ ↦ g.hom 1) h
   change chainLift X n f (simplexChain X n σ) =
     zmultiplesHom ℤ
-      (f ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n))
+      (f (singularSimplexContinuousMapEquiv (TopCat.of X) (.op (SimplexCategory.mk n))
         (simplexIndex X n σ))) 1 at he
   simpa [simplexIndex] using he
 
@@ -256,7 +259,7 @@ theorem chainHom_ext (X : Type) [TopologicalSpace X] (n : ℕ)
       g (((TopCat.toSSet.obj (TopCat.of X)).ιChainComplex
         (R := AddCommGrpCat.of ℤ) s).hom 1)
     simpa [simplexChain, simplexIndex] using
-      h ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n)) s)
+      h (singularSimplexContinuousMapEquiv (TopCat.of X) (.op (SimplexCategory.mk n)) s)
   exact congrArg AddCommGrpCat.Hom.hom hcat
 
 theorem simplex_contractible (n : ℕ) : ContractibleSpace (simplex n) :=

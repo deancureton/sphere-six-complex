@@ -30,7 +30,7 @@ theorem exists_local_branchedLift_of_analyticOrderAt
   obtain ⟨rB, hrB, φB, hφBd, hφBi, hφB0, -, hBeq⟩ :=
     exists_powerChart_of_analyticOrderAt hB hordB hm
   let eB : OpenPartialHomeomorph ℂ ℂ :=
-    TauCeti.DifferentiableOn.toOpenPartialHomeomorph hφBd isOpen_ball hφBi
+    _root_.DifferentiableOn.toOpenPartialHomeomorph hφBd isOpen_ball hφBi
   let Ψ : ℂ → ℂ := φA ^ k
   have hzero_target : 0 ∈ eB.target := by
     simpa [eB] using (show 0 ∈ φB '' ball b rB from

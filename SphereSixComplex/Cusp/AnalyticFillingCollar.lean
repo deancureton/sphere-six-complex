@@ -225,7 +225,7 @@ private noncomputable def partialDiffeomorphOfLocalCovers
     intro y hy
     obtain ⟨x, rfl⟩ := hsource hy
     let s := (hp x).localInverse
-    have hs : ContMDiffAt J I n s (p x) := (hp x).localInverse_contMDiffAt
+    have hs : ContMDiffAt J I n s (p x) := (hp x).contMDiffAt_localInverse
     have hqs : ContMDiffAt J K n (q ∘ s) (p x) :=
       (hq x).contMDiffAt.comp_of_eq hs (by
         rw [(hp x).localInverse_left_inv (hp x).localInverse_mem_target])
@@ -239,7 +239,7 @@ private noncomputable def partialDiffeomorphOfLocalCovers
     intro y hy
     obtain ⟨x, rfl⟩ := htarget hy
     let s := (hq x).localInverse
-    have hs : ContMDiffAt K I n s (q x) := (hq x).localInverse_contMDiffAt
+    have hs : ContMDiffAt K I n s (q x) := (hq x).contMDiffAt_localInverse
     have hps : ContMDiffAt K J n (p ∘ s) (q x) :=
       (hp x).contMDiffAt.comp_of_eq hs (by
         rw [(hq x).localInverse_left_inv (hq x).localInverse_mem_target])
@@ -856,11 +856,8 @@ public theorem additiveCuspCoverToGlobal_isLocalDiffeomorph
   have h := IsLocalDiffeomorphAt.comp (modelWithCornersSelf ℂ ComplexModel)
     A.CentralFamily hp (d.isLocalDiffeomorph (additiveCuspCoverToGlobal W p))
   convert h using 1
-  · change A.centralFamilyComplexCharts = cComplex
-    unfold AnalyticData.centralFamilyComplexCharts globalDeckComplexCharts
-    rfl
-  · funext x
-    rfl
+  funext x
+  rfl
 
 /-- The actual cusp correspondence as an ambient complex partial diffeomorphism. -/
 public noncomputable def actualPuncturedCuspCollarPartialDiffeomorph

@@ -31,11 +31,11 @@ private theorem localInverse_zero (h : HasExactHolomorphicBranchAt f center valu
     h.uniformizer_isLocalDiffeomorph.localInverse_mem_target
   simpa [h.uniformizer_center] using hleft
 
-private theorem localInverse_mdifferentiableAt_zero
+private theorem mdifferentiableAt_localInverse_zero
     (h : HasExactHolomorphicBranchAt f center value order) :
     MDiffAt h.uniformizer_isLocalDiffeomorph.localInverse 0 := by
   simpa [h.uniformizer_center] using
-    h.uniformizer_isLocalDiffeomorph.localInverse_mdifferentiableAt (by simp)
+    h.uniformizer_isLocalDiffeomorph.mdifferentiableAt_localInverse (by simp)
 
 theorem complexUnit_zero_ne (h : HasExactHolomorphicBranchAt f center value order) :
     h.complexUnit 0 ≠ 0 := by
@@ -43,7 +43,7 @@ theorem complexUnit_zero_ne (h : HasExactHolomorphicBranchAt f center value orde
 
 theorem complexGerm_factorization (h : HasExactHolomorphicBranchAt f center value order) :
     ∀ᶠ w in 𝓝 0, h.complexGerm w = w ^ order * h.complexUnit w := by
-  have hinv := h.localInverse_mdifferentiableAt_zero
+  have hinv := h.mdifferentiableAt_localInverse_zero
   have hinvT : Tendsto h.uniformizer_isLocalDiffeomorph.localInverse
       (𝓝 0) (𝓝 center) := by
     simpa only [ContinuousAt, h.localInverse_zero] using hinv.continuousAt
@@ -60,7 +60,7 @@ theorem complexGerm_factorization (h : HasExactHolomorphicBranchAt f center valu
 theorem complexGerm_analyticAt (h : HasExactHolomorphicBranchAt f center value order)
     (hf : MDiff f) : AnalyticAt ℂ h.complexGerm 0 := by
   have hinvOn :=
-    h.uniformizer_isLocalDiffeomorph.localInverse_contMDiffOn.mdifferentiableOn (by simp)
+    h.uniformizer_isLocalDiffeomorph.contMDiffOn_localInverse.mdifferentiableOn (by simp)
   have hdiff : DifferentiableOn ℂ h.complexGerm
       h.uniformizer_isLocalDiffeomorph.localInverse.source := by
     intro w hw
@@ -82,7 +82,7 @@ holomorphicity of `f` plus the factorization makes the pulled unit holomorphic: 
 quotient `complexGerm / z^order`, and continuity removes the singularity. -/
 theorem complexUnit_analyticAt (h : HasExactHolomorphicBranchAt f center value order)
     (hf : MDiff f) : AnalyticAt ℂ h.complexUnit 0 := by
-  have hinv := h.localInverse_mdifferentiableAt_zero
+  have hinv := h.mdifferentiableAt_localInverse_zero
   have hunitAt : MDiffAt h.unit (h.uniformizer_isLocalDiffeomorph.localInverse 0) := by
     rw [h.localInverse_zero]
     exact h.unit_holomorphic

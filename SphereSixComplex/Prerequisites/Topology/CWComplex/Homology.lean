@@ -4,6 +4,7 @@ public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.StarGluing
 public import Mathlib.Topology.CWComplex.Classical.Finite
 public import Mathlib.Algebra.Homology.HomologySequenceLemmas
 public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
+public import Mathlib.CategoryTheory.Abelian.Exact
 
 /-!
 # Classical integral cellular homology

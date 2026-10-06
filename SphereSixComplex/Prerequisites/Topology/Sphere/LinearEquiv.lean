@@ -1,6 +1,7 @@
 module
 
 public import Mathlib.Analysis.Complex.Circle
+public import Mathlib.Topology.Algebra.Module.Equiv.Pi
 
 /-! # Unit spheres under continuous linear equivalences -/
 

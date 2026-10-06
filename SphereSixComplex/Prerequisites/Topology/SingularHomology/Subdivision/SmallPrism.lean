@@ -51,7 +51,7 @@ public theorem iota_coverSmallAffinePrismComponent
     (coverSmallSingularSubcomplex X U : SSet).ιChainComplex x ≫
         coverSmallAffinePrismComponent X U n =
       coverSmallAffinePrismSimplexChain X U n x := by
-  apply Sigma.ι_desc
+  apply Sigma.ι_comp_desc
 
 /-- The small prism on a generator agrees with the full prism after inclusion. -/
 public theorem coverSmallAffinePrismSimplexChain_comp_inclusion

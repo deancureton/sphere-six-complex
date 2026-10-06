@@ -411,19 +411,15 @@ public theorem exists_positionL1_bound_a2TriangleDilation
     apply abs_le.2
     cases upper
     · norm_num [a2Barycentric] at h0 h1 h2
-      change -eta < y 1 - (v 1 : ℝ) at h2
       constructor <;> dsimp [T] <;> linarith
     · norm_num [a2Barycentric] at h0 h1 h2
-      change -eta < (y 0 - (v 0 : ℝ)) + (y 1 - (v 1 : ℝ)) - 1 at h2
       constructor <;> dsimp [T] <;> linarith
   have hdx1 : |y 1 - (v 1 : ℝ)| ≤ T := by
     apply abs_le.2
     cases upper
     · norm_num [a2Barycentric] at h0 h1 h2
-      change -eta < y 1 - (v 1 : ℝ) at h2
       constructor <;> dsimp [T] <;> linarith
     · norm_num [a2Barycentric] at h0 h1 h2
-      change -eta < (y 0 - (v 0 : ℝ)) + (y 1 - (v 1 : ℝ)) - 1 at h2
       constructor <;> dsimp [T] <;> linarith
   have hy0 : |y 0| ≤ |(v 0 : ℝ)| + T := by
     calc

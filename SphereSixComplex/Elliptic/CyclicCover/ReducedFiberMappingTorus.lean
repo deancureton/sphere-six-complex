@@ -278,13 +278,15 @@ private theorem integralMatrix_rhoLambda_gOne_forGammaNormalForm :
     LinearMap.toMatrix' (rhoLambda g₁).toLinearMap = A₁ := by
   ext i j
   rw [LinearMap.toMatrix'_apply]
-  convert congrFun (rhoLambda_g₁_apply (Pi.single j 1)) i using 1 <;> simp
+  convert congrFun (rhoLambda_g₁_apply (Pi.single j 1)) i using 1
+  simp
 
 private theorem integralMatrix_rhoLambda_gTwo_forGammaNormalForm :
     LinearMap.toMatrix' (rhoLambda g₂).toLinearMap = A₂ := by
   ext i j
   rw [LinearMap.toMatrix'_apply]
-  convert congrFun (rhoLambda_g₂_apply (Pi.single j 1)) i using 1 <;> simp
+  convert congrFun (rhoLambda_g₂_apply (Pi.single j 1)) i using 1
+  simp
 
 public theorem rhoLambdaReal_gOne_explicit (u : RealPeriods) :
     rhoLambdaReal g₁ u =

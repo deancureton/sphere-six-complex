@@ -228,7 +228,7 @@ public theorem familyTranslationMap_continuousAt_of_section
     projection (parameterMap F)
   let loc := (hprojection p).localInverse
   have hlocal : ContinuousAt loc (π p) :=
-    (hprojection p).localInverse_contMDiffAt.continuousAt
+    (hprojection p).contMDiffAt_localInverse.continuousAt
   have hlocalp : loc (π p) = p :=
     (hprojection p).localInverse_left_inv
       (hprojection p).localInverse_mem_target

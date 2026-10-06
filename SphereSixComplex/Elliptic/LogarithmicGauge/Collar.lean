@@ -83,7 +83,7 @@ public theorem familyTranslationMap_contMDiffAt_of_section
         (modelWithCornersSelf ℂ ComplexTwoSpace) ω s p.1 := by
       simpa only [familyTotalSpaceBase_mk] using hs
     have hlocal : ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω loc (π p) :=
-      (hprojection p).localInverse_contMDiffAt
+      (hprojection p).contMDiffAt_localInverse
     have hlocalp : loc (π p) = p :=
       (hprojection p).localInverse_left_inv (hprojection p).localInverse_mem_target
     have htranslation : ContMDiffAt globalDeckTotalModel globalDeckTotalModel ω

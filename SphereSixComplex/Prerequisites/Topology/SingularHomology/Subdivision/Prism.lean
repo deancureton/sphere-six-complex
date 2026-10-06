@@ -181,7 +181,7 @@ public noncomputable def standardTopologicalSimplexIdentitySimplex (n : ℕ) :
     (TopCat.toSSet.obj
       (TopCat.of (stdSimplex ℝ (Fin (n + 1))))).obj
         (Opposite.op (SimplexCategory.mk n)) :=
-  (TopCat.toSSetObjEquiv _ _).symm (ContinuousMap.id _)
+  (singularSimplexContinuousMapEquiv _ _).symm (ContinuousMap.id _)
 
 /-- Mapping the universal identity simplex along the map represented by a singular simplex
 recovers that singular simplex. -/
@@ -192,7 +192,7 @@ public theorem standardTopologicalSimplexIdentitySimplex_map
       (Opposite.op (SimplexCategory.mk n))) :
     (TopCat.toSSet.map (singularSimplexTopCatMap X n x)).app _
         (standardTopologicalSimplexIdentitySimplex n) = x := by
-  apply (TopCat.toSSetObjEquiv _ _).injective
+  apply (singularSimplexContinuousMapEquiv _ _).injective
   apply ContinuousMap.ext
   intro w
   rfl
@@ -307,15 +307,15 @@ public theorem affineSubdivisionSingularSimplexChain_zero
   rw [iota_affineFlagChainComponent]
   rw [SSet.ι_chainComplexMap_f]
   congr 1
-  apply (TopCat.toSSetObjEquiv _ _).injective
+  apply (singularSimplexContinuousMapEquiv _ _).injective
   apply ContinuousMap.ext
   intro w
   rw [toSSetObjEquiv_map_apply]
-  change X.toSSetObjEquiv _ x
+  change singularSimplexContinuousMapEquiv X _ x
       (affineFlagContinuousMap 0 0 (permutationMaximalFlagSimplex 1) w) =
-    X.toSSetObjEquiv _ x w
-  rw [Subsingleton.elim
-    (affineFlagContinuousMap 0 0 (permutationMaximalFlagSimplex 1) w) w]
+    singularSimplexContinuousMapEquiv X _ x w
+  congr 1
+  exact (finiteSimplexHomeomorph (Fin 1)).symm.injective (Subsingleton.elim _ _)
 
 /-- The universal affine-subdivision discrepancy vanishes in degree zero. -/
 @[simp]
@@ -398,7 +398,7 @@ public theorem iota_universalAffinePrismComponent
       p ≫ (SSet.chainComplexMap
         (TopCat.toSSet.map (singularSimplexTopCatMap X n x))
         (AddCommGrpCat.of ℤ)).f (n + 1) := by
-  apply Sigma.ι_desc
+  apply Sigma.ι_comp_desc
 
 /-- The raw sum of the already constructed prisms over the faces of a standard simplex. -/
 public noncomputable def standardAffinePrismFaceChain

@@ -75,7 +75,7 @@ public theorem iota_coverSmallAffineSubdivisionComponent
     (coverSmallSingularSubcomplex X U : SSet).ιChainComplex x ≫
         coverSmallAffineSubdivisionComponent X U n =
       coverSmallAffineSubdivisionSimplexChain X U n x := by
-  apply Sigma.ι_desc
+  apply Sigma.ι_comp_desc
 
 /-- Subdivision of a selected cover-small generator agrees with full subdivision after
 inclusion. -/

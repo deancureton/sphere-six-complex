@@ -42,7 +42,7 @@ public theorem chart_mem_boundary (c : OpenTopologicalCollar X B) (p : B × Topo
 
 public def pushParameter (s a : unitInterval) (t : TopologicalCollarParameter) : TopologicalCollarParameter :=
   ⟨max (t : ℝ) ((s : ℝ) * a / 2), t.2.1.trans (le_max_left _ _),
-    max_lt t.2.2 (by have := mul_le_one₀ s.2.2 a.2.1 a.2.2; linarith)⟩
+    max_lt t.2.2 (by have := mul_le_mul_of_nonneg_right s.2.2 a.2.1; nlinarith [a.2.2])⟩
 
 public theorem continuous_pushParameter :
     Continuous (fun p : (unitInterval × unitInterval) × TopologicalCollarParameter ↦

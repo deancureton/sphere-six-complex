@@ -524,7 +524,7 @@ def chainLiftTo (X : Type) [TopologicalSpace X] (n : ℕ) (A : Type)
         (Opposite.op (SimplexCategory.mk n)) ↦
       AddCommGrpCat.ofHom
         (zmultiplesHom A
-          (f ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n)) s)))) :
+          (f (singularSimplexContinuousMapEquiv (TopCat.of X) (.op (SimplexCategory.mk n)) s)))) :
     chains X n ⟶ AddCommGrpCat.of A).hom
 
 @[simp]
@@ -532,17 +532,17 @@ theorem chainLiftTo_simplex (X : Type) [TopologicalSpace X] (n : ℕ)
     (A : Type) [AddCommGroup A] (f : SingularSimplex X n → A)
     (s : SingularSimplex X n) :
     chainLiftTo X n A f (simplexChain X n s) = f s := by
-  have h := Sigma.ι_desc
+  have h := Sigma.ι_comp_desc
     (fun t : (TopCat.toSSet.obj (TopCat.of X)).obj
         (Opposite.op (SimplexCategory.mk n)) ↦
       AddCommGrpCat.ofHom
         (zmultiplesHom A
-          (f ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n)) t))))
+          (f (singularSimplexContinuousMapEquiv (TopCat.of X) (.op (SimplexCategory.mk n)) t))))
     (simplexIndex X n s)
   have he := congrArg (fun g : AddCommGrpCat.of ℤ ⟶ AddCommGrpCat.of A ↦ g.hom 1) h
   change chainLiftTo X n A f (simplexChain X n s) =
     zmultiplesHom A
-      (f ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n))
+      (f (singularSimplexContinuousMapEquiv (TopCat.of X) (.op (SimplexCategory.mk n))
         (simplexIndex X n s))) 1 at he
   simpa [simplexIndex] using he
 
@@ -560,7 +560,7 @@ theorem chainHomTo_ext (X : Type) [TopologicalSpace X] (n : ℕ)
       g (((TopCat.toSSet.obj (TopCat.of X)).ιChainComplex
         (R := AddCommGrpCat.of ℤ) s).hom 1)
     simpa [simplexChain, simplexIndex] using
-      h ((TopCat.of X).toSSetObjEquiv (.op (SimplexCategory.mk n)) s)
+      h (singularSimplexContinuousMapEquiv (TopCat.of X) (.op (SimplexCategory.mk n)) s)
   exact congrArg AddCommGrpCat.Hom.hom hcat
 
 def basedLoop {X : Type} [TopologicalSpace X] {b x y : X}

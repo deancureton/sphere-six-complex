@@ -1,5 +1,7 @@
 module
 
+public import Mathlib.Analysis.Convex.Contractible
+
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.BranchedMaps.GlobalBranch
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.BranchedMaps.GlobalBranch
 public import Mathlib.Analysis.Complex.UpperHalfPlane.Manifold

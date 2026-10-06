@@ -7,6 +7,7 @@ module
 
 public import SphereSixComplex.Prerequisites.Geometry.Gluing.Atlas
 public import Mathlib.Geometry.Manifold.ContMDiff.Atlas
+public import Mathlib.Geometry.Manifold.ContMDiff.Basic
 
 /-!
 # Cross-piece compatibility for gluing atlases
@@ -209,10 +210,10 @@ public theorem mem_contDiffGroupoid_of_contMDiffOn {Φ : OpenPartialHomeomorph M
     rw [IsManifold.mem_maximalAtlas_iff_contMDiffOn]
     constructor
     · have hcomp : ContMDiffOn I I n (c' ∘ Φ) (Φ.trans c').source :=
-        hc'M.comp (h.mono (fun x hx => hx.1)) (fun x hx => hx.2)
+        hc'M.comp' h
       simpa [OpenPartialHomeomorph.coe_trans] using hcomp
     · have hcomp : ContMDiffOn I I n (Φ.symm ∘ c'.symm) (Φ.trans c').target :=
-        h'.comp (hc'S.mono (fun x hx => hx.1)) (fun x hx => hx.2)
+        h'.comp' hc'S
       simpa [OpenPartialHomeomorph.coe_trans_symm] using hcomp
   have := StructureGroupoid.compatible_of_mem_maximalAtlas
     (IsManifold.subset_maximalAtlas (I := I) (n := n) hc) hΨ

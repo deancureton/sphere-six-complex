@@ -113,8 +113,7 @@ public theorem coe_fuchsianSLAction (A : SL2R) (z : UpperHalfPlane) :
   change (((Matrix.SpecialLinearGroup.mapGL ℝ A) • z : UpperHalfPlane) : ℂ) = _
   rw [UpperHalfPlane.coe_smul_of_det_pos]
   · simp [UpperHalfPlane.num, UpperHalfPlane.denom,
-      Matrix.SpecialLinearGroup.mapGL_coe_matrix,
-      Matrix.SpecialLinearGroup.map_apply_coe]
+      Matrix.SpecialLinearGroup.mapGL_coe_matrix]
   · simp [Matrix.SpecialLinearGroup.det_mapGL]
 
 /-- The distinguished lift entries of a triangle-group element. -/

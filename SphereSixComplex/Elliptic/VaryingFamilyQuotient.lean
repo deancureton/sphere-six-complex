@@ -220,7 +220,7 @@ public theorem familyTranslationMap_contMDiff_of_projection_isLocalDiffeomorph
       projection (parameterMap F)
     let loc := (hprojection p).localInverse
     have hlocal : ContMDiffAt globalDeckTotalModel globalDeckTotalModel n loc (π p) :=
-      (hprojection p).localInverse_contMDiffAt
+      (hprojection p).contMDiffAt_localInverse
     have hlocalp : loc (π p) = p :=
       (hprojection p).localInverse_left_inv (hprojection p).localInverse_mem_target
     have hcover : ContMDiffAt globalDeckTotalModel globalDeckTotalModel n

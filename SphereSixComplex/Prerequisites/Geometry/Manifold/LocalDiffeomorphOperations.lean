@@ -199,7 +199,7 @@ public noncomputable def partialDiffeomorphOfOpenEmbedding
           IsOpenEmbedding.toOpenPartialHomeomorph_right_inv f hopen
             ⟨L y, (hlocal x).localInverse_right_inv hy⟩
         _ = f (L y) := ((hlocal x).localInverse_right_inv hy).symm
-    exact (hlocal x).localInverse_contMDiffAt.congr_of_eventuallyEq hevent
+    exact (hlocal x).contMDiffAt_localInverse.congr_of_eventuallyEq hevent
       |>.contMDiffWithinAt
 
 @[simp]

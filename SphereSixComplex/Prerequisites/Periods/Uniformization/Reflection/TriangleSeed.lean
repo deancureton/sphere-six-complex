@@ -394,7 +394,7 @@ theorem sourceScalarOpenChamberMap_differentiableOn
     (cuspExponential_differentiable _).differentiableOn
   have hInv : DifferentiableOn ℂ
       (Function.invFunOn S.map (ball (0 : ℂ) 1)) sourceBoundedChamber := by
-    have h := TauCeti.DifferentiableOn.invFunOn
+    have h := DifferentiableOn.invFunOn
       S.differentiableOn isOpen_ball S.bijOn.injOn
     rwa [S.bijOn.image_eq] at h
   have hmiddle := hInv.comp hexp (by

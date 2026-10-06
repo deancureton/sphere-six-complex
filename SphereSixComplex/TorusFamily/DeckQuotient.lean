@@ -53,7 +53,7 @@ public theorem familyDeckMap_contMDiff_of_projection_isLocalDiffeomorph
       projection (parameterMap F)
     let s := (hprojection p).localInverse
     have hs : ContMDiffAt globalDeckTotalModel globalDeckTotalModel n s (π p) :=
-      (hprojection p).localInverse_contMDiffAt
+      (hprojection p).contMDiffAt_localInverse
     have hsp : s (π p) = p :=
       (hprojection p).localInverse_left_inv (hprojection p).localInverse_mem_target
     have hdeck : ContMDiffAt globalDeckTotalModel globalDeckTotalModel n

@@ -1,0 +1,11 @@
+name = "VanKampen"
+version = "0.1.0"
+defaultTargets = ["VanKampen"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "6b7abb3c7686292736be2955bd3eb9ebf63b456a"
+
+[[lean_lib]]
+name = "VanKampen"

@@ -65,8 +65,7 @@ axiom SphereSixComplex.IntegralCohomology.universal_coefficients : ∀ (X : Type
       0 < n →
         Nonempty
           (SphereSixComplex.IntegralSingularCohomology n X ≃+
-            CategoryTheory.Abelian.Ext (ModuleCat.of ℤ (SphereSixComplex.IntegralSingularHomology (n - 1) X))
-                (ModuleCat.of ℤ ℤ) 1 ×
+            CategoryTheory.Abelian.Ext (↧(SphereSixComplex.IntegralSingularHomology (n - 1) X)) (↧ℤ) 1 ×
               (SphereSixComplex.IntegralSingularHomology n X →+ ℤ))
 axiom SphereSixComplex.SmoothManifold.finiteCWModel : (E X : Type) →
   [inst : NormedAddCommGroup E] →

@@ -140,11 +140,11 @@ theorem mem_filledHull_image_iff
   · intro hx
     rw [mem_filledHull_iff]
     rw [← hforward]
-    exact e.lipschitz.isBounded_image (mem_filledHull_iff.mp hx)
+    exact e.lipschitzWith.isBounded_image (mem_filledHull_iff.mp hx)
   · intro hx
     rw [mem_filledHull_iff]
     rw [← hbackward]
-    exact e.symm.lipschitz.isBounded_image (mem_filledHull_iff.mp hx)
+    exact e.symm.lipschitzWith.isBounded_image (mem_filledHull_iff.mp hx)
 
 /-- The plane-separation hypothesis consumed by Tau Ceti's Carathéodory theorem, on `ℂ`. -/
 theorem isJordanCurve_subset_closure_filledHull_diff_complex

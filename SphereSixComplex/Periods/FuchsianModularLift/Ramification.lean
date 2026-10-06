@@ -38,7 +38,7 @@ lemma deriv_ne_zero_of_isLocalDiffeomorphAt
   have huDiff : DifferentiableAt ℂ (u ∘ UpperHalfPlane.ofComplex) c :=
     UpperHalfPlane.mdifferentiableAt_iff.mp (hu.mdifferentiableAt (by simp))
   let v : ℂ → UpperHalfPlane := hu.localInverse
-  have hvMD : MDiffAt v (u c) := hu.localInverse_mdifferentiableAt (by simp)
+  have hvMD : MDiffAt v (u c) := hu.mdifferentiableAt_localInverse (by simp)
   have hvMD' : MDiffAt (fun w ↦ (v w : ℂ)) (u c) :=
     UpperHalfPlane.mdifferentiable_coe.mdifferentiableAt.comp (u c) hvMD
   have hvDiff : DifferentiableAt ℂ (fun w ↦ (v w : ℂ)) (u c) :=

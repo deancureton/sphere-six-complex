@@ -47,10 +47,12 @@ def strip_comments(source: str) -> str:
 
 def sources() -> list[str]:
     found = ["ChallengeDefs.lean", "ChallengeAxioms.lean", "Challenge.lean", "Solution.lean"]
-    for dirpath, _, filenames in os.walk(os.path.join(ROOT, "SphereSixComplex")):
-        for name in sorted(filenames):
-            if name.endswith(".lean"):
-                found.append(os.path.relpath(os.path.join(dirpath, name), ROOT))
+    for source_dir in ("SphereSixComplex", "vendor"):
+        for dirpath, subdirs, filenames in os.walk(os.path.join(ROOT, source_dir)):
+            subdirs[:] = [name for name in subdirs if not name.startswith(".")]
+            for name in sorted(filenames):
+                if name.endswith(".lean") and name != "lakefile.lean":
+                    found.append(os.path.relpath(os.path.join(dirpath, name), ROOT))
     return sorted(found)
 
 

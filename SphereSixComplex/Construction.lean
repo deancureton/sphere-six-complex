@@ -143,7 +143,7 @@ public import SphereSixComplex.Regular.Cover.MappingTorusUniversalCover
 public import SphereSixComplex.FundamentalGroup.AffineTransport
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.ChainModel
 public import SphereSixComplex.Cusp.Wang.HomologyBases
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.VanKampen
+public import VanKampen
 public import SphereSixComplex.FundamentalGroup.Geometry
 public import SphereSixComplex.Toric.Boundary.DeckAttachment
 public import SphereSixComplex.Toric.Boundary.PhaseCancellation

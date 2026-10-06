@@ -1,5 +1,7 @@
 module
 
+public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
+
 public import Mathlib.MeasureTheory.Integral.CircleIntegral
 
 public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.TwicePuncturedCover

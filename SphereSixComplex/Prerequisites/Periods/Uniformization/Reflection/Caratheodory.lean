@@ -24,7 +24,8 @@ theorem sourceBoundedChamber_isPreconnectedApproachAt
     TauCeti.IsPreconnectedApproachAt sourceBoundedChamber q := by
   by_cases hq0 : q = 0
   · subst q
-    exact sourceBoundedChamber_isPreconnectedApproachAt_zero
+    exact TauCeti.isPreconnectedApproachAt_def.mpr
+      sourceBoundedChamber_isPreconnectedApproachAt_zero
   rw [frontier_sourceBoundedChamber_eq_cuspPolar_boundary] at hq
   obtain ⟨⟨x, t⟩, hp, rfl⟩ := hq
   have hp' := (mem_cuspRectangleBoundary_iff
@@ -72,9 +73,8 @@ theorem exists_sourceChamber_caratheodoryMap :
       InjOn g (closedBall 0 1) := by
   obtain ⟨g, hgc, hgd, hgbij⟩ :=
     TauCeti.exists_continuousOn_closedBall_bijOn_ball_of_isJordanCurve_frontier
-      sourceBoundedChamber_isOpen sourceBoundedChamber_isSimplyConnected
+      sourceBoundedChamber_isOpen sourceBoundedChamber_isSimplyConnected.isPathConnected.isConnected
       sourceBoundedChamber_isBounded sourceBoundedChamber_frontier_isJordanCurve
-      (fun _ hJ ↦ isJordanCurve_subset_closure_filledHull_diff_complex hJ)
   have hloc : ∀ a ∈ frontier (g '' ball 0 1),
       TauCeti.IsPreconnectedApproachAt (g '' ball 0 1) a := by
     intro a ha

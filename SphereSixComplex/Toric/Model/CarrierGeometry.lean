@@ -7,6 +7,7 @@ module
 
 public import SphereSixComplex.Toric.Model.Carrier
 import Mathlib.Topology.Algebra.IsOpenUnits
+import Mathlib.Topology.Algebra.Group.Units
 import Mathlib.Geometry.Manifold.Algebra.Structures
 
 /-!

@@ -20,6 +20,28 @@ open CategoryTheory CategoryTheory.Limits PartialOrder Simplicial
 
 namespace SphereSixComplex
 
+/-- Finite probability weights expressed as coordinates in the standard simplex. -/
+public noncomputable def finiteSimplexHomeomorph (ι : Type) [Fintype ι] :
+    Convexity.StdSimplex ℝ ι ≃ₜ stdSimplex ℝ ι where
+  toFun w := ⟨w.weights, w.weights_nonneg, w.total_of_fintype⟩
+  invFun w := ⟨Finsupp.equivFunOnFinite.symm w.val, by intro i; exact w.property.1 i,
+    by simpa [Finsupp.sum_fintype] using w.property.2⟩
+  left_inv w := by ext i; rfl
+  right_inv w := by rfl
+  continuous_toFun := ((Convexity.StdSimplex.isEmbedding_toFun_comp_weights ℝ ι).continuous).subtype_mk _
+  continuous_invFun := (Convexity.StdSimplex.isEmbedding_toFun_comp_weights ℝ ι).continuous_iff.mpr
+    continuous_subtype_val
+
+/-- A singular simplex expressed as a continuous map on the coordinate simplex. -/
+public noncomputable def singularSimplexContinuousMapEquiv (X : TopCat) (n : SimplexCategoryᵒᵖ) :
+    (TopCat.toSSet.obj X).obj n ≃ C(stdSimplex ℝ (Fin (n.unop.len + 1)), X) where
+  toFun x := (X.toSSetObjEquiv n x).comp
+    ⟨(finiteSimplexHomeomorph _).symm, (finiteSimplexHomeomorph _).symm.continuous⟩
+  invFun f := (X.toSSetObjEquiv n).symm
+    (f.comp ⟨finiteSimplexHomeomorph _, (finiteSimplexHomeomorph _).continuous⟩)
+  left_inv x := by apply (X.toSSetObjEquiv n).injective; ext w; simp
+  right_inv f := by ext w; simp
+
 /-- The affine combination of a finite family of points in a standard simplex. -/
 public noncomputable def stdSimplexAffineCombination
     {X Y : Type*} [Fintype X] [Fintype Y]
@@ -145,7 +167,7 @@ public theorem nonemptyFiniteChainBarycenter_apply {n : ℕ}
       constructor
       · intro ha
         apply Subtype.ext
-        exact ULift.ext _ _ ha
+        exact ULift.ext ha
       · rintro rfl
         rfl
     rw [hfilter]
@@ -158,7 +180,7 @@ public theorem nonemptyFiniteChainBarycenter_apply {n : ℕ}
       apply Finset.filter_eq_empty_iff.mpr
       intro a _ ha
       apply hi
-      have haup : a.1 = ULift.up i := ULift.ext _ _ ha
+      have haup : a.1 = ULift.up i := ULift.ext ha
       simpa [haup] using a.2
     rw [hfilter]
     simp
@@ -215,7 +237,7 @@ public theorem nonemptyFiniteChainBarycenter_face
         rw [hg a] at hga
         have hadown : a.down = x :=
           Fin.succAbove_right_injective (ULift.up_injective hga)
-        have haeq : a = ULift.up x := ULift.ext _ _ hadown
+        have haeq : a = ULift.up x := ULift.ext hadown
         simpa [haeq] using ha
       · intro hx
         exact ⟨ULift.up x, hx, by simp [hg]⟩
@@ -294,7 +316,7 @@ public noncomputable def affineFlagSingularSimplex (n k : ℕ)
       (Opposite.op (SimplexCategory.mk k))) :
     (TopCat.toSSet.obj (TopCat.of (stdSimplex ℝ (Fin (n + 1))))).obj
       (Opposite.op (SimplexCategory.mk k)) :=
-  (TopCat.toSSetObjEquiv _ _).symm (affineFlagContinuousMap n k F)
+  (singularSimplexContinuousMapEquiv _ _).symm (affineFlagContinuousMap n k F)
 
 /-- Under the continuous-map description of singular simplices, functoriality in the
 topological space is postcomposition. -/
@@ -304,8 +326,8 @@ public theorem toSSetObjEquiv_map_apply
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk k)))
     (w : stdSimplex ℝ (Fin (k + 1))) :
-    Y.toSSetObjEquiv _ ((TopCat.toSSet.map f).app _ x) w =
-      f (X.toSSetObjEquiv _ x w) :=
+    singularSimplexContinuousMapEquiv Y _ ((TopCat.toSSet.map f).app _ x) w =
+      f (singularSimplexContinuousMapEquiv X _ x w) :=
   rfl
 
 /-- Affine flag singular simplices commute with ambient coface inclusions. -/
@@ -317,7 +339,7 @@ public theorem affineFlagSingularSimplex_face
         (affineFlagSingularSimplex n k F) =
       affineFlagSingularSimplex (n + 1) k
         ((SimplexCategory.sd.{0}.map (SimplexCategory.δ p)).app _ F) := by
-  apply (TopCat.toSSetObjEquiv _ _).injective
+  apply (singularSimplexContinuousMapEquiv _ _).injective
   apply ContinuousMap.ext
   intro w
   rw [toSSetObjEquiv_map_apply]
@@ -339,7 +361,7 @@ public theorem affineFlagSingularSimplex_delta
         (affineFlagSingularSimplex n (k + 1) F) =
       affineFlagSingularSimplex n k
         ((SimplexCategory.sd.{0}.obj (SimplexCategory.mk n)).δ i F) := by
-  apply (TopCat.toSSetObjEquiv _ _).injective
+  apply (singularSimplexContinuousMapEquiv _ _).injective
   apply ContinuousMap.ext
   intro w
   change stdSimplexAffineCombination
@@ -370,7 +392,7 @@ public theorem iota_affineFlagChainComponent
         affineFlagChainComponent n k =
       (TopCat.toSSet.obj (TopCat.of (stdSimplex ℝ (Fin (n + 1))))).ιChainComplex
         (affineFlagSingularSimplex n k F) := by
-  apply Sigma.ι_desc
+  apply Sigma.ι_comp_desc
 
 /-- The affine flag realization commutes with the simplicial differentials. -/
 public theorem affineFlagChainComponents_commute (n k : ℕ) :
@@ -547,7 +569,7 @@ public noncomputable def singularSimplexTopCatMap
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n))) :
     TopCat.of (stdSimplex ℝ (Fin (n + 1))) ⟶ X :=
-  TopCat.ofHom (X.toSSetObjEquiv _ x)
+  TopCat.ofHom (singularSimplexContinuousMapEquiv X _ x)
 
 /-- The map represented by a face of a singular simplex is obtained by precomposing with the
 standard topological coface inclusion. -/
@@ -560,6 +582,10 @@ public theorem singularSimplexTopCatMap_delta
         singularSimplexTopCatMap X (n + 1) x =
       singularSimplexTopCatMap X n ((TopCat.toSSet.obj X).δ p x) := by
   ext w
+  change X.toSSetObjEquiv _ x ((finiteSimplexHomeomorph _).symm (stdSimplex.map p.succAbove w)) =
+    X.toSSetObjEquiv _ x (Convexity.StdSimplex.map p.succAbove ((finiteSimplexHomeomorph _).symm w))
+  congr 1
+  ext i
   rfl
 
 /-- Mapping a singular simplex postcomposes its represented topological map. -/
@@ -711,7 +737,7 @@ public theorem iota_affineSingularSubdivisionComponent
     (TopCat.toSSet.obj X).ιChainComplex x ≫
         affineSingularSubdivisionComponent X n =
       affineSubdivisionSingularSimplexChain X n x := by
-  apply Sigma.ι_desc
+  apply Sigma.ι_comp_desc
 
 /-- The degreewise affine singular subdivision operators are natural. -/
 public theorem affineSingularSubdivisionComponent_naturality

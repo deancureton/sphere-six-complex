@@ -1,6 +1,6 @@
 module
 
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.VanKampen
+public import VanKampen
 public import SphereSixComplex.FundamentalGroup.Geometry
 public import SphereSixComplex.Elliptic.Collar.FundamentalDomain
 public import SphereSixComplex.Gluing.Connected

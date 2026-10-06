@@ -26,8 +26,8 @@ public theorem singularSimplex_openCover_lebesgueNumber
     (x : (TopCat.toSSet.obj X).obj
       (Opposite.op (SimplexCategory.mk n))) :
     ∃ δ > 0, ∀ w : stdSimplex ℝ (Fin (n + 1)),
-      ∃ i, Metric.ball w δ ⊆ (X.toSSetObjEquiv _ x) ⁻¹' U i := by
-  let f := X.toSSetObjEquiv (Opposite.op (SimplexCategory.mk n)) x
+      ∃ i, Metric.ball w δ ⊆ (singularSimplexContinuousMapEquiv X _ x) ⁻¹' U i := by
+  let f := singularSimplexContinuousMapEquiv X (Opposite.op (SimplexCategory.mk n)) x
   obtain ⟨δ, hδ, hLeb⟩ := lebesgue_number_lemma_of_metric
     (s := Set.univ) isCompact_univ
     (fun i ↦ (hUopen i).preimage f.continuous) (by

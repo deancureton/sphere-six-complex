@@ -598,9 +598,8 @@ private theorem orderThreeCollarToRegular_isLocalDiffeomorph {r : ℝ}
   have hsub := openSubtypeVal_isLocalDiffeomorph
     (I := globalDeckTotalModel) O
   convert hsub using 1
-  · rfl
-  · funext q
-    exact regularFamilyInclusion_orderThreeCollarToRegular A.periods hproper D q
+  funext q
+  exact regularFamilyInclusion_orderThreeCollarToRegular A.periods hproper D q
 
 private theorem totalSpace_isManifold_analytic :
     letI := A.totalSpaceCharts
@@ -742,9 +741,8 @@ private theorem orderFourCollarToRegular_isLocalDiffeomorph {r : ℝ}
   have hsub := openSubtypeVal_isLocalDiffeomorph
     (I := globalDeckTotalModel) O
   convert hsub using 1
-  · rfl
-  · funext q
-    exact regularFamilyInclusion_orderFourCollarToRegular A.periods hproper D q
+  funext q
+  exact regularFamilyInclusion_orderFourCollarToRegular A.periods hproper D q
 
 public theorem orderFourPuncturedCollarToCentralFamily_isLocalDiffeomorph
     {r : ℝ} (D : OrderFourLinearCollarSourceData

@@ -75,7 +75,7 @@ public theorem cuspOnly_mul_comm {G : Type} [Group G]
       · exact hrho.eq
       · exact hrho.symm.eq
       · rfl
-  have hi := Subgroup.isMulCommutative_closure hgen
+  have hi := Subgroup.isMulCommutative_closure (fun u hu v hv _ ↦ hgen u hu v hv)
   rw [C.generators_generate] at hi
   let := hi
   exact congrArg Subtype.val (mul_comm (⟨x, trivial⟩ : (⊤ : Subgroup G)) ⟨y, trivial⟩)

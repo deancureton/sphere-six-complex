@@ -1,5 +1,7 @@
 module
 
+public import Mathlib.Topology.LocalAtTarget
+
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.QuotientAssembly
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.QuotientAssembly
 public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.ArithmeticBounds

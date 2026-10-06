@@ -8,6 +8,7 @@ module
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Basic
 public import Mathlib.Topology.Compactification.OnePoint.Sphere
 public import Mathlib.Topology.CWComplex.Classical.Finite
+public import Mathlib.Analysis.Normed.Module.Ball.Homeomorph
 
 /-!
 # A finite classical CW model for the six-sphere

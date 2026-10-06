@@ -60,8 +60,8 @@ public theorem mappingCylinderFreeEffectiveTime_nonneg (s t : unitInterval) :
 
 public theorem mappingCylinderFreeEffectiveTime_le_one (s t : unitInterval) :
     mappingCylinderFreeEffectiveTime s t ≤ 1 := by
-  exact mul_le_one₀ s.2.2 (mappingCylinderFreeCutoff_nonneg t)
-    (mappingCylinderFreeCutoff_le_one t)
+  exact (mul_le_mul_of_nonneg_right s.2.2 (mappingCylinderFreeCutoff_nonneg t)).trans
+    (by simpa using mappingCylinderFreeCutoff_le_one t)
 
 /-- Cylinder coordinate on the bottom branch of the L-shaped square retraction. -/
 public def mappingCylinderFreeBottomTime (s t : unitInterval) : unitInterval :=
