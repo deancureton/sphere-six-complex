@@ -512,18 +512,13 @@ second homology.
 The underlying standard smooth manifold of $`X` is diffeomorphic to $`S^6`.
 :::
 
-:::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "SphereSixComplex.SixSphere.has_spherical_generator_of_homology, SphereSixComplex.SmoothSixManifold.hasCWType, SphereSixComplex.CWType.homological_whitehead_property, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyEquiv")
-The recognition argument uses the retained higher Hurewicz and homological Whitehead theorems,
-CW type obtained from the general finite-CW-model theorem for compact smooth manifolds, and smooth
-Poincaré classification in dimension six. The first three steps produce a homotopy sphere; the
-last gives a diffeomorphism for its specified smooth atlas. These are general classical results,
-not assumptions about the complex-geometric construction.
-:::
-
-:::theorem "hurewicz-whitehead-reduction" (parent := "smooth-recognition") (lean := "SphereSixComplex.HasTopDimensionalSphericalGenerator, SphereSixComplex.homotopyEquivSixSphere_of_sphericalGenerator_of_classicalCWWhitehead, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyEquiv")
-Hurewicz supplies a comparison map $`S^6 \to X` inducing an isomorphism on sixth homology. The
-proved degree-zero calculation and vanishing in the other degrees make it an integral-homology
-equivalence; simply connected homological Whitehead then makes that same map a homotopy equivalence.
+:::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "DifferentialGeometry.Topology.nonempty_homeomorph_sphere_of_homology, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyEquiv")
+A global fundamental class generates local top homology, which makes the punctured
+manifold acyclic. The complement of two chart disks is simply connected and has vanishing
+relative homology. The proved h-cobordism theorem and twisted-sphere assembly give a
+homeomorphism to the sphere, hence a homotopy equivalence. Smooth Poincaré classification
+in dimension six is the sole retained classical assumption and supplies a diffeomorphism
+for the specified smooth atlas.
 :::
 
 :::proof "smooth-recognition"

@@ -1,3 +1,914 @@
+--- a/DifferentialGeometry/Analysis/Calculus/Derivative/AlmostEverywhereLipschitz.lean
++++ b/DifferentialGeometry/Analysis/Calculus/Derivative/AlmostEverywhereLipschitz.lean
+@@ -1,3 +1,10 @@
+-import Mathlib.Analysis.Calculus.Rademacher
+-import Mathlib.MeasureTheory.Integral.IntervalIntegral.AbsolutelyContinuousFun
+-import Mathlib.Analysis.Normed.Module.HahnBanach
++module
++
++public import Mathlib.Analysis.Calculus.ContDiff.Operations
++public import Mathlib.Analysis.Calculus.Deriv.Comp
++public import Mathlib.Analysis.Calculus.Deriv.Pow
++public import Mathlib.Analysis.Calculus.Rademacher
++public import Mathlib.MeasureTheory.Integral.IntervalIntegral.AbsolutelyContinuousFun
++public import Mathlib.Analysis.Normed.Module.HahnBanach
++
++@[expose] public section
+@@ -15 +22 @@
+-private theorem dual_affine_increment_le_on_of_ae_fderiv
++theorem portPrivate_e6769324_dual_affine_increment_le_on_of_ae_fderiv
+@@ -119 +126 @@
+-  have h := dual_affine_increment_le_on_of_ae_fderiv hs hconv hf p B hD ell hell (b - a) a ha
++  have h := portPrivate_e6769324_dual_affine_increment_le_on_of_ae_fderiv hs hconv hf p B hD ell hell (b - a) a ha
+--- a/DifferentialGeometry/Analysis/Calculus/Derivative/ParametricIntervalIntegral.lean
++++ b/DifferentialGeometry/Analysis/Calculus/Derivative/ParametricIntervalIntegral.lean
+@@ -1,10 +1,14 @@
+-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+-import Mathlib.MeasureTheory.Integral.Prod
+-import Mathlib.MeasureTheory.Function.LocallyIntegrable
+-import Mathlib.MeasureTheory.Integral.DominatedConvergence
+-import Mathlib.Analysis.Calculus.ParametricIntegral
+-import Mathlib.Analysis.Calculus.ContDiff.Basic
+-import Mathlib.Analysis.Calculus.ContDiff.Comp
+-import Mathlib.Topology.Order.ProjIcc
+-import Mathlib.Tactic.Linarith
++module
++
++public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
++public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
++public import Mathlib.MeasureTheory.Integral.Prod
++public import Mathlib.MeasureTheory.Function.LocallyIntegrable
++public import Mathlib.MeasureTheory.Integral.DominatedConvergence
++public import Mathlib.Analysis.Calculus.ParametricIntegral
++public import Mathlib.Analysis.Calculus.ContDiff.Basic
++public import Mathlib.Analysis.Calculus.ContDiff.Comp
++public import Mathlib.Topology.Order.ProjIcc
++public import Mathlib.Tactic.Linarith
++
++@[expose] public section
+@@ -25 +29 @@
+-private def inlCLM (E : Type uE) [NormedAddCommGroup E] [NormedSpace ℝ E]
++def portPrivate_799fa192_inlCLM (E : Type uE) [NormedAddCommGroup E] [NormedSpace ℝ E]
+@@ -31 +35 @@
+-private theorem fderiv_partial_eq_comp {f : E → ℝ → F} (p : E × ℝ)
++theorem portPrivate_799fa192_fderiv_partial_eq_comp {f : E → ℝ → F} (p : E × ℝ)
+@@ -34,2 +38,2 @@
+-      (fderiv ℝ (fun q : E × ℝ => f q.1 q.2) p).comp (inlCLM E ℝ) := by
+-  have hseg : HasFDerivAt (fun y : E => (y, p.2)) (inlCLM E ℝ) p.1 := by
++      (fderiv ℝ (fun q : E × ℝ => f q.1 q.2) p).comp (portPrivate_799fa192_inlCLM E ℝ) := by
++  have hseg : HasFDerivAt (fun y : E => (y, p.2)) (portPrivate_799fa192_inlCLM E ℝ) p.1 := by
+@@ -47 +51 @@
+-private theorem partial_fderiv_contDiffOn {f : E → ℝ → F}
++theorem portPrivate_799fa192_partial_fderiv_contDiffOn {f : E → ℝ → F}
+@@ -56 +60 @@
+-      (fun p : E × ℝ => (fderiv ℝ (fun q : E × ℝ => f q.1 q.2) p).comp (inlCLM E ℝ)) Set.univ := by
++      (fun p : E × ℝ => (fderiv ℝ (fun q : E × ℝ => f q.1 q.2) p).comp (portPrivate_799fa192_inlCLM E ℝ)) Set.univ := by
+@@ -59 +63 @@
+-          { toFun := fun L => L.comp (inlCLM E ℝ)
++          { toFun := fun L => L.comp (portPrivate_799fa192_inlCLM E ℝ)
+@@ -65 +69 @@
+-        (fun L : (E × ℝ) →L[ℝ] F => L.comp (inlCLM E ℝ)) := by
++        (fun L : (E × ℝ) →L[ℝ] F => L.comp (portPrivate_799fa192_inlCLM E ℝ)) := by
+@@ -70 +74 @@
+-  exact fderiv_partial_eq_comp (f := f) p
++  exact portPrivate_799fa192_fderiv_partial_eq_comp (f := f) p
+@@ -75 +79 @@
+-private theorem hasFDerivAt_paramIntervalIntegral (f : E → ℝ → F)
++theorem portPrivate_799fa192_hasFDerivAt_paramIntervalIntegral (f : E → ℝ → F)
+@@ -94 +98 @@
+-      continuousOn_univ.mp (partial_fderiv_contDiffOn hf).continuousOn
++      continuousOn_univ.mp (portPrivate_799fa192_partial_fderiv_contDiffOn hf).continuousOn
+@@ -121 +125 @@
+-  let C : ℝ := ‖(inlCLM E ℝ : E →L[ℝ] E × ℝ)‖ * (M + 1)
++  let C : ℝ := ‖(portPrivate_799fa192_inlCLM E ℝ : E →L[ℝ] E × ℝ)‖ * (M + 1)
+@@ -129,2 +133,2 @@
+-    have hcompnorm : ‖(fderiv ℝ (fun q : E × ℝ => f q.1 q.2) (y, t)).comp (inlCLM E ℝ)‖ ≤
+-        ‖fderiv ℝ (fun q : E × ℝ => f q.1 q.2) (y, t)‖ * ‖(inlCLM E ℝ : E →L[ℝ] E × ℝ)‖ :=
++    have hcompnorm : ‖(fderiv ℝ (fun q : E × ℝ => f q.1 q.2) (y, t)).comp (portPrivate_799fa192_inlCLM E ℝ)‖ ≤
++        ‖fderiv ℝ (fun q : E × ℝ => f q.1 q.2) (y, t)‖ * ‖(portPrivate_799fa192_inlCLM E ℝ : E →L[ℝ] E × ℝ)‖ :=
+@@ -133 +137 @@
+-      ‖F' y t‖ = ‖(fderiv ℝ (fun q : E × ℝ => f q.1 q.2) (y, t)).comp (inlCLM E ℝ)‖ := by
++      ‖F' y t‖ = ‖(fderiv ℝ (fun q : E × ℝ => f q.1 q.2) (y, t)).comp (portPrivate_799fa192_inlCLM E ℝ)‖ := by
+@@ -135 +139 @@
+-        exact fderiv_partial_eq_comp (f := f) (y, t)
++        exact portPrivate_799fa192_fderiv_partial_eq_comp (f := f) (y, t)
+@@ -138 +142 @@
+-      _ ≤ ‖fderiv ℝ (fun q : E × ℝ => f q.1 q.2) (y, t)‖ * ‖(inlCLM E ℝ : E →L[ℝ] E × ℝ)‖ :=
++      _ ≤ ‖fderiv ℝ (fun q : E × ℝ => f q.1 q.2) (y, t)‖ * ‖(portPrivate_799fa192_inlCLM E ℝ : E →L[ℝ] E × ℝ)‖ :=
+@@ -140 +144 @@
+-      _ ≤ M * ‖(inlCLM E ℝ : E →L[ℝ] E × ℝ)‖ := by
++      _ ≤ M * ‖(portPrivate_799fa192_inlCLM E ℝ : E →L[ℝ] E × ℝ)‖ := by
+@@ -142,2 +146,2 @@
+-      _ ≤ ‖(inlCLM E ℝ : E →L[ℝ] E × ℝ)‖ * (M + 1) := by
+-        nlinarith [hM0, norm_nonneg (inlCLM E ℝ : E →L[ℝ] E × ℝ)]
++      _ ≤ ‖(portPrivate_799fa192_inlCLM E ℝ : E →L[ℝ] E × ℝ)‖ * (M + 1) := by
++        nlinarith [hM0, norm_nonneg (portPrivate_799fa192_inlCLM E ℝ : E →L[ℝ] E × ℝ)]
+@@ -164 +168 @@
+-            have h0 : HasFDerivAt (fun y : E => (y, t)) (inlCLM E ℝ) x := by
++            have h0 : HasFDerivAt (fun y : E => (y, t)) (portPrivate_799fa192_inlCLM E ℝ) x := by
+@@ -179 +183 @@
+-private theorem paramInt_tube
++theorem portPrivate_799fa192_paramInt_tube
+@@ -206 +210 @@
+-private theorem paramInt_slice
++theorem portPrivate_799fa192_paramInt_slice
+@@ -216 +220 @@
+-private theorem paramInt_fderiv
++theorem portPrivate_799fa192_paramInt_fderiv
+@@ -250 +254 @@
+-    simpa only [Gp] using paramInt_fderiv G U hU S hS hfG
++    simpa only [Gp] using portPrivate_799fa192_paramInt_fderiv G U hU S hS hfG
+@@ -252 +256 @@
+-  obtain ⟨C, hC⟩ := paramInt_tube Gp U hU a b S hS hSI x₀ hx₀ hGpc
++  obtain ⟨C, hC⟩ := portPrivate_799fa192_paramInt_tube Gp U hU a b S hS hSI x₀ hx₀ hGpc
+@@ -263 +267 @@
+-    exact ((paramInt_slice G U hU S hS hGc x hx).mono
++    exact ((portPrivate_799fa192_paramInt_slice G U hU S hS hGc x hx).mono
+@@ -265,2 +269,2 @@
+-  · exact ((paramInt_slice G U hU S hS hGc x₀ hx₀).mono hSI).intervalIntegrable
+-  · exact ((paramInt_slice Gp U hU S hS hGpc x₀ hx₀).mono
++  · exact ((portPrivate_799fa192_paramInt_slice G U hU S hS hGc x₀ hx₀).mono hSI).intervalIntegrable
++  · exact ((portPrivate_799fa192_paramInt_slice Gp U hU S hS hGpc x₀ hx₀).mono
+@@ -376 +380 @@
+-      exact (hasFDerivAt_paramIntervalIntegral H hH x).continuousAt
++      exact (portPrivate_799fa192_hasFDerivAt_paramIntervalIntegral H hH x).continuousAt
+@@ -384 +388 @@
+-        exact (hasFDerivAt_paramIntervalIntegral H hH x).differentiableAt.differentiableWithinAt
++        exact (portPrivate_799fa192_hasFDerivAt_paramIntervalIntegral H hH x).differentiableAt.differentiableWithinAt
+@@ -390 +394 @@
+-            partial_fderiv_contDiffOn hH
++            portPrivate_799fa192_partial_fderiv_contDiffOn hH
+@@ -397 +401 @@
+-            exact (hasFDerivAt_paramIntervalIntegral H hH x).fderiv
++            exact (portPrivate_799fa192_hasFDerivAt_paramIntervalIntegral H hH x).fderiv
+@@ -414 +418 @@
+-      exact (hasFDerivAt_paramIntervalIntegral f hf x).continuousAt
++      exact (portPrivate_799fa192_hasFDerivAt_paramIntervalIntegral f hf x).continuousAt
+@@ -421 +425 @@
+-        exact (hasFDerivAt_paramIntervalIntegral f hf x).differentiableAt.differentiableWithinAt
++        exact (portPrivate_799fa192_hasFDerivAt_paramIntervalIntegral f hf x).differentiableAt.differentiableWithinAt
+@@ -427 +431 @@
+-            partial_fderiv_contDiffOn hf
++            portPrivate_799fa192_partial_fderiv_contDiffOn hf
+@@ -434 +438 @@
+-            exact (hasFDerivAt_paramIntervalIntegral f hf x).fderiv
++            exact (portPrivate_799fa192_hasFDerivAt_paramIntervalIntegral f hf x).fderiv
+@@ -472 +476 @@
+-private theorem hasDerivWithinAt_unitIntervalIntegral {F G : ℝ → ℝ → ℝ} {s u : ℝ}
++theorem portPrivate_799fa192_hasDerivWithinAt_unitIntervalIntegral {F G : ℝ → ℝ → ℝ} {s u : ℝ}
+@@ -578 +582 @@
+-  have h := hasDerivWithinAt_unitIntervalIntegral
++  have h := portPrivate_799fa192_hasDerivWithinAt_unitIntervalIntegral
+--- a/DifferentialGeometry/Analysis/Calculus/SmoothExtension/Local.lean
++++ b/DifferentialGeometry/Analysis/Calculus/SmoothExtension/Local.lean
+@@ -1,4 +1,8 @@
+-import Mathlib.Analysis.Calculus.BumpFunction.Basic
+-import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
+-import Mathlib.Analysis.Calculus.ContDiff.Basic
+-import Mathlib.Analysis.Calculus.ContDiff.Operations
++module
++
++public import Mathlib.Analysis.Calculus.BumpFunction.Basic
++public import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
++public import Mathlib.Analysis.Calculus.ContDiff.Basic
++public import Mathlib.Analysis.Calculus.ContDiff.Operations
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/Calculus/Taylor.lean
++++ b/DifferentialGeometry/Analysis/Calculus/Taylor.lean
+@@ -1,14 +1,18 @@
+-import DifferentialGeometry.Analysis.Calculus.Derivative.AlmostEverywhereLipschitz
+-import Mathlib.Analysis.Calculus.ContDiff.Defs
+-import Mathlib.Analysis.Calculus.ContDiff.Operations
+-import Mathlib.Analysis.Calculus.FDeriv.Basic
+-import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+-import Mathlib.Analysis.Calculus.MeanValue
+-import Mathlib.Analysis.Calculus.FDeriv.CompCLM
+-import Mathlib.Analysis.Calculus.FDeriv.Mul
+-import Mathlib.Analysis.Calculus.Deriv.CompMul
+-import Mathlib.Analysis.Calculus.Deriv.Shift
+-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+-import Mathlib.MeasureTheory.Integral.IntervalIntegral.ContDiff
+-import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
+-import DifferentialGeometry.Analysis.Calculus.Derivative.ParametricIntervalIntegral
++module
++
++public import DifferentialGeometry.Analysis.Calculus.Derivative.AlmostEverywhereLipschitz
++public import Mathlib.Analysis.Calculus.ContDiff.Defs
++public import Mathlib.Analysis.Calculus.ContDiff.Operations
++public import Mathlib.Analysis.Calculus.FDeriv.Basic
++public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
++public import Mathlib.Analysis.Calculus.MeanValue
++public import Mathlib.Analysis.Calculus.FDeriv.CompCLM
++public import Mathlib.Analysis.Calculus.FDeriv.Mul
++public import Mathlib.Analysis.Calculus.Deriv.CompMul
++public import Mathlib.Analysis.Calculus.Deriv.Shift
++public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
++public import Mathlib.MeasureTheory.Integral.IntervalIntegral.ContDiff
++public import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
++public import DifferentialGeometry.Analysis.Calculus.Derivative.ParametricIntervalIntegral
++
++@[expose] public section
+@@ -26 +30 @@
+-private theorem hasDerivAt_second (g : E → ℝ) (hg : ContDiff ℝ 2 g) (x : E) (t : ℝ) :
++theorem portPrivate_5734ce2d_hasDerivAt_second (g : E → ℝ) (hg : ContDiff ℝ 2 g) (x : E) (t : ℝ) :
+@@ -58 +62 @@
+-private theorem hasDerivAt_first (g : E → ℝ) (hg : ContDiff ℝ 2 g) (x : E) (t : ℝ) :
++theorem portPrivate_5734ce2d_hasDerivAt_first (g : E → ℝ) (hg : ContDiff ℝ 2 g) (x : E) (t : ℝ) :
+@@ -88 +92 @@
+-    simpa [h, h'] using hasDerivAt_first g hg x t
++    simpa [h, h'] using portPrivate_5734ce2d_hasDerivAt_first g hg x t
+@@ -91 +95 @@
+-    simpa [h', h''] using hasDerivAt_second g hg x t
++    simpa [h', h''] using portPrivate_5734ce2d_hasDerivAt_second g hg x t
+--- a/DifferentialGeometry/Analysis/ODE/Flow/C1Regularity/ContDiffOnOne.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/C1Regularity/ContDiffOnOne.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.C1Regularity.JointFrechetDerivative
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.C1Regularity.JointFrechetDerivative
++
++@[expose] public section
+@@ -557 +561 @@
+-private lemma opNorm_coprod_le {F G H : Type*}
++lemma portPrivate_3f231c1a_opNorm_coprod_le {F G H : Type*}
+@@ -682 +686 @@
+-    opNorm_coprod_le _ _
++    portPrivate_3f231c1a_opNorm_coprod_le _ _
+--- a/DifferentialGeometry/Analysis/ODE/Flow/C1Regularity/FrechetDerivative.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/C1Regularity/FrechetDerivative.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.C1Regularity.VariationalSolutionOperator
+-import Mathlib.Analysis.Calculus.MeanValue
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.C1Regularity.VariationalSolutionOperator
++public import Mathlib.Analysis.Calculus.MeanValue
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/Flow/C1Regularity/JointFrechetDerivative.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/C1Regularity/JointFrechetDerivative.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.C1Regularity.FrechetDerivative
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.C1Regularity.FrechetDerivative
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/Flow/C1Regularity/VariationalSolutionOperator.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/C1Regularity/VariationalSolutionOperator.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.Defs
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.Defs
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/Flow/CompactSupport.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/CompactSupport.lean
+@@ -1,5 +1,9 @@
+-import Mathlib.Analysis.Calculus.ContDiff.RCLike
+-import Mathlib.Geometry.Manifold.IntegralCurve.UniformTime
+-import Mathlib.Geometry.Manifold.VectorBundle.ContMDiffSection
+-import DifferentialGeometry.Analysis.ODE.Flow.IntegralCurveTransport
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothDependence.Manifold
++module
++
++public import Mathlib.Analysis.Calculus.ContDiff.RCLike
++public import Mathlib.Geometry.Manifold.IntegralCurve.UniformTime
++public import Mathlib.Geometry.Manifold.VectorBundle.ContMDiffSection
++public import DifferentialGeometry.Analysis.ODE.Flow.IntegralCurveTransport
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothDependence.Manifold
++
++@[expose] public section
+@@ -197 +201 @@
+-private lemma contMDiffAt_globalFlow_step [I.Boundaryless] [IsManifold I ∞ M] [T2Space M]
++lemma portPrivate_c55af3af_contMDiffAt_globalFlow_step [I.Boundaryless] [IsManifold I ∞ M] [T2Space M]
+@@ -258 +262 @@
+-private theorem contMDiffAt_curveAt_slice_nonneg [FiniteDimensional ℝ E]
++theorem portPrivate_c55af3af_contMDiffAt_curveAt_slice_nonneg [FiniteDimensional ℝ E]
+@@ -340 +344 @@
+-      have hstep' := contMDiffAt_globalFlow_step v hv1 hcomplete hε hflow
++      have hstep' := portPrivate_c55af3af_contMDiffAt_globalFlow_step v hv1 hcomplete hε hflow
+@@ -356 +360 @@
+-private theorem contMDiffAt_curveAt_slice [FiniteDimensional ℝ E] [CompleteSpace E]
++theorem portPrivate_c55af3af_contMDiffAt_curveAt_slice [FiniteDimensional ℝ E] [CompleteSpace E]
+@@ -364 +368 @@
+-  · exact contMDiffAt_curveAt_slice_nonneg v hv hcomplete ht₀ x₀
++  · exact portPrivate_c55af3af_contMDiffAt_curveAt_slice_nonneg v hv hcomplete ht₀ x₀
+@@ -377 +381 @@
+-    have h := contMDiffAt_curveAt_slice_nonneg (-v) hvneg hn (neg_nonneg.mpr (le_of_not_ge ht₀)) x₀
++    have h := portPrivate_c55af3af_contMDiffAt_curveAt_slice_nonneg (-v) hvneg hn (neg_nonneg.mpr (le_of_not_ge ht₀)) x₀
+@@ -390 +394 @@
+-  · exact contMDiffAt_curveAt_slice_nonneg v hv hcomplete ht₀ x₀
++  · exact portPrivate_c55af3af_contMDiffAt_curveAt_slice_nonneg v hv hcomplete ht₀ x₀
+@@ -409 +413 @@
+-    have hnonneg := contMDiffAt_curveAt_slice_nonneg
++    have hnonneg := portPrivate_c55af3af_contMDiffAt_curveAt_slice_nonneg
+@@ -582 +586 @@
+-private theorem continuousAt_globalFlow_of_compactSupport_nonneg [FiniteDimensional ℝ E]
++theorem portPrivate_c55af3af_continuousAt_globalFlow_of_compactSupport_nonneg [FiniteDimensional ℝ E]
+@@ -650 +654 @@
+-    (contMDiffAt_curveAt_slice v hv hcomplete s x₀).continuousAt
++    (portPrivate_c55af3af_contMDiffAt_curveAt_slice v hv hcomplete s x₀).continuousAt
+@@ -717 +721 @@
+-private theorem contMDiffAt_curveAt_of_slice [FiniteDimensional ℝ E] [CompleteSpace E]
++theorem portPrivate_c55af3af_contMDiffAt_curveAt_of_slice [FiniteDimensional ℝ E] [CompleteSpace E]
+@@ -827,2 +831,2 @@
+-  exact contMDiffAt_curveAt_of_slice v hv hcomplete t₀ x₀
+-    (contMDiffAt_curveAt_slice v hv hcomplete t₀ x₀)
++  exact portPrivate_c55af3af_contMDiffAt_curveAt_of_slice v hv hcomplete t₀ x₀
++    (portPrivate_c55af3af_contMDiffAt_curveAt_slice v hv hcomplete t₀ x₀)
+@@ -838 +842 @@
+-  exact contMDiffAt_curveAt_slice_nonneg v hv
++  exact portPrivate_c55af3af_contMDiffAt_curveAt_slice_nonneg v hv
+@@ -849 +853 @@
+-  exact contMDiffAt_curveAt_slice v hv
++  exact portPrivate_c55af3af_contMDiffAt_curveAt_slice v hv
+@@ -872 +876 @@
+-  exact contMDiffAt_curveAt_of_slice v hv
++  exact portPrivate_c55af3af_contMDiffAt_curveAt_of_slice v hv
+--- a/DifferentialGeometry/Analysis/ODE/Flow/Defs.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/Defs.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.Variational
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.Variational
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/FiniteOrder.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/FiniteOrder.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.C1Regularity.ContDiffOnOne
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.C1Regularity.ContDiffOnOne
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/InfiniteOrder.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/InfiniteOrder.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.Parametric
+-import Mathlib.Analysis.Calculus.ContDiff.FiniteDimension
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.Parametric
++public import Mathlib.Analysis.Calculus.ContDiff.FiniteDimension
++
++@[expose] public section
+@@ -26 +30 @@
+-private theorem contDiffOn_variational_coeff
++theorem portPrivate_8f11500e_contDiffOn_variational_coeff
+@@ -94 +98 @@
+-      contDiffOn_variational_coeff hf_Csucc ih
++      portPrivate_8f11500e_contDiffOn_variational_coeff hf_Csucc ih
+--- a/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/FiniteOrder.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/FiniteOrder.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.FiniteOrder
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.FiniteOrder
++
++@[expose] public section
+@@ -1398 +1402 @@
+-private theorem exists_contDiffOn_flow_succ_driver
++theorem portPrivate_ff5d016f_exists_contDiffOn_flow_succ_driver
+@@ -1520 +1524 @@
+-private def flowCkPred (n : ℕ) : Prop :=
++def portPrivate_ff5d016f_flowCkPred (n : ℕ) : Prop :=
+@@ -1529 +1533 @@
+-private theorem flowCkPred_base : flowCkPred.{u} 1 := by
++theorem portPrivate_ff5d016f_flowCkPred_base : portPrivate_ff5d016f_flowCkPred.{u} 1 := by
+@@ -1534,2 +1538,2 @@
+-private theorem flowCkPred_step {n : ℕ} (hn : 1 ≤ n) (IH : flowCkPred.{u} n) :
+-    flowCkPred.{u} (n + 1) := by
++theorem portPrivate_ff5d016f_flowCkPred_step {n : ℕ} (hn : 1 ≤ n) (IH : portPrivate_ff5d016f_flowCkPred.{u} n) :
++    portPrivate_ff5d016f_flowCkPred.{u} (n + 1) := by
+@@ -1562 +1566 @@
+-  obtain ⟨U, hU_open, hU_mem, hU_C⟩ := exists_contDiffOn_flow_succ_driver hΨ haΨ ht₀_aug hR_pos
++  obtain ⟨U, hU_open, hU_mem, hU_C⟩ := portPrivate_ff5d016f_exists_contDiffOn_flow_succ_driver hΨ haΨ ht₀_aug hR_pos
+@@ -1568 +1572 @@
+-private theorem flowCkPred_all (n : ℕ) (hn : 1 ≤ n) : flowCkPred.{u} n := by
++theorem portPrivate_ff5d016f_flowCkPred_all (n : ℕ) (hn : 1 ≤ n) : portPrivate_ff5d016f_flowCkPred.{u} n := by
+@@ -1570,2 +1574,2 @@
+-  | base => exact flowCkPred_base
+-  | succ m hm IH => exact flowCkPred_step hm IH
++  | base => exact portPrivate_ff5d016f_flowCkPred_base
++  | succ m hm IH => exact portPrivate_ff5d016f_flowCkPred_step hm IH
+@@ -1584 +1588 @@
+-  flowCkPred_all n hn hΦ hf ht₀ hr
++  portPrivate_ff5d016f_flowCkPred_all n hn hΦ hf ht₀ hr
+--- a/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/FirstOrderSmoothness.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/FirstOrderSmoothness.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.OrbitComparison
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.OrbitComparison
++
++@[expose] public section
+@@ -230 +234 @@
+-private theorem fderiv_along_continuousOn
++theorem portPrivate_d6e6b011_fderiv_along_continuousOn
+@@ -553 +557 @@
+-    exact fderiv_along_continuousOn (E := E) (f := f)
++    exact portPrivate_d6e6b011_fderiv_along_continuousOn (E := E) (f := f)
+--- a/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/LinearMapSmoothness.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/LinearMapSmoothness.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.ZerothOrderExistence
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.ZerothOrderExistence
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/OrbitComparison.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/OrbitComparison.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.FiniteOrder
+-import Mathlib.Analysis.ODE.Gronwall
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.FiniteOrder
++public import Mathlib.Analysis.ODE.Gronwall
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/SuccessorExistence.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/SuccessorExistence.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.FirstOrderSmoothness
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.FirstOrderSmoothness
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/ZerothOrderExistence.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/HigherRegularity/Variational/ZerothOrderExistence.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.SuccessorExistence
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.SuccessorExistence
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/Flow/IntegralCurveTransport.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/IntegralCurveTransport.lean
+@@ -1,4 +1,8 @@
+-import Mathlib.Geometry.Manifold.IntegralCurve.ExistUnique
+-import Mathlib.Geometry.Manifold.IntegralCurve.Transform
+-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+-import Mathlib.Analysis.Calculus.Deriv.MeanValue
++module
++
++public import Mathlib.Geometry.Manifold.IntegralCurve.ExistUnique
++public import Mathlib.Geometry.Manifold.IntegralCurve.Transform
++public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
++public import Mathlib.Analysis.Calculus.Deriv.MeanValue
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/Continuity.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/Continuity.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.GlobalExistence
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.GlobalExistence
++
++@[expose] public section
+@@ -19 +23 @@
+-private theorem linearODE_apriori_bound
++theorem portPrivate_c8c79eec_linearODE_apriori_bound
+@@ -407 +411 @@
+-    have habs := linearODE_apriori_bound (A := A x) (a := a) (b := b) (α := α) (β := β)
++    have habs := portPrivate_c8c79eec_linearODE_apriori_bound (A := A x) (a := a) (b := b) (α := α) (β := β)
+--- a/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/GlobalExistence.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/GlobalExistence.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.Solution
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.Solution
++
++@[expose] public section
+@@ -31 +35 @@
+-private theorem hasDerivWithinAt_glue_Icc_at_pt
++theorem portPrivate_c647eb87_hasDerivWithinAt_glue_Icc_at_pt
+@@ -133 +137 @@
+-private theorem exists_linearODE_solution_right_iterated
++theorem portPrivate_c647eb87_exists_linearODE_solution_right_iterated
+@@ -220 +224 @@
+-      hasDerivWithinAt_glue_Icc_at_pt (f := Z_k) (g := Z_pic) (A := A)
++      portPrivate_c647eb87_hasDerivWithinAt_glue_Icc_at_pt (f := Z_k) (g := Z_pic) (A := A)
+@@ -245 +249 @@
+-private theorem exists_linearODE_solution_left_iterated
++theorem portPrivate_c647eb87_exists_linearODE_solution_left_iterated
+@@ -313 +317 @@
+-      hasDerivWithinAt_glue_Icc_at_pt (f := Z_pic) (g := Z_k) (A := A)
++      portPrivate_c647eb87_hasDerivWithinAt_glue_Icc_at_pt (f := Z_pic) (g := Z_k) (A := A)
+@@ -340 +344 @@
+-private theorem exists_linearODE_solution_on_Icc_subset
++theorem portPrivate_c647eb87_exists_linearODE_solution_on_Icc_subset
+@@ -457 +461 @@
+-    exists_linearODE_solution_right_iterated (A := A) (h₀ := h₀) (M := M) (T := T')
++    portPrivate_c647eb87_exists_linearODE_solution_right_iterated (A := A) (h₀ := h₀) (M := M) (T := T')
+@@ -474 +478 @@
+-    exists_linearODE_solution_left_iterated (A := A) (h₀ := h₀) (M := M) (T := T')
++    portPrivate_c647eb87_exists_linearODE_solution_left_iterated (A := A) (h₀ := h₀) (M := M) (T := T')
+@@ -483 +487 @@
+-  have h_glued := hasDerivWithinAt_glue_Icc_at_pt
++  have h_glued := portPrivate_c647eb87_hasDerivWithinAt_glue_Icc_at_pt
+@@ -507 +511 @@
+-private def subIntervalSeq (a h₀ b : ℝ) (n : ℕ) : ℝ × ℝ :=
++def portPrivate_c647eb87_subIntervalSeq (a h₀ b : ℝ) (n : ℕ) : ℝ × ℝ :=
+@@ -555 +559 @@
+-    fun n => exists_linearODE_solution_on_Icc_subset
++    fun n => portPrivate_c647eb87_exists_linearODE_solution_on_Icc_subset
+--- a/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/Inhomogeneous.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/Inhomogeneous.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.Continuity
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.Continuity
++
++@[expose] public section
+@@ -32 +36 @@
+-private lemma inhomogAugmentedCoeff_continuousOn
++lemma portPrivate_b53fcf31_inhomogAugmentedCoeff_continuousOn
+@@ -100 +104 @@
+-private theorem inhomogLinearODESolution_second_eq_one
++theorem portPrivate_b53fcf31_inhomogLinearODESolution_second_eq_one
+@@ -114 +118 @@
+-    inhomogAugmentedCoeff_continuousOn hA_cont hb_cont
++    portPrivate_b53fcf31_inhomogAugmentedCoeff_continuousOn hA_cont hb_cont
+@@ -165 +169 @@
+-    inhomogAugmentedCoeff_continuousOn hA_cont hb_cont
++    portPrivate_b53fcf31_inhomogAugmentedCoeff_continuousOn hA_cont hb_cont
+@@ -169 +173 @@
+-    inhomogLinearODESolution_second_eq_one
++    portPrivate_b53fcf31_inhomogLinearODESolution_second_eq_one
+@@ -202 +206 @@
+-    inhomogAugmentedCoeff_continuousOn hA_cont hb_cont
++    portPrivate_b53fcf31_inhomogAugmentedCoeff_continuousOn hA_cont hb_cont
+--- a/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/Parametric.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/Parametric.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.Inhomogeneous
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.LinearODE.Inhomogeneous
++
++@[expose] public section
+@@ -403 +407 @@
+-private theorem variationalW_norm_bound_on_Icc
++theorem portPrivate_b35c1e36_variationalW_norm_bound_on_Icc
+@@ -710 +714 @@
+-      have h := variationalW_norm_bound_on_Icc h₀_mem hU hA_cont hDA_cont hZ₀_cont
++      have h := portPrivate_b35c1e36_variationalW_norm_bound_on_Icc h₀_mem hU hA_cont hDA_cont hZ₀_cont
+@@ -1507 +1511 @@
+-private theorem linearODESolution_partial_t_continuousOn
++theorem portPrivate_b35c1e36_linearODESolution_partial_t_continuousOn
+@@ -1528 +1532 @@
+-private theorem variationalW_clm_continuousOn
++theorem portPrivate_b35c1e36_variationalW_clm_continuousOn
+@@ -1568 +1572 @@
+-private theorem linearODESolution_hasFDerivAt_joint
++theorem portPrivate_b35c1e36_linearODESolution_hasFDerivAt_joint
+@@ -1601 +1605 @@
+-    linearODESolution_partial_t_continuousOn h₀_mem hU hA_cont hZ₀_cont
++    portPrivate_b35c1e36_linearODESolution_partial_t_continuousOn h₀_mem hU hA_cont hZ₀_cont
+@@ -1731 +1735 @@
+-private theorem linearODESolution_contDiffOn_one
++theorem portPrivate_b35c1e36_linearODESolution_contDiffOn_one
+@@ -1755 +1759 @@
+-    exact (linearODESolution_hasFDerivAt_joint h₀_mem hU hA_cont hDA_cont hA_diff
++    exact (portPrivate_b35c1e36_linearODESolution_hasFDerivAt_joint h₀_mem hU hA_cont hDA_cont hA_diff
+@@ -1775 +1779 @@
+-      variationalW_clm_continuousOn h₀_mem hU hA_cont hDA_cont hZ₀_cont hDZ₀_cont
++      portPrivate_b35c1e36_variationalW_clm_continuousOn h₀_mem hU hA_cont hDA_cont hZ₀_cont hDZ₀_cont
+@@ -1781 +1785 @@
+-        (linearODESolution_partial_t_continuousOn h₀_mem hU hA_cont hZ₀_cont)
++        (portPrivate_b35c1e36_linearODESolution_partial_t_continuousOn h₀_mem hU hA_cont hZ₀_cont)
+@@ -1802 +1806 @@
+-    exact (linearODESolution_hasFDerivAt_joint h₀_mem hU hA_cont hDA_cont
++    exact (portPrivate_b35c1e36_linearODESolution_hasFDerivAt_joint h₀_mem hU hA_cont hDA_cont
+@@ -1807 +1811 @@
+-private theorem inhomogAugmentedCoeff_contDiffOn
++theorem portPrivate_b35c1e36_inhomogAugmentedCoeff_contDiffOn
+@@ -1845 +1849 @@
+-private theorem extract_C1_hypotheses
++theorem portPrivate_b35c1e36_extract_C1_hypotheses
+@@ -1901 +1905 @@
+-private theorem variationalForcing_contDiffOn_of_Z_contDiffOn
++theorem portPrivate_b35c1e36_variationalForcing_contDiffOn_of_Z_contDiffOn
+@@ -1977 +1981 @@
+-      extract_C1_hypotheses hU hA hZ₀
++      portPrivate_b35c1e36_extract_C1_hypotheses hU hA hZ₀
+@@ -1986 +1990 @@
+-      exact (linearODESolution_hasFDerivAt_joint h₀_mem hU hA_cont hDA_cont hA_diff
++      exact (portPrivate_b35c1e36_linearODESolution_hasFDerivAt_joint h₀_mem hU hA_cont hDA_cont hA_diff
+@@ -2004 +2008 @@
+-          variationalForcing_contDiffOn_of_Z_contDiffOn hU (by exact_mod_cast hA) hZ_n v
++          portPrivate_b35c1e36_variationalForcing_contDiffOn_of_Z_contDiffOn hU (by exact_mod_cast hA) hZ_n v
+@@ -2013 +2017 @@
+-          inhomogAugmentedCoeff_contDiffOn hA_n h_forcing_n
++          portPrivate_b35c1e36_inhomogAugmentedCoeff_contDiffOn hA_n h_forcing_n
+@@ -2070 +2074 @@
+-      exact (linearODESolution_hasFDerivAt_joint h₀_mem hU hA_cont hDA_cont
++      exact (portPrivate_b35c1e36_linearODESolution_hasFDerivAt_joint h₀_mem hU hA_cont hDA_cont
+--- a/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/Solution.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/Solution.lean
+@@ -1,8 +1,12 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.LinearMapSmoothness
+-import Mathlib.Analysis.Calculus.ContDiff.FiniteDimension
+-import Mathlib.Analysis.InnerProductSpace.Symmetric
+-import Mathlib.Analysis.Normed.Group.Quotient
+-import Mathlib.Analysis.Normed.Module.ContinuousInverse
+-import Mathlib.Analysis.Normed.Ring.Units
+-import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Quotient
+-import Mathlib.Topology.LocallyConstant.Basic
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.Variational.LinearMapSmoothness
++public import Mathlib.Analysis.Calculus.ContDiff.FiniteDimension
++public import Mathlib.Analysis.InnerProductSpace.Symmetric
++public import Mathlib.Analysis.Normed.Group.Quotient
++public import Mathlib.Analysis.Normed.Module.ContinuousInverse
++public import Mathlib.Analysis.Normed.Ring.Units
++public import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Quotient
++public import Mathlib.Topology.LocallyConstant.Basic
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/Variational.lean
++++ b/DifferentialGeometry/Analysis/ODE/Flow/LinearODE/Variational.lean
+@@ -1,5 +1,9 @@
+-import Mathlib.Analysis.ODE.PicardLindelof
+-import Mathlib.Analysis.ODE.ExistUnique
+-import Mathlib.Analysis.ODE.Gronwall
+-import Mathlib.Analysis.ODE.Basic
+-import Mathlib.Analysis.Calculus.ContDiff.RCLike
++module
++
++public import Mathlib.Analysis.ODE.PicardLindelof
++public import Mathlib.Analysis.ODE.ExistUnique
++public import Mathlib.Analysis.ODE.Gronwall
++public import Mathlib.Analysis.ODE.Basic
++public import Mathlib.Analysis.Calculus.ContDiff.RCLike
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/Autonomization.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/Autonomization.lean
+@@ -1,4 +1,8 @@
+-import Mathlib.Geometry.Manifold.IntegralCurve.ExistUnique
+-import Mathlib.Geometry.Manifold.MFDeriv.SpecificFunctions
+-import Mathlib.Geometry.Manifold.MFDeriv.FDeriv
+-import Mathlib.Analysis.Calculus.MeanValue
++module
++
++public import Mathlib.Geometry.Manifold.IntegralCurve.ExistUnique
++public import Mathlib.Geometry.Manifold.MFDeriv.SpecificFunctions
++public import Mathlib.Geometry.Manifold.MFDeriv.FDeriv
++public import Mathlib.Analysis.Calculus.MeanValue
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/Bijective/ChartCoverBijective.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/Bijective/ChartCoverBijective.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.ChartOverlapUniqueness
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.Selection
+-import Mathlib.Analysis.ODE.Gronwall
+-import Mathlib.Geometry.Manifold.MFDeriv.Basic
++module
++
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.ChartOverlapUniqueness
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.Selection
++public import Mathlib.Analysis.ODE.Gronwall
++public import Mathlib.Geometry.Manifold.MFDeriv.Basic
++
++@[expose] public section
+@@ -20 +24 @@
+-private theorem chart_pullback_to_manifold_eq_via_chart_coord_inv
++theorem portPrivate_1c7c5453_chart_pullback_to_manifold_eq_via_chart_coord_inv
+@@ -31 +35 @@
+-private theorem chart_cover_flow_bijective_single_chart_short_time
++theorem portPrivate_1c7c5453_chart_cover_flow_bijective_single_chart_short_time
+@@ -41 +45 @@
+-  exact chart_pullback_to_manifold_eq_via_chart_coord_inv
++  exact portPrivate_1c7c5453_chart_pullback_to_manifold_eq_via_chart_coord_inv
+@@ -72 +76 @@
+-  exact chart_cover_flow_bijective_single_chart_short_time
++  exact portPrivate_1c7c5453_chart_cover_flow_bijective_single_chart_short_time
+@@ -103 +107 @@
+-  exact chart_pullback_to_manifold_eq_via_chart_coord_inv
++  exact portPrivate_1c7c5453_chart_pullback_to_manifold_eq_via_chart_coord_inv
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/Bijective/UniformBijective.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/Bijective/UniformBijective.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.Bijective.ChartCoverBijective
++module
++
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.Bijective.ChartCoverBijective
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/ChartLocalExistence/ChartLocalPicard.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/ChartLocalExistence/ChartLocalPicard.lean
+@@ -1,6 +1,10 @@
+-import Mathlib.Analysis.ODE.PicardLindelof
+-import Mathlib.Analysis.ODE.ExistUnique
+-import Mathlib.Geometry.Manifold.IsManifold.Basic
+-import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
+-import Mathlib.Geometry.Manifold.MFDeriv.Basic
+-import Mathlib.Geometry.Manifold.VectorBundle.Tangent
++module
++
++public import Mathlib.Analysis.ODE.PicardLindelof
++public import Mathlib.Analysis.ODE.ExistUnique
++public import Mathlib.Geometry.Manifold.IsManifold.Basic
++public import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
++public import Mathlib.Geometry.Manifold.MFDeriv.Basic
++public import Mathlib.Geometry.Manifold.VectorBundle.Tangent
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/ChartLocalExistence/ChartOverlapUniqueness.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/ChartLocalExistence/ChartOverlapUniqueness.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.UniformExistence
+-import Mathlib.Analysis.ODE.Gronwall
++module
++
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.UniformExistence
++public import Mathlib.Analysis.ODE.Gronwall
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/ChartLocalExistence/Selection.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/ChartLocalExistence/Selection.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.UniformExistence
+-import Mathlib.Analysis.ODE.Gronwall
+-import Mathlib.Geometry.Manifold.MFDeriv.Basic
+-import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
++module
++
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.UniformExistence
++public import Mathlib.Analysis.ODE.Gronwall
++public import Mathlib.Geometry.Manifold.MFDeriv.Basic
++public import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/ChartLocalExistence/UniformExistence.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/ChartLocalExistence/UniformExistence.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.ChartLocalPicard
+-import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
++module
++
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.ChartLocalPicard
++public import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/DiffeomorphismFamily/Hartman.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/DiffeomorphismFamily/Hartman.lean
+@@ -1,6 +1,10 @@
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.Selection
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothInSpace.Basic
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothInSpace.VariationalODE.BanachIC
+-import Mathlib.Geometry.Manifold.Diffeomorph
+-import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.Bijective.UniformBijective
++module
++
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.Selection
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothInSpace.Basic
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothInSpace.VariationalODE.BanachIC
++public import Mathlib.Geometry.Manifold.Diffeomorph
++public import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.Bijective.UniformBijective
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/DiffeomorphismFamily/ManifoldFlowFamily.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/DiffeomorphismFamily/ManifoldFlowFamily.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.DiffeomorphismFamily.Hartman
+-import Mathlib.Geometry.Manifold.IntegralCurve.Basic
+-import Mathlib.Geometry.Manifold.MFDeriv.Atlas
+-import Mathlib.Geometry.Manifold.MFDeriv.FDeriv
++module
++
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.DiffeomorphismFamily.Hartman
++public import Mathlib.Geometry.Manifold.IntegralCurve.Basic
++public import Mathlib.Geometry.Manifold.MFDeriv.Atlas
++public import Mathlib.Geometry.Manifold.MFDeriv.FDeriv
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/DiffeomorphismFamily/ManifoldIntegralFlow.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/DiffeomorphismFamily/ManifoldIntegralFlow.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.Autonomization
+-import Mathlib.Geometry.Manifold.Diffeomorph
++module
++
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.Autonomization
++public import Mathlib.Geometry.Manifold.Diffeomorph
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/Regularity/IntegralCurveFromJointC1.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/Regularity/IntegralCurveFromJointC1.lean
+@@ -1,3 +1,7 @@
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.Autonomization
+-import Mathlib.Geometry.Manifold.IntegralCurve.ExistUnique
+-import Mathlib.Geometry.Manifold.MFDeriv.SpecificFunctions
++module
++
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.Autonomization
++public import Mathlib.Geometry.Manifold.IntegralCurve.ExistUnique
++public import Mathlib.Geometry.Manifold.MFDeriv.SpecificFunctions
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/SmoothDependence/Manifold.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/SmoothDependence/Manifold.lean
+@@ -1,9 +1,13 @@
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.DiffeomorphismFamily.ManifoldIntegralFlow
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.Regularity.IntegralCurveFromJointC1
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.DiffeomorphismFamily.ManifoldFlowFamily
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothInSpace.VariationalODE.BanachIC
+-import DifferentialGeometry.Analysis.ODE.Flow.Defs
+-import Mathlib.Geometry.Manifold.ContMDiff.Atlas
+-import Mathlib.Geometry.Manifold.ContMDiffMFDeriv
+-import Mathlib.Geometry.Manifold.VectorBundle.Tangent
+-import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
++module
++
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.DiffeomorphismFamily.ManifoldIntegralFlow
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.Regularity.IntegralCurveFromJointC1
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.DiffeomorphismFamily.ManifoldFlowFamily
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothInSpace.VariationalODE.BanachIC
++public import DifferentialGeometry.Analysis.ODE.Flow.Defs
++public import Mathlib.Geometry.Manifold.ContMDiff.Atlas
++public import Mathlib.Geometry.Manifold.ContMDiffMFDeriv
++public import Mathlib.Geometry.Manifold.VectorBundle.Tangent
++public import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/SmoothInSpace/Basic.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/SmoothInSpace/Basic.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.Selection
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothInSpace.VariationalODE.BanachIC
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothInSpace.VariationalODE.ChartGlue
+-import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
++module
++
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.Selection
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothInSpace.VariationalODE.BanachIC
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.SmoothInSpace.VariationalODE.ChartGlue
++public import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/SmoothInSpace/VariationalODE/BanachIC.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/SmoothInSpace/VariationalODE/BanachIC.lean
+@@ -1,6 +1,10 @@
+-import Mathlib.Analysis.ODE.PicardLindelof
+-import Mathlib.Geometry.Manifold.ContMDiff.Atlas
+-import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.ChartLocalPicard
+-import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.UniformExistence
+-import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.InfiniteOrder
++module
++
++public import Mathlib.Analysis.ODE.PicardLindelof
++public import Mathlib.Geometry.Manifold.ContMDiff.Atlas
++public import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.ChartLocalPicard
++public import DifferentialGeometry.Analysis.ODE.TimeDependentFlow.ChartLocalExistence.UniformExistence
++public import DifferentialGeometry.Analysis.ODE.Flow.HigherRegularity.InfiniteOrder
++
++@[expose] public section
+--- a/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/SmoothInSpace/VariationalODE/ChartGlue.lean
++++ b/DifferentialGeometry/Analysis/ODE/TimeDependentFlow/SmoothInSpace/VariationalODE/ChartGlue.lean
+@@ -1,2 +1,6 @@
+-import Mathlib.Geometry.Manifold.ContMDiff.Atlas
+-import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
++module
++
++public import Mathlib.Geometry.Manifold.ContMDiff.Atlas
++public import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
++
++@[expose] public section
+--- a/DifferentialGeometry/Bundle/TangentSpace.lean
++++ b/DifferentialGeometry/Bundle/TangentSpace.lean
+@@ -1,2 +1,6 @@
+-import Mathlib.Geometry.Manifold.VectorBundle.Tangent
+-import Mathlib.Geometry.Manifold.MFDeriv.NormedSpace
++module
++
++public import Mathlib.Geometry.Manifold.VectorBundle.Tangent
++public import Mathlib.Geometry.Manifold.MFDeriv.NormedSpace
++
++@[expose] public section
 --- a/DifferentialGeometry/External/CanonicalTopology/Analysis/LocalDerivativeHomotopy.lean
 +++ b/DifferentialGeometry/External/CanonicalTopology/Analysis/LocalDerivativeHomotopy.lean
 @@ -1,5 +1,9 @@
@@ -2452,6 +3363,236 @@
 +public import Mathlib.Data.Bundle
 +
 +@[expose] public section
+--- a/DifferentialGeometry/Topology/Attachment/Basic.lean
++++ b/DifferentialGeometry/Topology/Attachment/Basic.lean
+@@ -1,5 +1,9 @@
+-import DifferentialGeometry.Topology.Attachment.Defs
+-import Mathlib.Analysis.InnerProductSpace.EuclideanDist
+-import Mathlib.Topology.Constructions
+-import Mathlib.Topology.Defs.Induced
+-import Mathlib.Topology.Maps.Basic
++module
++
++public import DifferentialGeometry.Topology.Attachment.Defs
++public import Mathlib.Analysis.InnerProductSpace.EuclideanDist
++public import Mathlib.Topology.Constructions
++public import Mathlib.Topology.Defs.Induced
++public import Mathlib.Topology.Maps.Basic
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Attachment/Defs.lean
++++ b/DifferentialGeometry/Topology/Attachment/Defs.lean
+@@ -1,2 +1,6 @@
+-import Mathlib.Analysis.InnerProductSpace.PiL2
+-import Mathlib.Topology.Constructions
++module
++
++public import Mathlib.Analysis.InnerProductSpace.PiL2
++public import Mathlib.Topology.Constructions
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Attachment/Union.lean
++++ b/DifferentialGeometry/Topology/Attachment/Union.lean
+@@ -1,5 +1,9 @@
+-import DifferentialGeometry.Topology.Attachment.Basic
+-import Mathlib.Topology.Constructions
+-import Mathlib.Topology.Homeomorph.Lemmas
+-import Mathlib.Topology.Maps.Basic
+-import Mathlib.Topology.Separation.Hausdorff
++module
++
++public import DifferentialGeometry.Topology.Attachment.Basic
++public import Mathlib.Topology.Constructions
++public import Mathlib.Topology.Homeomorph.Lemmas
++public import Mathlib.Topology.Maps.Basic
++public import Mathlib.Topology.Separation.Hausdorff
++
++@[expose] public section
+@@ -73 +77 @@
+-private theorem adjunctionRealization_inl_inr {X₀ : Set Y} (i : A → B) (c : B → Y) (φ : A → X₀)
++theorem portPrivate_c7517bea_adjunctionRealization_inl_inr {X₀ : Set Y} (i : A → B) (c : B → Y) (φ : A → X₀)
+@@ -113 +117 @@
+-          exact adjunctionRealization_inl_inr i c φ hφ hboundary hzz'
++          exact portPrivate_c7517bea_adjunctionRealization_inl_inr i c φ hφ hboundary hzz'
+@@ -117 +121 @@
+-          exact (adjunctionRealization_inl_inr i c φ hφ hboundary hzz'.symm).symm
++          exact (portPrivate_c7517bea_adjunctionRealization_inl_inr i c φ hφ hboundary hzz'.symm).symm
+@@ -123 +127 @@
+-private def unionInclusionLeft (A B : Set Y) : {y : Y // y ∈ A} → {y : Y // y ∈ A ∪ B} :=
++def portPrivate_c7517bea_unionInclusionLeft (A B : Set Y) : {y : Y // y ∈ A} → {y : Y // y ∈ A ∪ B} :=
+@@ -126 +130 @@
+-private def unionInclusionRight (A B : Set Y) : {y : Y // y ∈ B} → {y : Y // y ∈ A ∪ B} :=
++def portPrivate_c7517bea_unionInclusionRight (A B : Set Y) : {y : Y // y ∈ B} → {y : Y // y ∈ A ∪ B} :=
+@@ -129 +133 @@
+-private theorem isClosed_image_of_isClosed_preimage_unionInclusionLeft {A B : Set Y}
++theorem portPrivate_c7517bea_isClosed_image_of_isClosed_preimage_unionInclusionLeft {A B : Set Y}
+@@ -131,2 +135,2 @@
+-    (hW : IsClosed (unionInclusionLeft A B ⁻¹' W)) :
+-    IsClosed (unionInclusionLeft A B '' (unionInclusionLeft A B ⁻¹' W)) := by
++    (hW : IsClosed (portPrivate_c7517bea_unionInclusionLeft A B ⁻¹' W)) :
++    IsClosed (portPrivate_c7517bea_unionInclusionLeft A B '' (portPrivate_c7517bea_unionInclusionLeft A B ⁻¹' W)) := by
+@@ -135 +139 @@
+-  have hset : unionInclusionLeft A B '' (unionInclusionLeft A B ⁻¹' W) =
++  have hset : portPrivate_c7517bea_unionInclusionLeft A B '' (portPrivate_c7517bea_unionInclusionLeft A B ⁻¹' W) =
+@@ -141 +145 @@
+-        simpa [unionInclusionLeft] using congrArg Subtype.val hxy
++        simpa [portPrivate_c7517bea_unionInclusionLeft] using congrArg Subtype.val hxy
+@@ -160 +164 @@
+-private theorem isClosed_image_of_isClosed_preimage_unionInclusionRight {A B : Set Y}
++theorem portPrivate_c7517bea_isClosed_image_of_isClosed_preimage_unionInclusionRight {A B : Set Y}
+@@ -162,2 +166,2 @@
+-    (hW : IsClosed (unionInclusionRight A B ⁻¹' W)) :
+-    IsClosed (unionInclusionRight A B '' (unionInclusionRight A B ⁻¹' W)) := by
++    (hW : IsClosed (portPrivate_c7517bea_unionInclusionRight A B ⁻¹' W)) :
++    IsClosed (portPrivate_c7517bea_unionInclusionRight A B '' (portPrivate_c7517bea_unionInclusionRight A B ⁻¹' W)) := by
+@@ -166 +170 @@
+-  have hset : unionInclusionRight A B '' (unionInclusionRight A B ⁻¹' W) =
++  have hset : portPrivate_c7517bea_unionInclusionRight A B '' (portPrivate_c7517bea_unionInclusionRight A B ⁻¹' W) =
+@@ -172 +176 @@
+-        simpa [unionInclusionRight] using congrArg Subtype.val hxy
++        simpa [portPrivate_c7517bea_unionInclusionRight] using congrArg Subtype.val hxy
+@@ -191 +195 @@
+-private theorem isClosed_union_of_isClosed_preimage {A B : Set Y} (hA : IsClosed A)
++theorem portPrivate_c7517bea_isClosed_union_of_isClosed_preimage {A B : Set Y} (hA : IsClosed A)
+@@ -193,4 +197,4 @@
+-    (hWA : IsClosed (unionInclusionLeft A B ⁻¹' W))
+-    (hWB : IsClosed (unionInclusionRight A B ⁻¹' W)) : IsClosed W := by
+-  have hset : W = unionInclusionLeft A B '' (unionInclusionLeft A B ⁻¹' W) ∪
+-        unionInclusionRight A B '' (unionInclusionRight A B ⁻¹' W) := by
++    (hWA : IsClosed (portPrivate_c7517bea_unionInclusionLeft A B ⁻¹' W))
++    (hWB : IsClosed (portPrivate_c7517bea_unionInclusionRight A B ⁻¹' W)) : IsClosed W := by
++  have hset : W = portPrivate_c7517bea_unionInclusionLeft A B '' (portPrivate_c7517bea_unionInclusionLeft A B ⁻¹' W) ∪
++        portPrivate_c7517bea_unionInclusionRight A B '' (portPrivate_c7517bea_unionInclusionRight A B ⁻¹' W) := by
+@@ -201,2 +205,2 @@
+-      · exact Or.inl ⟨⟨y, hyA⟩, ⟨by simpa [unionInclusionLeft] using hy, by ext; rfl⟩⟩
+-      · exact Or.inr ⟨⟨y, hyB⟩, ⟨by simpa [unionInclusionRight] using hy, by ext; rfl⟩⟩
++      · exact Or.inl ⟨⟨y, hyA⟩, ⟨by simpa [portPrivate_c7517bea_unionInclusionLeft] using hy, by ext; rfl⟩⟩
++      · exact Or.inr ⟨⟨y, hyB⟩, ⟨by simpa [portPrivate_c7517bea_unionInclusionRight] using hy, by ext; rfl⟩⟩
+@@ -209,5 +213,5 @@
+-  exact (isClosed_image_of_isClosed_preimage_unionInclusionLeft hA hWA).union
+-    (isClosed_image_of_isClosed_preimage_unionInclusionRight hB hWB)
+-
+-omit [TopologicalSpace Y] [TopologicalSpace B] in
+-private theorem adjunctionRealization_leftPreimage_eq {X₀ : Set Y} (i : A → B) (c : B → Y)
++  exact (portPrivate_c7517bea_isClosed_image_of_isClosed_preimage_unionInclusionLeft hA hWA).union
++    (portPrivate_c7517bea_isClosed_image_of_isClosed_preimage_unionInclusionRight hB hWB)
++
++omit [TopologicalSpace Y] [TopologicalSpace B] in
++theorem portPrivate_c7517bea_adjunctionRealization_leftPreimage_eq {X₀ : Set Y} (i : A → B) (c : B → Y)
+@@ -217 +221 @@
+-    unionInclusionLeft X₀ (Set.range c) ⁻¹' (adjunctionRealization X₀ i c φ hφ '' C) =
++    portPrivate_c7517bea_unionInclusionLeft X₀ (Set.range c) ⁻¹' (adjunctionRealization X₀ i c φ hφ '' C) =
+@@ -237 +241 @@
+-private theorem adjunctionRealization_rightPreimage_eq {X₀ : Set Y} (i : A → B) (c : B → Y)
++theorem portPrivate_c7517bea_adjunctionRealization_rightPreimage_eq {X₀ : Set Y} (i : A → B) (c : B → Y)
+@@ -241 +245 @@
+-    unionInclusionRight X₀ (Set.range c) ⁻¹' (adjunctionRealization X₀ i c φ hφ '' C) =
++    portPrivate_c7517bea_unionInclusionRight X₀ (Set.range c) ⁻¹' (adjunctionRealization X₀ i c φ hφ '' C) =
+@@ -285,2 +289,2 @@
+-  refine isClosed_union_of_isClosed_preimage hclosed hclosedRange ?_ ?_
+-  · rw [adjunctionRealization_leftPreimage_eq i c φ hφ hc hboundary]
++  refine portPrivate_c7517bea_isClosed_union_of_isClosed_preimage hclosed hclosedRange ?_ ?_
++  · rw [portPrivate_c7517bea_adjunctionRealization_leftPreimage_eq i c φ hφ hc hboundary]
+@@ -288 +292 @@
+-  · rw [adjunctionRealization_rightPreimage_eq i c φ hφ hc hboundary]
++  · rw [portPrivate_c7517bea_adjunctionRealization_rightPreimage_eq i c φ hφ hc hboundary]
+--- a/DifferentialGeometry/Topology/ClosedBall/AlexanderTrick.lean
++++ b/DifferentialGeometry/Topology/ClosedBall/AlexanderTrick.lean
+@@ -1,5 +1,9 @@
+-import Mathlib.Analysis.Normed.Module.Basic
+-import Mathlib.Analysis.Normed.Module.RCLike.Basic
+-import Mathlib.Analysis.Normed.Group.Basic
+-import Mathlib.Topology.Homeomorph.Lemmas
+-import Mathlib.Analysis.Normed.Module.Ball.Homeomorph
++module
++
++public import Mathlib.Analysis.Normed.Module.Basic
++public import Mathlib.Analysis.Normed.Module.RCLike.Basic
++public import Mathlib.Analysis.Normed.Group.Basic
++public import Mathlib.Topology.Homeomorph.Lemmas
++public import Mathlib.Analysis.Normed.Module.Ball.Homeomorph
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/ClosedBall/UnitDisk.lean
++++ b/DifferentialGeometry/Topology/ClosedBall/UnitDisk.lean
+@@ -1,2 +1,6 @@
+-import Mathlib.Analysis.InnerProductSpace.PiL2
+-import Mathlib.Topology.MetricSpace.ProperSpace
++module
++
++public import Mathlib.Analysis.InnerProductSpace.PiL2
++public import Mathlib.Topology.MetricSpace.ProperSpace
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Cobordism/HCobordism.lean
++++ b/DifferentialGeometry/Topology/Cobordism/HCobordism.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Existence
+-import DifferentialGeometry.Topology.Morse.Rearrangement.SelfIndexing
+-import DifferentialGeometry.Topology.Morse.Handle.LowHandles
+-import DifferentialGeometry.Topology.Morse.Handle.MiddleHandles
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Existence
++public import DifferentialGeometry.Topology.Morse.Rearrangement.SelfIndexing
++public import DifferentialGeometry.Topology.Morse.Handle.LowHandles
++public import DifferentialGeometry.Topology.Morse.Handle.MiddleHandles
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Cobordism/HomotopySphere.lean
++++ b/DifferentialGeometry/Topology/Cobordism/HomotopySphere.lean
+@@ -1,8 +1,12 @@
+-import DifferentialGeometry.Topology.Manifold.ChartDisk.Construction
+-import DifferentialGeometry.Topology.Sphere.SphereSimplyConnected
+-import DifferentialGeometry.Topology.Manifold.GeneralPosition.PushOff
+-import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
+-import DifferentialGeometry.Topology.Homology.Punctures.DiskComplement
+-import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
+-import Mathlib.Topology.Homotopy.Contractible
+-import Mathlib.Analysis.Normed.Module.Connected
++module
++
++public import DifferentialGeometry.Topology.Manifold.ChartDisk.Construction
++public import DifferentialGeometry.Topology.Sphere.SphereSimplyConnected
++public import DifferentialGeometry.Topology.Manifold.GeneralPosition.PushOff
++public import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
++public import DifferentialGeometry.Topology.Homology.Punctures.DiskComplement
++public import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
++public import Mathlib.Topology.Homotopy.Contractible
++public import Mathlib.Analysis.Normed.Module.Connected
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Continuous/ClosedCover.lean
++++ b/DifferentialGeometry/Topology/Continuous/ClosedCover.lean
+@@ -1 +1,5 @@
+-import Mathlib.Topology.ContinuousOn
++module
++
++public import Mathlib.Topology.ContinuousOn
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Handle/Defs.lean
++++ b/DifferentialGeometry/Topology/Handle/Defs.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Attachment.Defs
++module
++
++public import DifferentialGeometry.Topology.Attachment.Defs
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/HighDimensional/TwistedSphere.lean
++++ b/DifferentialGeometry/Topology/HighDimensional/TwistedSphere.lean
+@@ -1,3 +1,7 @@
+-import DifferentialGeometry.Topology.ClosedBall.UnitDisk
+-import DifferentialGeometry.Topology.ClosedBall.AlexanderTrick
+-import Mathlib.Geometry.Manifold.Instances.Sphere
++module
++
++public import DifferentialGeometry.Topology.ClosedBall.UnitDisk
++public import DifferentialGeometry.Topology.ClosedBall.AlexanderTrick
++public import Mathlib.Geometry.Manifold.Instances.Sphere
++
++@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/Algebra/CokernelHomotopy.lean
 +++ b/DifferentialGeometry/Topology/Homology/Algebra/CokernelHomotopy.lean
 @@ -1,3 +1,7 @@
@@ -2506,6 +3647,22 @@
 +
 +public import Mathlib.Algebra.Homology.ShortComplex.ShortExact
 +public import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Defs
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Bockstein.lean
++++ b/DifferentialGeometry/Topology/Homology/Bockstein.lean
+@@ -1,4 +1,9 @@
+-import DifferentialGeometry.Topology.Homology.SingularPair
+-import Mathlib.Algebra.Category.Grp.AB
+-import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
+-import Mathlib.Data.ZMod.Basic
++module
++
++public import DifferentialGeometry.Topology.Homology.SingularPair
++public import Mathlib.Algebra.Category.Grp.AB
++public import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
++public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
++public import Mathlib.Data.ZMod.Basic
 +
 +@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/CapSupport.lean
@@ -3142,6 +4299,92 @@
 +public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.EuclideanLocalTop
 +
 +@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Local/ChartTransport.lean
++++ b/DifferentialGeometry/Topology/Homology/Local/ChartTransport.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Homology.Local.CompactEuclidean
++module
++
++public import DifferentialGeometry.Topology.Homology.Local.CompactEuclidean
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Local/CompactEuclidean.lean
++++ b/DifferentialGeometry/Topology/Homology/Local/CompactEuclidean.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Homology.Local.LocalGoodUnion
+-import DifferentialGeometry.Topology.Homology.Support
++module
++
++public import DifferentialGeometry.Topology.Homology.Local.LocalGoodUnion
++public import DifferentialGeometry.Topology.Homology.Support
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Local/Injectivity.lean
++++ b/DifferentialGeometry/Topology/Homology/Local/Injectivity.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Homology.Local.PointRestriction
++module
++
++public import DifferentialGeometry.Topology.Homology.Local.PointRestriction
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Local/LocalGood.lean
++++ b/DifferentialGeometry/Topology/Homology/Local/LocalGood.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Homology.Local.LocalHomology
+-import DifferentialGeometry.Topology.Homology.Support
++module
++
++public import DifferentialGeometry.Topology.Homology.Local.LocalHomology
++public import DifferentialGeometry.Topology.Homology.Support
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Local/LocalGoodUnion.lean
++++ b/DifferentialGeometry/Topology/Homology/Local/LocalGoodUnion.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Homology.Local.LocalGood
+-import DifferentialGeometry.Topology.Homology.MayerVietoris.OpenRelative
++module
++
++public import DifferentialGeometry.Topology.Homology.Local.LocalGood
++public import DifferentialGeometry.Topology.Homology.MayerVietoris.OpenRelative
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Local/LocalHomology.lean
++++ b/DifferentialGeometry/Topology/Homology/Local/LocalHomology.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Homology.Local.Radial
+-import DifferentialGeometry.Topology.Homology.Relative.DeltaIso
++module
++
++public import DifferentialGeometry.Topology.Homology.Local.Radial
++public import DifferentialGeometry.Topology.Homology.Relative.DeltaIso
++
++@[expose] public section
+@@ -132 +136 @@
+-private lemma isIso_relπ_empty_aux (X : TopCat.{u}) (k : ℕ) : IsIso (relπ R X ∅ k) := by
++lemma portPrivate_b2946052_isIso_relπ_empty_aux (X : TopCat.{u}) (k : ℕ) : IsIso (relπ R X ∅ k) := by
+@@ -147 +151 @@
+-    have := isIso_relπ_empty_aux R (TopCat.of (EU 0)) k
++    have := portPrivate_b2946052_isIso_relπ_empty_aux R (TopCat.of (EU 0)) k
+--- a/DifferentialGeometry/Topology/Homology/Local/PointRestriction.lean
++++ b/DifferentialGeometry/Topology/Homology/Local/PointRestriction.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Homology.Local.ChartTransport
++module
++
++public import DifferentialGeometry.Topology.Homology.Local.ChartTransport
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Local/Radial.lean
++++ b/DifferentialGeometry/Topology/Homology/Local/Radial.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Homology.Spheres.SphereTopology
++module
++
++public import DifferentialGeometry.Topology.Homology.Spheres.SphereTopology
++
++@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/LocalOrientation.lean
 +++ b/DifferentialGeometry/Topology/Homology/LocalOrientation.lean
 @@ -1 +1,5 @@
@@ -3149,6 +4392,58 @@
 +module
 +
 +public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.LocalOrientation
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/MayerVietoris/MayerVietoris.lean
++++ b/DifferentialGeometry/Topology/Homology/MayerVietoris/MayerVietoris.lean
+@@ -1,3 +1,7 @@
+-import DifferentialGeometry.Topology.Homology.SingularSubcomplex
+-import DifferentialGeometry.Topology.Homology.MayerVietoris.ShortExact
+-import DifferentialGeometry.Topology.Homology.Subdivision.SmallSimplices
++module
++
++public import DifferentialGeometry.Topology.Homology.SingularSubcomplex
++public import DifferentialGeometry.Topology.Homology.MayerVietoris.ShortExact
++public import DifferentialGeometry.Topology.Homology.Subdivision.SmallSimplices
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/MayerVietoris/OpenRelative.lean
++++ b/DifferentialGeometry/Topology/Homology/MayerVietoris/OpenRelative.lean
+@@ -1,3 +1,7 @@
+-import DifferentialGeometry.Topology.Homology.MayerVietoris.Relative
+-import DifferentialGeometry.Topology.Homology.Relative.SingularExcision
+-import DifferentialGeometry.Topology.Homology.Naturality
++module
++
++public import DifferentialGeometry.Topology.Homology.MayerVietoris.Relative
++public import DifferentialGeometry.Topology.Homology.Relative.SingularExcision
++public import DifferentialGeometry.Topology.Homology.Naturality
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/MayerVietoris/Relative.lean
++++ b/DifferentialGeometry/Topology/Homology/MayerVietoris/Relative.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Homology.MayerVietoris.ShortExact
++module
++
++public import DifferentialGeometry.Topology.Homology.MayerVietoris.ShortExact
++
++@[expose] public section
+@@ -201 +205,2 @@
+-  L₀ := ShortComplex.mk (0 : (0 : ChainComplex (ModuleCat.{u} ℤ) ℕ) ⟶ 0) 0 zero_comp
++  L₀ := ShortComplex.mk (0 : (0 : ChainComplex (ModuleCat.{u} ℤ) ℕ) ⟶ 0)
++    (0 : 0 ⟶ (0 : ChainComplex (ModuleCat.{u} ℤ) ℕ)) zero_comp
+--- a/DifferentialGeometry/Topology/Homology/MayerVietoris/ShortExact.lean
++++ b/DifferentialGeometry/Topology/Homology/MayerVietoris/ShortExact.lean
+@@ -1,2 +1,8 @@
+-import DifferentialGeometry.Topology.Homology.SingularPair
+-import Mathlib.CategoryTheory.Abelian.CommSq
++module
++
++public import DifferentialGeometry.Topology.Homology.SingularPair
++public import Mathlib.CategoryTheory.Abelian.CommSq
++public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
++public import Mathlib.CategoryTheory.Limits.Preserves.SigmaConst
 +
 +@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/MayerVietoris.lean
@@ -3214,6 +4509,120 @@
 +public import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex
 +
 +@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Naturality.lean
++++ b/DifferentialGeometry/Topology/Homology/Naturality.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Homology.SingularPair
+-import Mathlib.Algebra.Homology.HomologySequenceLemmas
+-import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
+-import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
++module
++
++public import DifferentialGeometry.Topology.Homology.SingularPair
++public import Mathlib.Algebra.Homology.HomologySequenceLemmas
++public import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
++public import Mathlib.AlgebraicTopology.SingularHomology.HomologyZero
++
++@[expose] public section
+@@ -326 +330 @@
+-lemma _root_.ZerothHomotopy.mk_injective_of_totallyDisconnectedSpace {X : Type u}
++lemma _root_.ZerothHomotopy.dg_mk_injective_of_totallyDisconnectedSpace {X : Type u}
+@@ -336 +340 @@
+-    ⟨ZerothHomotopy.mk_injective_of_totallyDisconnectedSpace, ZerothHomotopy.mk_surjective⟩
++    ⟨ZerothHomotopy.dg_mk_injective_of_totallyDisconnectedSpace, ZerothHomotopy.mk_surjective⟩
+@@ -341 +345 @@
+-    (fun h ↦ hxy (ZerothHomotopy.mk_injective_of_totallyDisconnectedSpace h))
++    (fun h ↦ hxy (ZerothHomotopy.dg_mk_injective_of_totallyDisconnectedSpace h))
+--- a/DifferentialGeometry/Topology/Homology/Punctures/ChartDiskRetract.lean
++++ b/DifferentialGeometry/Topology/Homology/Punctures/ChartDiskRetract.lean
+@@ -1,6 +1,10 @@
+-import DifferentialGeometry.Topology.Continuous.ClosedCover
+-import DifferentialGeometry.Topology.Manifold.ChartDisk.Construction
+-import DifferentialGeometry.Topology.Morse.Strip.Defs
+-import DifferentialGeometry.Topology.Sphere.SphereSimplyConnected
+-import Mathlib.Topology.Homotopy.Contractible
+-import Mathlib.Analysis.Convex.Contractible
++module
++
++public import DifferentialGeometry.Topology.Continuous.ClosedCover
++public import DifferentialGeometry.Topology.Manifold.ChartDisk.Construction
++public import DifferentialGeometry.Topology.Morse.Strip.Defs
++public import DifferentialGeometry.Topology.Sphere.SphereSimplyConnected
++public import Mathlib.Topology.Homotopy.Contractible
++public import Mathlib.Analysis.Convex.Contractible
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Punctures/DiskComplement.lean
++++ b/DifferentialGeometry/Topology/Homology/Punctures/DiskComplement.lean
+@@ -1,5 +1,9 @@
+-import DifferentialGeometry.Topology.Homology.Punctures.ChartDiskRetract
+-import DifferentialGeometry.Topology.Homology.Punctures.DiskExcision
+-import DifferentialGeometry.Topology.Homology.Punctures.PuncturedAcyclic
+-import DifferentialGeometry.Topology.Homology.Punctures.FundamentalClass
+-import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
++module
++
++public import DifferentialGeometry.Topology.Homology.Punctures.ChartDiskRetract
++public import DifferentialGeometry.Topology.Homology.Punctures.DiskExcision
++public import DifferentialGeometry.Topology.Homology.Punctures.PuncturedAcyclic
++public import DifferentialGeometry.Topology.Homology.Punctures.FundamentalClass
++public import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Punctures/DiskExcision.lean
++++ b/DifferentialGeometry/Topology/Homology/Punctures/DiskExcision.lean
+@@ -1,3 +1,7 @@
+-import DifferentialGeometry.Topology.Homology.Punctures.ChartDiskRetract
+-import DifferentialGeometry.Topology.Homology.Relative.HomotopyInvariance
+-import DifferentialGeometry.Topology.Homology.Relative.DeltaIso
++module
++
++public import DifferentialGeometry.Topology.Homology.Punctures.ChartDiskRetract
++public import DifferentialGeometry.Topology.Homology.Relative.HomotopyInvariance
++public import DifferentialGeometry.Topology.Homology.Relative.DeltaIso
++
++@[expose] public section
+@@ -87 +91 @@
+-private def relativeHomologyDiskCollarExpansionIso (h₀ : isChartDisk e₀) (hdisj : Disjoint (range e₀) (range e₁)) (k : ℕ) :
++def portPrivate_d8191ebf_relativeHomologyDiskCollarExpansionIso (h₀ : isChartDisk e₀) (hdisj : Disjoint (range e₀) (range e₁)) (k : ℕ) :
+@@ -99 +103 @@
+-private def relativeHomologyHalfDiskRangeIso (k : ℕ) :
++def portPrivate_d8191ebf_relativeHomologyHalfDiskRangeIso (k : ℕ) :
+@@ -107 +111 @@
+-private def relativeHomologyHalfDiskComplementIso (k : ℕ) :
++def portPrivate_d8191ebf_relativeHomologyHalfDiskComplementIso (k : ℕ) :
+@@ -122 +126 @@
+-private def relativeHomologyHalfDiskExcisionIso (h₀ : isChartDisk e₀) (k : ℕ) :
++def portPrivate_d8191ebf_relativeHomologyHalfDiskExcisionIso (h₀ : isChartDisk e₀) (k : ℕ) :
+@@ -135 +139 @@
+-  relativeHomologyDiskCollarExpansionIso R h₀ hdisj k ≪≫ relativeHomologyHalfDiskRangeIso R k ≪≫ relativeHomologyHalfDiskComplementIso R k ≪≫ relativeHomologyHalfDiskExcisionIso R h₀ k
++  portPrivate_d8191ebf_relativeHomologyDiskCollarExpansionIso R h₀ hdisj k ≪≫ portPrivate_d8191ebf_relativeHomologyHalfDiskRangeIso R k ≪≫ portPrivate_d8191ebf_relativeHomologyHalfDiskComplementIso R k ≪≫ portPrivate_d8191ebf_relativeHomologyHalfDiskExcisionIso R h₀ k
+--- a/DifferentialGeometry/Topology/Homology/Punctures/FundamentalClass.lean
++++ b/DifferentialGeometry/Topology/Homology/Punctures/FundamentalClass.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Homology.Bockstein
+-import DifferentialGeometry.Topology.Homology.Punctures.PuncturedAcyclic
++module
++
++public import DifferentialGeometry.Topology.Homology.Bockstein
++public import DifferentialGeometry.Topology.Homology.Punctures.PuncturedAcyclic
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Punctures/PuncturedAcyclic.lean
++++ b/DifferentialGeometry/Topology/Homology/Punctures/PuncturedAcyclic.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Homology.Relative.DeltaIso
+-import DifferentialGeometry.Topology.Homology.Local.ChartTransport
+-import DifferentialGeometry.Topology.Homology.Local.Injectivity
+-import DifferentialGeometry.Topology.Morse.Strip.Defs
++module
++
++public import DifferentialGeometry.Topology.Homology.Relative.DeltaIso
++public import DifferentialGeometry.Topology.Homology.Local.ChartTransport
++public import DifferentialGeometry.Topology.Homology.Local.Injectivity
++public import DifferentialGeometry.Topology.Morse.Strip.Defs
++
++@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/Relative/Basic.lean
 +++ b/DifferentialGeometry/Topology/Homology/Relative/Basic.lean
 @@ -1 +1,5 @@
@@ -3221,6 +4630,56 @@
 +module
 +
 +public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.Relative
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Relative/DeltaIso.lean
++++ b/DifferentialGeometry/Topology/Homology/Relative/DeltaIso.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Homology.Spheres.SphereHomology
+-import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
++module
++
++public import DifferentialGeometry.Topology.Homology.Spheres.SphereHomology
++public import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Relative/HomotopyInvariance.lean
++++ b/DifferentialGeometry/Topology/Homology/Relative/HomotopyInvariance.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
+-import DifferentialGeometry.Topology.Homology.Relative.SingularExcision
++module
++
++public import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
++public import DifferentialGeometry.Topology.Homology.Relative.SingularExcision
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Relative/PairVanishing.lean
++++ b/DifferentialGeometry/Topology/Homology/Relative/PairVanishing.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Homology.Naturality
+-import DifferentialGeometry.Topology.Morse.Strip.Defs
++module
++
++public import DifferentialGeometry.Topology.Homology.Naturality
++public import DifferentialGeometry.Topology.Morse.Strip.Defs
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Relative/SingularExcision.lean
++++ b/DifferentialGeometry/Topology/Homology/Relative/SingularExcision.lean
+@@ -1,5 +1,9 @@
+-import DifferentialGeometry.Topology.Homology.SingularSubcomplex
+-import DifferentialGeometry.Topology.Homology.MayerVietoris.ShortExact
+-import DifferentialGeometry.Topology.Homology.Subdivision.SmallSimplices
+-import DifferentialGeometry.Topology.Homology.MayerVietoris.MayerVietoris
+-import Mathlib.Algebra.Homology.HomologySequenceLemmas
++module
++
++public import DifferentialGeometry.Topology.Homology.SingularSubcomplex
++public import DifferentialGeometry.Topology.Homology.MayerVietoris.ShortExact
++public import DifferentialGeometry.Topology.Homology.Subdivision.SmallSimplices
++public import DifferentialGeometry.Topology.Homology.MayerVietoris.MayerVietoris
++public import Mathlib.Algebra.Homology.HomologySequenceLemmas
 +
 +@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/RelativeCapMayerVietoris.lean
@@ -3281,19 +4740,32 @@
 +public import Mathlib.Topology.Sets.Compacts
 +
 +@[expose] public section
---- a/DifferentialGeometry/Topology/Homology/SmallChains.lean
-+++ b/DifferentialGeometry/Topology/Homology/SmallChains.lean
-@@ -1,4 +1,8 @@
+--- a/DifferentialGeometry/Topology/Homology/SingularPair.lean
++++ b/DifferentialGeometry/Topology/Homology/SingularPair.lean
+@@ -1,6 +1,10 @@
+-import Mathlib.Algebra.Category.ModuleCat.Abelian
 -import Mathlib.Algebra.Category.ModuleCat.Colimits
--import Mathlib.AlgebraicTopology.SimplicialSet.Subcomplex
--import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
--import Mathlib.AlgebraicTopology.SingularHomology.Basic
+-import Mathlib.Algebra.Homology.QuasiIso
+-import Mathlib.AlgebraicTopology.SimplicialSet.Homology.Relative
+-import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
+-import Mathlib.Topology.Homotopy.Contractible
 +module
 +
++public import Mathlib.Algebra.Category.ModuleCat.Abelian
 +public import Mathlib.Algebra.Category.ModuleCat.Colimits
-+public import Mathlib.AlgebraicTopology.SimplicialSet.Subcomplex
-+public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
-+public import Mathlib.AlgebraicTopology.SingularHomology.Basic
++public import Mathlib.Algebra.Homology.QuasiIso
++public import Mathlib.AlgebraicTopology.SimplicialSet.Homology.Relative
++public import Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance
++public import Mathlib.Topology.Homotopy.Contractible
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/SingularSubcomplex.lean
++++ b/DifferentialGeometry/Topology/Homology/SingularSubcomplex.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Homology.SingularPair
++module
++
++public import DifferentialGeometry.Topology.Homology.SingularPair
 +
 +@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/SmallChains/Compactness.lean
@@ -3342,6 +4814,21 @@
 +public import DifferentialGeometry.Topology.SimplicialSet.UnionChains
 +
 +@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/SmallChains.lean
++++ b/DifferentialGeometry/Topology/Homology/SmallChains.lean
+@@ -1,4 +1,8 @@
+-import Mathlib.Algebra.Category.ModuleCat.Colimits
+-import Mathlib.AlgebraicTopology.SimplicialSet.Subcomplex
+-import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
+-import Mathlib.AlgebraicTopology.SingularHomology.Basic
++module
++
++public import Mathlib.Algebra.Category.ModuleCat.Colimits
++public import Mathlib.AlgebraicTopology.SimplicialSet.Subcomplex
++public import Mathlib.AlgebraicTopology.SimplicialSet.TopAdj
++public import Mathlib.AlgebraicTopology.SingularHomology.Basic
++
++@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/SmallRelativeRepresentatives.lean
 +++ b/DifferentialGeometry/Topology/Homology/SmallRelativeRepresentatives.lean
 @@ -1,4 +1,8 @@
@@ -3355,6 +4842,45 @@
 +public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.ChainCokernelElements
 +public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RelativeFunctoriality
 +public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.TwoSetSmallChains
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Spheres/SphereHomology.lean
++++ b/DifferentialGeometry/Topology/Homology/Spheres/SphereHomology.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Homology.SingularPair
+-import DifferentialGeometry.Topology.Homology.Naturality
+-import DifferentialGeometry.Topology.Homology.MayerVietoris.MayerVietoris
+-import DifferentialGeometry.Topology.Homology.Spheres.SphereTopology
++module
++
++public import DifferentialGeometry.Topology.Homology.SingularPair
++public import DifferentialGeometry.Topology.Homology.Naturality
++public import DifferentialGeometry.Topology.Homology.MayerVietoris.MayerVietoris
++public import DifferentialGeometry.Topology.Homology.Spheres.SphereTopology
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Spheres/SphereTopology.lean
++++ b/DifferentialGeometry/Topology/Homology/Spheres/SphereTopology.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Homology.SingularPair
+-import DifferentialGeometry.Topology.Sphere.SphereSimplyConnected
++module
++
++public import DifferentialGeometry.Topology.Homology.SingularPair
++public import DifferentialGeometry.Topology.Sphere.SphereSimplyConnected
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Subdivision/AffineChains.lean
++++ b/DifferentialGeometry/Topology/Homology/Subdivision/AffineChains.lean
+@@ -1,3 +1,7 @@
+-import DifferentialGeometry.Topology.Homology.SingularPair
+-import Mathlib.Analysis.Convex.StdSimplex
+-import Mathlib.Analysis.Normed.Module.Basic
++module
++
++public import DifferentialGeometry.Topology.Homology.SingularPair
++public import Mathlib.Analysis.Convex.StdSimplex
++public import Mathlib.Analysis.Normed.Module.Basic
 +
 +@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/Subdivision/AffinePieces.lean
@@ -3403,6 +4929,17 @@
 +public import Mathlib.AlgebraicTopology.SingularHomology.Basic
 +public import Mathlib.Algebra.BigOperators.Fin
 +public import Mathlib.Data.Fin.Tuple.Basic
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Subdivision/DiameterBound.lean
++++ b/DifferentialGeometry/Topology/Homology/Subdivision/DiameterBound.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Homology.Subdivision.Subdivision
+-import Mathlib.Analysis.Normed.Module.Convex
++module
++
++public import DifferentialGeometry.Topology.Homology.Subdivision.Subdivision
++public import Mathlib.Analysis.Normed.Module.Convex
 +
 +@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/Subdivision/EventualSmallness.lean
@@ -3553,6 +5090,26 @@
 @@ -187 +191 @@
 -      exact sub_eq_iff_eq_add.mp (smallSingularSubdivisionHomotopy_comm X U R n)
 +      exact sub_eq_iff_eq_add.mp (SingularSupport.smallSingularSubdivisionHomotopy_comm X U R n)
+--- a/DifferentialGeometry/Topology/Homology/Subdivision/SmallSimplices.lean
++++ b/DifferentialGeometry/Topology/Homology/Subdivision/SmallSimplices.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Homology.SingularSubcomplex
+-import DifferentialGeometry.Topology.Homology.Subdivision.DiameterBound
++module
++
++public import DifferentialGeometry.Topology.Homology.SingularSubcomplex
++public import DifferentialGeometry.Topology.Homology.Subdivision.DiameterBound
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Subdivision/Subdivision.lean
++++ b/DifferentialGeometry/Topology/Homology/Subdivision/Subdivision.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Homology.Subdivision.AffineChains
++module
++
++public import DifferentialGeometry.Topology.Homology.Subdivision.AffineChains
++
++@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/Subdivision/Support.lean
 +++ b/DifferentialGeometry/Topology/Homology/Subdivision/Support.lean
 @@ -1,2 +1,6 @@
@@ -3604,6 +5161,21 @@
 +public import DifferentialGeometry.Topology.Homology.Subdivision.Singular
 +
 +@[expose] public section
+--- a/DifferentialGeometry/Topology/Homology/Support.lean
++++ b/DifferentialGeometry/Topology/Homology/Support.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Homology.SingularSubcomplex
+-import Mathlib.Algebra.Category.ModuleCat.Products
+-import Mathlib.Algebra.Homology.ConcreteCategory
+-import Mathlib.Geometry.Convex.ConvexSpace.CompactSpaceStdSimplex
++module
++
++public import DifferentialGeometry.Topology.Homology.SingularSubcomplex
++public import Mathlib.Algebra.Category.ModuleCat.Products
++public import Mathlib.Algebra.Homology.ConcreteCategory
++public import Mathlib.Geometry.Convex.ConvexSpace.CompactSpaceStdSimplex
++
++@[expose] public section
 --- a/DifferentialGeometry/Topology/Homology/TwoSetCoverSubdivision.lean
 +++ b/DifferentialGeometry/Topology/Homology/TwoSetCoverSubdivision.lean
 @@ -1,5 +1,9 @@
@@ -3630,6 +5202,1585 @@
 +
 +public import Mathlib.Geometry.Manifold.IsManifold.Basic
 +public import Mathlib.Topology.Bases
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Manifold/ChartDisk/Construction.lean
++++ b/DifferentialGeometry/Topology/Manifold/ChartDisk/Construction.lean
+@@ -1,11 +1,16 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Defs
+-import DifferentialGeometry.Topology.ClosedBall.UnitDisk
+-import Mathlib.Geometry.Manifold.Instances.Real
+-import Mathlib.Geometry.Manifold.IsManifold.Basic
+-import Mathlib.Analysis.Calculus.BumpFunction.Basic
+-import Mathlib.Geometry.Manifold.ContMDiff.Atlas
+-import Mathlib.Geometry.Manifold.MFDeriv.Atlas
+-import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
+-import Mathlib.Analysis.InnerProductSpace.Calculus
+-import Mathlib.Analysis.SpecialFunctions.SmoothTransition
+-import Mathlib.Analysis.Calculus.Deriv.MeanValue
++module
++
++public import Mathlib.Analysis.Calculus.Deriv.Inv
++public import DifferentialGeometry.Topology.Morse.Strip.Defs
++public import DifferentialGeometry.Topology.ClosedBall.UnitDisk
++public import Mathlib.Geometry.Manifold.Instances.Real
++public import Mathlib.Geometry.Manifold.IsManifold.Basic
++public import Mathlib.Analysis.Calculus.BumpFunction.Basic
++public import Mathlib.Geometry.Manifold.ContMDiff.Atlas
++public import Mathlib.Geometry.Manifold.MFDeriv.Atlas
++public import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
++public import Mathlib.Analysis.InnerProductSpace.Calculus
++public import Mathlib.Analysis.SpecialFunctions.SmoothTransition
++public import Mathlib.Analysis.Calculus.Deriv.MeanValue
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Manifold/GeneralPosition/GeneralPosition.lean
++++ b/DifferentialGeometry/Topology/Manifold/GeneralPosition/GeneralPosition.lean
+@@ -1,5 +1,9 @@
+-import DifferentialGeometry.Topology.Manifold.ChartDisk.Construction
+-import DifferentialGeometry.Topology.Sphere.SphereSimplyConnected
+-import Mathlib.Topology.ContinuousMap.StoneWeierstrass
+-import Mathlib.Topology.MetricSpace.HausdorffDimension
+-import Mathlib.Analysis.InnerProductSpace.Calculus
++module
++
++public import DifferentialGeometry.Topology.Manifold.ChartDisk.Construction
++public import DifferentialGeometry.Topology.Sphere.SphereSimplyConnected
++public import Mathlib.Topology.ContinuousMap.StoneWeierstrass
++public import Mathlib.Topology.MetricSpace.HausdorffDimension
++public import Mathlib.Analysis.InnerProductSpace.Calculus
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Manifold/GeneralPosition/PushOff.lean
++++ b/DifferentialGeometry/Topology/Manifold/GeneralPosition/PushOff.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Manifold.GeneralPosition.GeneralPosition
++module
++
++public import DifferentialGeometry.Topology.Manifold.GeneralPosition.GeneralPosition
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Manifold/OpenSubtype.lean
++++ b/DifferentialGeometry/Topology/Manifold/OpenSubtype.lean
+@@ -1 +1,5 @@
+-import Mathlib.Geometry.Manifold.ContMDiffMFDeriv
++module
++
++public import Mathlib.Geometry.Manifold.ContMDiffMFDeriv
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Attachment/ModelCell.lean
++++ b/DifferentialGeometry/Topology/Morse/Attachment/ModelCell.lean
+@@ -1,10 +1,16 @@
+-import DifferentialGeometry.Topology.Morse.Defs
+-import DifferentialGeometry.Topology.Morse.NormalForm.Local
+-import DifferentialGeometry.Topology.Attachment.Union
+-import DifferentialGeometry.Topology.Handle.Defs
+-import Mathlib.Topology.Homotopy.Basic
+-import Mathlib.Topology.Homotopy.Equiv
+-import Mathlib.Analysis.SpecialFunctions.Sqrt
+-import Mathlib.Analysis.Complex.ExponentialBounds
+-import DifferentialGeometry.Analysis.Calculus.Taylor
+-import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
++module
++
++public import DifferentialGeometry.Topology.Morse.Defs
++public import DifferentialGeometry.Topology.Morse.NormalForm.Local
++public import DifferentialGeometry.Topology.Attachment.Union
++public import DifferentialGeometry.Topology.Handle.Defs
++public import Mathlib.Topology.Homotopy.Basic
++public import Mathlib.Topology.Homotopy.Equiv
++public import Mathlib.Analysis.SpecialFunctions.Sqrt
++public import Mathlib.Analysis.Complex.ExponentialBounds
++public import DifferentialGeometry.Analysis.Calculus.Taylor
++public import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
++public import Mathlib.Analysis.Calculus.ContDiff.WithLp
++public import Mathlib.Analysis.Calculus.Deriv.Prod
++
++@[expose] public section
+@@ -113 +119 @@
+-private theorem smoothTransition_deriv_le_forty_of_le_quarter (x : ℝ) (hx0 : 0 < x) (hx1 : x < 1) (hxlo : x ≤ 1 / 4) :
++theorem portPrivate_138057aa_smoothTransition_deriv_le_forty_of_le_quarter (x : ℝ) (hx0 : 0 < x) (hx1 : x < 1) (hxlo : x ≤ 1 / 4) :
+@@ -216 +222 @@
+-private theorem smoothTransition_deriv_le_forty_of_ge_three_quarters (x : ℝ) (hx0 : 0 < x) (hx1 : x < 1) (hxhi : 3 / 4 ≤ x) :
++theorem portPrivate_138057aa_smoothTransition_deriv_le_forty_of_ge_three_quarters (x : ℝ) (hx0 : 0 < x) (hx1 : x < 1) (hxhi : 3 / 4 ≤ x) :
+@@ -320 +326 @@
+-private theorem smoothTransition_deriv_le_forty_middle (x : ℝ) (hx0 : 0 < x) (hx1 : x < 1) (hxq' : 1 / 4 ≤ x ∧ x ≤ 3 / 4) :
++theorem portPrivate_138057aa_smoothTransition_deriv_le_forty_middle (x : ℝ) (hx0 : 0 < x) (hx1 : x < 1) (hxq' : 1 / 4 ≤ x ∧ x ≤ 3 / 4) :
+@@ -384,2 +390,2 @@
+-      · exact smoothTransition_deriv_le_forty_of_le_quarter x hx0 hx1 hxlo
+-      · exact smoothTransition_deriv_le_forty_of_ge_three_quarters x hx0 hx1 hxhi
++      · exact portPrivate_138057aa_smoothTransition_deriv_le_forty_of_le_quarter x hx0 hx1 hxlo
++      · exact portPrivate_138057aa_smoothTransition_deriv_le_forty_of_ge_three_quarters x hx0 hx1 hxhi
+@@ -389 +395 @@
+-      exact smoothTransition_deriv_le_forty_middle x hx0 hx1 hxq'
++      exact portPrivate_138057aa_smoothTransition_deriv_le_forty_middle x hx0 hx1 hxq'
+@@ -392 +398 @@
+-private theorem one_add_sub_one_mul_mem_Icc {U β : ℝ} (hU : 1 ≤ U)
++theorem portPrivate_138057aa_one_add_sub_one_mul_mem_Icc {U β : ℝ} (hU : 1 ≤ U)
+@@ -402 +408 @@
+-private theorem one_add_sub_one_mul_sq_le {U β : ℝ} (hU : 1 ≤ U)
++theorem portPrivate_138057aa_one_add_sub_one_mul_sq_le {U β : ℝ} (hU : 1 ≤ U)
+@@ -405 +411 @@
+-  have hbounds := one_add_sub_one_mul_mem_Icc hU hβ
++  have hbounds := portPrivate_138057aa_one_add_sub_one_mul_mem_Icc hU hβ
+@@ -1203 +1209 @@
+-private noncomputable def cellAttachmentMapC {n k : ℕ} (hk : k ≤ n) (c ε : ℝ) (hε : 0 < ε) :
++noncomputable def portPrivate_138057aa_cellAttachmentMapC {n k : ℕ} (hk : k ≤ n) (c ε : ℝ) (hε : 0 < ε) :
+@@ -1207 +1213 @@
+-private noncomputable def cellAttachmentInclusionC {n k : ℕ} (hk : k ≤ n) (c ε : ℝ) (hε : 0 ≤ ε) :
++noncomputable def portPrivate_138057aa_cellAttachmentInclusionC {n k : ℕ} (hk : k ≤ n) (c ε : ℝ) (hε : 0 ≤ ε) :
+@@ -1213 +1219 @@
+-      ((cellAttachmentInclusionC hk c ε (le_of_lt hε)).comp (cellAttachmentMapC hk c ε hε))
++      ((portPrivate_138057aa_cellAttachmentInclusionC hk c ε (le_of_lt hε)).comp (portPrivate_138057aa_cellAttachmentMapC hk c ε hε))
+@@ -1225 +1231 @@
+-      ((cellAttachmentMapC hk c ε hε).comp (cellAttachmentInclusionC hk c ε (le_of_lt hε)))
++      ((portPrivate_138057aa_cellAttachmentMapC hk c ε hε).comp (portPrivate_138057aa_cellAttachmentInclusionC hk c ε (le_of_lt hε)))
+@@ -1237,2 +1243,2 @@
+-  toFun := cellAttachmentMapC hk c ε hε
+-  invFun := cellAttachmentInclusionC hk c ε (le_of_lt hε)
++  toFun := portPrivate_138057aa_cellAttachmentMapC hk c ε hε
++  invFun := portPrivate_138057aa_cellAttachmentInclusionC hk c ε (le_of_lt hε)
+@@ -1303 +1309 @@
+-private theorem morseNorm_sq_recombine {n k : ℕ} (hk : k ≤ n)
++theorem portPrivate_138057aa_morseNorm_sq_recombine {n k : ℕ} (hk : k ≤ n)
+@@ -1322 +1328 @@
+-private theorem morseNorm_le_of_sq_le {n : ℕ} {y z : MorseModel n}
++theorem portPrivate_138057aa_morseNorm_le_of_sq_le {n : ℕ} {y z : MorseModel n}
+@@ -1331 +1337 @@
+-  apply morseNorm_le_of_sq_le
++  apply portPrivate_138057aa_morseNorm_le_of_sq_le
+@@ -1333 +1339 @@
+-  rw [morseNorm_sq_recombine hk (negPart hk y) (0 : EuclideanSpace ℝ (Fin (n - k)))]
++  rw [portPrivate_138057aa_morseNorm_sq_recombine hk (negPart hk y) (0 : EuclideanSpace ℝ (Fin (n - k)))]
+@@ -1335 +1341 @@
+-  rw [morseNorm_sq_recombine hk (negPart hk y) (posPart hk y)]
++  rw [portPrivate_138057aa_morseNorm_sq_recombine hk (negPart hk y) (posPart hk y)]
+@@ -1341 +1347 @@
+-  apply morseNorm_le_of_sq_le
++  apply portPrivate_138057aa_morseNorm_le_of_sq_le
+@@ -1343 +1349 @@
+-  rw [morseNorm_sq_recombine hk (negPart hk y) (t • posPart hk y)]
++  rw [portPrivate_138057aa_morseNorm_sq_recombine hk (negPart hk y) (t • posPart hk y)]
+@@ -1345 +1351 @@
+-  rw [morseNorm_sq_recombine hk (negPart hk y) (posPart hk y)]
++  rw [portPrivate_138057aa_morseNorm_sq_recombine hk (negPart hk y) (posPart hk y)]
+@@ -2046 +2052 @@
+-private lemma scalar_aux {x b : ℝ} (hx : 0 < x) (hb : b ≠ 0) (hs : Real.sqrt x ≠ 0) :
++lemma portPrivate_138057aa_scalar_aux {x b : ℝ} (hx : 0 < x) (hb : b ≠ 0) (hs : Real.sqrt x ≠ 0) :
+@@ -2104 +2110 @@
+-    exact scalar_aux harg_pos hpnz hsqrt_ne
++    exact portPrivate_138057aa_scalar_aux harg_pos hpnz hsqrt_ne
+@@ -2817 +2823 @@
+-private theorem one_le_sqrt_add_sq_div_smoothCap {ε r δ t : ℝ} (hε : 0 ≤ ε)
++theorem portPrivate_138057aa_one_le_sqrt_add_sq_div_smoothCap {ε r δ t : ℝ} (hε : 0 ≤ ε)
+@@ -3450 +3456 @@
+-    one_le_sqrt_add_sq_div_smoothCap (le_of_lt hε) hδ hδr (sq_nonneg _)
++    portPrivate_138057aa_one_le_sqrt_add_sq_div_smoothCap (le_of_lt hε) hδ hδr (sq_nonneg _)
+@@ -3480 +3486 @@
+-        simpa only [mul_assoc] using one_add_sub_one_mul_sq_le hU hβ01
++        simpa only [mul_assoc] using portPrivate_138057aa_one_add_sub_one_mul_sq_le hU hβ01
+@@ -3489 +3495 @@
+-      simpa only [mul_assoc] using (one_add_sub_one_mul_mem_Icc hU hβ01).1
++      simpa only [mul_assoc] using (portPrivate_138057aa_one_add_sub_one_mul_mem_Icc hU hβ01).1
+@@ -3563 +3569 @@
+-    one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
++    portPrivate_138057aa_one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
+@@ -3580 +3586 @@
+-      simpa only [mul_assoc] using (one_add_sub_one_mul_mem_Icc hU hβ01).1
++      simpa only [mul_assoc] using (portPrivate_138057aa_one_add_sub_one_mul_mem_Icc hU hβ01).1
+@@ -3597 +3603 @@
+-        simpa only [mul_assoc] using one_add_sub_one_mul_sq_le hU hβ01
++        simpa only [mul_assoc] using portPrivate_138057aa_one_add_sub_one_mul_sq_le hU hβ01
+@@ -3828 +3834 @@
+-    one_le_sqrt_add_sq_div_smoothCap (le_of_lt hε) hδ hδr (sq_nonneg _)
++    portPrivate_138057aa_one_le_sqrt_add_sq_div_smoothCap (le_of_lt hε) hδ hδr (sq_nonneg _)
+@@ -3835 +3841 @@
+-    exact (one_add_sub_one_mul_mem_Icc hU hσ01).1
++    exact (portPrivate_138057aa_one_add_sub_one_mul_mem_Icc hU hσ01).1
+@@ -3861 +3867 @@
+-        exact le_trans (one_add_sub_one_mul_sq_le hU hσ01) (le_of_eq hsqrt)
++        exact le_trans (portPrivate_138057aa_one_add_sub_one_mul_sq_le hU hσ01) (le_of_eq hsqrt)
+@@ -3884 +3890 @@
+-    one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
++    portPrivate_138057aa_one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
+@@ -3891 +3897 @@
+-    exact (one_add_sub_one_mul_mem_Icc hU hσ01).1
++    exact (portPrivate_138057aa_one_add_sub_one_mul_mem_Icc hU hσ01).1
+@@ -3930 +3936 @@
+-    exact le_trans (one_add_sub_one_mul_sq_le hU hσ01) (le_trans (le_of_eq hsqrt) hU2)
++    exact le_trans (portPrivate_138057aa_one_add_sub_one_mul_sq_le hU hσ01) (le_trans (le_of_eq hsqrt) hU2)
+@@ -3974 +3980 @@
+-    exact one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
++    exact portPrivate_138057aa_one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
+@@ -4036 +4042 @@
+-      one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
++      portPrivate_138057aa_one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
+@@ -4105 +4111 @@
+-    one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
++    portPrivate_138057aa_one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
+@@ -4419 +4425 @@
+-    one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
++    portPrivate_138057aa_one_le_sqrt_add_sq_div_smoothCap hε hδ hδr (sq_nonneg _)
+@@ -4440 +4446 @@
+-    simpa only [mul_assoc] using (one_add_sub_one_mul_mem_Icc hU hσβ01).1
++    simpa only [mul_assoc] using (portPrivate_138057aa_one_add_sub_one_mul_mem_Icc hU hσβ01).1
+@@ -4461 +4467 @@
+-      exact (one_add_sub_one_mul_mem_Icc hU hσ01).1
++      exact (portPrivate_138057aa_one_add_sub_one_mul_mem_Icc hU hσ01).1
+@@ -5423 +5429 @@
+-private noncomputable def ballCellAttachmentMapC {n k : ℕ} (hk : k ≤ n) (c ε R : ℝ) (hε : 0 < ε) :
++noncomputable def portPrivate_138057aa_ballCellAttachmentMapC {n k : ℕ} (hk : k ≤ n) (c ε R : ℝ) (hε : 0 < ε) :
+@@ -5427 +5433 @@
+-private noncomputable def ballCellAttachmentInclusionC {n k : ℕ} (hk : k ≤ n) (c ε R : ℝ) (hε : 0 ≤ ε)
++noncomputable def portPrivate_138057aa_ballCellAttachmentInclusionC {n k : ℕ} (hk : k ≤ n) (c ε R : ℝ) (hε : 0 ≤ ε)
+@@ -5434,2 +5440,2 @@
+-      ((ballCellAttachmentInclusionC hk c ε R (le_of_lt hε) hR).comp
+-        (ballCellAttachmentMapC hk c ε R hε))
++      ((portPrivate_138057aa_ballCellAttachmentInclusionC hk c ε R (le_of_lt hε) hR).comp
++        (portPrivate_138057aa_ballCellAttachmentMapC hk c ε R hε))
+@@ -5449,2 +5455,2 @@
+-      ((ballCellAttachmentMapC hk c ε R hε).comp
+-        (ballCellAttachmentInclusionC hk c ε R (le_of_lt hε) hR))
++      ((portPrivate_138057aa_ballCellAttachmentMapC hk c ε R hε).comp
++        (portPrivate_138057aa_ballCellAttachmentInclusionC hk c ε R (le_of_lt hε) hR))
+@@ -5464,2 +5470,2 @@
+-  toFun := ballCellAttachmentMapC hk c ε R hε
+-  invFun := ballCellAttachmentInclusionC hk c ε R (le_of_lt hε) hR
++  toFun := portPrivate_138057aa_ballCellAttachmentMapC hk c ε R hε
++  invFun := portPrivate_138057aa_ballCellAttachmentInclusionC hk c ε R (le_of_lt hε) hR
+@@ -5921 +5927 @@
+-private lemma sqrt_div_mul_sqrt_div (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
++lemma portPrivate_138057aa_sqrt_div_mul_sqrt_div (a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
+@@ -5955 +5961 @@
+-          rw [sqrt_div_mul_sqrt_div sc B hsc hB]
++          rw [portPrivate_138057aa_sqrt_div_mul_sqrt_div sc B hsc hB]
+@@ -5981 +5987 @@
+-          rw [sqrt_div_mul_sqrt_div B sc hB hsc]
++          rw [portPrivate_138057aa_sqrt_div_mul_sqrt_div B sc hB hsc]
+@@ -7139 +7145 @@
+-private theorem smoothCap_eq_rSq_of_vertex {ε r δ : ℝ} :
++theorem portPrivate_138057aa_smoothCap_eq_rSq_of_vertex {ε r δ : ℝ} :
+@@ -7144 +7150 @@
+-private theorem modelRoundScale_eq_one_of_vertex {ε r δ θ : ℝ} (hθ : 0 < θ) (hr : r ≠ 0) :
++theorem portPrivate_138057aa_modelRoundScale_eq_one_of_vertex {ε r δ θ : ℝ} (hθ : 0 < θ) (hr : r ≠ 0) :
+@@ -7153 +7159 @@
+-    rw [smoothCap_eq_rSq_of_vertex]
++    rw [portPrivate_138057aa_smoothCap_eq_rSq_of_vertex]
+@@ -7162 +7168 @@
+-private theorem modelLowerRoundBound_eq_rSq_of_vertex {ε r δ θ : ℝ} (hθ : 0 < θ) (hr : r ≠ 0) :
++theorem portPrivate_138057aa_modelLowerRoundBound_eq_rSq_of_vertex {ε r δ θ : ℝ} (hθ : 0 < θ) (hr : r ≠ 0) :
+@@ -7165 +7171 @@
+-  rw [modelRoundScale_eq_one_of_vertex hθ hr]
++  rw [portPrivate_138057aa_modelRoundScale_eq_one_of_vertex hθ hr]
+@@ -7197 +7203 @@
+-    rw [smoothCap_eq_rSq_of_vertex, modelLowerRoundBound_eq_rSq_of_vertex hθ hr]
++    rw [portPrivate_138057aa_smoothCap_eq_rSq_of_vertex, portPrivate_138057aa_modelLowerRoundBound_eq_rSq_of_vertex hθ hr]
+@@ -7243 +7249 @@
+-private theorem modelRoundCapInterp_denom_eq {ε r a b : ℝ} (hB : b * r ^ 2 + 2 * ε ≠ 0) :
++theorem portPrivate_138057aa_modelRoundCapInterp_denom_eq {ε r a b : ℝ} (hB : b * r ^ 2 + 2 * ε ≠ 0) :
+@@ -7287 +7293 @@
+-      exact modelRoundCapInterp_denom_eq (ε := ε) (r := r) (a := a) (b := b) hB'
++      exact portPrivate_138057aa_modelRoundCapInterp_denom_eq (ε := ε) (r := r) (a := a) (b := b) hB'
+@@ -8859 +8865 @@
+-        simpa [add_comm] using (modelLowerRoundBound_eq_rSq_of_vertex (ε := ε) (r := r) (δ := δ)
++        simpa [add_comm] using (portPrivate_138057aa_modelLowerRoundBound_eq_rSq_of_vertex (ε := ε) (r := r) (δ := δ)
+@@ -8862 +8868 @@
+-        simpa [add_comm] using (smoothCap_eq_rSq_of_vertex (ε := ε) (r := r) (δ := δ) :
++        simpa [add_comm] using (portPrivate_138057aa_smoothCap_eq_rSq_of_vertex (ε := ε) (r := r) (δ := δ) :
+@@ -10184 +10190 @@
+-private theorem contDiffOn_recombine_handle {n k : ℕ} (hk : k ≤ n)
++theorem portPrivate_138057aa_contDiffOn_recombine_handle {n k : ℕ} (hk : k ≤ n)
+@@ -10324 +10330 @@
+-    have hraw := contDiffOn_recombine_handle hk (S ∩ S_pos)
++    have hraw := portPrivate_138057aa_contDiffOn_recombine_handle hk (S ∩ S_pos)
+@@ -10354 +10360 @@
+-      contDiffOn_recombine_handle hk (S ∩ S_flat)
++      portPrivate_138057aa_contDiffOn_recombine_handle hk (S ∩ S_flat)
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/CancelFunction.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/CancelFunction.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowBack
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowBack
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/CancelIndexZero.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/CancelIndexZero.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.CancelFunction
+-import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelGoodExists
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.CancelFunction
++public import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelGoodExists
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/CancelPair.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/CancelPair.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Substrip
+-import DifferentialGeometry.Topology.Morse.Cancellation.CancelIndexZero
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Substrip
++public import DifferentialGeometry.Topology.Morse.Cancellation.CancelIndexZero
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/CancellingPair.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/CancellingPair.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.CancelPair
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.CancelPair
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossFieldArc.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossFieldArc.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldDynamics
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldDynamics
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossFieldBand.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossFieldBand.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldLift
+-import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.TransverseAscent
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldLift
++public import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.TransverseAscent
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossFieldDefs.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossFieldDefs.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.CancellingPair
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.CancellingPair
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossFieldDynamics.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossFieldDynamics.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldDefs
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldDefs
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossFieldLift.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossFieldLift.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldArc
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldArc
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossingField.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossingField.lean
+@@ -1,3 +1,7 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldDefs
+-import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossingFlow
+-import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldBand
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldDefs
++public import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossingFlow
++public import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossFieldBand
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossingFlow.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/CrossingFlow.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.CancelFunction
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.CancelFunction
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/TransverseAscent.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Crossing/TransverseAscent.lean
+@@ -1,3 +1,7 @@
+-import Mathlib.Analysis.Calculus.MeanValue
+-import Mathlib.Analysis.InnerProductSpace.Calculus
+-import Mathlib.Geometry.Manifold.Notation
++module
++
++public import Mathlib.Analysis.Calculus.MeanValue
++public import Mathlib.Analysis.InnerProductSpace.Calculus
++public import Mathlib.Geometry.Manifold.Notation
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/FirstCancellation.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/FirstCancellation.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossingField
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossingField
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlow.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlow.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Setup.CancelField
+-import Mathlib.Dynamics.OmegaLimit
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Setup.CancelField
++public import Mathlib.Dynamics.OmegaLimit
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowBack.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowBack.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowExit
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowExit
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowExit.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowExit.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowQ2
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowQ2
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowP.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowP.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelGood
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelGood
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowQ.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowQ.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowP
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowP
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowQ2.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowQ2.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowQ
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowQ
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowTools.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelFlowTools.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlow
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlow
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelGood.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelGood.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowTools
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelFlowTools
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelGoodExists.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Flow/CancelGoodExists.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelGood
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Flow.CancelGood
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Setup/Bridge.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Setup/Bridge.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Terminal
+-import DifferentialGeometry.Topology.Morse.Rearrangement.EqualIndexPosition
+-import DifferentialGeometry.Topology.Morse.Strip.StripConnected
+-import Mathlib.Analysis.Normed.Module.Connected
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Terminal
++public import DifferentialGeometry.Topology.Morse.Rearrangement.EqualIndexPosition
++public import DifferentialGeometry.Topology.Morse.Strip.StripConnected
++public import Mathlib.Analysis.Normed.Module.Connected
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Setup/CancelField.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Setup/CancelField.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Setup.CancelTransverse
+-import DifferentialGeometry.Topology.Morse.Cancellation.Setup.CancelModel
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Setup.CancelTransverse
++public import DifferentialGeometry.Topology.Morse.Cancellation.Setup.CancelModel
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Setup/CancelModel.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Setup/CancelModel.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Substrip
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Substrip
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Setup/CancelSetup.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Setup/CancelSetup.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Substrip
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Substrip
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Setup/CancelTransverse.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Setup/CancelTransverse.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Setup.CancelSetup
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Setup.CancelSetup
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Cancellation/Setup/Isolate.lean
++++ b/DifferentialGeometry/Topology/Morse/Cancellation/Setup/Isolate.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Setup.Bridge
+-import DifferentialGeometry.Topology.Morse.Rearrangement.Rearrange
+-import DifferentialGeometry.Topology.Morse.Rearrangement.Swap
+-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Setup.Bridge
++public import DifferentialGeometry.Topology.Morse.Rearrangement.Rearrange
++public import DifferentialGeometry.Topology.Morse.Rearrangement.Swap
++public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
++
++@[expose] public section
+@@ -1372 +1376 @@
+-private theorem exists_small_cancellation_scale (n : ℕ) {ε a b : ℝ}
++theorem portPrivate_12a41ca5_exists_small_cancellation_scale (n : ℕ) {ε a b : ℝ}
+@@ -1476 +1480 @@
+-    exists_small_cancellation_scale n hε (D.rm_pos p hp) (hρpos q hq)
++    portPrivate_12a41ca5_exists_small_cancellation_scale n hε (D.rm_pos p hp) (hρpos q hq)
+--- a/DifferentialGeometry/Topology/Morse/CriticalPoint.lean
++++ b/DifferentialGeometry/Topology/Morse/CriticalPoint.lean
+@@ -1,3 +1,8 @@
+-import DifferentialGeometry.Topology.Manifold.OpenSubtype
+-import DifferentialGeometry.Topology.Morse.Defs
+-import Mathlib.Geometry.Manifold.LocalDiffeomorph
++module
++
++public import DifferentialGeometry.Topology.Manifold.OpenSubtype
++public import DifferentialGeometry.Topology.Morse.Defs
++public import Mathlib.Geometry.Manifold.LocalDiffeomorph
++import all Mathlib.Geometry.Manifold.LocalDiffeomorph
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Defs.lean
++++ b/DifferentialGeometry/Topology/Morse/Defs.lean
+@@ -1,4 +1,8 @@
+-import Mathlib.Geometry.Manifold.MFDeriv.Basic
+-import Mathlib.LinearAlgebra.QuadraticForm.Basic
+-import Mathlib.LinearAlgebra.QuadraticForm.Signature
+-import Mathlib.Topology.ContinuousMap.Basic
++module
++
++public import Mathlib.Geometry.Manifold.MFDeriv.Basic
++public import Mathlib.LinearAlgebra.QuadraticForm.Basic
++public import Mathlib.LinearAlgebra.QuadraticForm.Signature
++public import Mathlib.Topology.ContinuousMap.Basic
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/IndexOne.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/IndexOne.lean
+@@ -1,3 +1,7 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.FirstCancellation
+-import DifferentialGeometry.Topology.Morse.Rearrangement.SelfIndexing
+-import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerIsolate
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.FirstCancellation
++public import DifferentialGeometry.Topology.Morse.Rearrangement.SelfIndexing
++public import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerIsolate
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/LowHandles.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/LowHandles.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.CancelPair
+-import DifferentialGeometry.Topology.Morse.Rearrangement.NegDual
+-import DifferentialGeometry.Topology.Morse.Rearrangement.DistinctSelfIndexing
+-import DifferentialGeometry.Topology.Morse.Handle.IndexOne
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.CancelPair
++public import DifferentialGeometry.Topology.Morse.Rearrangement.NegDual
++public import DifferentialGeometry.Topology.Morse.Rearrangement.DistinctSelfIndexing
++public import DifferentialGeometry.Topology.Morse.Handle.IndexOne
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Middle/Cancellation.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Middle/Cancellation.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Middle.Geometry.MiddleSlide
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Middle.Geometry.MiddleSlide
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Middle/Configuration/MiddleBlock.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Middle/Configuration/MiddleBlock.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Middle.Configuration.MiddleTransport
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Middle.Configuration.MiddleTransport
++
++@[expose] public section
+@@ -290 +294 @@
+-private def stageInvIdx (D₀ D : GradientLikeStrip I f a b crit) (S : Finset M) (ε : ℝ) : Prop :=
++def portPrivate_3652466a_stageInvIdx (D₀ D : GradientLikeStrip I f a b crit) (S : Finset M) (ε : ℝ) : Prop :=
+@@ -303 +307 @@
+-private theorem stageInvIdx.step (hf : ContMDiff I 𝓘(ℝ, ℝ) ∞ f) {D₀ : GradientLikeStrip I f a b crit}
++theorem portPrivate_3652466a_stageInvIdx.step (hf : ContMDiff I 𝓘(ℝ, ℝ) ∞ f) {D₀ : GradientLikeStrip I f a b crit}
+@@ -315,2 +319,2 @@
+-    {D : GradientLikeStrip I f a b crit} (hD : stageInvIdx D₀ D S' ε) :
+-    ∃ D' : GradientLikeStrip I f a b crit, stageInvIdx D₀ D' (insert p S') ε := by
++    {D : GradientLikeStrip I f a b crit} (hD : portPrivate_3652466a_stageInvIdx D₀ D S' ε) :
++    ∃ D' : GradientLikeStrip I f a b crit, portPrivate_3652466a_stageInvIdx D₀ D' (insert p S') ε := by
+@@ -511 +515 @@
+-private theorem exists_stageInvIdx_all (hf : ContMDiff I 𝓘(ℝ, ℝ) ∞ f) (D₀ : GradientLikeStrip I f a b crit)
++theorem portPrivate_3652466a_exists_stageInvIdx_all (hf : ContMDiff I 𝓘(ℝ, ℝ) ∞ f) (D₀ : GradientLikeStrip I f a b crit)
+@@ -521 +525 @@
+-      stageInvIdx D₀ D (crit.filter fun q => 1 ≤ morseIndex I f q) ε := by
++      portPrivate_3652466a_stageInvIdx D₀ D (crit.filter fun q => 1 ≤ morseIndex I f q) ε := by
+@@ -528 +532 @@
+-      ∃ D : GradientLikeStrip I f a b crit, stageInvIdx D₀ D S ε := by
++      ∃ D : GradientLikeStrip I f a b crit, portPrivate_3652466a_stageInvIdx D₀ D S ε := by
+@@ -569 +573 @@
+-      obtain ⟨D', hD'⟩ := stageInvIdx.step hf hε hgap hab hinj hmid hR hr₀ hrm hS'crit
++      obtain ⟨D', hD'⟩ := portPrivate_3652466a_stageInvIdx.step hf hε hgap hab hinj hmid hR hr₀ hrm hS'crit
+@@ -596 +600 @@
+-    exists_stageInvIdx_all hf D₀ hε hgap hab hinj hmid hR hr₀ hrm
++    portPrivate_3652466a_exists_stageInvIdx_all hf D₀ hε hgap hab hinj hmid hR hr₀ hrm
+@@ -675 +679 @@
+-  obtain ⟨D₁, hD1, hD2, hD3, hD4, hD5, hD6⟩ := GradientLikeStrip.exists_stageInvIdx_all hfs D₀ hε
++  obtain ⟨D₁, hD1, hD2, hD3, hD4, hD5, hD6⟩ := GradientLikeStrip.portPrivate_3652466a_exists_stageInvIdx_all hfs D₀ hε
+--- a/DifferentialGeometry/Topology/Morse/Handle/Middle/Configuration/MiddleSard.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Middle/Configuration/MiddleSard.lean
+@@ -1,13 +1,17 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossingField
+-import DifferentialGeometry.Topology.Morse.Rearrangement.EqualIndexPosition
+-import DifferentialGeometry.Topology.Morse.Cancellation.Setup.Isolate
+-import DifferentialGeometry.Topology.Homology.Spheres.SphereHomology
+-import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
+-import DifferentialGeometry.Topology.Homology.Naturality
+-import DifferentialGeometry.Topology.Homology.Relative.HomotopyInvariance
+-import DifferentialGeometry.Topology.Homology.MayerVietoris.OpenRelative
+-import DifferentialGeometry.Topology.Homology.Local.LocalHomology
+-import DifferentialGeometry.Topology.Manifold.GeneralPosition.GeneralPosition
+-import DifferentialGeometry.Topology.ClosedBall.UnitDisk
+-import DifferentialGeometry.Topology.Morse.Cancellation.FirstCancellation
+-import Mathlib.Topology.Instances.Matrix
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Crossing.CrossingField
++public import DifferentialGeometry.Topology.Morse.Rearrangement.EqualIndexPosition
++public import DifferentialGeometry.Topology.Morse.Cancellation.Setup.Isolate
++public import DifferentialGeometry.Topology.Homology.Spheres.SphereHomology
++public import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
++public import DifferentialGeometry.Topology.Homology.Naturality
++public import DifferentialGeometry.Topology.Homology.Relative.HomotopyInvariance
++public import DifferentialGeometry.Topology.Homology.MayerVietoris.OpenRelative
++public import DifferentialGeometry.Topology.Homology.Local.LocalHomology
++public import DifferentialGeometry.Topology.Manifold.GeneralPosition.GeneralPosition
++public import DifferentialGeometry.Topology.ClosedBall.UnitDisk
++public import DifferentialGeometry.Topology.Morse.Cancellation.FirstCancellation
++public import Mathlib.Topology.Instances.Matrix
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Middle/Configuration/MiddleTransport.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Middle/Configuration/MiddleTransport.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Middle.Configuration.MiddleSard
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Middle.Configuration.MiddleSard
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Middle/Geometry/MiddleLevels.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Middle/Geometry/MiddleLevels.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Middle.Homology.MiddleHandleHomology
+-import Mathlib.LinearAlgebra.Matrix.DotProduct
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Middle.Homology.MiddleHandleHomology
++public import Mathlib.LinearAlgebra.Matrix.DotProduct
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Middle/Geometry/MiddleSlide.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Middle/Geometry/MiddleSlide.lean
+@@ -1 +1,6 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Middle.Geometry.MiddleWhitney
++module
++
++public import Mathlib.Topology.Algebra.Order.Floor
++public import DifferentialGeometry.Topology.Morse.Handle.Middle.Geometry.MiddleWhitney
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Middle/Geometry/MiddleWhitney.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Middle/Geometry/MiddleWhitney.lean
+@@ -1,10 +1,15 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Middle.Geometry.MiddleLevels
+-import DifferentialGeometry.Topology.Morse.Handle.Partners.GeneralPosition
+-import Mathlib.Algebra.Order.Star.Real
+-import Mathlib.Analysis.Calculus.Deriv.Pi
+-import Mathlib.Analysis.Convex.GaugeRescale
+-import Mathlib.Analysis.Real.Pi.Bounds
+-import Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv
+-import Mathlib.Geometry.Manifold.Instances.Icc
+-import Mathlib.LinearAlgebra.Matrix.PosDef
+-import Mathlib.Topology.TietzeExtension
++module
++
++public import Mathlib.LinearAlgebra.Dimension.OrzechProperty
++public import DifferentialGeometry.Topology.Morse.Handle.Middle.Geometry.MiddleLevels
++public import DifferentialGeometry.Topology.Morse.Handle.Partners.GeneralPosition
++public import Mathlib.Algebra.Order.Star.Real
++public import Mathlib.Analysis.Calculus.Deriv.Pi
++public import Mathlib.Analysis.Convex.GaugeRescale
++public import Mathlib.Analysis.Real.Pi.Bounds
++public import Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv
++public import Mathlib.Geometry.Manifold.Instances.Icc
++public import Mathlib.LinearAlgebra.Matrix.PosDef
++public import Mathlib.Topology.TietzeExtension
++
++@[expose] public section
+@@ -11266 +11271 @@
+-private theorem exists_continuous_kernel_frame : ∀ {d r' s : ℕ} (K : Set (Fin d → ℝ)), IsCompact K → Convex ℝ K →
++theorem portPrivate_bdd04f55_exists_continuous_kernel_frame : ∀ {d r' s : ℕ} (K : Set (Fin d → ℝ)), IsCompact K → Convex ℝ K →
+@@ -11360 +11365 @@
+-private theorem linearIndependent_finCons_of_kernel_and_orthogonal : ∀ {N m' r : ℕ} (hN : N = m' + 1) (A : Matrix (Fin r) (Fin (n - 1)) ℝ)
++theorem portPrivate_bdd04f55_linearIndependent_finCons_of_kernel_and_orthogonal : ∀ {N m' r : ℕ} (hN : N = m' + 1) (A : Matrix (Fin r) (Fin (n - 1)) ℝ)
+@@ -11396 +11401 @@
+-private theorem linearIndependent_of_orthogonal_cons : ∀ {d N m' : ℕ} (hN : N = m' + 1) (h : Fin d → ℝ) (F : Fin m' → Fin d → ℝ)
++theorem portPrivate_bdd04f55_linearIndependent_of_orthogonal_cons : ∀ {d N m' : ℕ} (hN : N = m' + 1) (h : Fin d → ℝ) (F : Fin m' → Fin d → ℝ)
+@@ -11422 +11427 @@
+-private theorem sign_eq_of_continuousOn_nonzero : ∀ (φ : ℝ → ℝ) (a' b' : ℝ), a' ≤ b' → ContinuousOn φ (Icc a' b') →
++theorem portPrivate_bdd04f55_sign_eq_of_continuousOn_nonzero : ∀ (φ : ℝ → ℝ) (a' b' : ℝ), a' ≤ b' → ContinuousOn φ (Icc a' b') →
+@@ -11436 +11441 @@
+-private theorem sign_blockMat_mul_kernel_complement {ℓ k : ℕ} (hℓn : ℓ ≤ n - 1)
++theorem portPrivate_bdd04f55_sign_blockMat_mul_kernel_complement {ℓ k : ℕ} (hℓn : ℓ ≤ n - 1)
+@@ -11530 +11535 @@
+-private theorem mfderiv_comp_eq_zero_of_constant_path (ψ : (Fin 2 → ℝ) → M) : ∀ {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (G : M → F) (C : F)
++theorem portPrivate_bdd04f55_mfderiv_comp_eq_zero_of_constant_path (ψ : (Fin 2 → ℝ) → M) : ∀ {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (G : M → F) (C : F)
+@@ -11553 +11558 @@
+-private theorem continuousOn_mfderiv_apply_tangent_family : ∀ {r : ℕ} (G : M → EuclideanSpace ℝ (Fin r)) (O : Set M), IsOpen O →
++theorem portPrivate_bdd04f55_continuousOn_mfderiv_apply_tangent_family : ∀ {r : ℕ} (G : M → EuclideanSpace ℝ (Fin r)) (O : Set M), IsOpen O →
+@@ -11680 +11685 @@
+-    refine mfderiv_comp_eq_zero_of_constant_path Wd.ψ f c y (fun t => y + t • u) u ((hf.contMDiffAt).mdifferentiableAt (by simp))
++    refine portPrivate_bdd04f55_mfderiv_comp_eq_zero_of_constant_path Wd.ψ f c y (fun t => y + t • u) u ((hf.contMDiffAt).mdifferentiableAt (by simp))
+@@ -11756 +11761 @@
+-      continuousOn_mfderiv_apply_tangent_family G O hO hG S Wd.ψ (fun y => E y k) hSO ((hEc k).mono hS)
++      portPrivate_bdd04f55_continuousOn_mfderiv_apply_tangent_family G O hO hG S Wd.ψ (fun y => E y k) hSO ((hEc k).mono hS)
+@@ -11839 +11844 @@
+-    refine mfderiv_comp_eq_zero_of_constant_path Wd.ψ (D.leftCoord q hq ε) 0 y (fun t => y + t • Pi.single 0 1) _ (hLCd y hy)
++    refine portPrivate_bdd04f55_mfderiv_comp_eq_zero_of_constant_path Wd.ψ (D.leftCoord q hq ε) 0 y (fun t => y + t • Pi.single 0 1) _ (hLCd y hy)
+@@ -11881 +11886 @@
+-  obtain ⟨FL, hFLc, hFL⟩ := exists_continuous_kernel_frame (s := (D.chart q hq).k - 1 - 1) KD hKDcpt hKDcvx BL hBLc hBLs
++  obtain ⟨FL, hFLc, hFL⟩ := portPrivate_bdd04f55_exists_continuous_kernel_frame (s := (D.chart q hq).k - 1 - 1) KD hKDcpt hKDcvx BL hBLc hBLs
+@@ -11911 +11916 @@
+-    linearIndependent_finCons_of_kernel_and_orthogonal (m' := (D.chart q hq).k - 1 - 1) (by omega) (AL y) (T y 1) (T y 0) (FL y) (SL y)
++    portPrivate_bdd04f55_linearIndependent_finCons_of_kernel_and_orthogonal (m' := (D.chart q hq).k - 1 - 1) (by omega) (AL y) (T y 1) (T y 0) (FL y) (SL y)
+@@ -11953 +11958 @@
+-    refine mfderiv_comp_eq_zero_of_constant_path Wd.ψ (D.rightCoord p hp ε) 0 y γ _ (hRCd y hy) (hψd y (hKAW y hy)) hγ0 ?_ ?_
++    refine portPrivate_bdd04f55_mfderiv_comp_eq_zero_of_constant_path Wd.ψ (D.rightCoord p hp ε) 0 y γ _ (hRCd y hy) (hψd y (hKAW y hy)) hγ0 ?_ ?_
+@@ -12061 +12066 @@
+-  obtain ⟨FR, hFRc, hFR⟩ := exists_continuous_kernel_frame (s := n - 1 - ℓ - 1) KΘ hKΘcpt hKΘcvx BR hBRc hBRs (by omega)
++  obtain ⟨FR, hFRc, hFR⟩ := portPrivate_bdd04f55_exists_continuous_kernel_frame (s := n - 1 - ℓ - 1) KΘ hKΘcpt hKΘcvx BR hBRc hBRs (by omega)
+@@ -12097 +12102 @@
+-    linearIndependent_finCons_of_kernel_and_orthogonal (m' := n - 1 - ℓ - 1) (by omega) (AR y) (rad y) (hd y) (FR (ϑ y)) (SR y)
++    portPrivate_bdd04f55_linearIndependent_finCons_of_kernel_and_orthogonal (m' := n - 1 - ℓ - 1) (by omega) (AR y) (rad y) (hd y) (FR (ϑ y)) (SR y)
+@@ -12371 +12376 @@
+-      linearIndependent_of_orthogonal_cons (m' := ℓ) hkq w u (Umat w u).col (fun i => by
++      portPrivate_bdd04f55_linearIndependent_of_orthogonal_cons (m' := ℓ) hkq w u (Umat w u).col (fun i => by
+@@ -12427 +12432 @@
+-    exact sign_eq_of_continuousOn_nonzero (fun t => (Omat ![t, 0]).det) (-1) 1 (by norm_num)
++    exact portPrivate_bdd04f55_sign_eq_of_continuousOn_nonzero (fun t => (Omat ![t, 0]).det) (-1) 1 (by norm_num)
+@@ -12654 +12659 @@
+-    have h := sign_eq_of_continuousOn_nonzero (fun t => (Nmat (ζ (fun _ => t))).det) 0 Real.pi Real.pi_pos.le
++    have h := portPrivate_bdd04f55_sign_eq_of_continuousOn_nonzero (fun t => (Nmat (ζ (fun _ => t))).det) 0 Real.pi Real.pi_pos.le
+@@ -12665 +12670 @@
+-    exact sign_blockMat_mul_kernel_complement (by omega) hkp (AR y) (SL y) (SR y)
++    exact portPrivate_bdd04f55_sign_blockMat_mul_kernel_complement (by omega) hkp (AR y) (SL y) (SR y)
+--- a/DifferentialGeometry/Topology/Morse/Handle/Middle/Homology/MiddleHandleHomology.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Middle/Homology/MiddleHandleHomology.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Middle.Homology.MiddleHomology
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Middle.Homology.MiddleHomology
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Middle/Homology/MiddleHomology.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Middle/Homology/MiddleHomology.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Middle.Configuration.MiddleBlock
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Middle.Configuration.MiddleBlock
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Middle/MiddleStep.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Middle/MiddleStep.lean
+@@ -1,3 +1,7 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.FirstCancellation
+-import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
+-import DifferentialGeometry.Topology.Morse.Handle.Middle.Cancellation
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.FirstCancellation
++public import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
++public import DifferentialGeometry.Topology.Morse.Handle.Middle.Cancellation
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/MiddleHandles.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/MiddleHandles.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Defs
+-import DifferentialGeometry.Topology.Morse.Strip.RegularInterval
+-import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
+-import DifferentialGeometry.Topology.Morse.Handle.Middle.MiddleStep
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Defs
++public import DifferentialGeometry.Topology.Morse.Strip.RegularInterval
++public import DifferentialGeometry.Topology.Homology.Relative.PairVanishing
++public import DifferentialGeometry.Topology.Morse.Handle.Middle.MiddleStep
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Partners/GeneralPosition.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Partners/GeneralPosition.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerMove
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerMove
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerBirth.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerBirth.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerPi1
+-import Mathlib.Geometry.Manifold.Instances.Icc
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerPi1
++public import Mathlib.Geometry.Manifold.Instances.Icc
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerCircle.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerCircle.lean
+@@ -1,2 +1,7 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Partners.GeneralPosition
+-import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
++module
++
++public import Mathlib.Topology.Algebra.Order.Floor
++public import DifferentialGeometry.Topology.Morse.Handle.Partners.GeneralPosition
++public import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerDefs.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerDefs.lean
+@@ -1,9 +1,13 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.FirstCancellation
+-import DifferentialGeometry.Topology.Morse.Rearrangement.SelfIndexing
+-import DifferentialGeometry.Topology.Morse.Cancellation.Setup.Isolate
+-import DifferentialGeometry.Topology.Morse.Strip.Terminal
+-import DifferentialGeometry.Topology.Morse.Rearrangement.EqualIndexPosition
+-import DifferentialGeometry.Topology.Morse.Rearrangement.DistinctSelfIndexing
+-import DifferentialGeometry.Topology.Morse.Cancellation.Setup.Bridge
+-import DifferentialGeometry.Topology.Morse.Strip.Substrip
+-import DifferentialGeometry.Topology.Manifold.GeneralPosition.GeneralPosition
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.FirstCancellation
++public import DifferentialGeometry.Topology.Morse.Rearrangement.SelfIndexing
++public import DifferentialGeometry.Topology.Morse.Cancellation.Setup.Isolate
++public import DifferentialGeometry.Topology.Morse.Strip.Terminal
++public import DifferentialGeometry.Topology.Morse.Rearrangement.EqualIndexPosition
++public import DifferentialGeometry.Topology.Morse.Rearrangement.DistinctSelfIndexing
++public import DifferentialGeometry.Topology.Morse.Cancellation.Setup.Bridge
++public import DifferentialGeometry.Topology.Morse.Strip.Substrip
++public import DifferentialGeometry.Topology.Manifold.GeneralPosition.GeneralPosition
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerIsolate.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerIsolate.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerBirth
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerBirth
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerMove.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerMove.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerSard
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerSard
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerPi1.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerPi1.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerCircle
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerCircle
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerSard.lean
++++ b/DifferentialGeometry/Topology/Morse/Handle/Partners/PartnerSard.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerDefs
++module
++
++public import DifferentialGeometry.Topology.Morse.Handle.Partners.PartnerDefs
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/NormalForm/Euclidean.lean
++++ b/DifferentialGeometry/Topology/Morse/NormalForm/Euclidean.lean
+@@ -1,5 +1,9 @@
+-import DifferentialGeometry.Topology.Morse.NormalForm.Local
+-import DifferentialGeometry.Analysis.Calculus.SmoothExtension.Local
+-import Mathlib.Analysis.Calculus.ContDiff.Comp
+-import Mathlib.Analysis.Calculus.FDeriv.CompCLM
+-import Mathlib.Analysis.Calculus.InverseFunctionTheorem.ContDiff
++module
++
++public import DifferentialGeometry.Topology.Morse.NormalForm.Local
++public import DifferentialGeometry.Analysis.Calculus.SmoothExtension.Local
++public import Mathlib.Analysis.Calculus.ContDiff.Comp
++public import Mathlib.Analysis.Calculus.FDeriv.CompCLM
++public import Mathlib.Analysis.Calculus.InverseFunctionTheorem.ContDiff
++
++@[expose] public section
+@@ -1844 +1848 @@
+-private theorem contDiffOn_symm_of_contDiffOn
++theorem portPrivate_e0822189_contDiffOn_symm_of_contDiffOn
+@@ -1955 +1959 @@
+-    refine contDiffOn_symm_of_contDiffOn φ₁ ?_ ?_
++    refine portPrivate_e0822189_contDiffOn_symm_of_contDiffOn φ₁ ?_ ?_
+@@ -2245 +2249 @@
+-    refine contDiffOn_symm_of_contDiffOn Φ ?_ ?_
++    refine portPrivate_e0822189_contDiffOn_symm_of_contDiffOn Φ ?_ ?_
+--- a/DifferentialGeometry/Topology/Morse/NormalForm/Local.lean
++++ b/DifferentialGeometry/Topology/Morse/NormalForm/Local.lean
+@@ -1,23 +1,27 @@
+-import DifferentialGeometry.Topology.Morse.Defs
+-import DifferentialGeometry.Analysis.Calculus.Taylor
+-import Mathlib.Analysis.Calculus.FDeriv.Comp
+-import Mathlib.Analysis.Calculus.FDeriv.Mul
+-import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+-import Mathlib.Analysis.Calculus.BumpFunction.Basic
+-import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
+-import Mathlib.Analysis.Calculus.Deriv.Abs
+-import Mathlib.Analysis.Calculus.InverseFunctionTheorem.ContDiff
+-import Mathlib.Analysis.Calculus.ParametricIntegral
+-import Mathlib.Analysis.Normed.MulAction
+-import Mathlib.Analysis.Normed.Operator.Basic
+-import Mathlib.Analysis.Normed.Operator.Prod
+-import Mathlib.Analysis.Normed.Operator.NormedSpace
+-import Mathlib.Analysis.InnerProductSpace.EuclideanDist
+-import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
+-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+-import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+-import Mathlib.Analysis.SpecialFunctions.Sqrt
+-import Mathlib.Basic.Sign.Basic
+-import Mathlib.LinearAlgebra.QuadraticForm.Real
+-import Mathlib.LinearAlgebra.QuadraticForm.Signature
+-import DifferentialGeometry.Analysis.Calculus.Derivative.ParametricIntervalIntegral
++module
++
++public import DifferentialGeometry.Topology.Morse.Defs
++public import DifferentialGeometry.Analysis.Calculus.Taylor
++public import Mathlib.Analysis.Calculus.FDeriv.Comp
++public import Mathlib.Analysis.Calculus.FDeriv.Mul
++public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
++public import Mathlib.Analysis.Calculus.BumpFunction.Basic
++public import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
++public import Mathlib.Analysis.Calculus.Deriv.Abs
++public import Mathlib.Analysis.Calculus.InverseFunctionTheorem.ContDiff
++public import Mathlib.Analysis.Calculus.ParametricIntegral
++public import Mathlib.Analysis.Normed.MulAction
++public import Mathlib.Analysis.Normed.Operator.Basic
++public import Mathlib.Analysis.Normed.Operator.Prod
++public import Mathlib.Analysis.Normed.Operator.NormedSpace
++public import Mathlib.Analysis.InnerProductSpace.EuclideanDist
++public import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
++public import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
++public import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
++public import Mathlib.Analysis.SpecialFunctions.Sqrt
++public import Mathlib.Basic.Sign.Basic
++public import Mathlib.LinearAlgebra.QuadraticForm.Real
++public import Mathlib.LinearAlgebra.QuadraticForm.Signature
++public import DifferentialGeometry.Analysis.Calculus.Derivative.ParametricIntervalIntegral
++
++@[expose] public section
+@@ -55 +59 @@
+-private theorem continuousOn_morseTaylorIntegrand (g : E → ℝ) (hg : ContDiff ℝ 2 g) (x : E) :
++theorem portPrivate_846ebadb_continuousOn_morseTaylorIntegrand (g : E → ℝ) (hg : ContDiff ℝ 2 g) (x : E) :
+@@ -81 +85 @@
+-      ((continuousOn_morseTaylorIntegrand g hg x).mono (by intro t ht; exact Set.mem_univ t))
++      ((portPrivate_846ebadb_continuousOn_morseTaylorIntegrand g hg x).mono (by intro t ht; exact Set.mem_univ t))
+@@ -84 +88 @@
+-      continuousOn_morseTaylorIntegrand g hg x
++      portPrivate_846ebadb_continuousOn_morseTaylorIntegrand g hg x
+@@ -1025 +1029 @@
+-private theorem hasFDerivAt_third_morse (g : E → ℝ) (hg : ContDiff ℝ 3 g) (x : E) (t : ℝ) :
++theorem portPrivate_846ebadb_hasFDerivAt_third_morse (g : E → ℝ) (hg : ContDiff ℝ 3 g) (x : E) (t : ℝ) :
+@@ -1042 +1046 @@
+-private theorem continuousOn_morseTaylorDerivIntegrand (g : E → ℝ) (hg : ContDiff ℝ 3 g) (x : E) :
++theorem portPrivate_846ebadb_continuousOn_morseTaylorDerivIntegrand (g : E → ℝ) (hg : ContDiff ℝ 3 g) (x : E) :
+@@ -1082 +1086 @@
+-    exact continuousOn_univ.mp (continuousOn_morseTaylorIntegrand g hg2 x)
++    exact continuousOn_univ.mp (portPrivate_846ebadb_continuousOn_morseTaylorIntegrand g hg2 x)
+@@ -1085 +1089 @@
+-    exact continuousOn_univ.mp (continuousOn_morseTaylorDerivIntegrand g hg x)
++    exact continuousOn_univ.mp (portPrivate_846ebadb_continuousOn_morseTaylorDerivIntegrand g hg x)
+@@ -1093 +1097 @@
+-      ((continuousOn_morseTaylorIntegrand g (by
++      ((portPrivate_846ebadb_continuousOn_morseTaylorIntegrand g (by
+@@ -1187 +1191 @@
+-        hasFDerivAt_third_morse g hg x t
++        portPrivate_846ebadb_hasFDerivAt_third_morse g hg x t
+@@ -1409 +1413 @@
+-private theorem continuousOn_morseTaylorAtIntegrand (g : E → ℝ) (hg : ContDiff ℝ 2 g) (p : E × E) :
++theorem portPrivate_846ebadb_continuousOn_morseTaylorAtIntegrand (g : E → ℝ) (hg : ContDiff ℝ 2 g) (p : E × E) :
+@@ -1428 +1432 @@
+-private theorem continuousOn_morseTaylorAtDerivIntegrand (g : E → ℝ) (hg : ContDiff ℝ 3 g)
++theorem portPrivate_846ebadb_continuousOn_morseTaylorAtDerivIntegrand (g : E → ℝ) (hg : ContDiff ℝ 3 g)
+@@ -1476 +1480 @@
+-    exact continuousOn_univ.mp (continuousOn_morseTaylorAtIntegrand g hg2 p)
++    exact continuousOn_univ.mp (portPrivate_846ebadb_continuousOn_morseTaylorAtIntegrand g hg2 p)
+@@ -1479 +1483 @@
+-    exact continuousOn_univ.mp (continuousOn_morseTaylorAtDerivIntegrand g hg p)
++    exact continuousOn_univ.mp (portPrivate_846ebadb_continuousOn_morseTaylorAtDerivIntegrand g hg p)
+@@ -1487 +1491 @@
+-      ((continuousOn_morseTaylorAtIntegrand g (by
++      ((portPrivate_846ebadb_continuousOn_morseTaylorAtIntegrand g (by
+@@ -1720 +1724 @@
+-      ((continuousOn_morseTaylorIntegrand g hg x).mono (by intro t ht; exact Set.mem_univ t))
++      ((portPrivate_846ebadb_continuousOn_morseTaylorIntegrand g hg x).mono (by intro t ht; exact Set.mem_univ t))
+@@ -1725 +1729 @@
+-        continuousOn_morseTaylorIntegrand g hg x
++        portPrivate_846ebadb_continuousOn_morseTaylorIntegrand g hg x
+@@ -1753 +1757 @@
+-            continuousOn_morseTaylorIntegrand g hg x
++            portPrivate_846ebadb_continuousOn_morseTaylorIntegrand g hg x
+--- a/DifferentialGeometry/Topology/Morse/NormalForm/Manifold.lean
++++ b/DifferentialGeometry/Topology/Morse/NormalForm/Manifold.lean
+@@ -1,7 +1,11 @@
+-import DifferentialGeometry.Topology.Morse.NormalForm.Euclidean
+-import DifferentialGeometry.Topology.Morse.Attachment.ModelCell
+-import DifferentialGeometry.Analysis.Calculus.SmoothExtension.Local
+-import Mathlib.Analysis.Calculus.FDeriv.Comp
+-import Mathlib.Geometry.Manifold.MFDeriv.Atlas
+-import Mathlib.Geometry.Manifold.MFDeriv.NormedSpace
+-import Mathlib.LinearAlgebra.QuadraticForm.Real
++module
++
++public import DifferentialGeometry.Topology.Morse.NormalForm.Euclidean
++public import DifferentialGeometry.Topology.Morse.Attachment.ModelCell
++public import DifferentialGeometry.Analysis.Calculus.SmoothExtension.Local
++public import Mathlib.Analysis.Calculus.FDeriv.Comp
++public import Mathlib.Geometry.Manifold.MFDeriv.Atlas
++public import Mathlib.Geometry.Manifold.MFDeriv.NormedSpace
++public import Mathlib.LinearAlgebra.QuadraticForm.Real
++
++@[expose] public section
+@@ -22 +26 @@
+-private theorem fderiv_fderiv_translate_of_contDiffOn (g : E → ℝ) (c : E) (r : ℝ)
++theorem portPrivate_3bdbf777_fderiv_fderiv_translate_of_contDiffOn (g : E → ℝ) (c : E) (r : ℝ)
+@@ -49 +53 @@
+-private theorem hessian_linearPullback_at_critical {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
++theorem portPrivate_3bdbf777_hessian_linearPullback_at_critical {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+@@ -111 +115 @@
+-private theorem associated_weightedSumSquares_apply {n : ℕ} (w : Fin n → ℝ) (u v : Fin n → ℝ) :
++theorem portPrivate_3bdbf777_associated_weightedSumSquares_apply {n : ℕ} (w : Fin n → ℝ) (u v : Fin n → ℝ) :
+@@ -174 +178 @@
+-private theorem morseLemma {n : ℕ} {H : Type*} [TopologicalSpace H] {M : Type*} [TopologicalSpace M]
++theorem portPrivate_3bdbf777_morseLemma {n : ℕ} {H : Type*} [TopologicalSpace H] {M : Type*} [TopologicalSpace M]
+@@ -268 +272 @@
+-    have htr := fderiv_fderiv_translate_of_contDiffOn gp e r hr h2
++    have htr := portPrivate_3bdbf777_fderiv_fderiv_translate_of_contDiffOn gp e r hr h2
+@@ -334 +338 @@
+-    have hpb := hessian_linearPullback_at_critical g1 σ hg1₂ u v
++    have hpb := portPrivate_3bdbf777_hessian_linearPullback_at_critical g1 σ hg1₂ u v
+@@ -368 +372 @@
+-        have has := associated_weightedSumSquares_apply w' (τ' u) (τ' v)
++        have has := portPrivate_3bdbf777_associated_weightedSumSquares_apply w' (τ' u) (τ' v)
+@@ -583 +587 @@
+-    have htr := fderiv_fderiv_translate_of_contDiffOn gp e r hr h2
++    have htr := portPrivate_3bdbf777_fderiv_fderiv_translate_of_contDiffOn gp e r hr h2
+@@ -646 +650 @@
+-    have hpb := hessian_linearPullback_at_critical g1 σ hg1₂ u v
++    have hpb := portPrivate_3bdbf777_hessian_linearPullback_at_critical g1 σ hg1₂ u v
+@@ -680 +684 @@
+-        have has := associated_weightedSumSquares_apply w' (τ' u) (τ' v)
++        have has := portPrivate_3bdbf777_associated_weightedSumSquares_apply w' (τ' u) (τ' v)
+--- a/DifferentialGeometry/Topology/Morse/Rearrangement/DistinctSelfIndexing.lean
++++ b/DifferentialGeometry/Topology/Morse/Rearrangement/DistinctSelfIndexing.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Rearrangement.DistinctValues
++module
++
++public import DifferentialGeometry.Topology.Morse.Rearrangement.DistinctValues
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Rearrangement/DistinctValues.lean
++++ b/DifferentialGeometry/Topology/Morse/Rearrangement/DistinctValues.lean
+@@ -1,2 +1,7 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Foundations.CriticalFinite
+-import DifferentialGeometry.Topology.Morse.Rearrangement.MonotoneShift
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Foundations.CriticalFinite
++public import DifferentialGeometry.Topology.Morse.Rearrangement.MonotoneShift
++public import Mathlib.Geometry.Manifold.Algebra.Structures
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Rearrangement/EqualIndexPosition.lean
++++ b/DifferentialGeometry/Topology/Morse/Rearrangement/EqualIndexPosition.lean
+@@ -1,3 +1,7 @@
+-import DifferentialGeometry.Topology.Morse.Rearrangement.Transversality
+-import DifferentialGeometry.Topology.Morse.Strip.Terminal
+-import Mathlib.Topology.Algebra.Module.Cardinality
++module
++
++public import DifferentialGeometry.Topology.Morse.Rearrangement.Transversality
++public import DifferentialGeometry.Topology.Morse.Strip.Terminal
++public import Mathlib.Topology.Algebra.Module.Cardinality
++
++@[expose] public section
+@@ -610 +614 @@
+-private def stageInv (D₀ D : GradientLikeStrip I f a b crit) (crit₁ S : Finset M) (ε : ℝ) : Prop :=
++def portPrivate_1aa78447_stageInv (D₀ D : GradientLikeStrip I f a b crit) (crit₁ S : Finset M) (ε : ℝ) : Prop :=
+@@ -622 +626 @@
+-private structure StageSetup (D₀ : GradientLikeStrip I f a b crit) (crit₁ : Finset M) (ε : ℝ) : Prop where
++structure portPrivate_1aa78447_StageSetup (D₀ : GradientLikeStrip I f a b crit) (crit₁ : Finset M) (ε : ℝ) : Prop where
+@@ -636,2 +640,2 @@
+-private theorem stageInv.f_mem_of_mem_smallBall {D : GradientLikeStrip I f a b crit} {S : Finset M}
+-    (hS : StageSetup D₀ crit₁ ε) (hD : stageInv D₀ D crit₁ S ε) {q : M} {hq : q ∈ crit} {x : M}
++theorem portPrivate_1aa78447_stageInv.f_mem_of_mem_smallBall {D : GradientLikeStrip I f a b crit} {S : Finset M}
++    (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) (hD : portPrivate_1aa78447_stageInv D₀ D crit₁ S ε) {q : M} {hq : q ∈ crit} {x : M}
+@@ -646,2 +650,2 @@
+-private theorem stageInv.k_eq_one {D : GradientLikeStrip I f a b crit} {S : Finset M}
+-    (hS : StageSetup D₀ crit₁ ε) (_hD : stageInv D₀ D crit₁ S ε) {q : M} (hq₁ : q ∈ crit₁)
++theorem portPrivate_1aa78447_stageInv.k_eq_one {D : GradientLikeStrip I f a b crit} {S : Finset M}
++    (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) (_hD : portPrivate_1aa78447_stageInv D₀ D crit₁ S ε) {q : M} (hq₁ : q ∈ crit₁)
+@@ -651,2 +655,2 @@
+-private theorem stageInv.r₀_sq_lt {D : GradientLikeStrip I f a b crit} {S : Finset M}
+-    (hS : StageSetup D₀ crit₁ ε) (hD : stageInv D₀ D crit₁ S ε) (q : M) (hq : q ∈ crit) :
++theorem portPrivate_1aa78447_stageInv.r₀_sq_lt {D : GradientLikeStrip I f a b crit} {S : Finset M}
++    (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) (hD : portPrivate_1aa78447_stageInv D₀ D crit₁ S ε) (q : M) (hq : q ∈ crit) :
+@@ -656,2 +660,2 @@
+-private theorem stageInv.R_sq {D : GradientLikeStrip I f a b crit} {S : Finset M}
+-    (hS : StageSetup D₀ crit₁ ε) (hD : stageInv D₀ D crit₁ S ε) (q : M) (hq : q ∈ crit) :
++theorem portPrivate_1aa78447_stageInv.R_sq {D : GradientLikeStrip I f a b crit} {S : Finset M}
++    (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) (hD : portPrivate_1aa78447_stageInv D₀ D crit₁ S ε) (q : M) (hq : q ∈ crit) :
+@@ -661,2 +665,2 @@
+-private theorem stageInv.f_arm {D : GradientLikeStrip I f a b crit} {S : Finset M}
+-    (hS : StageSetup D₀ crit₁ ε) (hD : stageInv D₀ D crit₁ S ε) {q' : M} {hq' : q' ∈ crit}
++theorem portPrivate_1aa78447_stageInv.f_arm {D : GradientLikeStrip I f a b crit} {S : Finset M}
++    (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) (hD : portPrivate_1aa78447_stageInv D₀ D crit₁ S ε) {q' : M} {hq' : q' ∈ crit}
+@@ -668 +672 @@
+-private theorem stageInv.base (_hS : StageSetup D₀ crit₁ ε) : stageInv D₀ D₀ crit₁ ∅ ε :=
++theorem portPrivate_1aa78447_stageInv.base (_hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) : portPrivate_1aa78447_stageInv D₀ D₀ crit₁ ∅ ε :=
+@@ -814 +818 @@
+-private theorem stageInv.step (hS : StageSetup D₀ crit₁ ε) {S' : Finset M} (hS' : S' ⊆ crit₁)
++theorem portPrivate_1aa78447_stageInv.step (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) {S' : Finset M} (hS' : S' ⊆ crit₁)
+@@ -817,2 +821,2 @@
+-    (hD : stageInv D₀ D crit₁ S' ε) :
+-    ∃ D' : GradientLikeStrip I f a b crit, stageInv D₀ D' crit₁ (insert p S') ε := by
++    (hD : portPrivate_1aa78447_stageInv D₀ D crit₁ S' ε) :
++    ∃ D' : GradientLikeStrip I f a b crit, portPrivate_1aa78447_stageInv D₀ D' crit₁ (insert p S') ε := by
+@@ -1031,2 +1035,2 @@
+-private theorem exists_stageInv_all (hS : StageSetup D₀ crit₁ ε) :
+-    ∃ D : GradientLikeStrip I f a b crit, stageInv D₀ D crit₁ crit₁ ε := by
++theorem portPrivate_1aa78447_exists_stageInv_all (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) :
++    ∃ D : GradientLikeStrip I f a b crit, portPrivate_1aa78447_stageInv D₀ D crit₁ crit₁ ε := by
+@@ -1036 +1040 @@
+-      ∃ D : GradientLikeStrip I f a b crit, stageInv D₀ D crit₁ S ε := by
++      ∃ D : GradientLikeStrip I f a b crit, portPrivate_1aa78447_stageInv D₀ D crit₁ S ε := by
+@@ -1043 +1047 @@
+-      exact ⟨D₀, stageInv.base hS⟩
++      exact ⟨D₀, portPrivate_1aa78447_stageInv.base hS⟩
+@@ -1118,2 +1122,2 @@
+-private theorem stageInv.f_mem_of_mem_halfBall {D : GradientLikeStrip I f a b crit} {S : Finset M}
+-    (hS : StageSetup D₀ crit₁ ε) (hD : stageInv D₀ D crit₁ S ε) {m : M} {hm : m ∈ crit} {x : M}
++theorem portPrivate_1aa78447_stageInv.f_mem_of_mem_halfBall {D : GradientLikeStrip I f a b crit} {S : Finset M}
++    (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) (hD : portPrivate_1aa78447_stageInv D₀ D crit₁ S ε) {m : M} {hm : m ∈ crit} {x : M}
+@@ -1129,2 +1133,2 @@
+-private theorem stageInv.halfBall_subset_smallBall {D : GradientLikeStrip I f a b crit} {S : Finset M}
+-    (_hD : stageInv D₀ D crit₁ S ε) (m : M) (hm : m ∈ crit) :
++theorem portPrivate_1aa78447_stageInv.halfBall_subset_smallBall {D : GradientLikeStrip I f a b crit} {S : Finset M}
++    (_hD : portPrivate_1aa78447_stageInv D₀ D crit₁ S ε) (m : M) (hm : m ∈ crit) :
+@@ -1135,2 +1139,2 @@
+-theorem exists_pair_tube (hS : StageSetup D₀ crit₁ ε) {D : GradientLikeStrip I f a b crit}
+-    (hD : stageInv D₀ D crit₁ crit₁ ε) {q q' : M} (hq : q ∈ crit) (hq' : q' ∈ crit)
++theorem exists_pair_tube (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) {D : GradientLikeStrip I f a b crit}
++    (hD : portPrivate_1aa78447_stageInv D₀ D crit₁ crit₁ ε) {q q' : M} (hq : q ∈ crit) (hq' : q' ∈ crit)
+@@ -1224,2 +1228,2 @@
+-theorem exists_gradientLikeStrip_disjoint_tubes (hS : StageSetup D₀ crit₁ ε) {D : GradientLikeStrip I f a b crit}
+-    (hD : stageInv D₀ D crit₁ crit₁ ε) :
++theorem exists_gradientLikeStrip_disjoint_tubes (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) {D : GradientLikeStrip I f a b crit}
++    (hD : portPrivate_1aa78447_stageInv D₀ D crit₁ crit₁ ε) :
+@@ -1327 +1331 @@
+-theorem no_ball_of_tube_point (hS : StageSetup D₀ crit₁ ε) {E : GradientLikeStrip I f a b crit}
++theorem no_ball_of_tube_point (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) {E : GradientLikeStrip I f a b crit}
+@@ -1384 +1388 @@
+-theorem exists_allPairs_of_setup (hS : StageSetup D₀ crit₁ ε) :
++theorem exists_allPairs_of_setup (hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε) :
+@@ -1396 +1400 @@
+-  obtain ⟨D, hD⟩ := exists_stageInv_all hS
++  obtain ⟨D, hD⟩ := portPrivate_1aa78447_exists_stageInv_all hS
+@@ -1547 +1551 @@
+-  have hS : StageSetup D₀ crit₁ ε :=
++  have hS : portPrivate_1aa78447_StageSetup D₀ crit₁ ε :=
+--- a/DifferentialGeometry/Topology/Morse/Rearrangement/MonotoneShift.lean
++++ b/DifferentialGeometry/Topology/Morse/Rearrangement/MonotoneShift.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Foundations.RelativePerturbation
+-import Mathlib.Analysis.Calculus.BumpFunction.InnerProduct
+-import Mathlib.Analysis.Calculus.Deriv.MeanValue
+-import Mathlib.Analysis.Calculus.ContDiff.Deriv
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Foundations.RelativePerturbation
++public import Mathlib.Analysis.Calculus.BumpFunction.InnerProduct
++public import Mathlib.Analysis.Calculus.Deriv.MeanValue
++public import Mathlib.Analysis.Calculus.ContDiff.Deriv
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Rearrangement/NegDual.lean
++++ b/DifferentialGeometry/Topology/Morse/Rearrangement/NegDual.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Rearrangement.MonotoneShift
++module
++
++public import DifferentialGeometry.Topology.Morse.Rearrangement.MonotoneShift
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Rearrangement/Rearrange.lean
++++ b/DifferentialGeometry/Topology/Morse/Rearrangement/Rearrange.lean
+@@ -1,2 +1,7 @@
+-import DifferentialGeometry.Topology.Morse.Strip.TrajectoryCutoff
+-import DifferentialGeometry.Topology.Morse.Rearrangement.MonotoneShift
++module
++
++public import Mathlib.Geometry.Manifold.Algebra.Structures
++public import DifferentialGeometry.Topology.Morse.Strip.TrajectoryCutoff
++public import DifferentialGeometry.Topology.Morse.Rearrangement.MonotoneShift
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Rearrangement/SelfIndexing.lean
++++ b/DifferentialGeometry/Topology/Morse/Rearrangement/SelfIndexing.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Rearrangement.Swap
++module
++
++public import DifferentialGeometry.Topology.Morse.Rearrangement.Swap
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Rearrangement/Swap.lean
++++ b/DifferentialGeometry/Topology/Morse/Rearrangement/Swap.lean
+@@ -1,7 +1,11 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Foundations.CriticalFinite
+-import DifferentialGeometry.Topology.Morse.Rearrangement.DistinctValues
+-import DifferentialGeometry.Topology.Morse.Strip.Foundations.GradientLike
+-import DifferentialGeometry.Topology.Morse.Strip.StripFlow
+-import DifferentialGeometry.Topology.Morse.Strip.TrajectoryCutoff
+-import DifferentialGeometry.Topology.Morse.Rearrangement.Rearrange
+-import DifferentialGeometry.Topology.Morse.Rearrangement.Transversality
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Foundations.CriticalFinite
++public import DifferentialGeometry.Topology.Morse.Rearrangement.DistinctValues
++public import DifferentialGeometry.Topology.Morse.Strip.Foundations.GradientLike
++public import DifferentialGeometry.Topology.Morse.Strip.StripFlow
++public import DifferentialGeometry.Topology.Morse.Strip.TrajectoryCutoff
++public import DifferentialGeometry.Topology.Morse.Rearrangement.Rearrange
++public import DifferentialGeometry.Topology.Morse.Rearrangement.Transversality
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Rearrangement/Transversality.lean
++++ b/DifferentialGeometry/Topology/Morse/Rearrangement/Transversality.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Strip.StripFlow
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.StripFlow
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/RegularLevel/Flow.lean
++++ b/DifferentialGeometry/Topology/Morse/RegularLevel/Flow.lean
+@@ -1,5 +1,9 @@
+-import DifferentialGeometry.Analysis.ODE.Flow.IntegralCurveTransport
+-import DifferentialGeometry.Analysis.ODE.Flow.CompactSupport
+-import DifferentialGeometry.Topology.Morse.Defs
+-import DifferentialGeometry.Topology.Morse.NormalForm.Local
+-import Mathlib.Geometry.Manifold.Diffeomorph
++module
++
++public import DifferentialGeometry.Analysis.ODE.Flow.IntegralCurveTransport
++public import DifferentialGeometry.Analysis.ODE.Flow.CompactSupport
++public import DifferentialGeometry.Topology.Morse.Defs
++public import DifferentialGeometry.Topology.Morse.NormalForm.Local
++public import Mathlib.Geometry.Manifold.Diffeomorph
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/RegularLevel/NoCriticalValues.lean
++++ b/DifferentialGeometry/Topology/Morse/RegularLevel/NoCriticalValues.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Morse.RegularLevel.VectorField
+-import DifferentialGeometry.Topology.Morse.RegularLevel.Flow
+-import DifferentialGeometry.Analysis.ODE.Flow.CompactSupport
+-import Mathlib.Geometry.Manifold.Diffeomorph
++module
++
++public import DifferentialGeometry.Topology.Morse.RegularLevel.VectorField
++public import DifferentialGeometry.Topology.Morse.RegularLevel.Flow
++public import DifferentialGeometry.Analysis.ODE.Flow.CompactSupport
++public import Mathlib.Geometry.Manifold.Diffeomorph
++
++@[expose] public section
+@@ -384 +388 @@
+-        exact le_trans (by simpa [curveAt_zero v hcomplete y.1] using hrb.2)
++        exact le_trans (b := f y.1) (by simpa [curveAt_zero v hcomplete y.1] using hrb.2)
+--- a/DifferentialGeometry/Topology/Morse/RegularLevel/VectorField.lean
++++ b/DifferentialGeometry/Topology/Morse/RegularLevel/VectorField.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Morse.NormalForm.Manifold
+-import DifferentialGeometry.Bundle.TangentSpace
+-import Mathlib.Geometry.Manifold.PartitionOfUnity
+-import Mathlib.Geometry.Manifold.MFDeriv.Atlas
++module
++
++public import DifferentialGeometry.Topology.Morse.NormalForm.Manifold
++public import DifferentialGeometry.Bundle.TangentSpace
++public import Mathlib.Geometry.Manifold.PartitionOfUnity
++public import Mathlib.Geometry.Manifold.MFDeriv.Atlas
++
++@[expose] public section
+@@ -19 +23 @@
+-private theorem exists_vector_of_fderiv_ne_zero (g : E → ℝ) (y : E)
++theorem portPrivate_3bb32062_exists_vector_of_fderiv_ne_zero (g : E → ℝ) (y : E)
+@@ -28 +32 @@
+-private theorem chartRep_contDiffOn (I : ModelWithCorners ℝ E H)
++theorem portPrivate_3bb32062_chartRep_contDiffOn (I : ModelWithCorners ℝ E H)
+@@ -97 +101 @@
+-      (extChartAt I x₀).target := chartRep_contDiffOn I f hf x₀
++      (extChartAt I x₀).target := portPrivate_3bb32062_chartRep_contDiffOn I f hf x₀
+@@ -105 +109 @@
+-  rcases exists_vector_of_fderiv_ne_zero (fun y : E => f ((extChartAt I x₀).symm y))
++  rcases portPrivate_3bb32062_exists_vector_of_fderiv_ne_zero (fun y : E => f ((extChartAt I x₀).symm y))
+@@ -249 +253 @@
+-      (extChartAt I x₀).target := chartRep_contDiffOn I f hf x₀
++      (extChartAt I x₀).target := portPrivate_3bb32062_chartRep_contDiffOn I f hf x₀
+--- a/DifferentialGeometry/Topology/Morse/Strip/Defs.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/Defs.lean
+@@ -1,9 +1,13 @@
+-import DifferentialGeometry.Topology.Morse.Defs
+-import Mathlib.Geometry.Manifold.MFDeriv.Basic
+-import Mathlib.Geometry.Manifold.IsManifold.Basic
+-import Mathlib.Geometry.Manifold.ContMDiff.Defs
+-import Mathlib.Geometry.Manifold.Diffeomorph
+-import Mathlib.LinearAlgebra.QuadraticForm.Basic
+-import Mathlib.LinearAlgebra.QuadraticForm.Signature
+-import Mathlib.Topology.Homotopy.Equiv
+-import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
++module
++
++public import DifferentialGeometry.Topology.Morse.Defs
++public import Mathlib.Geometry.Manifold.MFDeriv.Basic
++public import Mathlib.Geometry.Manifold.IsManifold.Basic
++public import Mathlib.Geometry.Manifold.ContMDiff.Defs
++public import Mathlib.Geometry.Manifold.Diffeomorph
++public import Mathlib.LinearAlgebra.QuadraticForm.Basic
++public import Mathlib.LinearAlgebra.QuadraticForm.Signature
++public import Mathlib.Topology.Homotopy.Equiv
++public import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/Existence.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/Existence.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Defs
+-import DifferentialGeometry.Topology.Morse.Strip.Foundations.RelativePerturbation
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Defs
++public import DifferentialGeometry.Topology.Morse.Strip.Foundations.RelativePerturbation
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/Foundations/CriticalFinite.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/Foundations/CriticalFinite.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Foundations.RelativePerturbation
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Foundations.RelativePerturbation
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/Foundations/GradientLike.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/Foundations/GradientLike.lean
+@@ -1,3 +1,9 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Foundations.CriticalFinite
+-import DifferentialGeometry.Topology.Morse.Strip.Foundations.ModelField
+-import DifferentialGeometry.Topology.Morse.RegularLevel.VectorField
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Foundations.CriticalFinite
++public import DifferentialGeometry.Topology.Morse.Strip.Foundations.ModelField
++public import DifferentialGeometry.Topology.Morse.RegularLevel.VectorField
++public import Mathlib.LinearAlgebra.QuadraticForm.Signature
++import all Mathlib.LinearAlgebra.QuadraticForm.Signature
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/Foundations/ModelField.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/Foundations/ModelField.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Morse.Attachment.ModelCell
+-import Mathlib.Topology.MetricSpace.HausdorffDimension
+-import Mathlib.Analysis.SpecialFunctions.SmoothTransition
+-import Mathlib.Analysis.InnerProductSpace.Calculus
++module
++
++public import DifferentialGeometry.Topology.Morse.Attachment.ModelCell
++public import Mathlib.Topology.MetricSpace.HausdorffDimension
++public import Mathlib.Analysis.SpecialFunctions.SmoothTransition
++public import Mathlib.Analysis.InnerProductSpace.Calculus
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/Foundations/RelativePerturbation.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/Foundations/RelativePerturbation.lean
+@@ -1,6 +1,10 @@
+-import DifferentialGeometry.Topology.Morse.NormalForm.Manifold
+-import DifferentialGeometry.Topology.Morse.Strip.Defs
+-import Mathlib.MeasureTheory.Function.Jacobian
+-import Mathlib.Geometry.Manifold.PartitionOfUnity
+-import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+-import Mathlib.Geometry.Manifold.MFDeriv.NormedSpace
++module
++
++public import DifferentialGeometry.Topology.Morse.NormalForm.Manifold
++public import DifferentialGeometry.Topology.Morse.Strip.Defs
++public import Mathlib.MeasureTheory.Function.Jacobian
++public import Mathlib.Geometry.Manifold.PartitionOfUnity
++public import Mathlib.Analysis.Calculus.FDeriv.Symmetric
++public import Mathlib.Geometry.Manifold.MFDeriv.NormedSpace
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/ModelTransport.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/ModelTransport.lean
+@@ -1,4 +1,8 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Defs
+-import DifferentialGeometry.Topology.Morse.CriticalPoint
+-import Mathlib.Geometry.Manifold.Instances.Real
+-import Mathlib.Analysis.InnerProductSpace.PiL2
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Defs
++public import DifferentialGeometry.Topology.Morse.CriticalPoint
++public import Mathlib.Geometry.Manifold.Instances.Real
++public import Mathlib.Analysis.InnerProductSpace.PiL2
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/RegularInterval.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/RegularInterval.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Defs
+-import DifferentialGeometry.Topology.Morse.RegularLevel.NoCriticalValues
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Defs
++public import DifferentialGeometry.Topology.Morse.RegularLevel.NoCriticalValues
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/StripConnected.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/StripConnected.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Strip.StripFlow
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.StripFlow
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/StripFlow.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/StripFlow.lean
+@@ -1,2 +1,6 @@
+-import DifferentialGeometry.Topology.Morse.Strip.Foundations.GradientLike
+-import DifferentialGeometry.Analysis.ODE.Flow.CompactSupport
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.Foundations.GradientLike
++public import DifferentialGeometry.Analysis.ODE.Flow.CompactSupport
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/Substrip.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/Substrip.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Cancellation.Setup.Isolate
++module
++
++public import DifferentialGeometry.Topology.Morse.Cancellation.Setup.Isolate
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/Terminal.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/Terminal.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Strip.TrajectoryCutoff
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.TrajectoryCutoff
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Morse/Strip/TrajectoryCutoff.lean
++++ b/DifferentialGeometry/Topology/Morse/Strip/TrajectoryCutoff.lean
+@@ -1 +1,5 @@
+-import DifferentialGeometry.Topology.Morse.Strip.StripFlow
++module
++
++public import DifferentialGeometry.Topology.Morse.Strip.StripFlow
 +
 +@[expose] public section
 --- a/DifferentialGeometry/Topology/OpenBox.lean
@@ -3732,5 +6883,20 @@
 +public import Mathlib.Algebra.Category.ModuleCat.Abelian
 +public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
 +public import Mathlib.CategoryTheory.Limits.Shapes.Pullback.IsPullback.Kernels
++
++@[expose] public section
+--- a/DifferentialGeometry/Topology/Sphere/SphereSimplyConnected.lean
++++ b/DifferentialGeometry/Topology/Sphere/SphereSimplyConnected.lean
+@@ -1,4 +1,8 @@
+-import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
+-import Mathlib.Analysis.Normed.Module.Connected
+-import Mathlib.Geometry.Manifold.Instances.Sphere
+-import Mathlib.Topology.Algebra.Module.FiniteDimension
++module
++
++public import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
++public import Mathlib.Analysis.Normed.Module.Connected
++public import Mathlib.Geometry.Manifold.Instances.Sphere
++public import Mathlib.Topology.Algebra.Module.FiniteDimension
 +
 +@[expose] public section

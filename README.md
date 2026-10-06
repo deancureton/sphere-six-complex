@@ -14,9 +14,11 @@ to both Comparator environments and catalogs every exact assumption. Nothing imp
 ## Status
 
 The headline theorem is source-sorry-free. Its trust boundary consists of Lean's three standard
-logical axioms and four general classical results, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
+logical axioms and smooth six-sphere recognition, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
 and checked by the allowlists in `scripts/`. No paper-specific axioms remain. The two `sorry`s
 in `Challenge.lean` are Comparator challenge declarations and are not imported by the solution.
+The topological endpoint `mathoverflow_1973` uses only Lean’s three standard axioms: it
+transports the complex atlas along the proved homeomorphism, without smooth classification.
 
 The former cusp boundary assumption had the two invariant coordinates reversed. It has been
 deleted: the actual boundary is proved to be raw coordinate four, and the elliptic splitting is
@@ -42,7 +44,9 @@ complexes. An explicit homotopy into a collar supplies the positive quotient ret
 removing the relative triangulation and CW-pair Whitehead assumptions. The four-piece
 Mayer–Vietoris calculation supplies finite generation and the dimension bound directly,
 so the construction of the simply connected complex homology six-sphere uses only
-Lean’s three standard axioms. The four classical assumptions remain in sphere recognition. See
+Lean’s three standard axioms. A proved h-cobordism argument now gives a sphere homeomorphism,
+bypassing higher Hurewicz, homological Whitehead and finite CW models. Only smooth
+six-sphere recognition remains assumed. See
 [AXIOM-ELIMINATION.md](AXIOM-ELIMINATION.md) for the remaining work.
 
 Finite-fibre specialization is proved in both degrees. In degree two, the actual mixed torus

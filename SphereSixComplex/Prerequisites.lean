@@ -249,16 +249,13 @@ public import SphereSixComplex.Prerequisites.Topology.Hurewicz.SimplyConnected
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.GeometricSection
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.HexagonBoundary
-public import SphereSixComplex.Prerequisites.Topology.Hurewicz.Higher
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Homeomorph
 public import SphereSixComplex.Prerequisites.Topology.Covering.Homogeneous
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologySphere
 public import SphereSixComplex.Prerequisites.Topology.Sphere.ClassicalRecognition
-public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyToHomotopy
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Splitting
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.BasepointTransport
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.Whitehead
-public import SphereSixComplex.Prerequisites.Topology.Hurewicz.SphereMap
 
 
 
@@ -338,7 +335,6 @@ public import SphereSixComplex.Prerequisites.Topology.Manifold.RestrictScalars
 public import SphereSixComplex.Prerequisites.Topology.Sphere.SmoothRecognition
 
 
-public import SphereSixComplex.Prerequisites.Topology.Manifold.Triangulation
 public import SphereSixComplex.Prerequisites.Topology.Sphere.CWModel
 public import SphereSixComplex.Prerequisites.Topology.Sphere.LoopContraction
 public import SphereSixComplex.Prerequisites.Topology.Sphere.SimplyConnected

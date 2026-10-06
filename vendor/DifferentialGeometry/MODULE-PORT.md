@@ -1,10 +1,10 @@
 # Mechanical Lean module-system port
 
 Original source commit: 788efe97894474c032de6dfb1289d515f613d15a.
-All 221 retained Lean files receive this header transformation:
+All 389 retained Lean files receive this header transformation:
 insert `module` before the first import; prefix original imports with `public`;
 insert `@[expose] public section` after the last import. Additional visibility and identifier adaptations are listed below. Mathematical
-statements and proof steps are preserved; original copyright headers and comments
+content is preserved; original copyright headers and comments
 remain. Original hashes are in UPSTREAM-SHA256.json, and MODULE-PORT.patch records
 the complete source diff with zero context. Apply it to the original sources using
 `git apply --unidiff-zero MODULE-PORT.patch`.
@@ -94,3 +94,40 @@ public declaration types: `point_complement_center_translation_mapsTo` and
 Helpers appearing in exported declaration signatures also become public:
 
 - `DifferentialGeometry/External/CanonicalTopology/Topology/Homology/LocalCompactHomology.lean`: `chart_inverse_image_mem`.
+
+## H-cobordism extension
+
+The additional 168 modules increase the extraction from 30,675 to 173,638 original
+Lean lines. They use the same upstream commit and header conversion. Private helpers
+needed by exposed definitions are exported and consistently renamed
+`portPrivate_<module hash>_<original name>` to avoid collisions. This changes
+visibility and identifiers only; the complete renaming is recorded in the patch.
+
+`Topology/Homology/Naturality.lean` also renames
+`ZerothHomotopy.mk_injective_of_totallyDisconnectedSpace` to
+`ZerothHomotopy.dg_mk_injective_of_totallyDisconnectedSpace`, including its two
+local references, to avoid a collision with TauCeti's declaration. Its statement
+and proof are unchanged.
+
+The following explicit Mathlib imports replace legacy transitive availability:
+
+- `Analysis/Calculus/Derivative/AlmostEverywhereLipschitz.lean`: `ContDiff.Operations`, `Deriv.Comp`, and `Deriv.Pow`.
+- `Topology/Homology/Bockstein.lean`: `HomologicalComplexAbelian`.
+- `Topology/Homology/MayerVietoris/ShortExact.lean`: `HomologicalComplexAbelian` and `Limits.Preserves.SigmaConst`.
+- `Topology/Manifold/ChartDisk/Construction.lean`: `Deriv.Inv`.
+- `Topology/Morse/Attachment/ModelCell.lean`: `ContDiff.WithLp` and `Deriv.Prod`.
+- `Topology/Morse/CriticalPoint.lean`: `import all Mathlib.Geometry.Manifold.LocalDiffeomorph`, preserving an existing unfolding.
+- `Topology/Morse/Handle/Middle/Geometry/MiddleSlide.lean` and `Topology/Morse/Handle/Partners/PartnerCircle.lean`: `Topology.Algebra.Order.Floor`.
+- `Topology/Morse/Handle/Middle/Geometry/MiddleWhitney.lean`: `LinearAlgebra.Dimension.OrzechProperty`.
+- `Topology/Morse/Rearrangement/DistinctValues.lean` and `Rearrange.lean`: `Geometry.Manifold.Algebra.Structures`.
+- `Topology/Morse/Strip/Foundations/GradientLike.lean`: public import and `import all` of `LinearAlgebra.QuadraticForm.Signature`, preserving existing unfoldings.
+
+Two type annotations resolve elaboration ambiguities without changing the argument:
+
+- `Topology/Homology/MayerVietoris/Relative.lean`: explicitly type the second zero morphism of the snake lemma's zero short complex.
+- `Topology/Morse/RegularLevel/NoCriticalValues.lean`: specify `b := f y.1` in a `le_trans` application.
+
+The expanded files compile against this project's pinned Mathlib. The regenerated
+patch passes `git apply --check --unidiff-zero` against fresh copies of all 389
+upstream sources; applying it reproduces every vendored Lean file byte for byte.
+No new axioms, placeholders, or mathematical hypotheses are introduced by the port.

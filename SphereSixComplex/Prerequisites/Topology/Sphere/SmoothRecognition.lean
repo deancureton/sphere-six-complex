@@ -8,10 +8,9 @@ public import Mathlib.Geometry.Manifold.PoincareConjecture
 /-!
 # Smooth recognition of the six-sphere
 
-This file packages the inputs to six-dimensional smooth sphere recognition.  Mathlib states the
-generalized and smooth Poincaré conjectures, but does not yet prove the dimension-six case, nor the
-Whitehead--Hurewicz step from simply connected integral homology spheres to homotopy spheres.
-Accordingly, those two implications are exposed as exact obligations rather than postulated.
+This file packages the inputs to six-dimensional smooth sphere recognition. The homology-to-
+homotopy implication is proved by h-cobordism in `Recognition`. Smooth classification for the
+specified atlas remains the classical assumption in `ClassicalRecognition`.
 -/
 
 @[expose] public section
@@ -74,7 +73,7 @@ public abbrev SmoothSixSphere.IsDiffeomorphic (X : Type) [TopologicalSpace X]
     [ChartedSpace RealModel X] : Prop :=
   Nonempty (Diffeomorph 𝓘(ℝ, RealModel) 𝓘(ℝ, RealModel) X SixSphere ∞)
 
-/-- The missing Whitehead--Hurewicz recognition step for a particular smooth six-manifold. -/
+/-- The homology-to-homotopy recognition property for a smooth six-manifold. -/
 public def HomologyToHomotopySixSphereObligation (X : Type) [TopologicalSpace X]
     [ChartedSpace RealModel X] : Prop :=
   SmoothSimplyConnectedIntegralHomologySixSphere X → Nonempty (X ≃ₕ SixSphere)

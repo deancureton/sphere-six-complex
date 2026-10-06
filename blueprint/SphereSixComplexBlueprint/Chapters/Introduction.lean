@@ -49,11 +49,11 @@ Transport the complex atlas of the constructed threefold along the diffeomorphis
 {uses "smooth-recognition"}[smooth recognition].
 :::
 
-:::definition "classical-trust-boundary" (parent := "main_construction") (lean := "SphereSixComplex.Hurewicz.exists_map, SphereSixComplex.CWType.homological_whitehead, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.SmoothManifold.finiteCWModel")
-The final theorem depends on Lean's three standard logical axioms and four general classical
-results: higher Hurewicz, homological Whitehead, smooth Poincaré in dimension six,
-and finite CW models of compact smooth manifolds. Their exact contracts are reviewed in the repository's
-`TRUST-BOUNDARY.md`.
+:::definition "classical-trust-boundary" (parent := "main_construction") (lean := "SphereSixComplex.SmoothSixSphere.poincare")
+The smooth-compatible theorem depends on Lean's three standard logical axioms and smooth
+Poincaré classification in dimension six. Its exact contract is reviewed in `TRUST-BOUNDARY.md`.
+The topological endpoint `mathoverflow_1973` instead transports the complex atlas directly
+along the proved homeomorphism and uses only the three standard logical axioms.
 
 Finite-dimensional cellular comparison and compact Brown collaring are proved using Tau Ceti.
 Integral Poincaré duality for simply connected compact manifolds is proved using the
@@ -63,7 +63,8 @@ The positive quotient retracts onto its boundary core by a small collar push and
 compression; relative triangulation and Whitehead for CW pairs are no longer assumed.
 The four-piece Mayer–Vietoris calculation supplies finite generation and vanishing above
 degree six directly. The construction of the simply connected complex homology six-sphere
-uses only Lean’s three standard axioms; the four classical assumptions enter sphere recognition.
+uses only Lean’s three standard axioms. A proved h-cobordism argument supplies a sphere
+homeomorphism; smooth six-sphere classification supplies the diffeomorphism.
 The modular uniformization, analytic descent, toric construction, and specialized filling and
 homology computations are proved. No construction-specific axiom remains. This describes the
 mathematical dependency boundary; build and Comparator acceptance are checked separately.

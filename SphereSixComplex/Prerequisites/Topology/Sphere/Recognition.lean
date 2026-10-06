@@ -1,14 +1,16 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Sphere.ClassicalRecognition
-public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyToHomotopy
+public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyRecognition
+public import SphereSixComplex.Prerequisites.Topology.SingularHomology.ModuleComparison
+public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
 public import SphereSixComplex.Prerequisites.Topology.Sphere.LoopContraction
 
 /-!
 # Smooth homology six-sphere recognition
 
-Higher Hurewicz, compact-manifold CW type and homological Whitehead identify a simply connected
-integral homology six-sphere with the homotopy type of the sphere. The retained smooth Poincare
+The h-cobordism theorem identifies a simply connected integral homology six-sphere
+with the topological sphere. The retained smooth Poincare
 theorem then supplies a diffeomorphism for the specified smooth atlas.
 -/
 
@@ -16,28 +18,32 @@ open scoped ContDiff Manifold
 
 namespace SphereSixComplex
 
+/-- A simply connected smooth integral homology six-sphere is homeomorphic to the sphere. -/
+public theorem SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homeomorph
+    {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
+    [ChartedSpace RealModel X] (hX : SmoothSimplyConnectedIntegralHomologySixSphere X) :
+    Nonempty (X ≃ₜ SixSphere) := by
+  let _ : SimplyConnectedSpace X := hX.simplyConnected
+  let _ : IsManifold 𝓘(ℝ, RealModel) ∞ X := hX.isManifold
+  let _ : CompactSpace X := hX.compact
+  obtain ⟨e⟩ := DifferentialGeometry.Topology.nonempty_homeomorph_sphere_of_homology
+    (n := 6) (by omega) (M := X) (fun k hk6 hk0 ↦ by
+      obtain ⟨eH⟩ := hX.integralHomology k
+      have := sixSpherePositiveHomologyInputs.otherDegrees k hk0 hk6
+      have : Subsingleton (IntegralSingularHomology k X) := eH.injective.subsingleton
+      apply ModuleCat.isZero_iff_subsingleton.mpr
+      exact (IntegralSingularComparison.homologyIso X k).addCommGroupIsoToAddEquiv.injective
+        |>.subsingleton)
+  exact ⟨e⟩
+
 /-- A simply connected smooth integral homology six-sphere is a homotopy sphere. -/
 public theorem SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyEquiv
     {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
     [ChartedSpace RealModel X] :
     HomologyToHomotopySixSphereObligation X := by
   intro hX
-  let _ : SimplyConnectedSpace X := hX.simplyConnected
-  have hGenerator : HasTopDimensionalSphericalGenerator X := by
-    exact SixSphere.has_spherical_generator_of_homology X
-      (fun n hn₀ hn₆ ↦ hX.integralHomologyVanishing n
-        (Nat.ne_of_gt hn₀) (Nat.ne_of_lt hn₆))
-      hX.integralHomologyDegreeSix
-  let _ : IsManifold 𝓘(ℝ, RealModel) ∞ X := hX.isManifold
-  let _ : CompactSpace X := hX.compact
-  have hCWX : HasCWType X :=
-    SmoothSixManifold.hasCWType X
-  have hWhitehead : CWType.HomologicalWhiteheadProperty SixSphere X := by
-    let _ : SimplyConnectedSpace SixSphere := sixSphere_simplyConnected
-    exact CWType.homological_whitehead_property SixSphere X
-  exact homotopyEquivSixSphere_of_sphericalGenerator_of_classicalCWWhitehead
-    sixSpherePositiveHomologyInputs hX.integralHomology hGenerator hCWX hWhitehead
-
+  obtain ⟨e⟩ := hX.nonempty_homeomorph
+  exact ⟨e.toHomotopyEquiv⟩
 
 /-- The standard-model consequence recovers smooth Poincare in dimension six. -/
 public theorem SmoothHomotopySixSphere.isDiffeomorphic

@@ -36,6 +36,7 @@ cd "$project_root"
 targets=(
   "SphereSixComplex.sphere_six_admits_complex_structure"
   "SphereSixComplex.exists_complexThreefold_nonempty_diffeomorph_sixSphere"
+  "mathoverflow_1973"
 )
 
 work="$(mktemp -d)"
@@ -103,6 +104,7 @@ fi
 
 {
   echo "import SphereSixComplex.Main"
+  echo "import Solution"
   for target in "${targets[@]}"; do
     echo "#print axioms $target"
   done
@@ -156,6 +158,16 @@ fi
 
 echo "Axiom audit passed. The final theorem depends on:"
 sed 's/^/  /' "$work/found.txt"
+
+printf '%s\n' mathoverflow_1973 > "$work/topological-names.txt"
+collect_for "$work/topological-names.txt" > "$work/topological.txt"
+printf '%s\n' Classical.choice Quot.sound propext > "$work/standard-axioms.txt"
+if ! cmp -s "$work/standard-axioms.txt" "$work/topological.txt"; then
+  echo "Axiom audit FAILED: mathoverflow_1973 must use only the three standard axioms." >&2
+  diff -u "$work/standard-axioms.txt" "$work/topological.txt" >&2 || true
+  exit 1
+fi
+echo "Topological endpoint audit passed: only the three standard axioms."
 
 if grep -qx 'sorryAx' "$work/found.txt"; then
   echo

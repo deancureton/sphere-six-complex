@@ -1,5 +1,5 @@
 # The implemented construction uses only Lean's three standard logical axioms.
-# The four classical recognition assumptions occur only in the final theorem.
+# Smooth six-sphere recognition occurs only in the final theorem.
 
 Classical.choice
 Quot.sound

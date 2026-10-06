@@ -9,10 +9,10 @@ from the permitted boundary.
 | Integral universal coefficients | Split a projective chain complex using projective lower homology; apply in degrees zero through three | Removed; full build, exact endpoint audit and Comparator passed |
 | Relative CW decomposition with corners | Replace the particular positive quotient argument with a homotopy into its collar | Removed; full build, exact endpoint audit and Comparator passed |
 | Whitehead for CW pairs | Use the same collar homotopy and homotopy extension to construct the deformation retraction | Removed; full build, exact endpoint audit and Comparator passed |
-| Finite CW model of a compact smooth manifold | Replace homology consequences using the explicit open cover; investigate a separate CW-type proof | Removed from the construction; compiled construction closure has only the standard three axioms. Final recognition still uses CW type |
-| Higher Hurewicz | General sphere representation in the Hurewicz range | Not yet attempted |
-| Homological Whitehead | Relative Hurewicz and CW Whitehead | Not yet attempted |
-| Smooth six-sphere recognition | Smooth classification, or an explicit diffeomorphism for the constructed manifold | Not yet attempted |
+| Finite CW model of a compact smooth manifold | Replace homology consequences using the explicit open cover and recognition using h-cobordism | Removed; full build, exact audits, Blueprint and Comparator passed |
+| Higher Hurewicz | Replace homological recognition with the h-cobordism homeomorphism route | Removed; full build, exact audits, Blueprint and Comparator passed |
+| Homological Whitehead | Same h-cobordism homeomorphism route | Removed; full build, exact audits, Blueprint and Comparator passed |
+| Smooth six-sphere recognition | Smooth classification, or an explicit diffeomorphism for the constructed manifold | Investigated: available Alexander-trick assembly proves only a homeomorphism; smooth extension remains missing |
 
 The UCT replacement does not assume an injective integer coefficient module. Instead,
 the chain objects and lower homology objects are projective. This gives a general
@@ -34,33 +34,50 @@ The finite-CW assumption had two homology uses and one recognition use. The new
 are mapping tori of four-tori, so their sixth homology vanishes. Mayer–Vietoris then
 preserves finite generation and vanishing above degree six through the four-piece
 cover. The Poincare/UCT interface now contains only the proved duality pairings.
-The final recognition step still uses finite CW models to obtain CW homotopy type.
+The recognition replacement below removes the remaining use of finite CW models.
 
-The full build, exact final and construction axiom audits, Blueprint output checks,
-and Comparator kernel verification passed. The construction closure is exactly
-`propext`, `Classical.choice`, and `Quot.sound`; the final closure retains the four
+At the preceding geometric-homology checkpoint, the full build, exact final and
+construction axiom audits, Blueprint output checks, and Comparator kernel verification
+passed. The construction closure was exactly
+`propext`, `Classical.choice`, and `Quot.sound`; the final closure still retained the four
 classical assumptions. Local macOS verification does not test Linux sandbox isolation.
 
-## Further recognition routes (unverified)
+## Homology-sphere recognition
 
-A search of pinned Mathlib/TauCeti and public Palomar/Lean Pool sources found no
-ready-made manifold CW-type theorem. Mathlib Whitney embedding and TauCeti tubular
-neighborhoods provide a possible reduction to open Euclidean subsets. The missing
-step is an actual CW homotopy model, for example through a convex-cover nerve theorem
-and a classical CW realization bridge. A weak equivalence alone does not meet the
-current interface.
+The recognition theorem now constructs a homeomorphism using the proved h-cobordism
+and twisted-sphere results from DifferentialGeometry at revision
+`788efe97894474c032de6dfb1289d515f613d15a`. The new bridges compare the actual relative
+chain complexes, show that the global fundamental class generates local top homology,
+and prove acyclicity of the puncture and the required two-disk complement pair.
+The general homeomorphism theorem has only Lean's three standard axioms.
 
-A different route may bypass all three topological recognition assumptions. At
-DifferentialGeometry revision `788efe97894474c032de6dfb1289d515f613d15a`, the files
-`Topology/Cobordism/HCobordism.lean` and `Topology/HighDimensional/TwistedSphere.lean`
-can potentially supply a sphere homeomorphism from the two-disk complement argument.
-The missing bridges are a natural comparison of relative homology for the global-to-local
-fundamental class, and a homological version of
-`Topology/Homology/Punctures/PuncturedAcyclic.lean` and `DiskComplement.lean`.
-The existing chart-disk construction supplies the geometric disks and separating function.
+This bypasses higher Hurewicz, homological Whitehead and finite CW models; their
+axiom declarations and obsolete proof route have been deleted. It does not formalize
+those three general theorems. Final endpoint statements remain unchanged.
 
-The estimated additional dependency closure is 168 modules (142,963 lines). The
-upstream source scan found no axioms or proof placeholders, but this route has not
-been ported, compiled, or axiom-audited. Its conclusion is a homeomorphism, not a
-diffeomorphism: it would still use smooth six-sphere recognition. No new dependency
-has been added for this investigation.
+The additional dependency closure contains 168 modules (142,963 original lines).
+It is vendored from the same pinned source as the existing Poincaré duality dependency,
+with licenses, original hashes and an exact module-system port patch. No large Boris
+Alexeev development is imported. The selected modules compile against the project's
+pinned Mathlib.
+
+## Remaining smooth classification
+
+The available Alexander-trick assembly concludes a homeomorphism. A radial extension
+of a boundary homeomorphism need not be differentiable at its center, so it cannot
+supply the final diffeomorphism. Removing `SmoothSixSphere.poincare` still requires a
+formal smooth classification argument (the triviality of the group of homotopy
+six-spheres), an appropriate smooth extension theorem, or an explicit diffeomorphism
+for this particular construction. The inspected dependencies do not supply that bridge.
+
+The `mathoverflow_1973` endpoint now transports the complex atlas directly along the
+proved homeomorphism. Its statement does not require compatibility with the standard
+real smooth structure, so this endpoint needs no classical axioms. The stronger endpoint
+retains smooth six-sphere recognition. Both statement types are unchanged.
+
+All checkpoint gates passed: full project build (10,509 jobs), exact final and
+construction axiom audits, a separate recursive closure check for `mathoverflow_1973`,
+Blueprint build and output checks (11,209 jobs), and Comparator with Lean's default
+kernel. The topological endpoint uses only the three standard axioms; the stronger
+smooth-compatible endpoint additionally uses `SmoothSixSphere.poincare`.
+The local macOS Comparator run checks kernel acceptance, not Linux sandbox isolation.
