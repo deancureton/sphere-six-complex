@@ -39,9 +39,9 @@ public noncomputable def SmoothManifold.integralPoincareUCT
     finite_homology := M.finite_homology
     subsingleton_homology_of_lt := M.subsingleton_homology_of_lt }
   · exact (Classical.choice (P 0)).symm.trans
-      (Classical.choice (IntegralCohomology.universal_coefficients X).1)
-  · intro k hk hFree
+      (integralSingularCohomologyEquivDual X 0 (by omega))
+  · intro k _ hFree
     exact (Classical.choice (P k)).symm.trans
-      (integralSingularCohomologyEquivDualOfPreviousFree X k.1 hk hFree)
+      (integralSingularCohomologyEquivDual X k.1 hFree)
 
 end SphereSixComplex

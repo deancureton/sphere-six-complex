@@ -14,7 +14,7 @@ to both Comparator environments and catalogs every exact assumption. Nothing imp
 ## Status
 
 The headline theorem is source-sorry-free. Its trust boundary consists of Lean's three standard
-logical axioms and seven general classical results, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
+logical axioms and six general classical results, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
 and checked by the allowlists in `scripts/`. No paper-specific axioms remain. The two `sorry`s
 in `Challenge.lean` are Comparator challenge declarations and are not imported by the solution.
 
@@ -37,6 +37,8 @@ isomorphism; exactness gives vanishing second homology. The geometric Euler calc
 Poincaré duality and universal coefficients determine the remaining homology groups.
 Cellular comparison, compact collaring, and simply-connected integral Poincaré duality
 are now proved using imported developments; see [UPGRADE.md](UPGRADE.md).
+The required universal-coefficient comparisons are proved by splitting projective chain
+complexes; further axiom-removal work is tracked in [AXIOM-ELIMINATION.md](AXIOM-ELIMINATION.md).
 
 Finite-fibre specialization is proved in both degrees. In degree two, the actual mixed torus
 columns and the positive projection prove an integral isomorphism. Its inverse defines the

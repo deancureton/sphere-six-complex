@@ -8,6 +8,8 @@ public import Mathlib.Algebra.Category.ModuleCat.Colimits
 public import Mathlib.Algebra.Module.ULift
 public import Mathlib.AlgebraicTopology.SimplicialSet.Homology.MapHomologicalComplex
 public import Mathlib.Algebra.Homology.ShortComplex.PreservesHomology
+public import Mathlib.CategoryTheory.Abelian.Ext
+public import Mathlib.LinearAlgebra.FreeModule.Basic
 
 /-!
 # Comparing integral singular chains and cochains across coefficient categories
@@ -84,5 +86,38 @@ def cohomologyEquiv (X : Type) [TopologicalSpace X] (n : ℕ) :
     (integralSingularCochains X).homology n ≃+ SphereSixComplex.IntegralSingularCohomology n X :=
   (((integralSingularCochains X).sc n |>.mapHomologyIso (forget₂ (ModuleCat ℤ) AddCommGrpCat)).symm ≪≫
     HomologicalComplex.homologyMapIso (cochainsIso X) n).addCommGroupIsoToAddEquiv
+
+def linearYonedaIso (X : Type) [TopologicalSpace X] :
+    (integralSingularChains X).linearYonedaObj ℤ (ModuleCat.of ℤ (ULift.{0} ℤ)) ≅
+      integralSingularCochains X :=
+  HomologicalComplex.Hom.isoOfComponents
+    (fun _ ↦ ModuleCat.homLinearEquiv.toModuleIso) (by
+      intro i j _
+      ext φ
+      rfl)
+
+def linearYonedaCohomologyEquiv (X : Type) [TopologicalSpace X] (n : ℕ) :
+    ((integralSingularChains X).linearYonedaObj ℤ
+      (ModuleCat.of ℤ (ULift.{0} ℤ))).homology n ≃+
+        SphereSixComplex.IntegralSingularCohomology n X :=
+  (HomologicalComplex.homologyMapIso (linearYonedaIso X) n).toLinearEquiv.toAddEquiv.trans
+    (cohomologyEquiv X n)
+
+def homologyDualEquiv (X : Type) [TopologicalSpace X] (n : ℕ) :
+    ((integralSingularChains X).homology n ⟶ ModuleCat.of ℤ (ULift.{0} ℤ)) ≃+
+      (SphereSixComplex.IntegralSingularHomology n X →+ ℤ) :=
+  ModuleCat.homAddEquiv.trans
+    ((intLinearMapAddEquiv _ _).trans
+      ((homologyIso X n).addCommGroupIsoToAddEquiv.addMonoidHomCongrLeft.trans
+        (ULift.moduleEquiv (R := ℤ) (M := ℤ)).toAddEquiv.addMonoidHomCongrRight))
+
+theorem free_homology (X : Type) [TopologicalSpace X] (n : ℕ)
+    [Module.Free ℤ (SphereSixComplex.IntegralSingularHomology n X)] :
+    Module.Free ℤ ((integralSingularChains X).homology n) := by
+  let e := (homologyIso X n).addCommGroupIsoToAddEquiv
+  let f := (intLinearMapAddEquiv
+    (ModuleCat.of ℤ (SphereSixComplex.IntegralSingularHomology n X))
+    ((integralSingularChains X).homology n)).symm e.symm.toAddMonoidHom
+  exact Module.Free.of_equiv (LinearEquiv.ofBijective f e.symm.bijective)
 
 end SphereSixComplex.IntegralSingularComparison

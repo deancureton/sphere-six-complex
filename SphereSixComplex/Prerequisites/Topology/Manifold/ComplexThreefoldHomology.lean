@@ -58,7 +58,7 @@ public theorem ComplexThreefold.nonempty_homologyEquiv_sixSphere
   let hThree :=
     IntegralPoincareUCTData.Six.subsingleton_homology_three_of_eulerCharacteristic T
       hZero hOne hTwo hEuler
-  let hFour := IntegralPoincareUCTData.Six.subsingleton_homology_four T hOne hTwo
+  let hFour := IntegralPoincareUCTData.Six.subsingleton_homology_four T hZero hOne hTwo
   let hFive := IntegralPoincareUCTData.Six.subsingleton_homology_five T hZero hOne
   let hSix := IntegralPoincareUCTData.Six.homologySixEquivInt T hZero
   intro k

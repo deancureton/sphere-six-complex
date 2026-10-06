@@ -6,11 +6,8 @@ public import Mathlib.LinearAlgebra.FreeModule.PID
 /-!
 # Integral Poincare duality and UCT, in homological form
 
-This file records the part of integral Poincare duality and the universal coefficient theorem that
-can be stated using Mathlib's existing singular-homology API.  Mathlib does not yet provide
-singular cohomology, cap products, or Poincare duality, so the interface below records only the
-resulting perfect evaluation pairings.  It is dimension-generic and independent of the application
-to Section 7.
+This file records the perfect evaluation pairings obtained from integral Poincare duality and
+the universal coefficient theorem when the lower homology groups are free.
 -/
 
 @[expose] public section
@@ -25,9 +22,9 @@ namespace SphereSixComplex
 dimension `d`.
 
 The first equivalence is the composite
-`H_d ≃ H^0 ≃ Hom(H_0, ℤ)`.  In positive degree `k`, the UCT evaluation map becomes an
-isomorphism when `H_{k-1}` is free, giving the second family of equivalences after Poincare
-duality.  The remaining fields are finite generation and the dimension bound. -/
+`H_d ≃ H^0 ≃ Hom(H_0, ℤ)`. In positive degree `k`, freeness in all lower degrees lets us
+split the chain sequences and identify cohomology with the dual of homology. The remaining
+fields are finite generation and the dimension bound. -/
 public structure IntegralPoincareUCTData
     (d : ℕ) (X : Type) [TopologicalSpace X] where
   /-- The top-dimensional Poincare/UCT evaluation pairing. -/
@@ -35,7 +32,7 @@ public structure IntegralPoincareUCTData
     IntegralSingularHomology d X ≃+ (IntegralSingularHomology 0 X →+ ℤ)
   /-- The complementary-degree pairing when the UCT `Ext` term vanishes. -/
   complementEquivDual : ∀ (k : Fin (d + 1)), 0 < k.1 →
-    Module.Free ℤ (IntegralSingularHomology (k.1 - 1) X) →
+    (∀ i < k.1, Module.Free ℤ (IntegralSingularHomology i X)) →
       IntegralSingularHomology (d - k.1) X ≃+
         (IntegralSingularHomology k.1 X →+ ℤ)
   /-- Compact smooth manifolds have finitely generated integral homology. -/
@@ -114,9 +111,14 @@ public theorem subsingleton_homology_five (T : Six X)
   have hDual : Subsingleton (IntegralSingularHomology 1 X →+ ℤ) :=
     hom_subsingleton_of_domain_subsingleton hOne
   exact subsingleton_of_addEquiv_to_subsingleton
-    (T.complementEquivDual 1 (by norm_num) hFreeZero) hDual
+    (T.complementEquivDual 1 (by norm_num) (fun i hi ↦ by
+      change i < 1 at hi
+      have : i = 0 := by omega
+      subst i
+      exact hFreeZero)) hDual
 
 public theorem subsingleton_homology_four (T : Six X)
+    (hZero : IntegralSingularHomology 0 X ≃+ ℤ)
     (hOne : Subsingleton (IntegralSingularHomology 1 X))
     (hTwo : Subsingleton (IntegralSingularHomology 2 X)) :
     Subsingleton (IntegralSingularHomology 4 X) := by
@@ -125,15 +127,26 @@ public theorem subsingleton_homology_four (T : Six X)
   have hDual : Subsingleton (IntegralSingularHomology 2 X →+ ℤ) :=
     hom_subsingleton_of_domain_subsingleton hTwo
   exact subsingleton_of_addEquiv_to_subsingleton
-    (T.complementEquivDual 2 (by norm_num) hFreeOne) hDual
+    (T.complementEquivDual 2 (by norm_num) (fun i hi ↦ by
+      change i < 2 at hi
+      interval_cases i
+      · exact moduleFree_of_addEquiv_integer hZero
+      · exact hFreeOne)) hDual
 
 public theorem isTorsionFree_homology_three
     (T : Six X)
+    (hZero : IntegralSingularHomology 0 X ≃+ ℤ)
+    (hOne : Subsingleton (IntegralSingularHomology 1 X))
     (hTwo : Subsingleton (IntegralSingularHomology 2 X)) :
     Module.IsTorsionFree ℤ (IntegralSingularHomology 3 X) := by
   let hFreeTwo : Module.Free ℤ (IntegralSingularHomology 2 X) :=
     moduleFree_of_subsingleton hTwo
-  let e := T.complementEquivDual 3 (by norm_num) hFreeTwo
+  let e := T.complementEquivDual 3 (by norm_num) (fun i hi ↦ by
+    change i < 3 at hi
+    interval_cases i
+    · exact moduleFree_of_addEquiv_integer hZero
+    · exact moduleFree_of_subsingleton hOne
+    · exact hFreeTwo)
   exact isTorsionFree_of_injective_to_intDual e.toAddMonoidHom e.injective
 
 public noncomputable def homologySixEquivInt
@@ -180,7 +193,7 @@ public theorem subsingleton_homology_three_of_eulerCharacteristic
     (hEuler : integralHomologyEulerCharacteristicSix X = 2) :
     Subsingleton (IntegralSingularHomology 3 X) := by
   have hFive := subsingleton_homology_five T hZero hOne
-  have hFour := subsingleton_homology_four T hOne hTwo
+  have hFour := subsingleton_homology_four T hZero hOne hTwo
   let hSix := homologySixEquivInt T hZero
   have h0rank : Module.finrank ℤ (IntegralSingularHomology 0 X) = 1 :=
     finrank_one_of_addEquiv_integer hZero
@@ -199,7 +212,7 @@ public theorem subsingleton_homology_three_of_eulerCharacteristic
     omega
   let _ : Module.Finite ℤ (IntegralSingularHomology 3 X) := T.finite_homology 3
   let _ : Module.IsTorsionFree ℤ (IntegralSingularHomology 3 X) :=
-    isTorsionFree_homology_three T hTwo
+    isTorsionFree_homology_three T hZero hOne hTwo
   exact Module.finrank_zero_iff.mp h3rank
 
 end IntegralPoincareUCTData.Six

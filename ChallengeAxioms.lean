@@ -21,7 +21,7 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 
 # Constants in the current final-theorem trust closure.
 #
-# Lean's three standard logical axioms and seven general classical results.
+# Lean's three standard logical axioms and six general classical results.
 # Exact contracts and sources are reviewed in TRUST-BOUNDARY.md.
 # No construction-specific axioms remain.
 
@@ -50,14 +50,6 @@ axiom SphereSixComplex.SmoothSixSphere.poincare : ∀ (M : Type) [inst : Topolog
         (modelWithCornersSelf ℝ SphereSixComplex.RealModel) M SphereSixComplex.SixSphere ↑⊤)
 
 # Retained cohomological and smooth triangulation results.
-axiom SphereSixComplex.IntegralCohomology.universal_coefficients : ∀ (X : Type) [inst : TopologicalSpace X],
-  Nonempty (SphereSixComplex.IntegralSingularCohomology 0 X ≃+ (SphereSixComplex.IntegralSingularHomology 0 X →+ ℤ)) ∧
-    ∀ (n : ℕ),
-      0 < n →
-        Nonempty
-          (SphereSixComplex.IntegralSingularCohomology n X ≃+
-            CategoryTheory.Abelian.Ext (↧(SphereSixComplex.IntegralSingularHomology (n - 1) X)) (↧ℤ) 1 ×
-              (SphereSixComplex.IntegralSingularHomology n X →+ ℤ))
 axiom SphereSixComplex.SmoothManifold.finiteCWModel : (E X : Type) →
   [inst : NormedAddCommGroup E] →
     [inst_1 : NormedSpace ℝ E] →

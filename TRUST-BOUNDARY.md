@@ -1,6 +1,6 @@
 # Classical trust-boundary review
 
-The retained boundary consists of seven general classical results, together with Lean's
+The retained boundary consists of six general classical results, together with Lean's
 `propext`, `Classical.choice`, and `Quot.sound`. The classical-source review was made on
 2026-09-09. Cellular comparison, collaring and Poincaré duality have since been replaced by
 checked proofs, described below. This document records the remaining assumptions and their
@@ -17,7 +17,6 @@ All names have prefix `SphereSixComplex.` unless another namespace is shown.
 | `Hurewicz.exists_map`, [ClassicalRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/ClassicalRecognition.lean) | [Higher.lean](SphereSixComplex/Prerequisites/Topology/Hurewicz/Higher.lean) uses actual cubical homotopy groups and postcomposition maps, a natural homomorphism, degree at least two, path connectedness, and triviality of every lower positive homotopy group. Existence of a natural isomorphism in the Hurewicz range is weaker than specifying the canonically normalized Hurewicz map. | [Hatcher, Chapter 4, Theorem 4.32](https://pi.math.cornell.edu/~hatcher/AT/ATch4.pdf). |
 | `CWType.homological_whitehead`, [ClassicalRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/ClassicalRecognition.lean) | Both spaces are simply connected and have actual CW homotopy models. The same given continuous map induces isomorphisms in every integral singular homology degree, and the conclusion makes that map a homotopy equivalence. | [Hatcher, Chapter 4, Corollary 4.33](https://pi.math.cornell.edu/~hatcher/AT/ATch4.pdf). |
 | `SmoothSixSphere.poincare`, [ClassicalRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/ClassicalRecognition.lean) | [ClassicalRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/ClassicalRecognition.lean), requires a compact smooth real six-manifold homotopy equivalent to the standard six-sphere. [SmoothRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/SmoothRecognition.lean), requests an actual diffeomorphism for the specified smooth atlas. | [Kervaire–Milnor, Groups of homotopy spheres I](https://webhomes.maths.ed.ac.uk/~v1ranick/papers/kervmiln.pdf), computation of the group of homotopy six-spheres, together with smooth h-cobordism. This is dimension-six smooth classification, not an arbitrary-dimensional smooth Poincare assertion. |
-| `IntegralCohomology.universal_coefficients`, [UniversalCoefficients.lean](SphereSixComplex/Prerequisites/Topology/SingularHomology/UniversalCoefficients.lean) | [Cohomology.lean](SphereSixComplex/Prerequisites/Topology/SingularHomology/Cohomology.lean) defines the actual dual singular-chain complex. The obstruction is derived `Ext¹` in integer modules. Positive-degree splitting is noncanonical; no natural splitting is assumed. | [Hatcher, Chapter 3, Section 3.1, universal coefficient theorem](https://pi.math.cornell.edu/~hatcher/AT/ATch3.pdf). |
 | `SmoothManifold.finiteCWModel`, [Triangulation.lean](SphereSixComplex/Prerequisites/Topology/Manifold/Triangulation.lean) | Compact, Hausdorff, second-countable, finite-dimensional boundaryless C1 manifold. Only a finite CW homotopy model with dimension bounded by the actual real model dimension is requested. | [Whitehead, On C1-complexes](https://www.sciencedirect.com/science/chapter/edited-volume/pii/B978008009870850021X), Annals of Mathematics 41 (1940), 809–824. |
 | `CWPair.whitehead`, [StrongDeformationRetraction.lean](SphereSixComplex/Prerequisites/Topology/Homotopy/StrongDeformationRetraction.lean) | Actual relative CW inclusion; path connectedness of both spaces; actual induced bijections on the fundamental group and every higher homotopy group. [SubspaceInclusion.lean](SphereSixComplex/Prerequisites/Topology/Homotopy/SubspaceInclusion.lean), defines the conclusion as an ordinary homotopy equivalence whose inverse map is the inclusion. No covering-space or toric conclusion is assumed. | [Hatcher, Chapter 4, Theorem 4.5 and the relative CW compression argument](https://pi.math.cornell.edu/~hatcher/AT/ATch4.pdf). |
 | `ManifoldWithCorners.relativeCWComplex`, [CornersCWComplex.lean](SphereSixComplex/Prerequisites/Topology/Manifold/CornersCWComplex.lean) | Hausdorff, second-countable C1 manifold on a finite-dimensional real quadrant. Only a CW decomposition relative to the full manifold boundary is asserted, not compatibility with an arbitrary subset or prescribed stratification. Second countability and local Euclidean-quadrant structure give the needed paracompactness. | [Murayama–Shiota, Triangulation of the map of a G-manifold to its orbit space, Nagoya Math. J. 212 (2013), pp. 159–160](https://www.cambridge.org/core/services/aop-cambridge-core/content/view/B650C32D644185E786B3DB76ABF44740/S0027763000022418a.pdf/triangulation_of_the_map_of_a_gmanifold_to_its_orbit_space.pdf). These pages explicitly allow k=1 and corners and state the Cairns–Whitehead triangulation theorem, citing Munkres. The PL manifold boundary is a subcomplex, giving the stated relative CW consequence. |
@@ -71,22 +70,36 @@ The [selected dependency](vendor/DifferentialGeometry/README.md) preserves the p
 licenses and original hashes. Its module-system port has an exact recorded patch. Dependency
 proofs are checked by Lean and are not additional permitted axioms.
 
+## Proved universal-coefficient comparisons
+
+[UniversalCoefficients.lean](SphereSixComplex/Prerequisites/Algebra/Homology/UniversalCoefficients.lean)
+proves that the Kronecker map is an equivalence for a complex of projective objects
+whose lower homology objects are projective, with arbitrary coefficients in a linear
+abelian category. The proof splits the successive cycle and boundary sequences.
+
+The [singular adapter](SphereSixComplex/Prerequisites/Topology/SingularHomology/UniversalCoefficients.lean)
+uses the actual singular-simplex basis and the explicit chain/cochain comparisons to
+identify integral cohomology with the dual of integral homology when all lower groups
+are free. Degree zero has no freeness hypothesis. The manifold argument uses only
+degrees zero through three, with `H₀ ≃ ℤ`, `H₁ = 0` and `H₂ = 0` supplied independently.
+The broader assumed splitting involving `Ext` is no longer used and has been deleted.
+The new algebraic theorem and singular adapter use only Lean's three standard axioms.
+
 ## Scope and limits
 
 The classical-source review above is retained from the September review. The corners contract was checked against the cited primary-source PDF; the other
 correspondences use the standard classical results and inspection of the Lean
 contracts. This is not a formal proof of the remaining assumptions.
 
-`IntegralCohomology.universal_coefficients` displays both degree cases and Mathlib's
-`Abelian.Ext` in its statement. Hurewicz's range and smooth Poincare's manifold
-hypotheses and diffeomorphism conclusion are also expanded directly. See
+Hurewicz's range and smooth Poincare's manifold hypotheses and diffeomorphism
+conclusion are expanded directly. See
 [ChallengeAxioms.lean](ChallengeAxioms.lean) for Lean-generated exact signatures.
 
 ## Verified dependency boundary
 
 The final theorem's compiled dependency closure contains Lean's three standard
-axioms and the seven classical declarations listed above. The construction closure
-contains four classical declarations and the same three standard axioms. The exact
+axioms and the six classical declarations listed above. The construction closure
+contains three classical declarations and the same three standard axioms. The exact
 allowlists are checked independently against those closures and Comparator's
 configuration. No construction-specific axiom remains.
 
