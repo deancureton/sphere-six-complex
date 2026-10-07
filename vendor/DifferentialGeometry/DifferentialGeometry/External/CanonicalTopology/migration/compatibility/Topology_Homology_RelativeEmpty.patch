@@ -1,5 +1,0 @@
---- canonical-topology/Poincare/Topology/Homology/RelativeEmpty.lean
-+++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/RelativeEmpty.lean
-@@ -25 +25 @@
--      ⟨Pi.single (0 : Fin (n + 1)) 1, single_mem_stdSimplex ℝ 0⟩).2.elim
-+      (Convexity.StdSimplex.single 0)).2.elim

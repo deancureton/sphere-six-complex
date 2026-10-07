@@ -1,5 +1,0 @@
---- canonical-topology/Poincare/Topology/Homology/SubdivisionHomotopy.lean
-+++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/SubdivisionHomotopy.lean
-@@ -52 +52 @@
--  rw [dif_pos h, affineSingularSimplex_injective (n + 1) h.choose_spec]
-+  rw [dite_eq_left h, affineSingularSimplex_injective (n + 1) h.choose_spec]

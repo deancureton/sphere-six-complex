@@ -1,8 +1,0 @@
---- before
-+++ after
-@@ -14,2 +14 @@
--variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
--  [FiniteDimensional ℝ E]
-+variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
-@@ -20,0 +20 @@
-+  let : FiniteDimensional ℝ E := Module.finite_of_finrank_eq_succ hd

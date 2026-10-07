@@ -1,8 +1,0 @@
---- canonical-topology/Poincare/Topology/Homology/BarycenterBounds.lean
-+++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/BarycenterBounds.lean
-@@ -22,2 +22,3 @@
--  change (∑ i : Fin (n + 1), (Fintype.card (Fin (n + 1)) : ℝ)⁻¹ • v i) - x = _
--  simp only [Fintype.card_fin, Nat.cast_add, Nat.cast_one]
-+  change (∑ i : Fin (n + 1), Convexity.StdSimplex.barycenter.weights i • v i) - x = _
-+  simp only [Convexity.StdSimplex.weights_barycenter_apply, Fintype.card_fin,
-+    Nat.cast_add, Nat.cast_one]

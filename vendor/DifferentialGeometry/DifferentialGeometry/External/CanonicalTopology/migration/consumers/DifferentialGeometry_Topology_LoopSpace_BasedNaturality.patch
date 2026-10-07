@@ -1,5 +1,0 @@
---- before
-+++ after
-@@ -1 +1 @@
--import DifferentialGeometry.Topology.LoopSpace.BasedCircle
-+import DifferentialGeometry.External.CanonicalTopology.Topology.LoopSpace.BasedCircle

@@ -1,5 +1,0 @@
---- before
-+++ after
-@@ -1 +1 @@
--import DifferentialGeometry.Topology.Manifold.SphereOutwardOrientation
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Manifold.SphereOutwardOrientation

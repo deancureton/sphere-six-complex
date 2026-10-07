@@ -1,5 +1,0 @@
---- before
-+++ after
-@@ -2 +2 @@
--import DifferentialGeometry.Topology.Homology.TotallyDisconnectedZero
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.TotallyDisconnectedZero

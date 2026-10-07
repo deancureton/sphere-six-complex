@@ -1,8 +1,0 @@
---- before
-+++ after
-@@ -19 +19 @@
--instance integralReducedHomologyZero_module (X : Type u) [TopologicalSpace X] :
-+instance integralReducedHomologyZeroModule (X : Type u) [TopologicalSpace X] :
-@@ -24 +24 @@
--instance integralZeroMapKernel_module (f : C(X, Y)) :
-+instance integralZeroMapKernelModule (f : C(X, Y)) :

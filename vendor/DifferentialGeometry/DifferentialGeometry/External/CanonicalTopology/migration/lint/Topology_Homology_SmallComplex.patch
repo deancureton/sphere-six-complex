@@ -1,5 +1,0 @@
---- before
-+++ after
-@@ -16 +16 @@
--instance integralSingularSmallChains_module (n : ℕ) (U : ι → Set X) :
-+instance integralSingularSmallChainsModule (n : ℕ) (U : ι → Set X) :

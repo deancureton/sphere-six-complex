@@ -1,5 +1,0 @@
---- before
-+++ after
-@@ -3 +3 @@
--import DifferentialGeometry.Topology.Homology.Homotopy
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.Homotopy

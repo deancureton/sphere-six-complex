@@ -1,9 +1,0 @@
---- before
-+++ after
-@@ -0,0 +1 @@
-+import DifferentialGeometry.Topology.Homology.Relative.Basic
-@@ -5,2 +6,2 @@
--import DifferentialGeometry.Topology.Homology.OpenExcision
--import DifferentialGeometry.Topology.Homology.RelativeMaps
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.OpenExcision
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RelativeMaps

@@ -1,5 +1,0 @@
---- before
-+++ after
-@@ -6 +6 @@
--import DifferentialGeometry.Topology.Homotopy.ConvexPlaneExtension
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homotopy.ConvexPlaneExtension

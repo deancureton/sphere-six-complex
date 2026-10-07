@@ -1,5 +1,0 @@
---- canonical-topology/Poincare/Topology/Homology/SimplexBasis.lean
-+++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/SimplexBasis.lean
-@@ -22 +22 @@
--    integralSingularSimplex n X ≃ C(stdSimplex ℝ (Fin (n + 1)), X) :=
-+    integralSingularSimplex n X ≃ C(Convexity.StdSimplex ℝ (Fin (n + 1)), X) :=

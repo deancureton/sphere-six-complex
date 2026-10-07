@@ -82,7 +82,8 @@ ledger tracks implemented work and gate results, not source-audit promises.
 
 - Integrated the proved compact-support and cap-product duality results from
   DifferentialGeometry at `788efe97894474c032de6dfb1289d515f613d15a`.
-  The selected 221-module dependency is in `vendor/DifferentialGeometry` with
+  The initial 221-module extraction (now expanded and hosted in the pinned
+  DifferentialGeometry fork) preserves
   licenses, original hashes, attribution and an exact module-system port patch.
 - The upstream legacy file format cannot be imported by this project's module
   files. The port adds module/export headers, adjusts helper visibility and
@@ -99,7 +100,7 @@ ledger tracks implemented work and gate results, not source-audit promises.
   seven mathematical axioms for the final theorems and four for the construction,
   with the three standard axioms in each. Allowlists and the generated catalog agree.
 - Import/layer checks pass for 734 project modules. The placeholder gate includes
-  both vendored libraries and finds only the two intentional Challenge placeholders.
+  VanKampen and DifferentialGeometry and finds only the two intentional Challenge placeholders.
 - Independent review confirmed the coefficient comparisons, dimension transport,
   acyclic proof order, all 221 original hashes and reversibility of the port patch.
 - Comparator accepts both unchanged endpoint statements with Lean's default kernel

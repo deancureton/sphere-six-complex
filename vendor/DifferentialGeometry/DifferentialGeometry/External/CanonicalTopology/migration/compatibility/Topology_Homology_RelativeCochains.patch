@@ -1,5 +1,0 @@
---- canonical-topology/Poincare/Topology/Homology/RelativeCochains.lean
-+++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/RelativeCochains.lean
-@@ -140 +140 @@
--    Basis.constr_basis, dif_pos hσ]
-+    Basis.constr_basis, dite_eq_left hσ]

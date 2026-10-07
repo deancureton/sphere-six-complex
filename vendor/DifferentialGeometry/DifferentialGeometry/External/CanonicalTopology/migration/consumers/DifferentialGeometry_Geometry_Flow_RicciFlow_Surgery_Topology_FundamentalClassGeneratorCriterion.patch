@@ -1,8 +1,0 @@
---- before
-+++ after
-@@ -5 +5 @@
--import DifferentialGeometry.Topology.Homology.SphereTopHomology
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SphereTopHomology
-@@ -69 +69 @@
--    [T2Space M] [CompactSpace M] (o : TangentOrientationSection M) (x : M)
-+    (o : TangentOrientationSection M) (x : M)

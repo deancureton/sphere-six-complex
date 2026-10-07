@@ -1,5 +1,0 @@
---- canonical-topology/Poincare/Topology/Homology/AffineCones.lean
-+++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/AffineCones.lean
-@@ -31 +31 @@
--  rw [dif_pos h, affineSingularSimplex_injective n h.choose_spec]
-+  rw [dite_eq_left h, affineSingularSimplex_injective n h.choose_spec]

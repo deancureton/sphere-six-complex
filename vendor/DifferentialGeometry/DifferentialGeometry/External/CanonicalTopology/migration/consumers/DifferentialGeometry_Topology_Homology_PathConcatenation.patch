@@ -1,5 +1,0 @@
---- before
-+++ after
-@@ -6 +6 @@
--import DifferentialGeometry.Topology.Homology.PathEvaluation
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.PathEvaluation

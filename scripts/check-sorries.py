@@ -15,6 +15,7 @@ import re
 import sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
+DIFFERENTIAL_GEOMETRY = ".lake/packages/DifferentialGeometry/DifferentialGeometry"
 
 #: file -> number of placeholder occurrences that are expected and accepted.
 ALLOWED = {
@@ -47,7 +48,7 @@ def strip_comments(source: str) -> str:
 
 def sources() -> list[str]:
     found = ["ChallengeDefs.lean", "ChallengeAxioms.lean", "Challenge.lean", "Solution.lean"]
-    for source_dir in ("SphereSixComplex", "vendor"):
+    for source_dir in ("SphereSixComplex", "vendor", DIFFERENTIAL_GEOMETRY):
         for dirpath, subdirs, filenames in os.walk(os.path.join(ROOT, source_dir)):
             subdirs[:] = [name for name in subdirs if not name.startswith(".")]
             for name in sorted(filenames):
@@ -57,6 +58,9 @@ def sources() -> list[str]:
 
 
 def main() -> int:
+    if not os.path.isdir(os.path.join(ROOT, DIFFERENTIAL_GEOMETRY)):
+        print("Placeholder check FAILED: DifferentialGeometry is missing; run lake update.")
+        return 1
     failures: list[str] = []
     for path in sources():
         with open(os.path.join(ROOT, path), encoding="utf-8") as handle:

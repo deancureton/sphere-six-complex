@@ -1,8 +1,0 @@
---- canonical-topology/Poincare/Topology/Homology/AffineSubdivision.lean
-+++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/AffineSubdivision.lean
-@@ -18 +18 @@
--  affineSimplexMap v stdSimplex.barycenter
-+  affineSimplexMap v Convexity.StdSimplex.barycenter
-@@ -59 +59 @@
--  rw [dif_pos h, affineSingularSimplex_injective (n + 1) h.choose_spec]
-+  rw [dite_eq_left h, affineSingularSimplex_injective (n + 1) h.choose_spec]

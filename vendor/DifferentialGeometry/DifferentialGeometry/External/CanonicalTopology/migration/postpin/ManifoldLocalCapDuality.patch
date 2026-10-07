@@ -1,8 +1,0 @@
---- before
-+++ after
-@@ -0,0 +1 @@
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RelativeCapToAbsoluteHomology
-@@ -3,2 +4 @@
--import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.EuclideanLocalCapDuality
--
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.NormedLocalCapDuality

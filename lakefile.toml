@@ -19,7 +19,8 @@ path = "vendor/VanKampen"
 
 [[require]]
 name = "DifferentialGeometry"
-path = "vendor/DifferentialGeometry"
+git = "https://github.com/deancureton/differential-geometry.git"
+rev = "67e3631e3b8f532a31ac2375b2d50a4369044eec"
 
 # Keep Mathlib last so its transitive dependency pins take precedence.
 [[require]]

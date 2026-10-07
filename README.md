@@ -80,7 +80,7 @@ This formalization depends on:
 - [Tau Ceti](https://github.com/TauCetiProject/TauCeti)
 - the integral duality development in [DifferentialGeometry](https://github.com/qinz1yang/differential-geometry),
   derived in part from Ayush Khaitan's CanonicalTopology project; see the
-  [selected dependency and module port](vendor/DifferentialGeometry/README.md)
+  [selected dependency and module port](https://github.com/deancureton/differential-geometry/blob/67e3631e3b8f532a31ac2375b2d50a4369044eec/README.md)
 - the [Jordan Curve Theorem project](https://github.com/epfl-lara/jordan-curve-theorem)
 - Thomas Zhu's fundamental-groupoid van Kampen development in Mathlib
   [PR #41603](https://github.com/leanprover-community/mathlib4/pull/41603)

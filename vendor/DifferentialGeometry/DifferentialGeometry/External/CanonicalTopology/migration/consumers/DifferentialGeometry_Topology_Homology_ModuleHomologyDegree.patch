@@ -1,5 +1,0 @@
---- before
-+++ after
-@@ -1 +1 @@
--import DifferentialGeometry.Topology.Homology.ModuleHomologyMaps
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.ModuleHomologyMaps

@@ -1,5 +1,0 @@
---- canonical-topology/Poincare/Topology/Homology/AffineChains.lean
-+++ DifferentialGeometry/External/CanonicalTopology/Topology/Homology/AffineChains.lean
-@@ -40 +40 @@
--    (fun F : C(stdSimplex ℝ (Fin (n + 1)), E) => F (stdSimplex.vertex i)) he
-+    (fun F : C(Convexity.StdSimplex ℝ (Fin (n + 1)), E) => F (Convexity.StdSimplex.single i)) he

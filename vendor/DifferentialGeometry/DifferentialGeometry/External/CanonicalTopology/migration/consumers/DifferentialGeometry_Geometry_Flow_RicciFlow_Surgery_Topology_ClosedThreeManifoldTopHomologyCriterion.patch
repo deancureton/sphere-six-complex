@@ -1,8 +1,0 @@
---- before
-+++ after
-@@ -11 +11 @@
--import DifferentialGeometry.Topology.Homology.SphereTopHomology
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SphereTopHomology
-@@ -187 +187 @@
--    (M : Type) [TopologicalSpace M] [ChartedSpace ThreeSpace M] [IsManifold ThreeModel ∞ M]
-+    (M : Type) [TopologicalSpace M]

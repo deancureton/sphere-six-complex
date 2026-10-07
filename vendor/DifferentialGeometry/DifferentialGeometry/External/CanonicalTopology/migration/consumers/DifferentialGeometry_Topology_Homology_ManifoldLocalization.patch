@@ -1,7 +1,0 @@
---- before
-+++ after
-@@ -1,2 +1,2 @@
--import DifferentialGeometry.Topology.Homology.ManifoldCompactHomology
--import DifferentialGeometry.Topology.Homology.RelativeEmpty
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.ManifoldCompactHomology
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RelativeEmpty

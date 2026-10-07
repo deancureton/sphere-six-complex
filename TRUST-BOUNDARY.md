@@ -62,7 +62,7 @@ homology-sphere argument. The redundant orientation adapter was removed; manifol
 is now indexed directly by the real dimension of the model space. Final theorem statements
 are unchanged.
 
-The [selected dependency](vendor/DifferentialGeometry/README.md) preserves the pinned source,
+The [selected dependency](https://github.com/deancureton/differential-geometry/blob/67e3631e3b8f532a31ac2375b2d50a4369044eec/README.md) preserves the pinned source,
 licenses and original hashes. Its module-system port has an exact recorded patch. Dependency
 proofs are checked by Lean and are not additional permitted axioms.
 
@@ -160,7 +160,7 @@ This bypasses the former higher Hurewicz, homological Whitehead and finite CW mo
 assumptions; it does not prove those general theorems. Their declarations and unused
 recognition route are deleted. The selected DifferentialGeometry dependency supplies
 checked h-cobordism and twisted-sphere proofs, with original hashes and the exact port
-patch recorded under `vendor/DifferentialGeometry`.
+patch recorded in the pinned DifferentialGeometry fork.
 
 The final smooth classification assumption is still necessary for the current proof:
 Alexander's radial extension is continuous, but need not be smooth at the center.

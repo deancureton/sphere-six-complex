@@ -1,7 +1,0 @@
---- before
-+++ after
-@@ -4,2 +4,2 @@
--import DifferentialGeometry.Topology.Homology.RadialHomotopy
--import DifferentialGeometry.Topology.Homology.SphereHomologyVanishing
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RadialHomotopy
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.SphereHomologyVanishing

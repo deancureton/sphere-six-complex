@@ -56,7 +56,8 @@ axiom declarations and obsolete proof route have been deleted. It does not forma
 those three general theorems. Final endpoint statements remain unchanged.
 
 The additional dependency closure contains 168 modules (142,963 original lines).
-It is vendored from the same pinned source as the existing Poincaré duality dependency,
+It is extracted from the same pinned source as the existing Poincaré duality dependency
+and hosted in the pinned DifferentialGeometry fork,
 with licenses, original hashes and an exact module-system port patch. No large Boris
 Alexeev development is imported. The selected modules compile against the project's
 pinned Mathlib.

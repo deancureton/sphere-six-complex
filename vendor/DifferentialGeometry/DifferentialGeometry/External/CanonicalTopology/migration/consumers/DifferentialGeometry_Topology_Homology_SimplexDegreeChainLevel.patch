@@ -1,7 +1,0 @@
---- before
-+++ after
-@@ -0,0 +1 @@
-+import DifferentialGeometry.Topology.Homology.Relative.Basic
-@@ -4 +5 @@
--import DifferentialGeometry.Topology.Homology.ModuleHomologyClasses
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.ModuleHomologyClasses

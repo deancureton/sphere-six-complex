@@ -1,6 +1,0 @@
---- canonical-topology/Poincare/Topology/LoopSpace/SpanningDisk.lean
-+++ DifferentialGeometry/External/CanonicalTopology/Topology/LoopSpace/SpanningDisk.lean
-@@ -35,2 +35 @@
--      simpa [Metric.mem_closedBall, dist_zero_right] using
--        (AddCircle.toCircle θ).property.le⟩,
-+      simp [Metric.mem_closedBall, dist_zero_right]⟩,

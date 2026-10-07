@@ -1,5 +1,0 @@
---- before
-+++ after
-@@ -5 +5 @@
--import DifferentialGeometry.Topology.Homology.CompactlySupportedCohomology.Cap
-+import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.CompactlySupportedCohomology.Cap
