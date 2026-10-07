@@ -6,6 +6,3 @@
 propext
 Quot.sound
 Classical.choice
-
-# Smooth classification of homotopy six-spheres.
-SphereSixComplex.SmoothSixSphere.poincare

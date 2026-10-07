@@ -9,8 +9,7 @@
   "permitted_axioms": [
     "propext",
     "Quot.sound",
-    "Classical.choice",
-    "SphereSixComplex.SmoothSixSphere.poincare"
+    "Classical.choice"
   ],
   "enable_nanoda": false
 }

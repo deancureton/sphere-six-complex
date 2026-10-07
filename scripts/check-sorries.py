@@ -15,7 +15,10 @@ import re
 import sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
-DIFFERENTIAL_GEOMETRY = ".lake/packages/DifferentialGeometry/DifferentialGeometry"
+EXTERNAL_SOURCES = (
+    ".lake/packages/DifferentialGeometry/DifferentialGeometry",
+    ".lake/packages/SmoothSixSphere/Wikipedia",
+)
 
 #: file -> number of placeholder occurrences that are expected and accepted.
 ALLOWED = {
@@ -24,7 +27,12 @@ ALLOWED = {
 
 TOKEN_RE = re.compile(r"(?<![\w.])(sorry|admit|native_decide)(?![\w'])")
 LINE_COMMENT_RE = re.compile(r"--.*$")
-HOPF_IMPORT_RE = re.compile(r"^\s*(?:public\s+)?import\s+HopfProblem(?:\.|\s|$)", re.MULTILINE)
+HOPF_IMPORT_RE = re.compile(r"^\s*(?:public\s+)?import\s+(?:all\s+)?HopfProblem(?:\.|\s|$)", re.MULTILINE)
+UPSTREAM_ENDPOINT_RE = re.compile(
+    r"^\s*(?:public\s+)?import\s+(?:all\s+)?Wikipedia\.HopfProblem\."
+    r"(?:UnconditionalSphereRecognition|ConditionalSphereRecognition|SixSphereProjection|SixSphereComplexAtlas)"
+    r"(?:\.|\s|$)", re.MULTILINE
+)
 HOPF_REFERENCE_RE = re.compile(r"\bHopfProblemExport\b")
 
 
@@ -48,7 +56,7 @@ def strip_comments(source: str) -> str:
 
 def sources() -> list[str]:
     found = ["ChallengeDefs.lean", "ChallengeAxioms.lean", "Challenge.lean", "Solution.lean"]
-    for source_dir in ("SphereSixComplex", "vendor", DIFFERENTIAL_GEOMETRY):
+    for source_dir in ("SphereSixComplex", "vendor", *EXTERNAL_SOURCES):
         for dirpath, subdirs, filenames in os.walk(os.path.join(ROOT, source_dir)):
             subdirs[:] = [name for name in subdirs if not name.startswith(".")]
             for name in sorted(filenames):
@@ -58,9 +66,10 @@ def sources() -> list[str]:
 
 
 def main() -> int:
-    if not os.path.isdir(os.path.join(ROOT, DIFFERENTIAL_GEOMETRY)):
-        print("Placeholder check FAILED: DifferentialGeometry is missing; run lake update.")
-        return 1
+    for source_dir in EXTERNAL_SOURCES:
+        if not os.path.isdir(os.path.join(ROOT, source_dir)):
+            print(f"Placeholder check FAILED: {source_dir} is missing; run lake update.")
+            return 1
     failures: list[str] = []
     for path in sources():
         with open(os.path.join(ROOT, path), encoding="utf-8") as handle:
@@ -79,7 +88,7 @@ def main() -> int:
                 f"  {path}: expected {budget} declared placeholder(s), found {len(hits)}"
                 " — update ALLOWED in scripts/check-sorries.py"
             )
-        if HOPF_IMPORT_RE.search(text) or HOPF_REFERENCE_RE.search(text):
+        if HOPF_IMPORT_RE.search(text) or HOPF_REFERENCE_RE.search(text) or UPSTREAM_ENDPOINT_RE.search(text):
             failures.append(f"  {path}: external HopfProblem proof dependency is forbidden")
 
     with open(os.path.join(ROOT, "lakefile.toml"), encoding="utf-8") as handle:

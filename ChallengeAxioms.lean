@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Elliptic.Band.OverlapCompletion
 public import SphereSixComplex.Cusp.Homology.AttachmentHomology
-public import SphereSixComplex.Prerequisites.Topology.Sphere.ClassicalRecognition
 
 /-!
 # Comparator trusted-axiom imports
@@ -27,14 +26,4 @@ Do not edit it by hand; run ./scripts/update-axiom-catalog.sh --write.
 axiom propext : ∀ {a b : Prop}, (a ↔ b) → a = b
 axiom Quot.sound.{u} : ∀ {α : Sort u} {r : α → α → Prop} {a b : α}, r a b → Quot.mk r a = Quot.mk r b
 axiom Classical.choice.{u} : {α : Sort u} → Nonempty α → α
-
-# Smooth classification of homotopy six-spheres.
-axiom SphereSixComplex.SmoothSixSphere.poincare : ∀ (M : Type) [inst : TopologicalSpace M]
-  [inst_1 : ChartedSpace SphereSixComplex.RealModel M]
-  [IsManifold (modelWithCornersSelf ℝ SphereSixComplex.RealModel) (↑⊤) M] [T2Space M] [SecondCountableTopology M]
-  [CompactSpace M],
-  Nonempty (ContinuousMap.HomotopyEquiv M SphereSixComplex.SixSphere) →
-    Nonempty
-      (Diffeomorph (modelWithCornersSelf ℝ SphereSixComplex.RealModel)
-        (modelWithCornersSelf ℝ SphereSixComplex.RealModel) M SphereSixComplex.SixSphere ↑⊤)
 END GENERATED AXIOM CATALOG -/

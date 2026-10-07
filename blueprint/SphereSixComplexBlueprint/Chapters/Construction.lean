@@ -512,19 +512,18 @@ second homology.
 The underlying standard smooth manifold of $`X` is diffeomorphic to $`S^6`.
 :::
 
-:::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "DifferentialGeometry.Topology.nonempty_homeomorph_sphere_of_homology, SphereSixComplex.SmoothSixSphere.poincare, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyEquiv")
+:::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "DifferentialGeometry.Topology.nonempty_homeomorph_sphere_of_homology, NoExoticSixSphere.noExoticSixSpheres, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homeomorph")
 A global fundamental class generates local top homology, which makes the punctured
 manifold acyclic. The complement of two chart disks is simply connected and has vanishing
 relative homology. The proved h-cobordism theorem and twisted-sphere assembly give a
-homeomorphism to the sphere, hence a homotopy equivalence. Smooth Poincaré classification
-in dimension six is the sole retained classical assumption and supplies a diffeomorphism
-for the specified smooth atlas.
+homeomorphism to the sphere. The proved smooth classification theorem in dimension six
+supplies a diffeomorphism for the specified smooth atlas.
 :::
 
 :::proof "smooth-recognition"
 Combine {uses "fundamental-group"}[simple connectedness] and
-{uses "integral-homology"}[integral homology] to obtain a homotopy sphere, then use six-dimensional
-smooth homotopy-sphere recognition.
+{uses "integral-homology"}[integral homology] to obtain a sphere homeomorphism, then apply six-dimensional
+smooth classification.
 :::
 
 :::theorem "standard-six-sphere" (parent := "smooth-recognition") (lean := "SphereSixComplex.sixSphere_isPathConnected")

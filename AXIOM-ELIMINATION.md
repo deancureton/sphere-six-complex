@@ -1,8 +1,7 @@
 # Remaining axiom elimination
 
-The endpoint statements in `comparator.json` remain fixed. Each replacement must pass
-the full build, compiled axiom audit and Comparator before its assumption is removed
-from the permitted boundary.
+The endpoint statements in `comparator.json` are unchanged. Replacements are checked
+by the full build and compiled axiom audit; Comparator results are recorded separately.
 
 | Assumption | Route | Status |
 | --- | --- | --- |
@@ -12,7 +11,7 @@ from the permitted boundary.
 | Finite CW model of a compact smooth manifold | Replace homology consequences using the explicit open cover and recognition using h-cobordism | Removed; full build, exact audits, Blueprint and Comparator passed |
 | Higher Hurewicz | Replace homological recognition with the h-cobordism homeomorphism route | Removed; full build, exact audits, Blueprint and Comparator passed |
 | Homological Whitehead | Same h-cobordism homeomorphism route | Removed; full build, exact audits, Blueprint and Comparator passed |
-| Smooth six-sphere recognition | Smooth classification, or an explicit diffeomorphism for the constructed manifold | Investigated: available Alexander-trick assembly proves only a homeomorphism; smooth extension remains missing |
+| Smooth six-sphere recognition | Import the proved smooth classification and apply it to the existing homeomorphism | Removed; full build, exact audits and Blueprint passed; Comparator replay incomplete |
 
 The UCT replacement does not assume an injective integer coefficient module. Instead,
 the chain objects and lower homology objects are projective. This gives a general
@@ -58,27 +57,25 @@ those three general theorems. Final endpoint statements remain unchanged.
 The additional dependency closure contains 168 modules (142,963 original lines).
 It is extracted from the same pinned source as the existing Poincaré duality dependency
 and hosted in the pinned DifferentialGeometry fork,
-with licenses, original hashes and an exact module-system port patch. No large Boris
-Alexeev development is imported. The selected modules compile against the project's
+with licenses, original hashes and an exact module-system port patch. The selected modules compile against the project's
 pinned Mathlib.
 
-## Remaining smooth classification
+## Proved smooth classification
 
-The available Alexander-trick assembly concludes a homeomorphism. A radial extension
-of a boundary homeomorphism need not be differentiable at its center, so it cannot
-supply the final diffeomorphism. Removing `SmoothSixSphere.poincare` still requires a
-formal smooth classification argument (the triviality of the group of homotopy
-six-spheres), an appropriate smooth extension theorem, or an explicit diffeomorphism
-for this particular construction. The inspected dependencies do not supply that bridge.
+The Alexander-trick assembly concludes a homeomorphism; it does not itself give a
+smooth map at the center. The SmoothSixSphere dependency supplies the missing
+classification theorem, extracted from Boris Alexeev's development. It accepts the
+existing homeomorphism and the independently supplied smooth atlas and produces a
+Mathlib diffeomorphism. The former `SmoothSixSphere.poincare` axiom and unused
+homotopy-sphere wrappers are removed.
 
-The `mathoverflow_1973` endpoint now transports the complex atlas directly along the
-proved homeomorphism. Its statement does not require compatibility with the standard
-real smooth structure, so this endpoint needs no classical axioms. The stronger endpoint
-retains smooth six-sphere recognition. Both statement types are unchanged.
+Both final statement types are unchanged. The topological endpoint
+`mathoverflow_1973` transports the complex atlas along the homeomorphism. The
+stronger endpoint additionally requires compatibility with the standard real
+smooth structure and uses the proved diffeomorphism. Both have only the three
+standard Lean axioms.
 
-All checkpoint gates passed: full project build (10,509 jobs), exact final and
-construction axiom audits, a separate recursive closure check for `mathoverflow_1973`,
-Blueprint build and output checks (11,209 jobs), and Comparator with Lean's default
-kernel. The topological endpoint uses only the three standard axioms; the stronger
-smooth-compatible endpoint additionally uses `SmoothSixSphere.poincare`.
-The local macOS Comparator run checks kernel acceptance, not Linux sandbox isolation.
+The full project build, exact recursive axiom audits and Blueprint build passed.
+Comparator's kernel replay was interrupted after approximately 34 minutes without
+a verdict. Its configuration still permits only the standard three axioms. Linux
+sandbox isolation was not tested by this local macOS run.

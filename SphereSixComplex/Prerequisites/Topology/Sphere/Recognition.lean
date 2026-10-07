@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Sphere.ClassicalRecognition
+public import SphereSixComplex.Prerequisites.Topology.Sphere.SmoothRecognition
+public import Wikipedia.NoExoticSixSphere.Classification
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyRecognition
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.ModuleComparison
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
@@ -10,8 +11,8 @@ public import SphereSixComplex.Prerequisites.Topology.Sphere.LoopContraction
 # Smooth homology six-sphere recognition
 
 The h-cobordism theorem identifies a simply connected integral homology six-sphere
-with the topological sphere. The retained smooth Poincare
-theorem then supplies a diffeomorphism for the specified smooth atlas.
+with the topological sphere. Smooth six-sphere classification then supplies a
+diffeomorphism for the specified smooth atlas.
 -/
 
 open scoped ContDiff Manifold
@@ -36,25 +37,6 @@ public theorem SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homeomorp
         |>.subsingleton)
   exact ⟨e⟩
 
-/-- A simply connected smooth integral homology six-sphere is a homotopy sphere. -/
-public theorem SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyEquiv
-    {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
-    [ChartedSpace RealModel X] :
-    HomologyToHomotopySixSphereObligation X := by
-  intro hX
-  obtain ⟨e⟩ := hX.nonempty_homeomorph
-  exact ⟨e.toHomotopyEquiv⟩
-
-/-- The standard-model consequence recovers smooth Poincare in dimension six. -/
-public theorem SmoothHomotopySixSphere.isDiffeomorphic
-    {X : Type} [TopologicalSpace X] [T2Space X] [SecondCountableTopology X]
-    [ChartedSpace RealModel X] :
-    SmoothHomotopySixSphere X → SmoothSixSphere.IsDiffeomorphic X := by
-  intro hX
-  let _ : CompactSpace X := hX.compact
-  let _ : IsManifold 𝓘(ℝ, RealModel) ∞ X := hX.isManifold
-  exact SmoothSixSphere.poincare X hX.homotopyEquiv
-
 /-- A compact simply connected smooth six-manifold with the integral homology of the sphere
 is diffeomorphic to the standard six-sphere. -/
 public theorem SmoothSixSphere.nonempty_diffeomorph
@@ -70,8 +52,7 @@ public theorem SmoothSixSphere.nonempty_diffeomorph
       connected := inferInstance
       integralHomology := hhomology
       simplyConnected := inferInstance }
-  exact SmoothHomotopySixSphere.isDiffeomorphic
-    { toCompactConnectedSmoothSixManifold := hX.toCompactConnectedSmoothSixManifold
-      homotopyEquiv := SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homotopyEquiv hX }
+  exact NoExoticSixSphere.noExoticSixSpheres X inferInstance inferInstance inferInstance
+    hX.nonempty_homeomorph
 
 end SphereSixComplex

@@ -14,7 +14,7 @@ to both Comparator environments and catalogs every exact assumption. Nothing imp
 ## Status
 
 The headline theorem is source-sorry-free. Its trust boundary consists of Lean's three standard
-logical axioms and smooth six-sphere recognition, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
+logical axioms, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
 and checked by the allowlists in `scripts/`. No paper-specific axioms remain. The two `sorry`s
 in `Challenge.lean` are Comparator challenge declarations and are not imported by the solution.
 The topological endpoint `mathoverflow_1973` uses only Lean’s three standard axioms: it
@@ -45,9 +45,9 @@ removing the relative triangulation and CW-pair Whitehead assumptions. The four-
 Mayer–Vietoris calculation supplies finite generation and the dimension bound directly,
 so the construction of the simply connected complex homology six-sphere uses only
 Lean’s three standard axioms. A proved h-cobordism argument now gives a sphere homeomorphism,
-bypassing higher Hurewicz, homological Whitehead and finite CW models. Only smooth
-six-sphere recognition remains assumed. See
-[AXIOM-ELIMINATION.md](AXIOM-ELIMINATION.md) for the remaining work.
+bypassing higher Hurewicz, homological Whitehead and finite CW models. The SmoothSixSphere
+dependency proves smooth classification for the independently supplied atlas, giving the
+required diffeomorphism. See [AXIOM-ELIMINATION.md](AXIOM-ELIMINATION.md) for the proof history.
 
 Finite-fibre specialization is proved in both degrees. In degree two, the actual mixed torus
 columns and the positive projection prove an integral isomorphism. Its inverse defines the

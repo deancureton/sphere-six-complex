@@ -108,3 +108,38 @@ ledger tracks implemented work and gate results, not source-audit promises.
 - Final Blueprint site generation passes, including HTML index, manifest and
   HTML-cache checks. Static inventory finds exactly seven project axioms, all
   reachable from the final theorem, with no additional unused axioms.
+
+## Smooth six-sphere classification dependency
+
+The SmoothSixSphere package extracts `NoExoticSixSphere.noExoticSixSpheres` from
+Boris Alexeev's `plby/lean-proofs` at
+`8822f7ddef30fadbd92e1c6ab4ed897af356af5e`. Its package branch preserves that commit
+as its parent, original license notices, and source hashes. The Lake revision
+`89f53697e3a7f253b9969f5efe296dc3a9ba9ec0` pins the port to this project's Lean
+and Mathlib versions on the `codex/smooth-six-sphere` branch of
+[deancureton/lean-proofs](https://github.com/deancureton/lean-proofs/tree/89f53697e3a7f253b9969f5efe296dc3a9ba9ec0).
+
+The port changes the module format and adapts Mathlib APIs, including a proved
+coordinate equivalence between the old and current simplex representations.
+Unused import branches and a reviewed batch of unused theorems are removed.
+
+The upstream Hopf-fibration argument used the constructed threefold's circle
+action. A direct normalized Hermitian projector now supplies homotopy lifting on
+the ordinary unit Hopf spheres. Elementary orbit algebra identifies the fibers
+with the circle, and real linear isometries identify the unit spheres with the
+standard Euclidean spheres. This removes the analytic threefold construction from
+the classification dependency and cuts about 104,000 lines from its import closure.
+The remaining package is substantial; making it external does not eliminate its
+build or maintenance cost.
+
+S6 applies the proved classification directly to its existing homeomorphism. The
+independently supplied smooth atlas and both final theorem statements are
+unchanged. The old smooth-classification axiom and homotopy-sphere wrappers are
+removed; the permitted axiom list now contains only the standard three.
+
+The full project and Blueprint builds passed. Exact recursive audits of both
+endpoints and the construction report only `propext`, `Quot.sound`, and
+`Classical.choice`. Import/layer and placeholder checks also passed. Comparator's
+kernel replay was interrupted after approximately 34 minutes without a verdict;
+its configuration remains unchanged apart from removing the final permitted
+mathematical axiom.

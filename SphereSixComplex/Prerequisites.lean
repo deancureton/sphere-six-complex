@@ -252,7 +252,6 @@ public import SphereSixComplex.Prerequisites.Topology.SingularHomology.HexagonBo
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Homeomorph
 public import SphereSixComplex.Prerequisites.Topology.Covering.Homogeneous
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologySphere
-public import SphereSixComplex.Prerequisites.Topology.Sphere.ClassicalRecognition
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Splitting
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.BasepointTransport
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.Whitehead

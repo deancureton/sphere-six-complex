@@ -49,9 +49,10 @@ Transport the complex atlas of the constructed threefold along the diffeomorphis
 {uses "smooth-recognition"}[smooth recognition].
 :::
 
-:::definition "classical-trust-boundary" (parent := "main_construction") (lean := "SphereSixComplex.SmoothSixSphere.poincare")
-The smooth-compatible theorem depends on Lean's three standard logical axioms and smooth
-Poincaré classification in dimension six. Its exact contract is reviewed in `TRUST-BOUNDARY.md`.
+:::definition "classical-trust-boundary" (parent := "main_construction") (lean := "NoExoticSixSphere.noExoticSixSpheres")
+The smooth-compatible theorem depends only on Lean's three standard logical axioms.
+Smooth classification in dimension six is proved by the SmoothSixSphere dependency.
+Its exact contract is reviewed in `TRUST-BOUNDARY.md`.
 The topological endpoint `mathoverflow_1973` instead transports the complex atlas directly
 along the proved homeomorphism and uses only the three standard logical axioms.
 

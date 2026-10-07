@@ -1,21 +1,25 @@
 # Classical trust-boundary review
 
-The retained boundary consists of smooth six-sphere recognition, together with Lean's
-`propext`, `Classical.choice`, and `Quot.sound`. The classical-source review was made on
-2026-09-09. Cellular comparison, collaring, Poincaré duality and the required UCT cases now have
-checked proofs. An explicit geometric retraction replaces relative triangulation and
-relative Whitehead, as described below. This document records the remaining assumptions and their
-source correspondence; it does not formally prove those assumptions.
+The final theorem uses only Lean's `propext`, `Classical.choice`, and `Quot.sound`.
+There are no additional mathematical axioms. Imported proofs are part of the checked
+proof dependency, not part of an assumed classical boundary.
 
-Repository-relative links point to the exact Lean contracts and supporting definitions.
+## Smooth six-sphere classification
 
-## Declarations and source correspondence
+The SmoothSixSphere package extracts Boris Alexeev's
+`NoExoticSixSphere.noExoticSixSpheres`. Its input is a homeomorphism from a manifold
+with an independently supplied smooth atlas to the standard metric six-sphere;
+its output is an actual Mathlib diffeomorphism for that atlas. The definition
+`NoExoticSixSphere.SixSphereRigidity` expands to precisely this statement.
 
-All names have prefix `SphereSixComplex.` unless another namespace is shown.
+[Recognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/Recognition.lean)
+applies it directly to the homeomorphism already proved by h-cobordism. The former
+`SmoothSixSphere.poincare` axiom and the unused homotopy-sphere adapter are deleted.
+The external classification theorem's recursive dependency audit visits 136,496
+constants and finds exactly the three standard axioms. Package provenance and its
+final pinned revision are recorded with the dependency.
 
-| Declaration and source | Exact-contract checks | Classical reference |
-| --- | --- | --- |
-| `SmoothSixSphere.poincare`, [ClassicalRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/ClassicalRecognition.lean) | [ClassicalRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/ClassicalRecognition.lean), requires a compact smooth real six-manifold homotopy equivalent to the standard six-sphere. [SmoothRecognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/SmoothRecognition.lean), requests an actual diffeomorphism for the specified smooth atlas. | [Kervaire–Milnor, Groups of homotopy spheres I](https://webhomes.maths.ed.ac.uk/~v1ranick/papers/kervmiln.pdf), computation of the group of homotopy six-spheres, together with smooth h-cobordism. This is dimension-six smooth classification, not an arbitrary-dimensional smooth Poincare assertion. |
+The following sections record earlier eliminations of classical assumptions.
 
 ## Proved cellular comparison
 
@@ -121,17 +125,13 @@ sphere recognition, where it supplies CW homotopy type.
 
 ## Scope and limits
 
-The classical-source review above is retained from the September review. The
-correspondences use the standard classical results and inspection of the Lean
-contracts. This is not a formal proof of the remaining assumptions.
-
-Smooth Poincare's manifold hypotheses and diffeomorphism conclusion are expanded directly. See
-[ChallengeAxioms.lean](ChallengeAxioms.lean) for Lean-generated exact signatures.
+See [ChallengeAxioms.lean](ChallengeAxioms.lean) for the Lean-generated signatures of the
+three remaining logical axioms.
 
 ## Verified dependency boundary
 
 The final theorem's compiled dependency closure contains Lean's three standard
-axioms and `SmoothSixSphere.poincare`. The construction closure
+axioms. The construction closure
 contains only the three standard Lean axioms. The exact
 allowlists are checked independently against those closures and Comparator's
 configuration. No construction-specific axiom remains.
@@ -139,12 +139,14 @@ configuration. No construction-specific axiom remains.
 The weaker endpoint `mathoverflow_1973` asks only for a complex atlas compatible with the
 standard topology. Its proof transports the constructed atlas along the sphere homeomorphism
 and uses only the three standard Lean axioms. The stronger endpoint also requires compatibility
-with the standard smooth structure and retains `SmoothSixSphere.poincare`.
+with the standard smooth structure; the imported classification proof supplies this
+without any additional axiom.
 The audit checks the weaker endpoint separately to prevent reintroducing that dependency.
 
-The full project build, exact axiom audit and Comparator pass on this boundary.
-Comparator accepts the exported solution with Lean's default kernel. The local
-macOS run uses fake-landrun, so Linux sandbox isolation was not tested here.
+The full project build, exact axiom audit and Blueprint build pass on this boundary.
+Comparator's kernel replay was interrupted after approximately 34 minutes without
+a verdict; this check remains incomplete. The local macOS run uses fake-landrun,
+so Linux sandbox isolation was not tested here.
 
 ## Homology-sphere recognition by h-cobordism
 
@@ -162,6 +164,6 @@ recognition route are deleted. The selected DifferentialGeometry dependency supp
 checked h-cobordism and twisted-sphere proofs, with original hashes and the exact port
 patch recorded in the pinned DifferentialGeometry fork.
 
-The final smooth classification assumption is still necessary for the current proof:
 Alexander's radial extension is continuous, but need not be smooth at the center.
-The available homeomorphism does not establish a diffeomorphism for the given atlas.
+The separate smooth classification theorem upgrades the homeomorphism to a
+diffeomorphism for the given atlas.
