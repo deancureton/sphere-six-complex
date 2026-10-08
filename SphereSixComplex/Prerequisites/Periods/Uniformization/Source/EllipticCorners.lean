@@ -478,8 +478,7 @@ private theorem mem_sourceTwoBaseSector_of_broad_of_cone
   rcases hb with ⟨hbLower, hbUpper⟩
   by_cases him : (orderFourCayley z).im ≤ 0
   · have hsum : 0 ≤ (orderFourCayley z).re + (orderFourCayley z).im := by
-      rw [abs_of_nonpos him] at hcone
-      linarith
+      exact neg_le_iff_add_nonneg'.mp (abs_le.mp hcone).1
     have hsumEq :
         (orderFourCayley z).re + (orderFourCayley z).im =
           (normSq (z : ℂ) - 1) /
@@ -494,14 +493,13 @@ private theorem mem_sourceTwoBaseSector_of_broad_of_cone
     have hreRaw := (div_le_iff₀ hden).mp him
     have hre : -Real.sqrt 2 / 2 ≤ z.re := by
       simp only [zero_mul] at hreRaw
-      nlinarith
+      nlinarith only [hreRaw, hs2, hs]
     left
     change z ∈ orientedFundamentalRegion
     exact Or.inl ⟨hre, hbUpper.le, hn⟩
   · have himnonneg : 0 ≤ (orderFourCayley z).im := le_of_not_ge him
     have hdiff : 0 ≤ (orderFourCayley z).re - (orderFourCayley z).im := by
-      rw [abs_of_nonneg himnonneg] at hcone
-      linarith
+      exact sub_nonneg.mpr (abs_le.mp hcone).2
     have hdiffEq :
         (orderFourCayley z).re - (orderFourCayley z).im =
           (normSq (z : ℂ) + 2 * Real.sqrt 2 * z.re + 1) /
@@ -515,14 +513,14 @@ private theorem mem_sourceTwoBaseSector_of_broad_of_cone
       have heq : normSq ((z : ℂ) + Real.sqrt 2) =
           normSq (z : ℂ) + 2 * Real.sqrt 2 * z.re + 2 := by
         simp [normSq_apply]
-        nlinarith
+        linear_combination hs2
       rw [heq]
-      nlinarith
+      linarith only [hnraw]
     rw [orderFourCayley_im_formula] at himnonneg
     have hreRaw := (le_div_iff₀ hden).mp himnonneg
     have hre : z.re ≤ -Real.sqrt 2 / 2 := by
       simp only [zero_mul] at hreRaw
-      nlinarith
+      nlinarith only [hreRaw, hs2, hs]
     right
     change fuchsianSourceAction (g₁ * g₂) • z ∈ orientedFundamentalRegion
     right
@@ -533,13 +531,13 @@ private theorem mem_sourceTwoBaseSector_of_broad_of_cone
         change (((fuchsianSourceAction (g₁ * g₂)) z : UpperHalfPlane) : ℂ).re = _
         simpa [FuchsianFundamentalDomain.cuspWidth] using congrArg Complex.re happly
       rw [hreApply]
-      linarith [hbLower]
+      linarith only [hbLower]
     · have hreApply : (fuchsianSourceAction (g₁ * g₂) • z).re =
           z.re + (1 + Real.sqrt 2) := by
         change (((fuchsianSourceAction (g₁ * g₂)) z : UpperHalfPlane) : ℂ).re = _
         simpa [FuchsianFundamentalDomain.cuspWidth] using congrArg Complex.re happly
       rw [hreApply]
-      linarith
+      linarith only [hre]
     · change 1 ≤ normSq (1 - (((fuchsianSourceAction (g₁ * g₂)) z :
         UpperHalfPlane) : ℂ))
       rw [happly]

@@ -293,31 +293,7 @@ public def fixedLoopCylinderTopCatMap
       TopCat.of (CircleMappingTorus phi) :=
   TopCat.ofHom (fixedLoopCylinderMappingTorusMap phi c)
 
-public theorem fixedLoopCylinderTopCatMap_vertexOpen
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) :
-    (Opens.map (fixedLoopCylinderTopCatMap phi c)).obj
-        (coverVertexOpen (fun _ : Unit ↦ phi)) =
-      coverVertexOpen
-        (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) := by
-  ext z
-  change fixedLoopCylinderMappingTorusMap phi c z ∈
-      vertexPiece (fun _ : Unit ↦ phi) ↔
-    z ∈ vertexPiece (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
-  exact fixedLoopCylinderMappingTorusMap_mem_vertexPiece_iff phi c z
 
-public theorem fixedLoopCylinderTopCatMap_edgeOpen
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) :
-    (Opens.map (fixedLoopCylinderTopCatMap phi c)).obj
-        (coverEdgeOpen (fun _ : Unit ↦ phi)) =
-      coverEdgeOpen
-        (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) := by
-  ext z
-  change fixedLoopCylinderMappingTorusMap phi c z ∈
-      edgePiece (fun _ : Unit ↦ phi) ↔
-    z ∈ edgePiece (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
-  exact fixedLoopCylinderMappingTorusMap_mem_edgePiece_iff phi c z
 
 public theorem identityMappingTorusBoundary_positiveCircleProductGenerator :
     (circleMappingTorusWangPresentationOfCover

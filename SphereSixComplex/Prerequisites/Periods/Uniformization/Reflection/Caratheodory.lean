@@ -4,8 +4,6 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.C
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.CuspJordan
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.InverseBoundaryCluster
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.InverseBoundaryCluster
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.FilledHullSeparation
-import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.FilledHullSeparation
 public import TauCeti.Analysis.Complex.Conformal.Caratheodory
 import all TauCeti.Analysis.Complex.Conformal.Caratheodory
 
@@ -17,7 +15,6 @@ noncomputable section
 
 namespace SphereSixComplex.Periods.SourceChamberTopology
 
-open SphereSixComplex.Periods.JordanFilledHullSeparation
 
 theorem sourceBoundedChamber_isPreconnectedApproachAt
     {q : ℂ} (hq : q ∈ frontier sourceBoundedChamber) :

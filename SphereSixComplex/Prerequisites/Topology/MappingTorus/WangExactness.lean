@@ -916,15 +916,8 @@ public theorem endSelector_one : endSelector 1 = 1 :=
 public def vertexSlideFun (p : ι × unitInterval × F) (s : unitInterval) :
     ι × unitInterval × F :=
   (p.1, ⟨(1 - (s : ℝ)) * (p.2.1 : ℝ) + (s : ℝ) * endSelector p.2.1, by
-    have hs0 : (0 : ℝ) ≤ (s : ℝ) := s.2.1
-    have hs1 : (s : ℝ) ≤ 1 := s.2.2
-    have ht0 : (0 : ℝ) ≤ (p.2.1 : ℝ) := p.2.1.2.1
-    have ht1 : (p.2.1 : ℝ) ≤ 1 := p.2.1.2.2
-    have he0 : 0 ≤ endSelector p.2.1 := endSelector_nonneg _
-    have he1 : endSelector p.2.1 ≤ 1 := endSelector_le_one _
-    constructor
-    · nlinarith
-    · nlinarith⟩, p.2.2)
+    exact (Set.Icc.convexComb p.2.1
+      ⟨endSelector p.2.1, endSelector_nonneg _, endSelector_le_one _⟩ s).property⟩, p.2.2)
 
 
 
@@ -1498,16 +1491,14 @@ public theorem isOpen_openBand (a b : ℝ) : IsOpen (openBand a b) :=
 /-- A convex combination of two points above `a` stays above `a`. -/
 public theorem lt_convexCombination {a t u s : ℝ} (ht : a < t) (hu : a < u)
     (hs0 : 0 ≤ s) (hs1 : s ≤ 1) : a < (1 - s) * t + s * u := by
-  rcases le_or_gt s (1 / 2) with h | h
-  · nlinarith
-  · nlinarith
+  exact convex_Ioi (𝕜 := ℝ) a ht hu
+    (sub_nonneg.mpr hs1) hs0 (sub_add_cancel 1 s)
 
 /-- A convex combination of two points below `b` stays below `b`. -/
 public theorem convexCombination_lt {b t u s : ℝ} (ht : t < b) (hu : u < b)
     (hs0 : 0 ≤ s) (hs1 : s ≤ 1) : (1 - s) * t + s * u < b := by
-  rcases le_or_gt s (1 / 2) with h | h
-  · nlinarith
-  · nlinarith
+  exact convex_Iio (𝕜 := ℝ) b ht hu
+    (sub_nonneg.mpr hs1) hs0 (sub_add_cancel 1 s)
 
 /-- The straight-line interpolation of the cylinder parameter towards a chosen centre. -/
 public def slideVal (t₀ : unitInterval) (s t : unitInterval) : ℝ :=
@@ -1515,17 +1506,7 @@ public def slideVal (t₀ : unitInterval) (s t : unitInterval) : ℝ :=
 
 public theorem slideVal_mem_unitInterval (t₀ s t : unitInterval) :
     slideVal t₀ s t ∈ Set.Icc (0 : ℝ) 1 := by
-  have hs0 : (0 : ℝ) ≤ (s : ℝ) := s.2.1
-  have hs1 : (s : ℝ) ≤ 1 := s.2.2
-  have ht0 : (0 : ℝ) ≤ (t : ℝ) := t.2.1
-  have ht1 : (t : ℝ) ≤ 1 := t.2.2
-  have hu0 : (0 : ℝ) ≤ (t₀ : ℝ) := t₀.2.1
-  have hu1 : (t₀ : ℝ) ≤ 1 := t₀.2.2
-  constructor
-  · show (0 : ℝ) ≤ (1 - (s : ℝ)) * (t : ℝ) + (s : ℝ) * (t₀ : ℝ)
-    nlinarith
-  · show (1 - (s : ℝ)) * (t : ℝ) + (s : ℝ) * (t₀ : ℝ) ≤ 1
-    nlinarith
+  exact (Set.Icc.convexComb t t₀ s).property
 
 /-- The interpolation of the cylinder parameter, as a point of the unit interval. -/
 public def slidePoint (t₀ s t : unitInterval) : unitInterval :=

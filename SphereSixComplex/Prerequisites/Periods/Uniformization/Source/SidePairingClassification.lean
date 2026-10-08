@@ -37,10 +37,10 @@ private theorem sqrt_two_sq : (Real.sqrt 2) ^ 2 = 2 :=
   Real.sq_sqrt (by norm_num)
 
 private theorem sqrt_two_lt_two : Real.sqrt 2 < 2 := by
-  nlinarith [sqrt_two_pos, sqrt_two_sq]
+  norm_num [Real.sqrt_lt']
 
 private theorem one_lt_sqrt_two : 1 < Real.sqrt 2 := by
-  nlinarith [sqrt_two_pos, sqrt_two_sq]
+  norm_num [Real.lt_sqrt]
 
 /-! ## Canonical rows of the two finite side-pairing representatives -/
 
@@ -61,7 +61,7 @@ theorem normSq_ge_one_of_mem_orientedFundamentalRegion {z : UpperHalfPlane}
   · have hdiff : normSq (z : ℂ) - normSq (1 - (z : ℂ)) = 2 * z.re - 1 := by
       simp [normSq_apply]
       ring
-    nlinarith [hz.1, hz.2.2]
+    linarith only [hdiff, hz.1, hz.2.2]
 
 theorem normSq_one_sub_ge_one_of_mem_orientedFundamentalRegion {z : UpperHalfPlane}
     (hz : z ∈ orientedFundamentalRegion) :
@@ -70,7 +70,7 @@ theorem normSq_one_sub_ge_one_of_mem_orientedFundamentalRegion {z : UpperHalfPla
   · have hdiff : normSq (1 - (z : ℂ)) - normSq (z : ℂ) = 1 - 2 * z.re := by
       simp [normSq_apply]
       ring
-    nlinarith [hz.2.1, hz.2.2]
+    linarith only [hdiff, hz.2.1, hz.2.2]
   · exact hz.2.2
 
 /-- When the bottom-left coefficient has square one, the real part of its denominator is at most
@@ -92,8 +92,7 @@ theorem denominator_re_sq_le_half_of_bottomLeft_sq_eq_one
       N = (c * z.re + d) ^ 2 + (c * z.im) ^ 2 := by
         simp [N, normSq_apply, pow_two]
       _ = q ^ 2 + z.im ^ 2 := by
-        dsimp only [q]
-        nlinarith [hc']
+        rw [mul_pow, hc', one_mul]
   have hNpos : 0 < N := by
     dsimp only [N, c, d]
     exact bottomRowDenominatorNormSq_deltaBottomRow_pos g z
@@ -101,15 +100,14 @@ theorem denominator_re_sq_le_half_of_bottomLeft_sq_eq_one
   change (fuchsianSourceAction g • z).im = z.im / N at him
   rw [hgw] at him
   have hNmul : N * w.im = z.im := by
-    have h := (eq_div_iff hNpos.ne').mp him
-    nlinarith
+    simpa only [mul_comm] using (eq_div_iff hNpos.ne').mp him
   have hwlow := sqrt_two_div_two_le_im_of_mem_orientedFundamentalRegion hw
   have hspos := sqrt_two_pos
   have hs2 := sqrt_two_sq
   have hNbound : N * (Real.sqrt 2 / 2) ≤ z.im := by
-    nlinarith
+    simpa only [hNmul] using mul_le_mul_of_nonneg_left hwlow hNpos.le
   change q ^ 2 ≤ 1 / 2
-  nlinarith [sq_nonneg (z.im - Real.sqrt 2 / 2)]
+  nlinarith only [hN, hNbound, hspos, hs2, sq_nonneg (z.im - Real.sqrt 2 / 2)]
 
 private theorem quadraticInteger_cases_of_cone_of_mem_left_interval
     (d : QuadraticInteger) (hd : InCoefficientCone d)

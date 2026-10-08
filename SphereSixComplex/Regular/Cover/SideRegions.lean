@@ -155,9 +155,6 @@ public def orderFourAffineDiscLiftInclusion {r : ℝ} (hr : r ≤ 1 - 1 / 3) :
       A.orderFourAffineHalfPlaneLiftCarrier.carrier :=
   fun q ↦ ⟨q.1, A.orderFourAffineDiscLiftCarrier_subset_halfPlane hr q.2⟩
 
-public theorem orderThreeAffineDiscLiftInclusion_continuous {r : ℝ} (hr : r ≤ 2 / 3) :
-    Continuous (A.orderThreeAffineDiscLiftInclusion hr) :=
-  continuous_subtype_val.subtype_mk _
 
 
 @[instance_reducible] public noncomputable def orderThreeAffineDiscLiftAction (r : ℝ) :=

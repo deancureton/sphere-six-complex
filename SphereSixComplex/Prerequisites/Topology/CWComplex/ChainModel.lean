@@ -63,23 +63,6 @@ public def IntegralCWCellularHomologyModel.homologyEquivCells
   exact (M.homologyEquiv (n + 1)).symm.trans
     (e.addCommGroupIsoToAddEquiv.trans (M.cellBasis (n + 1)).symm)
 
-/-- Homology of a chain complex of finitely generated abelian groups is finitely generated: the
-cycles are a subgroup of a finitely generated group, and the homology is a quotient of the
-cycles. -/
-public theorem module_finite_homology (C : ChainComplex AddCommGrpCat ℕ) (n : ℕ)
-    (h : Module.Finite ℤ (C.X n)) : Module.Finite ℤ (C.homology n) := by
-  have _inst := h
-  let i : (C.cycles n : AddCommGrpCat) →+ (C.X n : AddCommGrpCat) :=
-    ConcreteCategory.hom (HomologicalComplex.iCycles C n)
-  have hinj : Function.Injective i := by
-    rw [← AddCommGrpCat.mono_iff_injective]; infer_instance
-  have hcyc : Module.Finite ℤ (C.cycles n) :=
-    Module.Finite.of_injective i.toIntLinearMap hinj
-  let q : (C.cycles n : AddCommGrpCat) →+ (C.homology n : AddCommGrpCat) :=
-    ConcreteCategory.hom (HomologicalComplex.homologyπ C n)
-  have hsurj : Function.Surjective q := by
-    rw [← AddCommGrpCat.epi_iff_surjective]; infer_instance
-  exact Module.Finite.of_surjective q.toIntLinearMap hsurj
 
 end SphereSixComplex
 

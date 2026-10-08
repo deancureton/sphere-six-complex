@@ -108,7 +108,6 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.C
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.Circle
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.CuspJordan
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.DiscBoundaryTriple
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.FilledHullSeparation
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.FiniteCorner
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.InverseBoundaryCluster
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.MarkedChamber
@@ -240,7 +239,6 @@ public import SphereSixComplex.Prerequisites.Topology.Sphere.CWModel
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologySphere
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyZero
-public import SphereSixComplex.Prerequisites.Topology.Sphere.LoopContraction
 public import SphereSixComplex.Prerequisites.Topology.Sphere.PositiveHomology
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Recognition
 public import SphereSixComplex.Prerequisites.Topology.Sphere.SimplyConnected

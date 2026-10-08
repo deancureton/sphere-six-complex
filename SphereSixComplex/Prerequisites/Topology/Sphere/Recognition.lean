@@ -4,8 +4,6 @@ import Wikipedia.NoExoticSixSphere.Classification
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyRecognition
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.ModuleComparison
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
-public import SphereSixComplex.Prerequisites.Topology.Sphere.LoopContraction
-
 /-!
 # Smooth homology six-sphere recognition
 

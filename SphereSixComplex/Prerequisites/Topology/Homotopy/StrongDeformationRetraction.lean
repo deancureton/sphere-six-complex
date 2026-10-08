@@ -64,8 +64,6 @@ public theorem hasHomotopyExtensionProperty_iff {X : Type u} [TopologicalSpace X
     HasHomotopyExtensionProperty A ↔ HomotopyExtensionProperty (topologicalSubsetInclusionMap A) :=
   ⟨.mk, HomotopyExtensionProperty.extend⟩
 
-public alias ⟨HasHomotopyExtensionProperty.homotopyExtensionProperty,
-  _root_.HomotopyExtensionProperty.hasHomotopyExtensionProperty⟩ := hasHomotopyExtensionProperty_iff
 
 /-- The subspace inclusion is a homotopy equivalence in the sense of `IsHomotopyEquivalence` iff it
 is one in the sense of `IsHomotopyEquivalenceInclusion`.  Source: Hatcher, *Algebraic Topology*,
@@ -75,47 +73,10 @@ public theorem isHomotopyEquivalenceInclusion_iff {X : Type*} [TopologicalSpace 
       IsHomotopyEquivalence ⇑(topologicalSubsetInclusionMap A) :=
   ⟨fun ⟨e, he⟩ ↦ ⟨e.symm, congrArg DFunLike.coe he⟩, fun ⟨e, he⟩ ↦ ⟨e.symm, DFunLike.ext' he⟩⟩
 
-public alias ⟨IsHomotopyEquivalenceInclusion.isHomotopyEquivalence,
-  IsHomotopyEquivalence.isHomotopyEquivalenceInclusion⟩ := isHomotopyEquivalenceInclusion_iff
 
 end SphereSixComplex
 
-/-! ## From `TopCat` retract data -/
-
-namespace TopCat.StrongDeformationRetractData
-
-variable {A' X : TopCat.{u}} {i : A' ⟶ X} (D : StrongDeformationRetractData i) {S : Set X}
-  (hS : Set.range i.hom = S)
-
-/-- Strong-deformation-retract data for `i : A' ⟶ X`, whose homotopy runs from `retraction ≫ i`
-to the identity, gives a `SphereSixComplex.StrongDeformationRetraction` of `X` onto the range of
-`i`, with the homotopy reversed.  Source: Hatcher, *Algebraic Topology*, p. 2 (definition of a
-deformation retraction). -/
-public def toStrongDeformationRetraction : SphereSixComplex.StrongDeformationRetraction X S where
-  retract := i.hom.comp D.retraction.hom
-  homotopy := D.homotopy.symm
-  retract_mem _ := hS ▸ ⟨_, rfl⟩
-  retract_fixed := hS ▸ Set.forall_mem_range.2 fun a ↦
-    congrArg i.hom (CategoryTheory.ConcreteCategory.congr_hom D.retract a)
-  homotopy_fixed t := hS ▸ Set.forall_mem_range.2 fun a ↦ D.fixed (σ t) a
-
-
-
-end TopCat.StrongDeformationRetractData
-
 namespace SphereSixComplex
-
-/-! ## Cofibrant homotopy-equivalent maps -/
-
-/-- A map with the homotopy-extension property which is a homotopy equivalence exhibits its range
-as a strong deformation retract: Hatcher's Corollary 0.20 for an arbitrary map, read off from
-`HomotopyExtensionProperty.exists_strongDeformationRetractData` (`RelativeHomotopy.lean`).
-Source: Hatcher, *Algebraic Topology*, Cor. 0.20 p. 16 via Prop. 0.19 pp. 16–17. -/
-public theorem _root_.HomotopyExtensionProperty.nonempty_strongDeformationRetraction
-    {A' X : Type u} [TopologicalSpace A'] [TopologicalSpace X] {i : C(A', X)}
-    (hep : HomotopyExtensionProperty i) (hi : IsHomotopyEquivalence ⇑i)
-    {S : Set X} (hS : Set.range i = S) : Nonempty (StrongDeformationRetraction X S) :=
-  (hep.exists_strongDeformationRetractData hi).map fun D ↦ D.toStrongDeformationRetraction hS
 
 /-! ## Lifting a strong deformation retraction through a covering -/
 
@@ -186,18 +147,6 @@ public theorem liftTrack_smul {G E B : Type*} [Group G] [TopologicalSpace E] [To
     rw [apply_smul_eq hp, liftTrack_lifts, apply_smul_eq hp]
   · rw [liftTrack_zero]
 
-/-- A cofibrant inclusion which is a homotopy equivalence is the inclusion of a strong
-deformation retract. This is the standard homotopy-extension-property theorem (Hatcher,
-*Algebraic Topology*, Cor. 0.20), obtained from
-`HomotopyExtensionProperty.nonempty_strongDeformationRetraction` through the interface
-translations `hasHomotopyExtensionProperty_iff` and `isHomotopyEquivalenceInclusion_iff`. -/
-public theorem HasHomotopyExtensionProperty.nonempty_strongDeformationRetraction
-    {X : Type*} [TopologicalSpace X] (A : Set X)
-    (hHEP : HasHomotopyExtensionProperty A)
-    (hEquiv : IsHomotopyEquivalenceInclusion A) :
-    Nonempty (StrongDeformationRetraction X A) :=
-  hHEP.homotopyExtensionProperty.nonempty_strongDeformationRetraction hEquiv.isHomotopyEquivalence
-    Subtype.range_coe
 
 
 /-- A strong deformation retraction lifts uniquely through a regular quotient covering. The

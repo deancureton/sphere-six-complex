@@ -19,9 +19,5 @@ public abbrev integralSingularChainComplexObj (X : TopCat) :
     ChainComplex AddCommGrpCat ℕ :=
   ((singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).obj X
 
-/-- The singular-chain map induced by a morphism of categorical topological spaces. -/
-public noncomputable def integralSingularChainMapObj {X Y : TopCat} (i : X ⟶ Y) :
-    integralSingularChainComplexObj X ⟶ integralSingularChainComplexObj Y :=
-  ((singularChainComplexFunctor AddCommGrpCat).obj (AddCommGrpCat.of ℤ)).map i
 
 end SphereSixComplex

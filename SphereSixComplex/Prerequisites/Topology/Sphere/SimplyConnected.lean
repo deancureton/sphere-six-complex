@@ -58,10 +58,5 @@ public theorem sixSphere_simplyConnected_iff_loops_nullhomotopic :
   rw [simply_connected_iff_loops_nullhomotopic]
   exact and_iff_right sixSphere_pathConnectedSpace
 
-/-- It suffices to nullhomotope every loop in the standard six-sphere. -/
-public theorem sixSphere_simplyConnected_of_loops_nullhomotopic
-    (h : ∀ (x : SixSphere) (γ : Path x x), Path.Homotopic γ (Path.refl x)) :
-    SimplyConnectedSpace SixSphere :=
-  sixSphere_simplyConnected_iff_loops_nullhomotopic.mpr h
 
 end SphereSixComplex

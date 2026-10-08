@@ -63,11 +63,6 @@ theorem positiveQuotientHeight_nonneg
   induction y using Quotient.inductionOn with
   | _ p => exact norm_nonneg (constructedModel.t p.1)
 
-theorem positiveQuotientHeight_lt
-    (W : ActualPuncturedCuspCollarWitness N constructedModel) (y : PositiveQuotient W) :
-    positiveQuotientHeight W y < W.localWitness.radius := by
-  induction y using Quotient.inductionOn with
-  | _ p => exact mem_ball_zero_iff.mp p.1.property
 
 theorem positiveQuotientHeight_eq_zero_iff
     (W : ActualPuncturedCuspCollarWitness N constructedModel) (y : PositiveQuotient W) :
