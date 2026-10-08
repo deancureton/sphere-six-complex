@@ -49,7 +49,8 @@ LEAN_NUM_THREADS=3 nice -n 15 lake build
 
 Start with [Final.lean](SphereSixComplex/Final.lean) for the assembled proof,
 [the proof guide](docs/Proof.md) for its mathematical organization, or
-[the Blueprint](blueprint/) for the detailed exposition.
+[the Verso companion](blueprint/) for an explanation of the analytic construction, cusp
+geometry, and sphere-recognition argument, followed by a linked declaration reference.
 Mathlib-only upstream candidates live in [ForMathlib](ForMathlib/); see the
 [library guide](docs/Proof.md#navigating-the-library) for their scope and review status.
 

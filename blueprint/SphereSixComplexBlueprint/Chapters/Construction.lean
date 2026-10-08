@@ -7,14 +7,17 @@ open Informal
 open Verso.Genre
 open Verso.Genre.Manual
 
-#doc (Manual) "Construction Spine" =>
+#doc (Manual) "Declaration reference" =>
 
-This chapter follows the construction used by the two Comparator endpoints. Its Lean links refer
-to retained declarations; auxiliary calculations and alternative proof routes are omitted.
+This reference collects the formal landmarks used in the preceding chapters. Each linked entry
+leads to the corresponding Lean declarations. Read it alongside the explanations of the analytic
+construction, cusp geometry, and global topology; it is not intended as a stand-alone narrative.
 
 :::group "construction_spine"
 The minimal construction and recognition path.
 :::
+
+# Lattices, actions, and period identities
 
 :::definition "lattice-monodromy-data" (parent := "construction_spine") (lean := "SphereSixComplex.LatticeData.T₁, SphereSixComplex.LatticeData.T₂, SphereSixComplex.LatticeData.A₁, SphereSixComplex.LatticeData.A₂, SphereSixComplex.LatticeData.M₀")
 The rank-four lattice carries explicit local monodromies of orders three, four, and infinite order at
@@ -78,6 +81,8 @@ identities entry by entry.
 The Setup inequalities make the four period columns a real basis of $`\mathbb C^2`; the period domain
 is preserved by the triangle-group action.
 :::
+
+# Constructing the holomorphic periods
 
 :::theorem "period-functions" (parent := "construction_spine") (lean := "SphereSixComplex.Periods.FuchsianAffineDescent.nonempty_fuchsianPeriodData, SphereSixComplex.Periods.exists_assembledFuchsianPeriodFunctions") (priority := "high")
 There are holomorphic functions $`\tau,\mu,\beta` on the upper half-plane satisfying the transformation,
@@ -200,6 +205,8 @@ assembled period parameter, it constructs the normalized cusp lift, proves its e
 law, and places its image inside the distinguished source horodisc.
 :::
 
+# The regular quotient family
+
 :::theorem "torus-family" (parent := "construction_spine") (priority := "high")
 The period matrix built from $`\tau,\mu,\beta` defines a proper holomorphic family of compact complex
 two-tori over the thrice-punctured sphere.
@@ -254,12 +261,14 @@ base sets, hence a properly discontinuous quotient complex manifold with locally
 projection.
 :::
 
+# Local fillings and the cusp action
+
 :::theorem "cusp-filling" (parent := "construction_spine") (priority := "high")
-The unipotent end admits the toric filling whose central fibre is the opposite-edge quotient of the
-degree-six del Pezzo surface.
+The unipotent end admits a smooth complex toric filling. Its central fiber has the map-preserving
+attachment description given in {uses "companion-central-attachment"}[the cusp geometry chapter].
 :::
 
-:::definition "standard-infinite-a2-toric-model" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.InfiniteA2Toric.heightOneRay, SphereSixComplex.Geometry.InfiniteA2Toric.a2ConeMatrix, SphereSixComplex.Geometry.InfiniteA2Toric.denseTorusShear, SphereSixComplex.Geometry.InfiniteA2Toric.Model, SphereSixComplex.Geometry.InfiniteA2Toric.Model.variableTorusAction_holomorphic")
+:::definition "standard-infinite-a2-toric-model" (parent := "cusp-filling") (lean := "SphereSixComplex.Geometry.InfiniteA2Toric.heightOneRay, SphereSixComplex.Geometry.InfiniteA2Toric.a2ConeMatrix, SphereSixComplex.Geometry.InfiniteA2Toric.denseTorusShear, SphereSixComplex.Geometry.InfiniteA2Toric.Model, SphereSixComplex.Geometry.InfiniteA2Toric.Construction.constructedModel, SphereSixComplex.Geometry.InfiniteA2Toric.Model.variableTorusAction_holomorphic")
 The countable smooth fan over the height-one $`A_2` triangulation is constructed in Lean. Its model
 is a connected Hausdorff second-countable complex three-manifold with a dense torus, a height
 character, unimodular $`\mathbb C^3` charts with squarefree equation $`t=z_0z_1z_2`, ray components,
@@ -292,15 +301,17 @@ supplied on this restricted carrier.
 :::
 
 :::theorem "cusp-action" (parent := "cusp-local-phase-action") (lean := "SphereSixComplex.Geometry.CuspFilling.CuspActionData.isCancelSMul, SphereSixComplex.Geometry.CuspFilling.CuspActionData.properlyDiscontinuous, SphereSixComplex.Geometry.CuspFilling.quotient_isQuotientCoveringMap")
-The $`B_0` shear preserves the cusp height and translates both classes of $`A_2` triangles.  Given
-the phase estimates of Theorem 4.5, the corrected maps form a free, properly discontinuous lattice
+The $`B_0` shear preserves the cusp height and translates both classes of $`A_2` triangles.  Using
+the fixed-point and compact-overlap estimates for the corrected action, the corrected maps form a free, properly discontinuous lattice
 action.  Local sheets differ by analytic deck maps, so the covering quotient inherits a complex
 manifold atlas.
 :::
 
 :::proof "cusp-filling"
-Use {uses "torus-family"}[the torus family] and the unimodular cusp lattice map coming from
-{uses "monodromy-identities"}[the explicit nilpotent monodromy].
+Use {uses "cusp-period-expansion"}[the local period expansion] to correct the toric lattice
+action. Freeness and proper discontinuity give a complex quotient, and the punctured model
+agrees with the regular family along the cusp collar. The positive quotient retraction and
+{uses "companion-central-attachment"}[central attachment] supply the topological model used later.
 :::
 
 :::theorem "elliptic-fillings" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.epsilon_action_free, SphereSixComplex.Geometry.neg_epsilonPrime_action_free") (priority := "high")
@@ -340,6 +351,8 @@ $`C_3` and $`C_4` factors, closing both collar separations without an external a
 Use {uses "torus-family"}[the torus family] and the invariant twist vectors fixed by $`A_1` and $`A_2`.
 :::
 
+# Gluing a compact complex manifold
+
 :::theorem "compact-complex-threefold" (parent := "construction_spine") (lean := "SphereSixComplex.ComplexThreefold, SphereSixComplex.exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere, SphereSixComplex.CompactComplexStar, SphereSixComplex.Geometry.AnalyticData.compactComplexStar") (priority := "high")
 The global family and the three fillings glue to a compact connected complex threefold $`X`.
 The analytic gluing, local filling relations, low-degree homology vanishing and Euler calculation
@@ -377,6 +390,8 @@ degree-two Mayer--Vietoris map and an equal-rank argument kill second homology; 
 and manifold duality then identify the remaining homology with that of the six-sphere. The recognition theorem
 takes these properties directly and concludes existence of a diffeomorphism.
 :::
+
+# The fundamental group
 
 :::theorem "fundamental-group" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.AnalyticData.star_simplyConnectedSpace") (priority := "high")
 For the twists $`(\ell_0,\ell_1,\ell_2)=(0,1,-1)`, the fundamental group of $`X` is trivial.
@@ -426,6 +441,8 @@ the normal-closure presentation of its kernel.  Collar surjectivity makes the af
 surject onto $`\pi_1(X)`. The cusp meridian and toric relations then give the abelianity used above.
 :::
 
+# Integral homology and the circle action
+
 :::theorem "integral-homology" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere") (priority := "high")
 The integral homology of $`X` is the integral homology of $`S^6`.
 :::
@@ -466,7 +483,7 @@ The actual inclusion maps and their coordinate comparisons are computed separate
 :::
 
 :::theorem "section-seven-integer-algebra" (parent := "integral-homology") (lean := "SphereSixComplex.MultipleFiberCoinvariants.range_orderThreeRelationMap_eq_ker, SphereSixComplex.MultipleFiberCoinvariants.range_orderFourRelationMap_eq_ker")
-The two integral relation maps in Lemma 7.13 have images equal to the kernels of their respective coordinate classifiers. These identities give the required exact integral presentations.
+The two integral relation maps have images equal to the kernels of their respective coordinate classifiers. These identities give the required exact integral presentations.
 :::
 
 :::theorem "section-seven-paper-assembly" (parent := "integral-homology") (lean := "SphereSixComplex.Geometry.AnalyticData.star_homologyOne_subsingleton, SphereSixComplex.Geometry.AnalyticData.ellipticInterior_homologyTwo_eq_zero, SphereSixComplex.Geometry.AnalyticData.star_homologyTwo_subsingleton_of_interior, SphereSixComplex.Geometry.AnalyticData.star_homologyTwo_subsingleton, SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere_of_lowDegrees")
@@ -508,8 +525,11 @@ integral argument and does not require a full coordinate basis for the elliptic 
 second homology.
 :::
 
+# Recognizing the sphere
+
 :::theorem "smooth-recognition" (parent := "construction_spine") (lean := "SphereSixComplex.SmoothSixSphere.nonempty_diffeomorph, SphereSixComplex.exists_complexThreefold_nonempty_diffeomorph_sixSphere") (priority := "high")
-The underlying standard smooth manifold of $`X` is diffeomorphic to $`S^6`.
+The underlying real manifold of $`X`, with the smooth atlas induced by its complex charts,
+is diffeomorphic to the standard smooth $`S^6`.
 :::
 
 :::theorem "established-smooth-recognition" (parent := "smooth-recognition") (lean := "DifferentialGeometry.Topology.nonempty_homeomorph_sphere_of_homology, NoExoticSixSphere.noExoticSixSpheres, SphereSixComplex.SmoothSimplyConnectedIntegralHomologySixSphere.nonempty_homeomorph")

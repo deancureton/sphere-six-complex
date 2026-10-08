@@ -1,5 +1,10 @@
 # Proof guide
 
+For a longer mathematical explanation, start with the
+[Verso companion](../blueprint/SphereSixComplexBlueprint/Blueprint.lean). Its chapters explain
+the period construction, the cusp attachment, and the integral topology before presenting the
+linked declaration reference. This page is a compact map of the code.
+
 The construction produces a compact complex threefold, computes its fundamental
 group and integral homology, recognizes its underlying smooth manifold as the
 standard six-sphere, and transports the complex atlas. The assembly is short:
@@ -19,9 +24,10 @@ The underlying real atlas is obtained by composing complex charts with a real
 continuous linear equivalence from complex three-space to real six-space.
 `SmoothlyCompatible` requires a diffeomorphism to the specified real atlas whose
 underlying map is the identity. Thus compatibility concerns the given atlas,
-not just its diffeomorphism class. The generic
-[atlas-transport theorem](../SphereSixComplex/Prerequisites/Geometry/Manifold/AtlasTransport.lean)
-proves this condition when transporting a complex atlas along a diffeomorphism.
+not just its diffeomorphism class. General
+[atlas transport](../ForMathlib/Geometry/Manifold/AtlasTransport.lean) preserves the transition
+maps. The [compatibility theorem](../SphereSixComplex/Prerequisites/Geometry/Manifold/AtlasTransport.lean)
+then proves this condition when transporting a complex atlas along a diffeomorphism.
 
 The secondary endpoint `mathoverflow_1973` in [Solution.lean](../Solution.lean)
 requires only a complex atlas on the standard topological sphere, with complex
