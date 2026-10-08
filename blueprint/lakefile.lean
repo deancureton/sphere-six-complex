@@ -6,7 +6,7 @@ require SphereSixComplex from ".."
 require VersoBlueprint from git
   "https://github.com/leanprover/verso-blueprint.git" @ "a441323930138cccf42e34396746af67d72078b6"
 require verso from git
-  "https://github.com/leanprover/verso" @ "8fc7a297f14d5adc1a551b5b4ecf283c08bd691f"
+  "https://github.com/leanprover/verso" @ "v4.35.0-rc3"
 require «verso-slides» from git
   "https://github.com/leanprover/verso-slides" @ "e05b619b1c3e3d5ce648b606d1cd0b0fadf7f52a"
 require subverso from git

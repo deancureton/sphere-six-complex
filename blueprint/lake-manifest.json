@@ -48,7 +48,7 @@
    "rev": "8fc7a297f14d5adc1a551b5b4ecf283c08bd691f",
    "name": "verso",
    "manifestFile": "lake-manifest.json",
-   "inputRev": "8fc7a297f14d5adc1a551b5b4ecf283c08bd691f",
+   "inputRev": "v4.35.0-rc3",
    "inherited": false,
    "configFile": "lakefile.lean"},
   {"url": "https://github.com/leanprover/verso-blueprint.git",
