@@ -184,6 +184,7 @@ public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.Comparison
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.Chains
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.Corestriction
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.IntegralSequence
+public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.LegacyNaturality
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.MapNaturality
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.ExactSequence
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.RefinementNaturality

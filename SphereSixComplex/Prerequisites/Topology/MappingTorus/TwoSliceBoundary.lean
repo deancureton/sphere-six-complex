@@ -1,4 +1,6 @@
 module
+
+import SphereSixComplex.Prerequisites.Topology.MayerVietoris.OrientedRefinement
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.FixedLoopSweep
 /-!
 The Wang boundary is the low-quarter fibre class minus the high-quarter fibre class.

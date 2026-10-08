@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.OrientedRefinement
+public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.LegacyNaturality
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.ProductBoundaryGenerator
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.OrbitSweepBoundary
 
@@ -117,21 +117,6 @@ public noncomputable def fixedLoopSweepClass
 
 
 
-private theorem opensIntersectionHomologyIso_inv_apply
-    {X : TopCat} (U V : Opens X) (n : ℕ)
-    (x : IntegralSingularHomology n ((Opens.toTopCat X).obj (U ⊓ V))) :
-    ConcreteCategory.hom
-        (BinaryOpenCover.opensIntersectionHomologyIso U V n).inv x = x := by
-  have hinv :
-      (TopCat.isoOfHomeo (BinaryOpenCover.opensIntersectionHomeomorph U V)).inv =
-        𝟙 (TopCat.of ((U : Set X) ∩ (V : Set X) : Set X)) := by
-    ext y
-    rfl
-  have hmap := congrArg (BinaryOpenCover.integralHomologyFunctor n).map hinv
-  rw [(BinaryOpenCover.integralHomologyFunctor n).map_id] at hmap
-  have hfun := congrArg ConcreteCategory.hom hmap
-  exact DFunLike.congr_fun hfun x
-
 private theorem opensUnionHomologyIso_hom_apply
     {ι F : Type} [Fintype ι] [Inhabited ι] [TopologicalSpace ι]
     [DiscreteTopology ι] [TopologicalSpace F]
@@ -173,26 +158,6 @@ private theorem opensUnionHomologyIso_inv_apply
     _ = z := by simp
     _ = unionEquiv φ n ((unionEquiv φ n).symm z) :=
       (AddEquiv.apply_symm_apply _ _).symm
-
-public theorem canonicalOpenCoverBoundary_eq_naturality
-    {X : TopCat} {U V U' V' : Opens X}
-    (hU : U = U') (hV : V = V')
-    (hcover : U ⊔ V = ⊤) (hcover' : U' ⊔ V' = ⊤) (n : ℕ) :
-    (BinaryOpenCover.openCoverHomologyComparisonOfCover hcover).boundary n ≫
-        BinaryOpenCover.openIntersectionRefinementHomologyMap
-          (le_of_eq hU) (le_of_eq hV) n =
-      (BinaryOpenCover.openCoverHomologyComparisonOfCover hcover').boundary n := by
-  subst U'
-  subst V'
-  have hp : hcover' = hcover := Subsingleton.elim _ _
-  cases hp
-  change (BinaryOpenCover.openCoverHomologyComparisonOfCover hcover).boundary n ≫
-      (BinaryOpenCover.integralHomologyFunctor n).map
-        (BinaryOpenCover.openIntersectionRefinementMap
-          (le_of_eq rfl) (le_of_eq rfl)) = _
-  rw [show BinaryOpenCover.openIntersectionRefinementMap
-      (le_of_eq (rfl : U = U)) (le_of_eq (rfl : V = V)) = 𝟙 _ by rfl]
-  rw [(BinaryOpenCover.integralHomologyFunctor n).map_id, Category.comp_id]
 
 private theorem fixedLoop_apply'
     {G : Type} [TopologicalSpace G]
@@ -353,50 +318,6 @@ public theorem fixedLoopCylinderTopCatMap_edgeOpen
       edgePiece (fun _ : Unit ↦ phi) ↔
     z ∈ edgePiece (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
   exact fixedLoopCylinderMappingTorusMap_mem_edgePiece_iff phi c z
-
-public theorem fixedLoopCylinderPullbackOpenCover
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) :
-    (Opens.map (fixedLoopCylinderTopCatMap phi c)).obj
-          (coverVertexOpen (fun _ : Unit ↦ phi)) ⊔
-        (Opens.map (fixedLoopCylinderTopCatMap phi c)).obj
-          (coverEdgeOpen (fun _ : Unit ↦ phi)) = ⊤ := by
-  rw [fixedLoopCylinderTopCatMap_vertexOpen,
-    fixedLoopCylinderTopCatMap_edgeOpen]
-  exact coverOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))
-
-public noncomputable def fixedLoopCylinderPullbackHomologyComparison
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) :
-    BinaryOpenCover.OpenCoverHomologyComparison
-      ((Opens.map (fixedLoopCylinderTopCatMap phi c)).obj
-        (coverVertexOpen (fun _ : Unit ↦ phi)))
-      ((Opens.map (fixedLoopCylinderTopCatMap phi c)).obj
-        (coverEdgeOpen (fun _ : Unit ↦ phi))) :=
-  BinaryOpenCover.openCoverHomologyComparisonOfCover
-    (fixedLoopCylinderPullbackOpenCover phi c)
-
-public theorem fixedLoopCylinderBoundary_pullback_naturality
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) (n : ℕ) :
-    (fixedLoopCylinderPullbackHomologyComparison phi c).boundary n ≫
-        BinaryOpenCover.openIntersectionPullbackHomologyMap
-          (fixedLoopCylinderTopCatMap phi c)
-          (coverVertexOpen (fun _ : Unit ↦ phi))
-          (coverEdgeOpen (fun _ : Unit ↦ phi)) n =
-      (BinaryOpenCover.integralHomologyFunctor (n + 1)).map
-          (fixedLoopCylinderTopCatMap phi c) ≫
-        (coverHomologyComparison
-          (fun _ : Unit ↦ phi)).boundary n := by
-  apply BinaryOpenCover.OpenCoverHomologyComparison.boundary_pullback_naturality
-  exact BinaryOpenCover.openCoverHomologyComparisonOfCover_pullbackNaturality
-    (fixedLoopCylinderTopCatMap phi c)
-    (coverVertexOpen (fun _ : Unit ↦ phi))
-    (coverEdgeOpen (fun _ : Unit ↦ phi))
-    (fixedLoopCylinderPullbackOpenCover phi c)
-    (coverOpen (fun _ : Unit ↦ phi))
-
-
 
 public theorem identityMappingTorusBoundary_positiveCircleProductGenerator :
     (circleMappingTorusWangPresentationOfCover
@@ -659,106 +580,6 @@ public theorem fixedLoopCylinderOverlapMap_highPt_homology
     _ = _ := hright
 
 
-public def fixedLoopCylinderSourceOverlapToPullback
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) :
-    TopCat.of ↥(vertexPiece
-          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) ∩
-        edgePiece (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) ⟶
-      (Opens.toTopCat
-        (TopCat.of (CircleMappingTorus (Homeomorph.refl (StdTorus 1))))).obj
-        ((Opens.map (fixedLoopCylinderTopCatMap phi c)).obj
-            (coverVertexOpen (fun _ : Unit ↦ phi)) ⊓
-          (Opens.map (fixedLoopCylinderTopCatMap phi c)).obj
-            (coverEdgeOpen (fun _ : Unit ↦ phi))) :=
-  TopCat.ofHom
-    { toFun := fun z ↦ ⟨z, ⟨
-        (fixedLoopCylinderMappingTorusMap_mem_vertexPiece_iff phi c z).2 z.2.1,
-        (fixedLoopCylinderMappingTorusMap_mem_edgePiece_iff phi c z).2 z.2.2⟩⟩
-      continuous_toFun := continuous_subtype_val.subtype_mk _ }
-
-
-public theorem fixedLoopCylinderLegacyOverlap_comp_refinement
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) :
-    (TopCat.isoOfHomeo
-          (BinaryOpenCover.opensIntersectionHomeomorph
-            (coverVertexOpen
-              (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-            (coverEdgeOpen
-              (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))))).hom ≫
-        BinaryOpenCover.openIntersectionRefinementMap
-          (le_of_eq (fixedLoopCylinderTopCatMap_vertexOpen phi c).symm)
-          (le_of_eq (fixedLoopCylinderTopCatMap_edgeOpen phi c).symm) =
-      fixedLoopCylinderSourceOverlapToPullback phi c := by
-  ext z
-  rfl
-
-public theorem fixedLoopCylinderLegacyOverlap_homology_comp_refinement
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) (n : ℕ) :
-    (BinaryOpenCover.opensIntersectionHomologyIso
-          (coverVertexOpen
-            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-          (coverEdgeOpen
-            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) n).hom ≫
-        BinaryOpenCover.openIntersectionRefinementHomologyMap
-          (le_of_eq (fixedLoopCylinderTopCatMap_vertexOpen phi c).symm)
-          (le_of_eq (fixedLoopCylinderTopCatMap_edgeOpen phi c).symm) n =
-      (BinaryOpenCover.integralHomologyFunctor n).map
-        (fixedLoopCylinderSourceOverlapToPullback phi c) := by
-  unfold BinaryOpenCover.opensIntersectionHomologyIso
-    BinaryOpenCover.openIntersectionRefinementHomologyMap
-  simp only [Functor.mapIso_hom]
-  rw [← Functor.map_comp]
-  exact congrArg (BinaryOpenCover.integralHomologyFunctor n).map
-    (fixedLoopCylinderLegacyOverlap_comp_refinement phi c)
-
-public theorem fixedLoopCylinderSourceOverlapToPullback_comp_preimage
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) :
-    fixedLoopCylinderSourceOverlapToPullback phi c ≫
-        BinaryOpenCover.openIntersectionPreimageMap
-        (fixedLoopCylinderTopCatMap phi c)
-        (coverVertexOpen (fun _ : Unit ↦ phi))
-        (coverEdgeOpen (fun _ : Unit ↦ phi)) =
-      TopCat.ofHom (fixedLoopCylinderOverlapMap phi c) := by
-  ext z
-  rfl
-
-public theorem fixedLoopCylinderSourceOverlapToPullback_homology
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) (n : ℕ) :
-    (BinaryOpenCover.integralHomologyFunctor n).map
-          (fixedLoopCylinderSourceOverlapToPullback phi c) ≫
-        BinaryOpenCover.openIntersectionPullbackHomologyMap
-          (fixedLoopCylinderTopCatMap phi c)
-          (coverVertexOpen (fun _ : Unit ↦ phi))
-          (coverEdgeOpen (fun _ : Unit ↦ phi)) n =
-      (BinaryOpenCover.integralHomologyFunctor n).map
-        (TopCat.ofHom (fixedLoopCylinderOverlapMap phi c)) := by
-  unfold BinaryOpenCover.openIntersectionPullbackHomologyMap
-  rw [← Functor.map_comp,
-    fixedLoopCylinderSourceOverlapToPullback_comp_preimage]
-  rfl
-
-public theorem fixedLoopCylinderSourceBoundary_toPullback
-    {G : Type} [TopologicalSpace G]
-    (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) (n : ℕ) :
-    (coverHomologyComparison
-          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))).boundary n ≫
-        BinaryOpenCover.openIntersectionRefinementHomologyMap
-          (le_of_eq (fixedLoopCylinderTopCatMap_vertexOpen phi c).symm)
-          (le_of_eq (fixedLoopCylinderTopCatMap_edgeOpen phi c).symm) n =
-      (fixedLoopCylinderPullbackHomologyComparison phi c).boundary n := by
-  have h := canonicalOpenCoverBoundary_eq_naturality
-    (fixedLoopCylinderTopCatMap_vertexOpen phi c).symm
-    (fixedLoopCylinderTopCatMap_edgeOpen phi c).symm
-    (coverOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-    (fixedLoopCylinderPullbackOpenCover phi c) n
-  unfold coverHomologyComparison fixedLoopCylinderPullbackHomologyComparison
-  exact h
-
 public noncomputable def fixedLoopCylinderLegacyIntersectionMap
     {G : Type} [TopologicalSpace G]
     (phi : G ≃ₜ G) (c : FixedTopologicalCircle phi) (n : ℕ) :
@@ -768,23 +589,7 @@ public noncomputable def fixedLoopCylinderLegacyIntersectionMap
           edgePiece (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) →+
       IntegralSingularHomology n
         ↥(vertexPiece (fun _ : Unit ↦ phi) ∩
-          edgePiece (fun _ : Unit ↦ phi)) :=
-  ConcreteCategory.hom
-    ((BinaryOpenCover.opensIntersectionHomologyIso
-        (coverVertexOpen
-          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-        (coverEdgeOpen
-          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) n).hom ≫
-      BinaryOpenCover.openIntersectionRefinementHomologyMap
-        (le_of_eq (fixedLoopCylinderTopCatMap_vertexOpen phi c).symm)
-        (le_of_eq (fixedLoopCylinderTopCatMap_edgeOpen phi c).symm) n ≫
-      BinaryOpenCover.openIntersectionPullbackHomologyMap
-        (fixedLoopCylinderTopCatMap phi c)
-        (coverVertexOpen (fun _ : Unit ↦ phi))
-        (coverEdgeOpen (fun _ : Unit ↦ phi)) n ≫
-      (BinaryOpenCover.opensIntersectionHomologyIso
-        (coverVertexOpen (fun _ : Unit ↦ phi))
-        (coverEdgeOpen (fun _ : Unit ↦ phi)) n).inv)
+          edgePiece (fun _ : Unit ↦ phi)) := integralSingularHomologyMap n (fixedLoopCylinderOverlapMap phi c)
 
 public noncomputable def fixedLoopCylinderLegacyUnionMap
     {G : Type} [TopologicalSpace G]
@@ -853,41 +658,7 @@ public theorem fixedLoopCylinderLegacyIntersectionMap_apply
         edgePiece (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))) :
     fixedLoopCylinderLegacyIntersectionMap phi c n x =
       integralSingularHomologyMap n (fixedLoopCylinderOverlapMap phi c) x := by
-  have hp := fixedLoopCylinderLegacyOverlap_homology_comp_refinement phi c n
-  have hi := fixedLoopCylinderSourceOverlapToPullback_homology phi c n
-  have hcat :
-      (BinaryOpenCover.opensIntersectionHomologyIso
-          (coverVertexOpen
-            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-          (coverEdgeOpen
-            (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) n).hom ≫
-        BinaryOpenCover.openIntersectionRefinementHomologyMap
-          (le_of_eq (fixedLoopCylinderTopCatMap_vertexOpen phi c).symm)
-          (le_of_eq (fixedLoopCylinderTopCatMap_edgeOpen phi c).symm) n ≫
-        BinaryOpenCover.openIntersectionPullbackHomologyMap
-          (fixedLoopCylinderTopCatMap phi c)
-          (coverVertexOpen (fun _ : Unit ↦ phi))
-          (coverEdgeOpen (fun _ : Unit ↦ phi)) n =
-      (BinaryOpenCover.integralHomologyFunctor n).map
-        (TopCat.ofHom (fixedLoopCylinderOverlapMap phi c)) := by
-    rw [← Category.assoc, hp]
-    exact hi
-  have hcat' := congrArg
-    (fun q ↦ q ≫
-      (BinaryOpenCover.opensIntersectionHomologyIso
-        (coverVertexOpen (fun _ : Unit ↦ phi))
-        (coverEdgeOpen (fun _ : Unit ↦ phi)) n).inv)
-    hcat
-  simp only [Category.assoc] at hcat'
-  have hfun := congrArg ConcreteCategory.hom hcat'
-  have happ := DFunLike.congr_fun hfun x
-  change fixedLoopCylinderLegacyIntersectionMap phi c n x =
-    ConcreteCategory.hom
-      (BinaryOpenCover.opensIntersectionHomologyIso
-        (coverVertexOpen (fun _ : Unit ↦ phi))
-        (coverEdgeOpen (fun _ : Unit ↦ phi)) n).inv
-      (integralSingularHomologyMap n (fixedLoopCylinderOverlapMap phi c) x) at happ
-  exact happ.trans (opensIntersectionHomologyIso_inv_apply _ _ _ _)
+  rfl
 
 public theorem fixedLoopCylinderLegacyIntersectionMap_overlapEquiv
     {G : Type} [TopologicalSpace G]
@@ -940,67 +711,33 @@ public theorem fixedLoopCylinderLegacyBoundary_naturality
           (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) n) =
       (coverBoundary (fun _ : Unit ↦ phi) n).comp
         (fixedLoopCylinderLegacyUnionMap phi c (n + 1)) := by
-  unfold fixedLoopCylinderLegacyIntersectionMap fixedLoopCylinderLegacyUnionMap coverBoundary
-  apply AddMonoidHom.ext
-  intro x
-  have hn := fixedLoopCylinderBoundary_pullback_naturality phi c n
-  rw [← fixedLoopCylinderSourceBoundary_toPullback phi c n] at hn
-  have hcat :
-      ((BinaryOpenCover.opensUnionHomologyIso
-          (coverVertexOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-          (coverEdgeOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-          (coverOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) (n + 1)).hom ≫
-        (coverHomologyComparison
-          (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))).boundary n ≫
-        (BinaryOpenCover.opensIntersectionHomologyIso
-          (coverVertexOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-          (coverEdgeOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) n).inv) ≫
-          ((BinaryOpenCover.opensIntersectionHomologyIso
-            (coverVertexOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-            (coverEdgeOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) n).hom ≫
-          BinaryOpenCover.openIntersectionRefinementHomologyMap
-            (le_of_eq (fixedLoopCylinderTopCatMap_vertexOpen phi c).symm)
-            (le_of_eq (fixedLoopCylinderTopCatMap_edgeOpen phi c).symm) n ≫
-          BinaryOpenCover.openIntersectionPullbackHomologyMap
-            (fixedLoopCylinderTopCatMap phi c)
-            (coverVertexOpen (fun _ : Unit ↦ phi))
-            (coverEdgeOpen (fun _ : Unit ↦ phi)) n ≫
-          (BinaryOpenCover.opensIntersectionHomologyIso
-            (coverVertexOpen (fun _ : Unit ↦ phi))
-            (coverEdgeOpen (fun _ : Unit ↦ phi)) n).inv) =
-        ((BinaryOpenCover.opensUnionHomologyIso
-          (coverVertexOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-          (coverEdgeOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-          (coverOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) (n + 1)).hom ≫
-        (BinaryOpenCover.integralHomologyFunctor (n + 1)).map
-          (fixedLoopCylinderTopCatMap phi c) ≫
-        (BinaryOpenCover.opensUnionHomologyIso
-          (coverVertexOpen (fun _ : Unit ↦ phi))
-          (coverEdgeOpen (fun _ : Unit ↦ phi))
-          (coverOpen (fun _ : Unit ↦ phi)) (n + 1)).inv) ≫
-          ((BinaryOpenCover.opensUnionHomologyIso
-            (coverVertexOpen (fun _ : Unit ↦ phi))
-            (coverEdgeOpen (fun _ : Unit ↦ phi))
-            (coverOpen (fun _ : Unit ↦ phi)) (n + 1)).hom ≫
-          (coverHomologyComparison
-            (fun _ : Unit ↦ phi)).boundary n ≫
-          (BinaryOpenCover.opensIntersectionHomologyIso
-            (coverVertexOpen (fun _ : Unit ↦ phi))
-            (coverEdgeOpen (fun _ : Unit ↦ phi)) n).inv) := by
-    simpa only [Category.assoc, Iso.inv_hom_id_assoc] using congrArg
-      (fun q ↦
-        (BinaryOpenCover.opensUnionHomologyIso
-          (coverVertexOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-          (coverEdgeOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
-          (coverOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1))) (n + 1)).hom ≫
-        q ≫
-        (BinaryOpenCover.opensIntersectionHomologyIso
-          (coverVertexOpen (fun _ : Unit ↦ phi))
-          (coverEdgeOpen (fun _ : Unit ↦ phi)) n).inv)
-      hn
-  have hfun := congrArg ConcreteCategory.hom hcat
-  exact DFunLike.congr_fun hfun x
-
+  let f := fixedLoopCylinderMappingTorusMap phi c
+  have hU : Set.MapsTo f (coverVertexOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
+      (coverVertexOpen (fun _ : Unit ↦ phi)) :=
+    fun x hx ↦ (fixedLoopCylinderMappingTorusMap_mem_vertexPiece_iff phi c x).2 hx
+  have hV : Set.MapsTo f (coverEdgeOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
+      (coverEdgeOpen (fun _ : Unit ↦ phi)) :=
+    fun x hx ↦ (fixedLoopCylinderMappingTorusMap_mem_edgePiece_iff phi c x).2 hx
+  have hn := BinaryOpenCover.legacyBoundary_naturality f hU hV
+    (coverOpen (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)))
+    (coverOpen (fun _ : Unit ↦ phi)) n
+  have hi : integralSingularHomologyMap n
+      ((f.restrictPreimage
+        ((coverVertexOpen (fun _ : Unit ↦ phi) : Set _) ∩ coverEdgeOpen (fun _ : Unit ↦ phi))).comp
+          (ContinuousMap.inclusion (hU.inter_inter hV))) =
+      fixedLoopCylinderLegacyIntersectionMap phi c n := rfl
+  have hu : integralSingularHomologyMap (n + 1)
+      ((f.restrictPreimage
+        ((coverVertexOpen (fun _ : Unit ↦ phi) : Set _) ∪ coverEdgeOpen (fun _ : Unit ↦ phi))).comp
+          (ContinuousMap.inclusion (hU.union_union hV))) =
+      fixedLoopCylinderLegacyUnionMap phi c (n + 1) := by
+    unfold fixedLoopCylinderLegacyUnionMap integralSingularHomologyMap
+    simp only [BinaryOpenCover.opensUnionHomologyIso, Functor.mapIso_hom, Functor.mapIso_inv,
+      ← Functor.map_comp]
+    congr 2
+  rw [hi, hu] at hn
+  unfold coverBoundary coverHomologyComparison
+  convert! hn using 1
 
 
 /-- The Wang boundary of the torus swept out by a pointwise-fixed loop is the homology class of
