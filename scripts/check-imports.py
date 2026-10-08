@@ -14,6 +14,7 @@ import sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
 LIB = "SphereSixComplex"
+SOURCE_DIRS = (LIB, "ForMathlib")
 ROOT_MODULE = f"{LIB}.All"
 
 IMPORT_RE = re.compile(r"^\s*(?:public\s+)?import\s+(?:all\s+)?([\w.]+)")
@@ -21,8 +22,13 @@ IMPORT_RE = re.compile(r"^\s*(?:public\s+)?import\s+(?:all\s+)?([\w.]+)")
 
 def main() -> int:
     imports: dict[str, set[str]] = collections.defaultdict(set)
+    all_imports: dict[str, set[str]] = collections.defaultdict(set)
     modules: set[str] = set()
-    for dirpath, _, filenames in os.walk(os.path.join(ROOT, LIB)):
+    source_files = (
+        entry for source_dir in SOURCE_DIRS
+        for entry in os.walk(os.path.join(ROOT, source_dir))
+    )
+    for dirpath, _, filenames in source_files:
         for name in sorted(filenames):
             if not name.endswith(".lean"):
                 continue
@@ -32,8 +38,12 @@ def main() -> int:
             with open(os.path.join(ROOT, path), encoding="utf-8") as handle:
                 for line in handle:
                     match = IMPORT_RE.match(line)
-                    if match and match.group(1).startswith(LIB):
-                        imports[module].add(match.group(1))
+                    if match:
+                        dependency = match.group(1)
+                        all_imports[module].add(dependency)
+                        if any(dependency == root or dependency.startswith(root + ".")
+                               for root in SOURCE_DIRS):
+                            imports[module].add(dependency)
 
     seen: set[str] = set()
     stack = [ROOT_MODULE]
@@ -65,15 +75,27 @@ def main() -> int:
     violations = sorted((module, dependency) for module, dependencies in imports.items()
                         if module.startswith(prerequisite_prefix)
                         for dependency in dependencies
-                        if not dependency.startswith(prerequisite_prefix))
+                        if not dependency.startswith((prerequisite_prefix, "ForMathlib.")))
     if violations:
         print("Import check FAILED: prerequisites depend on the construction or an aggregate:")
         for module, dependency in violations:
             print(f"  {module} imports {dependency}")
         return 1
 
+    external_dependencies = sorted(
+        (module, dependency) for module, dependencies in all_imports.items()
+        if module.startswith("ForMathlib.") for dependency in dependencies
+        if dependency != "Mathlib" and not dependency.startswith(("Mathlib.", "ForMathlib."))
+    )
+    if external_dependencies:
+        print("Import check FAILED: ForMathlib imports outside Mathlib or ForMathlib:")
+        for module, dependency in external_dependencies:
+            print(f"  {module} imports {dependency}")
+        return 1
+
     print(f"Import check passed: all {len(modules)} modules are reachable from {ROOT_MODULE}.")
-    print("Layer check passed: prerequisites have no project dependencies outside their layer.")
+    print("Layer check passed: prerequisites import only prerequisites or ForMathlib;")
+    print("ForMathlib imports only Mathlib or ForMathlib.")
     return 0
 
 

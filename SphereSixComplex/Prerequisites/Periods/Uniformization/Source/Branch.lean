@@ -6,8 +6,8 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.Mod
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.ModularForms
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.FiniteCorner
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.FiniteCorner
-public import SphereSixComplex.Prerequisites.Geometry.Quotient.Slice
-import all SphereSixComplex.Prerequisites.Geometry.Quotient.Slice
+public import ForMathlib.Topology.Algebra.ProperlyDiscontinuous
+import all ForMathlib.Topology.Algebra.ProperlyDiscontinuous
 public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.EllipticCayley
 import all SphereSixComplex.Prerequisites.Geometry.ComplexDisc.EllipticCayley
 public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.EllipticStabilizers
@@ -400,7 +400,7 @@ theorem ellipticChartFunction_order_le_stabilizer_card
     UpperHalfPlane.ofComplex (cayleyRawInverse center w)
   let G : ℂ → ℂ := ellipticChartFunction coordinate center
   obtain ⟨S, hSopen, hcenterS, _hSinvariant, htranslate⟩ :=
-    exists_open_stabilizer_slice (G := Delta) center
+    ProperlyDiscontinuousSMul.exists_open_stabilizer_slice (G := Delta) center
   let radius : ℝ := dist value otherValue / 2
   have hradius : 0 < radius := by
     dsimp [radius]

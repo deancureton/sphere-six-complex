@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Elliptic.WholeFiberCompactCover
-public import SphereSixComplex.Prerequisites.Geometry.Quotient.Slice
+public import ForMathlib.Topology.Algebra.ProperlyDiscontinuous
 public import SphereSixComplex.Prerequisites.TriangleGroup.FreeProductTorsion
 public import Mathlib.Geometry.Manifold.Algebra.SMul
 import all SphereSixComplex.TorusFamily.Global

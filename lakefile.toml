@@ -37,6 +37,10 @@ rev = "6b7abb3c7686292736be2955bd3eb9ebf63b456a"
 name = "SphereSixComplex"
 globs = ["SphereSixComplex", "SphereSixComplex.All"]
 
+[[lean_lib]]
+name = "ForMathlib"
+globs = ["ForMathlib.+"]
+
 # The definitions the trusted statement mentions. Imported by both `Challenge` and the
 # development, so Comparator sees one shared copy rather than two elaborations.
 [[lean_lib]]

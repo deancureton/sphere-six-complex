@@ -233,7 +233,7 @@ The explicit projective Fuchsian source action is properly discontinuous by the 
 calculation above.
 :::
 
-:::theorem "properly-discontinuous-stabilizer-slice" (parent := "elliptic-orbit-freeness") (lean := "SphereSixComplex.Geometry.exists_open_stabilizer_slice")
+:::theorem "properly-discontinuous-stabilizer-slice" (parent := "elliptic-orbit-freeness") (lean := "ProperlyDiscontinuousSMul.exists_open_stabilizer_slice")
 For a properly discontinuous continuous action on a locally compact Hausdorff space, every point
 has an open neighborhood invariant under its finite stabilizer, and a translate meets that
 neighborhood exactly when the translating element belongs to the stabilizer. This is the general

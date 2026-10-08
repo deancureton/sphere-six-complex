@@ -28,7 +28,7 @@ public import SphereSixComplex.Prerequisites.Geometry.Manifold.LocalDiffeomorphO
 public import SphereSixComplex.Prerequisites.Geometry.Manifold.LocalDiffeomorphTransport
 public import SphereSixComplex.Prerequisites.Geometry.Gluing.OpenEmbeddingStar
 public import SphereSixComplex.Prerequisites.Geometry.Gluing.StarClosedRelation
-public import SphereSixComplex.Prerequisites.Geometry.Quotient.Slice
+public import ForMathlib.Topology.Algebra.ProperlyDiscontinuous
 public import SphereSixComplex.Prerequisites.Geometry.Quotient.Manifold
 public import SphereSixComplex.Prerequisites.Geometry.Quotient.DeckFundamentalGroup
 public import SphereSixComplex.Prerequisites.Geometry.Quotient.Topology
@@ -187,7 +187,7 @@ public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Universal
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.IntervalClutching
 public import SphereSixComplex.Prerequisites.Topology.Collar.HalfSpace
 public import SphereSixComplex.Prerequisites.Topology.Collar.CoveringHalfSpace
-public import SphereSixComplex.Prerequisites.Topology.Gluing.LocallyFiniteClosedCover
+public import ForMathlib.Topology.Gluing.LocallyFiniteClosedCover
 public import SphereSixComplex.Prerequisites.Topology.Manifold.LocallyContractible
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Equivalence
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.MappingCylinderGluing

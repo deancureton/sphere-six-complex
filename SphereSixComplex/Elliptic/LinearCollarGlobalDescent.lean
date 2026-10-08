@@ -292,7 +292,7 @@ public theorem exists_orderThreeLinearCollarSourceData
   let _ : ContinuousConstSMul Delta UpperHalfPlane :=
     ⟨fun g => (fuchsianSourceAction_contMDiff g 0).continuous⟩
   obtain ⟨S, hSopen, hcenterS, _hSinvariant, htranslate⟩ :=
-    exists_open_stabilizer_slice (G := Delta) fuchsianOneFixedPoint
+    ProperlyDiscontinuousSMul.exists_open_stabilizer_slice (G := Delta) fuchsianOneFixedPoint
   obtain ⟨hzOne, hzTwo⟩ := ellipticFixedPoints_eq_of_fuchsian hsource
   let T := S ∩ (sourceOrbitSet (U := U) U.zTwo)ᶜ
   have hTopen : IsOpen T := hSopen.inter
@@ -365,7 +365,7 @@ public theorem exists_orderFourLinearCollarSourceData
   let _ : ContinuousConstSMul Delta UpperHalfPlane :=
     ⟨fun g => (fuchsianSourceAction_contMDiff g 0).continuous⟩
   obtain ⟨S, hSopen, hcenterS, _hSinvariant, htranslate⟩ :=
-    exists_open_stabilizer_slice (G := Delta) fuchsianTwoFixedPoint
+    ProperlyDiscontinuousSMul.exists_open_stabilizer_slice (G := Delta) fuchsianTwoFixedPoint
   obtain ⟨hzOne, hzTwo⟩ := ellipticFixedPoints_eq_of_fuchsian hsource
   let T := S ∩ (sourceOrbitSet (U := U) U.zOne)ᶜ
   have hTopen : IsOpen T := hSopen.inter

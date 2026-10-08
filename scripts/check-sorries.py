@@ -56,7 +56,7 @@ def strip_comments(source: str) -> str:
 
 def sources() -> list[str]:
     found = ["ChallengeDefs.lean", "Challenge.lean", "Solution.lean"]
-    for source_dir in ("SphereSixComplex", "vendor", *EXTERNAL_SOURCES):
+    for source_dir in ("SphereSixComplex", "ForMathlib", "vendor", *EXTERNAL_SOURCES):
         for dirpath, subdirs, filenames in os.walk(os.path.join(ROOT, source_dir)):
             subdirs[:] = [name for name in subdirs if not name.startswith(".")]
             for name in sorted(filenames):

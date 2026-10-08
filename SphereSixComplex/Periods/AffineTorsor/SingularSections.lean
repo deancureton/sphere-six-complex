@@ -132,7 +132,8 @@ public theorem exists_local_equivariant_section_of_stabilizer_fixed
     ⟨fun g ↦ (fuchsianSourceAction_contMDiff g 0).continuous⟩
   let _ : ProperlyDiscontinuousSMul Delta UpperHalfPlane :=
     FuchsianArithmeticTermination.fuchsianSourceAction_properlyDiscontinuous
-  obtain ⟨S, hS, hz₀, _, htranslate⟩ := exists_open_stabilizer_slice (G := Delta) z₀
+  obtain ⟨S, hS, hz₀, _, htranslate⟩ :=
+    ProperlyDiscontinuousSMul.exists_open_stabilizer_slice (G := Delta) z₀
   have hprecise : ∀ g x, x ∈ S → fuchsianSourceAction g • x ∈ S →
       P.transportSection g t = t := by
     intro g x hx hgx

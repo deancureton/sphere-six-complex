@@ -60,8 +60,6 @@ public theorem homeomorphOfSameFibers_apply
 
 end Topology.IsQuotientMap
 
-namespace SphereSixComplex
-
 namespace LocallyFiniteClosedCover
 
 /-- Projection from the disjoint union of a family of subsets. -/
@@ -143,5 +141,3 @@ public noncomputable def homeomorph {ι X Y : Type*} [TopologicalSpace X]
   exact hf.homeomorphOfSameFibers hg hfg
 
 end LocallyFiniteClosedCover
-
-end SphereSixComplex

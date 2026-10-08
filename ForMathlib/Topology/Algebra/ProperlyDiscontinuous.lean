@@ -13,7 +13,7 @@ every point. The slice is invariant under the point stabilizer, and no other tra
 
 open Set Topology
 
-namespace SphereSixComplex.Geometry
+namespace ProperlyDiscontinuousSMul
 
 universe u v
 
@@ -81,4 +81,4 @@ public theorem exists_open_stabilizer_slice (x : X) :
     rw [hInvariant ⟨g, hg⟩]
     exact ⟨x, hxU, hxU⟩
 
-end SphereSixComplex.Geometry
+end ProperlyDiscontinuousSMul

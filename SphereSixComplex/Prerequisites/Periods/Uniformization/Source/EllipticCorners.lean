@@ -5,7 +5,7 @@ import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.RegularL
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.ExactMonodromy
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Source.ExactMonodromy
 import all SphereSixComplex.Prerequisites.Geometry.ComplexDisc.EllipticCoordinates
-import all SphereSixComplex.Prerequisites.Geometry.Quotient.Slice
+import all ForMathlib.Topology.Algebra.ProperlyDiscontinuous
 import all Mathlib.Analysis.Complex.RemovableSingularity
 
 @[expose] public section
@@ -739,7 +739,7 @@ private theorem orbitAssembledScalar_eventually_regular_one
     fuchsianSourceAction_properlyDiscontinuous
   let K : UpperHalfPlane → ℂ := fun z ↦ orbitAssembledScalar S (z : ℂ)
   obtain ⟨U, hUopen, honeU, _hUinvariant, htranslate⟩ :=
-    exists_open_stabilizer_slice (G := Delta) fuchsianOneFixedPoint
+    ProperlyDiscontinuousSMul.exists_open_stabilizer_slice (G := Delta) fuchsianOneFixedPoint
   have hKone : K fuchsianOneFixedPoint = 0 := by
     exact orbitAssembledScalar_fuchsianOne S hconsistent
   have hball : K ⁻¹' Metric.ball 0 (1 / 2 : ℝ) ∈ nhds fuchsianOneFixedPoint :=
@@ -792,7 +792,7 @@ private theorem orbitAssembledScalar_eventually_regular_two
     fuchsianSourceAction_properlyDiscontinuous
   let K : UpperHalfPlane → ℂ := fun z ↦ orbitAssembledScalar S (z : ℂ)
   obtain ⟨U, hUopen, htwoU, _hUinvariant, htranslate⟩ :=
-    exists_open_stabilizer_slice (G := Delta) fuchsianTwoFixedPoint
+    ProperlyDiscontinuousSMul.exists_open_stabilizer_slice (G := Delta) fuchsianTwoFixedPoint
   have hKtwo : K fuchsianTwoFixedPoint = 1 := by
     exact orbitAssembledScalar_fuchsianTwo S hconsistent
   have hball : K ⁻¹' Metric.ball 1 (1 / 2 : ℝ) ∈ nhds fuchsianTwoFixedPoint :=

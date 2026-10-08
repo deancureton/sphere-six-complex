@@ -17,6 +17,22 @@ Here `SixSphere` is the unit sphere in `EuclideanSpace ℝ (Fin 7)`.
 real atlas agrees with the standard stereographic smooth structure through the
 identity map. The definitions are in [ChallengeDefs.lean](ChallengeDefs.lean).
 
+## The two Comparator statements
+
+[Comparator](comparator.json) checks two endpoints in [Solution.lean](Solution.lean):
+
+| Statement | What it requires |
+| --- | --- |
+| `sphere_six_admits_complex_structure` | A complex-smooth atlas on **the standard smooth six-sphere**, whose underlying real atlas is compatible with the standard stereographic atlas through the identity map. |
+| `mathoverflow_1973` | A complex `C¹` atlas on **the underlying topological six-sphere**, with no requirement relating its real smooth structure to the standard one. |
+
+Both assert genuine complex structures, not merely almost-complex structures.
+The substantive extra condition in the first statement is **compatibility with
+the prescribed smooth structure**. Its proof transports the complex atlas along
+a diffeomorphism; the second uses only a homeomorphism and avoids smooth sphere
+classification. See [the statement guide](docs/Proof.md#statements-and-atlases)
+for the definitions and proof routes.
+
 The compiled proof uses only Lean's three standard axioms: `propext`,
 `Classical.choice`, and `Quot.sound`. There are no additional mathematical axioms.
 Build and axiom-audit results are distinct from independent Comparator verification;
@@ -34,6 +50,8 @@ LEAN_NUM_THREADS=3 nice -n 15 lake build
 Start with [Final.lean](SphereSixComplex/Final.lean) for the assembled proof,
 [the proof guide](docs/Proof.md) for its mathematical organization, or
 [the Blueprint](blueprint/) for the detailed exposition.
+Mathlib-only upstream candidates live in [ForMathlib](ForMathlib/); see the
+[library guide](docs/Proof.md#navigating-the-library) for their scope and review status.
 
 ## Dependencies
 

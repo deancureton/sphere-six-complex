@@ -7,7 +7,7 @@ module
 
 public import SphereSixComplex.Toric.Model.PolarModulus
 public import SphereSixComplex.Prerequisites.Geometry.Quotient.Topology
-public import SphereSixComplex.Prerequisites.Topology.Gluing.LocallyFiniteClosedCover
+public import ForMathlib.Topology.Gluing.LocallyFiniteClosedCover
 public import SphereSixComplex.Toric.Phase.AmbientHomotopy
 public import SphereSixComplex.Toric.Phase.Stabilizers
 
@@ -313,7 +313,7 @@ namespace ConstructedHoneycombCellData
 /-- Compatible homeomorphisms on the planar and toric cells give the required honeycomb. -/
 public noncomputable def honeycomb {r : ℝ} (H : ConstructedHoneycombCellData r) :
     (Fin 2 → ℝ) ≃ₜ constructedPositiveCentralFiber r :=
-  SphereSixComplex.LocallyFiniteClosedCover.homeomorph H.planeCell (constructedPositiveCentralCell r)
+  LocallyFiniteClosedCover.homeomorph H.planeCell (constructedPositiveCentralCell r)
     H.cellHomeomorph H.planeCell_cover H.planeCell_closed H.planeCell_locallyFinite
     (iUnion_constructedPositiveCentralCell r) (constructedPositiveCentralCell_isClosed r)
     (constructedPositiveCentralCells_locallyFinite r) H.cellHomeomorph_compatible

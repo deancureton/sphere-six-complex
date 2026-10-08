@@ -165,6 +165,23 @@ argument; `SphereSixComplex.Construction` and `SphereSixComplex.Prerequisites`
 are aggregates. `SphereSixComplex` imports the final argument; import
 `SphereSixComplex.All` for the full library. The default build checks both.
 
+The repository-root [ForMathlib](../ForMathlib/) directory contains reusable
+upstream candidates, separated from the construction and its broader prerequisites:
+
+- [Properly discontinuous actions](../ForMathlib/Topology/Algebra/ProperlyDiscontinuous.lean):
+  open stabilizer-invariant neighborhoods whose intersecting translates are
+  exactly those from the stabilizer.
+- [Locally finite closed covers](../ForMathlib/Topology/Gluing/LocallyFiniteClosedCover.lean):
+  compatible homeomorphisms on the pieces glue to a homeomorphism of the spaces.
+
+These modules import only Mathlib or other `ForMathlib` modules, and their
+declarations use mathematical namespaces rather than `SphereSixComplex`.
+The import checker enforces this dependency boundary. Placement here identifies
+an extraction candidate, not an accepted or submission-ready Mathlib contribution:
+current upstream overlap, generality, and API integration still need review.
+In particular, the closed-cover construction's quotient helper overlaps existing
+Mathlib quotient-homeomorphism APIs and should be reconsidered before submission.
+
 Follow Mathlib's [naming](https://leanprover-community.github.io/contribute/naming.html)
 and [style](https://leanprover-community.github.io/contribute/style.html) conventions.
 State actual equalities, isomorphisms, continuity, and homotopy properties rather

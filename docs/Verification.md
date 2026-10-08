@@ -26,6 +26,8 @@ axioms. Skipping the build is appropriate only when the artifacts are current.
 
 The import checker enforces the prerequisite/construction layering, rejects
 missing project imports, and checks reachability from the library aggregate.
+It also requires `ForMathlib` modules to import only Mathlib or other `ForMathlib`
+modules; prerequisite and construction modules may use that layer.
 The placeholder checker rejects `sorry`, `admit`, and `native_decide` in its
 configured project and dependency sources. Its only exceptions are the two
 intentional statement placeholders in [Challenge.lean](../Challenge.lean).
