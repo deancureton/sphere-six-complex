@@ -10,21 +10,22 @@ permissions:
 
 concurrency:
   group: ${{ github.repository }}-blueprint-pages-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  cancel-in-progress: true
 
 jobs:
   build:
     name: Build Blueprint Site
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       LEAN_NUM_THREADS: "3"
     steps:
       - uses: actions/checkout@v5
       - uses: actions/configure-pages@v6
-      - name: Install elan
-        run: |
-          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
-          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: false
+          use-mathlib-cache: false
       - name: Share pinned dependencies with Blueprint
         run: |
           cmp lean-toolchain blueprint/lean-toolchain
@@ -39,29 +40,16 @@ jobs:
           ' lake-manifest.json blueprint/lake-manifest.json
           mkdir -p blueprint/.lake .lake/packages
           ln -s ../../.lake/packages blueprint/.lake/packages
-      - name: Restore incremental Lean build cache
+      - name: Cache Blueprint artifacts
         uses: actions/cache@v4
         with:
-          path: |
-            .lake/build
-            .lake/packages
-            blueprint/.lake/build
-            vendor/VanKampen/.lake/build
-          key: lean-shared-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'blueprint/lean-toolchain', 'blueprint/lake-manifest.json') }}-${{ github.sha }}
+          path: blueprint/.lake/build
+          key: blueprint-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'blueprint/lake-manifest.json') }}-${{ github.sha }}
           restore-keys: |
-            lean-shared-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'blueprint/lean-toolchain', 'blueprint/lake-manifest.json') }}-
-      - name: Prepare compatible Lean dependency caches
-        run: |
-          bash scripts/get-mathlib-cache.sh
-          (cd blueprint && bash ../scripts/get-mathlib-cache.sh)
-      - name: Build formalization
-        run: lake build
-      - name: Check import coverage
-        run: ./scripts/check-imports.py
-      - name: Check for stray proof placeholders
-        run: ./scripts/check-sorries.py
-      - name: Check the axiom trust boundary
-        run: CHECK_AXIOMS_SKIP_BUILD=1 ./scripts/check-axioms.sh
+            blueprint-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'blueprint/lake-manifest.json') }}-
+      - name: Prepare Blueprint dependency cache
+        working-directory: blueprint
+        run: lake exe cache get
       - name: Build Blueprint site
         working-directory: blueprint
         env:
@@ -79,7 +67,7 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5

@@ -1,119 +1,64 @@
 # A Complex Structure on the Six-Sphere
 
-This project formalizes the construction in [`references/s6.pdf`](https://alpo.ge/s6.pdf): a
-compact complex threefold diffeomorphic to the standard smooth six-sphere.
+A Lean formalization of the construction in [the paper](https://alpo.ge/s6.pdf)
+([local copy](references/s6.pdf)): a compact complex threefold diffeomorphic to the
+standard smooth six-sphere.
 
-The Lean development separates reusable mathematics in `SphereSixComplex/Prerequisites/` from
-the construction in topic directories such as `Elliptic/`, `Cusp/`, `Toric/`, and `Homology/`.
-See [MODULE-LAYOUT.md](MODULE-LAYOUT.md) for the classification and entry points. The `blueprint/` directory tracks the
-retained construction and its Lean dependencies. `ChallengeDefs.lean`, `Challenge.lean`,
-`Solution.lean`, and `comparator.json` form the Comparator boundary. `ChallengeDefs` contains
-the Mathlib-only statement definitions. Comparator permits only the three standard logical axioms. Nothing imports `Challenge`.
+The main theorem is:
 
-## Status
+```lean
+SphereSixComplex.sphere_six_admits_complex_structure :
+  AdmitsComplexStructure SixSphere
+```
 
-The headline theorem is source-sorry-free. Its trust boundary consists of Lean's three standard
-logical axioms, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
-and checked by `scripts/check-axioms.sh`. No paper-specific axioms remain. The two `sorry`s
-in `Challenge.lean` are Comparator challenge declarations and are not imported by the solution.
-The topological endpoint `mathoverflow_1973` uses only Lean’s three standard axioms: it
-transports the complex atlas along the proved homeomorphism, without smooth classification.
+Here `SixSphere` is the unit sphere in `EuclideanSpace ℝ (Fin 7)`.
+`AdmitsComplexStructure` asserts the existence of a complex atlas modeled on
+`EuclideanSpace ℂ (Fin 3)`, with complex-smooth transition maps, whose underlying
+real atlas agrees with the standard stereographic smooth structure through the
+identity map. The definitions are in [ChallengeDefs.lean](ChallengeDefs.lean).
 
-The stronger endpoint requires the complex atlas's underlying real structure to agree
-with the standard smooth sphere through the identity map. The classification argument
-provides a noncomputable diffeomorphism, not a coordinate formula. See
-[CLASSIFICATION-CLEANUP.md](CLASSIFICATION-CLEANUP.md) for the statement audit and pruning record.
-
-The former cusp boundary assumption had the two invariant coordinates reversed. It has been
-deleted: the actual boundary is proved to be raw coordinate four, and the elliptic splitting is
-normalized by that class. The fourth-period sweep gives a unit coefficient for raw five.
-These two classes generate the remaining elliptic coordinates in the kernel of cusp specialization.
-Together with specialization, they prove that the degree-two Mayer–Vietoris difference map is onto.
-
-The analytic construction uses the global sections supplied by the two affine torsor theorems
-directly. It selects μ once and constructs β for that same μ before applying the Schur shift.
-Elliptic collars escape central compact sets because the continuous orbifold coordinate separates
-those compact sets from the elliptic values. At the cusp, the modular coordinate tends to infinity,
-so a compact image bounds the height. Moving inverse period coordinates are continuous by the
-general continuity of inversion on invertible linear maps.
-
-First homology vanishes directly from the local elliptic and cusp relations. The adjacent
-Mayer–Vietoris map is then a surjection between free abelian groups of the same rank, hence an
-isomorphism; exactness gives vanishing second homology. The geometric Euler calculation,
-Poincaré duality and universal coefficients determine the remaining homology groups.
-Cellular comparison, compact collaring, and simply-connected integral Poincaré duality
-are now proved using imported developments; see [UPGRADE.md](UPGRADE.md).
-The required universal-coefficient comparisons are proved by splitting projective chain
-complexes. An explicit homotopy into a collar supplies the positive quotient retraction,
-removing the relative triangulation and CW-pair Whitehead assumptions. The four-piece
-Mayer–Vietoris calculation supplies finite generation and the dimension bound directly,
-so the construction of the simply connected complex homology six-sphere uses only
-Lean’s three standard axioms. A proved h-cobordism argument now gives a sphere homeomorphism,
-bypassing higher Hurewicz, homological Whitehead and finite CW models. The SmoothSixSphere
-dependency proves smooth classification for the independently supplied atlas, giving the
-required diffeomorphism. See [AXIOM-ELIMINATION.md](AXIOM-ELIMINATION.md) for the proof history.
-
-Finite-fibre specialization is proved in both degrees. In degree two, the actual mixed torus
-columns and the positive projection prove an integral isomorphism. Its inverse defines the
-target filling coordinates, and the Wang section is normalized in the specialization kernel.
-The canonical source fibre markings used by the elliptic attachment are preserved. Higher toric
-incidence and the cusp elliptic coordinate relations are also proved. Comparator checks the
-declared assumptions; its acceptance alone does not prove those assumptions mathematically.
-The reduction history is recorded in `AXIOM-ELIMINATION-PLAN.md`.
-
-## Scope
-
-The retained development is rooted at the two statements in `comparator.json`:
-`sphere_six_admits_complex_structure` and `mathoverflow_1973`. Intermediate declarations are
-kept when needed by these proofs or by their Lean elaboration. Documentation follows the retained
-proofs; a Blueprint link or historical mention does not preserve an otherwise unused declaration.
-See [DEAD-CODE.md](DEAD-CODE.md) for the dependency analysis and pruning results.
+The compiled proof uses only Lean's three standard axioms: `propext`,
+`Classical.choice`, and `Quot.sound`. There are no additional mathematical axioms.
+Build and axiom-audit results are distinct from independent Comparator verification;
+see [verification](docs/Verification.md) for the checks and current limits.
 
 ## Build
 
+The pinned toolchain is Lean 4.35.0-rc3. With Lean installed:
+
 ```sh
 lake exe cache get
-lake build
+LEAN_NUM_THREADS=3 nice -n 15 lake build
 ```
 
-## Dependencies and acknowledgements
+Start with [Final.lean](SphereSixComplex/Final.lean) for the assembled proof,
+[the proof guide](docs/Proof.md) for its mathematical organization, or
+[the Blueprint](blueprint/) for the detailed exposition.
 
-This formalization depends on:
+## Dependencies
 
-- [Mathlib](https://github.com/leanprover-community/mathlib4)
-- [Tau Ceti](https://github.com/TauCetiProject/TauCeti)
-- the integral duality development in [DifferentialGeometry](https://github.com/qinz1yang/differential-geometry),
-  derived in part from Ayush Khaitan's CanonicalTopology project; see the
-  [selected dependency and module port](https://github.com/deancureton/differential-geometry/blob/67e3631e3b8f532a31ac2375b2d50a4369044eec/README.md)
-- the [Jordan Curve Theorem project](https://github.com/epfl-lara/jordan-curve-theorem)
-- Thomas Zhu's fundamental-groupoid van Kampen development in Mathlib
-  [PR #41603](https://github.com/leanprover-community/mathlib4/pull/41603)
+Exact revisions are pinned in [lakefile.toml](lakefile.toml) and
+[lake-manifest.json](lake-manifest.json).
 
-We thank Thomas Zhu for giving us permission to use and port the van Kampen development.
+- [Mathlib](https://github.com/leanprover-community/mathlib4).
+- [Tau Ceti](https://github.com/TauCetiProject/TauCeti), including cellular homology
+  and compact collaring results.
+- [Jordan Curve Theorem](https://github.com/Paul-Lez/jordan-curve-theorem), a fork
+  of [the EPFL-LARA project](https://github.com/epfl-lara/jordan-curve-theorem).
+- [DifferentialGeometry](https://github.com/deancureton/differential-geometry/tree/67e3631e3b8f532a31ac2375b2d50a4369044eec),
+  an extracted and ported dependency from
+  [qinz1yang/differential-geometry](https://github.com/qinz1yang/differential-geometry),
+  derived in part from Ayush Khaitan's CanonicalTopology development. It supplies
+  small-chain approximation, integral duality, and h-cobordism results.
+- [SmoothSixSphere](https://github.com/deancureton/lean-proofs/tree/613af5fc94f43562c18d4e9ae8936beebaaf1b29),
+  an extraction of Boris Alexeev's smooth six-sphere classification from
+  [plby/lean-proofs](https://github.com/plby/lean-proofs/tree/8822f7ddef30fadbd92e1c6ab4ed897af356af5e).
+- Thomas Zhu's fundamental-groupoid van Kampen development, proposed in
+  [Mathlib PR #41603](https://github.com/leanprover-community/mathlib4/pull/41603)
+  and retained in [vendor/VanKampen](vendor/VanKampen/README.md) with source hashes,
+  license, and port notes. We thank Thomas Zhu for permission to use and port it.
 
-## Trust boundary
-
-`./scripts/check-axioms.sh` checks the compiled dependency closure of the final theorems
-and construction, following types, proof bodies, constructors and recursors. It rejects
-any axiom other than `propext`, `Classical.choice` and `Quot.sound`, and checks that
-`comparator.json` permits exactly those axioms. Set `CHECK_AXIOMS_SKIP_BUILD=1` to reuse
-an existing build.
-
-`./scripts/check-sorries.py` checks that no `sorry`, `admit`, or `native_decide` appears outside
-the trusted Comparator statements in `Challenge.lean`. It counts them, so an extra placeholder in
-an already listed file also fails.
-
-`./scripts/check-imports.py` checks that every module is reachable from `SphereSixComplex.Main`.
-It also rejects missing project imports and any dependency from `Prerequisites/` into the construction
-or an aggregate. A module outside the build cone is elaborated by nothing and its axioms are invisible to the
-audit, so this keeps the two scripts above honest.
-
-These gates run in CI after `lake build`.
-
-## Comparator
-
-```sh
-lake comparator
-```
-
-The bundled Comparator requires Linux with bubblewrap for sandboxed verification.
+Several focused analytic and toric arguments also adapt Boris Alexeev's
+[HopfProblem development](https://github.com/plby/HopfProblem/blob/9ac8a456b526527837d7082ff775213ca8bc9809/Solution.lean).
+Their source files retain attribution and license notices. See
+[dependency provenance](docs/Verification.md#dependency-provenance) for details.

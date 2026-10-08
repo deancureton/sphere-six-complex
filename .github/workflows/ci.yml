@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  LEAN_NUM_THREADS: "3"
+
+jobs:
+  proof:
+    name: Build and audit
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: true
+          use-mathlib-cache: true
+      - uses: astral-sh/setup-uv@v6
+      - name: Check module coverage and layers
+        run: uv run --no-project python scripts/check-imports.py
+      - name: Check proof placeholders
+        run: uv run --no-project python scripts/check-sorries.py
+      - name: Audit theorem dependencies
+        run: CHECK_AXIOMS_SKIP_BUILD=1 bash scripts/check-axioms.sh
+
+  comparator:
+    name: Comparator
+    needs: proof
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: false
+          use-mathlib-cache: false
+      - name: Install sandbox
+        run: sudo apt-get update && sudo apt-get install -y bubblewrap
+      - name: Check statements and replay proofs
+        run: lake comparator
+
+  pages:
+    name: Blueprint
+    needs: proof
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/blueprint-pages.yml

@@ -1,6 +1,7 @@
 name = "VanKampen"
 version = "0.1.0"
 defaultTargets = ["VanKampen"]
+buildDir = "../../.lake/VanKampen"
 
 [[require]]
 name = "mathlib"

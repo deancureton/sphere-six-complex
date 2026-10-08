@@ -5,7 +5,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 if [[ "${BLUEPRINT_SKIP_CACHE_GET:-0}" != "1" ]]; then
-  bash ../scripts/get-mathlib-cache.sh
+  lake exe cache get
 fi
 lake exe vbp build
 

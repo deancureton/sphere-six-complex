@@ -29,6 +29,8 @@ build and axiom audit.
 
 Lean 4.35.0-rc3 compatibility adaptations:
 
+- Build artifacts live in the enclosing project's `.lake/VanKampen`, inside
+  bundled Comparator's writable sandbox and the shared CI cache.
 - `CleanMapFromAdapted`, `CompositionFinal`, and `CleanRefinement`: six finite-image equalities are transported
   extensionally. Lean now distinguishes the subtype and linear-order decidable
   equality implementations on the unit interval; finite-set membership is
