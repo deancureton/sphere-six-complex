@@ -9,13 +9,13 @@ proof dependency, not part of an assumed classical boundary.
 The SmoothSixSphere package extracts Boris Alexeev's
 `NoExoticSixSphere.noExoticSixSpheres`. Its input is a homeomorphism from a manifold
 with an independently supplied smooth atlas to the standard metric six-sphere;
-its output is an actual Mathlib diffeomorphism for that atlas. The definition
-`NoExoticSixSphere.SixSphereRigidity` expands to precisely this statement.
+its output is an actual Mathlib diffeomorphism for that atlas. The public theorem
+now states these hypotheses and its conclusion directly.
 
 [Recognition.lean](SphereSixComplex/Prerequisites/Topology/Sphere/Recognition.lean)
 applies it directly to the homeomorphism already proved by h-cobordism. The former
 `SmoothSixSphere.poincare` axiom and the unused homotopy-sphere adapter are deleted.
-The external classification theorem's recursive dependency audit visits 136,496
+The external classification theorem's recursive dependency audit visits 136,495
 constants and finds exactly the three standard axioms. Package provenance and its
 final pinned revision are recorded with the dependency.
 
@@ -144,7 +144,7 @@ without any additional axiom.
 The audit checks the weaker endpoint separately to prevent reintroducing that dependency.
 
 The full project build, exact axiom audit and Blueprint build pass on this boundary.
-Comparator's kernel replay was interrupted after approximately 34 minutes without
+The cleanup's bounded Comparator run was interrupted after five minutes without
 a verdict; this check remains incomplete. The local macOS run uses fake-landrun,
 so Linux sandbox isolation was not tested here.
 

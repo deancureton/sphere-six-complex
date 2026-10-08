@@ -316,6 +316,9 @@ public theorem admitsComplexStructure_of_diffeomorph
       inferInstance RealModel inferInstance RealModel inferInstance 𝓘(ℝ, RealModel)
       𝓘(ℝ, RealModel) 𝓘(ℝ, RealModel) N inferInstance (transportChartedSpace h) M
       inferInstance (underlyingRealChartedSpace c) N inferInstance standardN ∞ tsymm d
-    exact ⟨result⟩
+    refine ⟨result, ?_⟩
+    intro x
+    change d (d.symm x) = x
+    exact d.apply_symm_apply x
 
 end SphereSixComplex

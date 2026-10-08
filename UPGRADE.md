@@ -143,3 +143,19 @@ endpoints and the construction report only `propext`, `Quot.sound`, and
 kernel replay was interrupted after approximately 34 minutes without a verdict;
 its configuration remains unchanged apart from removing the final permitted
 mathematical axiom.
+
+## Statement audit and classification pruning
+
+SmoothSixSphere is now pinned to
+`613af5fc94f43562c18d4e9ae8936beebaaf1b29`. A reviewed batch removed 1,162 unused
+theorem commands (12,274 lines). The public classification statement now exposes
+its quantified hypotheses directly; a Lean check confirms its original type.
+The package contains 629,506 Lean lines, a net reduction of 12,270. Its rebuild,
+strict axiom audit and second full dependency trace passed.
+
+`SmoothlyCompatible` now requires the witnessing diffeomorphism to be the identity
+pointwise. The existing atlas transport proves this directly. The full S6 and
+Blueprint builds passed, as did the final exact endpoint/construction axiom audit,
+import/layer checks and placeholder checks. The boundary remains exactly the three
+standard axioms. See [CLASSIFICATION-CLEANUP.md](CLASSIFICATION-CLEANUP.md) for the
+statement audit, remaining pruning candidates and separate Comparator status.

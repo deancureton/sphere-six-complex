@@ -56,21 +56,21 @@ public noncomputable def underlyingRealChartedSpace {M : Type*} [TopologicalSpac
   ChartedSpace.comp RealModel ComplexModel M
 
 /--
-A complex atlas is compatible with a specified smooth six-dimensional atlas when its underlying real
-atlas is diffeomorphic to that atlas. This prevents the final statement from forgetting the standard smooth
-structure on the sphere.
+A complex atlas is compatible with a specified smooth six-dimensional atlas when the identity is a
+diffeomorphism from its underlying real atlas to the specified atlas.
 -/
 @[expose]
 public def SmoothlyCompatible {M : Type*} [TopologicalSpace M]
     (standard : ChartedSpace RealModel M) (complex : ChartedSpace ComplexModel M) : Prop :=
-  Nonempty
-    (@Diffeomorph ℝ inferInstance RealModel inferInstance inferInstance RealModel inferInstance
+  ∃ d :
+    @Diffeomorph ℝ inferInstance RealModel inferInstance inferInstance RealModel inferInstance
       inferInstance RealModel inferInstance RealModel inferInstance 𝓘(ℝ, RealModel) 𝓘(ℝ, RealModel) M
-      inferInstance (underlyingRealChartedSpace complex) M inferInstance standard ∞)
+      inferInstance (underlyingRealChartedSpace complex) M inferInstance standard ∞,
+    ∀ x, d x = x
 
 /--
-A standard smooth six-manifold admits a complex structure when it has a complex-differentiable atlas whose
-underlying real smooth structure is diffeomorphic to the specified one.
+A standard smooth six-manifold admits a complex structure when it has a complex-differentiable atlas
+whose underlying real smooth structure is compatible with the specified one through the identity.
 -/
 @[expose]
 public def AdmitsComplexStructure (M : Type*) [TopologicalSpace M]

@@ -8,8 +8,8 @@ the construction in topic directories such as `Elliptic/`, `Cusp/`, `Toric/`, an
 See [MODULE-LAYOUT.md](MODULE-LAYOUT.md) for the classification and entry points. The `blueprint/` directory tracks the
 retained construction and its Lean dependencies. `ChallengeDefs.lean`, `ChallengeAxioms.lean`, `Challenge.lean`,
 `Solution.lean`, and `comparator.json` form the Comparator boundary. `ChallengeDefs` contains
-the Mathlib-only statement definitions; `ChallengeAxioms` exposes the audited established results
-to both Comparator environments and catalogs every exact assumption. Nothing imports `Challenge`.
+the Mathlib-only statement definitions; `ChallengeAxioms` catalogs the three standard logical
+axioms for both Comparator environments. Nothing imports `Challenge`.
 
 ## Status
 
@@ -19,6 +19,11 @@ and checked by the allowlists in `scripts/`. No paper-specific axioms remain. Th
 in `Challenge.lean` are Comparator challenge declarations and are not imported by the solution.
 The topological endpoint `mathoverflow_1973` uses only Lean’s three standard axioms: it
 transports the complex atlas along the proved homeomorphism, without smooth classification.
+
+The stronger endpoint requires the complex atlas's underlying real structure to agree
+with the standard smooth sphere through the identity map. The classification argument
+provides a noncomputable diffeomorphism, not a coordinate formula. See
+[CLASSIFICATION-CLEANUP.md](CLASSIFICATION-CLEANUP.md) for the statement audit and pruning record.
 
 The former cusp boundary assumption had the two invariant coordinates reversed. It has been
 deleted: the actual boundary is proved to be raw coordinate four, and the elliptic splitting is

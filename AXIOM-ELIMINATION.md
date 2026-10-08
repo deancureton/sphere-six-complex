@@ -79,3 +79,6 @@ The full project build, exact recursive axiom audits and Blueprint build passed.
 Comparator's kernel replay was interrupted after approximately 34 minutes without
 a verdict. Its configuration still permits only the standard three axioms. Linux
 sandbox isolation was not tested by this local macOS run.
+
+These are the axiom-elimination checkpoint results. Subsequent statement-audit
+and pruning checks are recorded in [CLASSIFICATION-CLEANUP.md](CLASSIFICATION-CLEANUP.md).

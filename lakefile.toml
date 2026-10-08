@@ -25,7 +25,7 @@ rev = "67e3631e3b8f532a31ac2375b2d50a4369044eec"
 [[require]]
 name = "SmoothSixSphere"
 git = "https://github.com/deancureton/lean-proofs.git"
-rev = "89f53697e3a7f253b9969f5efe296dc3a9ba9ec0"
+rev = "613af5fc94f43562c18d4e9ae8936beebaaf1b29"
 
 # Keep Mathlib last so its transitive dependency pins take precedence.
 [[require]]
