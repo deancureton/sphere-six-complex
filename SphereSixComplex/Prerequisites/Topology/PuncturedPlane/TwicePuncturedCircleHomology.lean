@@ -3,6 +3,8 @@ module
 public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.TwicePuncturedGenerators
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.FreeLoop
 
+open Complex.PuncturedPlane
+
 @[expose] public section
 noncomputable section
 open Complex Metric Set Topology CategoryTheory

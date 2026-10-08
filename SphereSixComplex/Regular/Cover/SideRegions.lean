@@ -25,7 +25,7 @@ open GlobalTorusFamily TorusFamily
 open EquivariantQuotientHomeomorph
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
-open SphereSixComplex.OpenUnionHomotopy
+open OpenUnionHomotopy
 
 variable (A : AnalyticData)
 

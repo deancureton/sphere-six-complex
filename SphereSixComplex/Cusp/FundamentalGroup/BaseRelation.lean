@@ -3,6 +3,8 @@ module
 public import SphereSixComplex.Cusp.FundamentalGroup.CoordinateWinding
 public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.PairOfPants
 
+open Complex.PuncturedPlane
+
 /-!
 # The actual cusp loop and the two finite base meridians
 

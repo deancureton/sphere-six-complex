@@ -10,7 +10,9 @@ import SphereSixComplex.Prerequisites.Topology.MayerVietoris.OrientedRefinement
 open CategoryTheory TopologicalSpace
 open scoped ContinuousMap
 noncomputable section
-namespace SphereSixComplex.BinaryOpenCover
+open SphereSixComplex
+
+namespace AlgebraicTopology.BinaryOpenCover
 
 /-- The canonical Mayer–Vietoris boundary is natural under maps of ordered open covers. -/
 public theorem legacyBoundary_naturality {X Y : TopCat} (f : C(X, Y))
@@ -84,4 +86,4 @@ public theorem legacyBoundary_naturality {X Y : TopCat} (f : C(X, Y))
   rw [← Category.assoc, ← Category.assoc, hu]
   simp only [Category.assoc]
 
-end SphereSixComplex.BinaryOpenCover
+end AlgebraicTopology.BinaryOpenCover

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.FundamentalGroup
+public import ForMathlib.Analysis.Complex.PuncturedPlane.FundamentalGroup
 
 /-!
 # Circle homotopies from exact local factorizations

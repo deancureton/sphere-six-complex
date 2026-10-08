@@ -38,9 +38,9 @@ public noncomputable def cuspPulledBackBoundaryHom :
         (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) :=
   ConcreteCategory.hom
     (D.cuspOpenCoverHomologyComparison.boundary 1 ≫
-      BinaryOpenCover.openIntersectionPullbackHomologyMap D.cuspToEllipticInteriorMap
+      AlgebraicTopology.BinaryOpenCover.openIntersectionPullbackHomologyMap D.cuspToEllipticInteriorMap
         (orderThreeOpen D) (orderFourOpen D) 1 ≫
-      (BinaryOpenCover.opensIntersectionHomologyIso
+      (AlgebraicTopology.BinaryOpenCover.opensIntersectionHomologyIso
         (orderThreeOpen D) (orderFourOpen D) 1).inv)
 
 end EllipticTwoDiscCoverData

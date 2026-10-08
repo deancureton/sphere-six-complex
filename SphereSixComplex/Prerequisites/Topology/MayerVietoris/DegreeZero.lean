@@ -78,69 +78,69 @@ private theorem rightOpenInUnion_inclusion_fac
 private theorem leftOpenInUnion_homology_fac
     {X : Type} [TopologicalSpace X] (A B : Set X)
     (hA : IsOpen A) (n : ℕ) :
-    (BinaryOpenCover.integralHomologyFunctor n).map
+    (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map
           (leftOpenInUnionToLeft A B hA) ≫
-        (BinaryOpenCover.integralHomologyFunctor n).map
+        (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map
           (TopCat.ofHom (leftToUnion A B)) =
-      (BinaryOpenCover.integralHomologyFunctor n).map
+      (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map
         (@Opens.inclusion' (TopCat.of (A ∪ B : Set X))
           (leftOpenInUnion A B hA)) := by
-  rw [← (BinaryOpenCover.integralHomologyFunctor n).map_comp]
-  exact congrArg (BinaryOpenCover.integralHomologyFunctor n).map
+  rw [← (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map_comp]
+  exact congrArg (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map
     (leftOpenInUnion_inclusion_fac A B hA)
 
 private theorem rightOpenInUnion_homology_fac
     {X : Type} [TopologicalSpace X] (A B : Set X)
     (hB : IsOpen B) (n : ℕ) :
-    (BinaryOpenCover.integralHomologyFunctor n).map
+    (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map
           (rightOpenInUnionToRight A B hB) ≫
-        (BinaryOpenCover.integralHomologyFunctor n).map
+        (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map
           (TopCat.ofHom (rightToUnion A B)) =
-      (BinaryOpenCover.integralHomologyFunctor n).map
+      (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map
         (@Opens.inclusion' (TopCat.of (A ∪ B : Set X))
           (rightOpenInUnion A B hB)) := by
-  rw [← (BinaryOpenCover.integralHomologyFunctor n).map_comp]
-  exact congrArg (BinaryOpenCover.integralHomologyFunctor n).map
+  rw [← (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map_comp]
+  exact congrArg (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map
     (rightOpenInUnion_inclusion_fac A B hB)
 
 private noncomputable def pairToBiprod
     {Y : TopCat} (U V : Opens Y) (n : ℕ)
     (uv :
-      (BinaryOpenCover.integralHomologyFunctor n).obj
+      (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
           ((Opens.toTopCat Y).obj U) ×
-        (BinaryOpenCover.integralHomologyFunctor n).obj
+        (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
           ((Opens.toTopCat Y).obj V)) :
-    ((BinaryOpenCover.integralHomologyFunctor n).obj
+    ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
           ((Opens.toTopCat Y).obj U) ⊞
-        (BinaryOpenCover.integralHomologyFunctor n).obj
+        (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
           ((Opens.toTopCat Y).obj V) : AddCommGrpCat) :=
   (AddCommGrpCat.biprodIsoProd _ _).inv uv
 
 private noncomputable def biprodToPair
     {Y : TopCat} (U V : Opens Y) (n : ℕ)
     (z :
-      ((BinaryOpenCover.integralHomologyFunctor n).obj
+      ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
             ((Opens.toTopCat Y).obj U) ⊞
-          (BinaryOpenCover.integralHomologyFunctor n).obj
+          (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
             ((Opens.toTopCat Y).obj V) : AddCommGrpCat)) :
-    (BinaryOpenCover.integralHomologyFunctor n).obj
+    (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
           ((Opens.toTopCat Y).obj U) ×
-        (BinaryOpenCover.integralHomologyFunctor n).obj
+        (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
           ((Opens.toTopCat Y).obj V) :=
   (AddCommGrpCat.biprodIsoProd _ _).hom z
 
 private theorem pairToBiprod_biprodToPair
     {Y : TopCat} (U V : Opens Y) (n : ℕ)
     (z :
-      ((BinaryOpenCover.integralHomologyFunctor n).obj
+      ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
             ((Opens.toTopCat Y).obj U) ⊞
-          (BinaryOpenCover.integralHomologyFunctor n).obj
+          (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
             ((Opens.toTopCat Y).obj V) : AddCommGrpCat)) :
     pairToBiprod U V n (biprodToPair U V n z) = z := by
   exact (AddCommGrpCat.biprodIsoProd
-    ((BinaryOpenCover.integralHomologyFunctor n).obj
+    ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
       ((Opens.toTopCat Y).obj U))
-    ((BinaryOpenCover.integralHomologyFunctor n).obj
+    ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
       ((Opens.toTopCat Y).obj V))).hom_inv_id_apply z
 
 private theorem pairToBiprod_surjective
@@ -152,69 +152,69 @@ private theorem pairToBiprod_surjective
 private noncomputable def integralMVFromProduct
     {Y : TopCat} (U V : Opens Y)
     (uv :
-      (BinaryOpenCover.integralHomologyFunctor 0).obj
+      (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).obj
             ((Opens.toTopCat Y).obj U) ×
-          (BinaryOpenCover.integralHomologyFunctor 0).obj
+          (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).obj
             ((Opens.toTopCat Y).obj V)) :
-    (BinaryOpenCover.integralHomologyFunctor 0).obj Y :=
-  BinaryOpenCover.integralMVFromBiprod U V 0 (pairToBiprod U V 0 uv)
+    (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).obj Y :=
+  AlgebraicTopology.BinaryOpenCover.integralMVFromBiprod U V 0 (pairToBiprod U V 0 uv)
 
 private theorem integralMV_comp_pairToBiprod_zero_surjective
     {Y : TopCat} (U V : Opens Y) (hcover : U ⊔ V = ⊤) :
     Function.Surjective
       (integralMVFromProduct U V) :=
-  (BinaryOpenCover.integralMVFromBiprod_zero_surjective U V hcover).comp
+  (AlgebraicTopology.BinaryOpenCover.integralMVFromBiprod_zero_surjective U V hcover).comp
     (pairToBiprod_surjective U V 0)
 
 private theorem integralMVFromBiprod_biprodIsoProd_inv_apply
     {Y : TopCat} (U V : Opens Y) (n : ℕ)
-    (u : (BinaryOpenCover.integralHomologyFunctor n).obj
+    (u : (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
       ((Opens.toTopCat Y).obj U))
-    (v : (BinaryOpenCover.integralHomologyFunctor n).obj
+    (v : (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).obj
       ((Opens.toTopCat Y).obj V)) :
-    BinaryOpenCover.integralMVFromBiprod U V n
+    AlgebraicTopology.BinaryOpenCover.integralMVFromBiprod U V n
         (pairToBiprod U V n ⟨u, v⟩) =
-      (BinaryOpenCover.integralHomologyFunctor n).map
+      (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map
           (Opens.inclusion' U) u +
-        (BinaryOpenCover.integralHomologyFunctor n).map
+        (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor n).map
           (Opens.inclusion' V) v := by
-  dsimp [pairToBiprod, BinaryOpenCover.integralMVFromBiprod]
+  dsimp [pairToBiprod, AlgebraicTopology.BinaryOpenCover.integralMVFromBiprod]
   rw [← ConcreteCategory.comp_apply]
   simp [AddCommGrpCat.biprodIsoProd_inv_comp_desc]
 
 private theorem integralMVFromProduct_pair_apply
     {Y : TopCat} (U V : Opens Y)
-    (u : (BinaryOpenCover.integralHomologyFunctor 0).obj
+    (u : (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).obj
       ((Opens.toTopCat Y).obj U))
-    (v : (BinaryOpenCover.integralHomologyFunctor 0).obj
+    (v : (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).obj
       ((Opens.toTopCat Y).obj V)) :
     integralMVFromProduct U V ⟨u, v⟩ =
-      (BinaryOpenCover.integralHomologyFunctor 0).map
+      (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
           (Opens.inclusion' U) u +
-        (BinaryOpenCover.integralHomologyFunctor 0).map
+        (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
           (Opens.inclusion' V) v := by
-  change BinaryOpenCover.integralMVFromBiprod U V 0
+  change AlgebraicTopology.BinaryOpenCover.integralMVFromBiprod U V 0
       (pairToBiprod U V 0 ⟨u, v⟩) = _
   exact integralMVFromBiprod_biprodIsoProd_inv_apply U V 0 u v
 
 private theorem sumMap_flattenPair_zero
     {X : Type} [TopologicalSpace X] (A B : Set X)
     (hA : IsOpen A) (hB : IsOpen B)
-    (u : (BinaryOpenCover.integralHomologyFunctor 0).obj
+    (u : (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).obj
       ((Opens.toTopCat (TopCat.of (A ∪ B : Set X))).obj
         (leftOpenInUnion A B hA)))
-    (v : (BinaryOpenCover.integralHomologyFunctor 0).obj
+    (v : (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).obj
       ((Opens.toTopCat (TopCat.of (A ∪ B : Set X))).obj
         (rightOpenInUnion A B hB))) :
     sumMap A B 0
-        ((BinaryOpenCover.integralHomologyFunctor 0).map
+        ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
             (leftOpenInUnionToLeft A B hA) u,
-          (BinaryOpenCover.integralHomologyFunctor 0).map
+          (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
             (rightOpenInUnionToRight A B hB) v) =
-      (BinaryOpenCover.integralHomologyFunctor 0).map
+      (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
           (@Opens.inclusion' (TopCat.of (A ∪ B : Set X))
             (leftOpenInUnion A B hA)) u +
-        (BinaryOpenCover.integralHomologyFunctor 0).map
+        (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
           (@Opens.inclusion' (TopCat.of (A ∪ B : Set X))
             (rightOpenInUnion A B hB)) v := by
   have hLeft := ConcreteCategory.congr_hom
@@ -222,49 +222,49 @@ private theorem sumMap_flattenPair_zero
   have hRight := ConcreteCategory.congr_hom
     (rightOpenInUnion_homology_fac A B hB 0) v
   have hLeft' :
-      (BinaryOpenCover.integralHomologyFunctor 0).map
+      (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
           (TopCat.ofHom (leftToUnion A B))
-          ((BinaryOpenCover.integralHomologyFunctor 0).map
+          ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
             (leftOpenInUnionToLeft A B hA) u) =
-        (BinaryOpenCover.integralHomologyFunctor 0).map
+        (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
           (@Opens.inclusion' (TopCat.of (A ∪ B : Set X))
             (leftOpenInUnion A B hA)) u := by
     rw [← ConcreteCategory.comp_apply]
     exact hLeft
   have hRight' :
-      (BinaryOpenCover.integralHomologyFunctor 0).map
+      (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
           (TopCat.ofHom (rightToUnion A B))
-          ((BinaryOpenCover.integralHomologyFunctor 0).map
+          ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
             (rightOpenInUnionToRight A B hB) v) =
-        (BinaryOpenCover.integralHomologyFunctor 0).map
+        (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
           (@Opens.inclusion' (TopCat.of (A ∪ B : Set X))
             (rightOpenInUnion A B hB)) v := by
     rw [← ConcreteCategory.comp_apply]
     exact hRight
   change
-    (BinaryOpenCover.integralHomologyFunctor 0).map
+    (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
           (TopCat.ofHom (leftToUnion A B))
-          ((BinaryOpenCover.integralHomologyFunctor 0).map
+          ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
             (leftOpenInUnionToLeft A B hA) u) +
-        (BinaryOpenCover.integralHomologyFunctor 0).map
+        (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
           (TopCat.ofHom (rightToUnion A B))
-          ((BinaryOpenCover.integralHomologyFunctor 0).map
+          ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
             (rightOpenInUnionToRight A B hB) v) = _
   rw [hLeft', hRight']
 
 private theorem sumMap_flattenPair_eq_integralMVFromProduct
     {X : Type} [TopologicalSpace X] (A B : Set X)
     (hA : IsOpen A) (hB : IsOpen B)
-    (u : (BinaryOpenCover.integralHomologyFunctor 0).obj
+    (u : (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).obj
       ((Opens.toTopCat (TopCat.of (A ∪ B : Set X))).obj
         (leftOpenInUnion A B hA)))
-    (v : (BinaryOpenCover.integralHomologyFunctor 0).obj
+    (v : (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).obj
       ((Opens.toTopCat (TopCat.of (A ∪ B : Set X))).obj
         (rightOpenInUnion A B hB))) :
     sumMap A B 0
-        ((BinaryOpenCover.integralHomologyFunctor 0).map
+        ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
             (leftOpenInUnionToLeft A B hA) u,
-          (BinaryOpenCover.integralHomologyFunctor 0).map
+          (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
             (rightOpenInUnionToRight A B hB) v) =
       integralMVFromProduct (Y := TopCat.of (A ∪ B : Set X))
         (leftOpenInUnion A B hA)
@@ -287,9 +287,9 @@ private theorem sumMap_zero_has_preimage
     (leftOpenInUnion A B hA) (rightOpenInUnion A B hB) hcover y
   obtain ⟨u, v⟩ := uv
   exact ⟨
-    ((BinaryOpenCover.integralHomologyFunctor 0).map
+    ((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
         (leftOpenInUnionToLeft A B hA) u,
-      (BinaryOpenCover.integralHomologyFunctor 0).map
+      (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 0).map
         (rightOpenInUnionToRight A B hB) v),
     (sumMap_flattenPair_eq_integralMVFromProduct A B hA hB u v).trans huv⟩
 

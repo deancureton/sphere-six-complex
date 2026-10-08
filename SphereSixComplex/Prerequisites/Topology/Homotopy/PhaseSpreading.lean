@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.EquivariantDeformationRetraction
+public import ForMathlib.Topology.Homotopy.EquivariantDeformationRetraction
 
 /-!
 # Spreading a deformation retraction across phase orbits

@@ -6,7 +6,6 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.Mod
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.ModularForms
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.FiniteCorner
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.FiniteCorner
-public import ForMathlib.Topology.Algebra.ProperlyDiscontinuous
 import all ForMathlib.Topology.Algebra.ProperlyDiscontinuous
 public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.EllipticCayley
 import all SphereSixComplex.Prerequisites.Geometry.ComplexDisc.EllipticCayley

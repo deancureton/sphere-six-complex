@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.First
-public import SphereSixComplex.Prerequisites.Topology.Hurewicz.FundamentalGroup
+public import ForMathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 
 @[expose] public section
 noncomputable section

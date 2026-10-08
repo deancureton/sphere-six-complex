@@ -386,11 +386,11 @@ public theorem exists_geometricCentralTranslationReindexing :
   rw [regularFamilyTranslationAtZero_apply_eq_periodLoop]
   rw [FundamentalGroup.map_apply, ← Path.Homotopic.Quotient.mk_map]
   change (FundamentalGroup.fundamentalGroupMulEquivOfPath W)
-      (SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
+      (fundamentalGroupMulEquivOfEq
         A.markedCentralBase_eq_lift.symm
         (pathLoopClass ((regularFamilyPeriodLoop A.periods p₀ a).map
           (regularFamilyQuotientMap A.periods).continuous))) = _
-  rw [SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply]
+  rw [fundamentalGroupMulEquivOfEq_apply]
   rw [A.cuspCentralTranslation_eq_periodLoop]
   let E := FundamentalGroup.fundamentalGroupMulEquivOfPath W
   apply E.symm.injective

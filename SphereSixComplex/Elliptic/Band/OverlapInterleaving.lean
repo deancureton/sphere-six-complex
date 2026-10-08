@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.Splitting
+public import ForMathlib.Topology.Homotopy.Splitting
 public import SphereSixComplex.Elliptic.Band.OverlapCompletionData
 public import SphereSixComplex.Elliptic.Band.OrderThreeOverlapIdentification
 public import SphereSixComplex.Elliptic.Band.RadialEquivalence
@@ -27,7 +27,7 @@ namespace SphereSixComplex.Geometry.AnalyticData
 open GlobalTorusFamily TorusFamily
 open EquivariantQuotientHomeomorph
 open SphereSixComplex.TriangleGroup
-open SphereSixComplex.OpenUnionHomotopy
+open OpenUnionHomotopy
 open SphereSixComplex.Geometry.EllipticCayleyHomeomorph
 open SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.EllipticLocalCoordinates
@@ -254,7 +254,7 @@ public theorem discRegionInclusion_mono_isHomotopyEquivalence
         ↥(A.affineOrderThreeDiscRegion b))) :
         ↥(A.affineOrderThreeDiscRegion a) →
           ↥(A.affineOrderThreeDiscRegion b)) := by
-  refine SphereSixComplex.isHomotopyEquivalence_of_comp_left
+  refine isHomotopyEquivalence_of_comp_left
     (f := regionInclusion hsub)
     (g := regionInclusion (A.discRegion_subset_centralRegion hb)) ?_
     (A.discRegionInclusion_isHomotopyEquivalence (ha0.trans_le hab) hb)
@@ -304,8 +304,8 @@ public theorem orderThreeOverlapIsHomotopyEquivalence_of_shrink
           A.affineOrderThreeCentralRegion) →
           ↥(A.orderThreeFillingImage ∩
             A.affineOrderThreeCentralRegion)) :=
-    SphereSixComplex.isHomotopyEquivalence_of_homotopic hshrink
-      SphereSixComplex.isHomotopyEquivalence_id
+    isHomotopyEquivalence_of_homotopic hshrink
+      isHomotopyEquivalence_id
   have hhg : IsHomotopyEquivalence
       ((((regionInclusion hOuter).comp (regionInclusion hsub)) :
         C(↥(A.affineOrderThreeDiscRegion a),
@@ -321,7 +321,7 @@ public theorem orderThreeOverlapIsHomotopyEquivalence_of_shrink
         ↥(A.orderThreeFillingImage ∩
           A.affineOrderThreeCentralRegion) →
           ↥(A.affineOrderThreeDiscRegion (1 / 3))) :=
-    SphereSixComplex.isHomotopyEquivalence_last_of_interleaving
+    isHomotopyEquivalence_last_of_interleaving
       shrink (regionInclusion hsub) (regionInclusion hOuter) hgf hhg
   exact (A.discRegionInclusion_isHomotopyEquivalence (r := 1 / 3) (by norm_num)
     (by norm_num)).comp hmid
@@ -447,7 +447,7 @@ public theorem orderFourDiscRegionInclusion_mono_isHomotopyEquivalence
         ↥(A.affineOrderFourDiscRegion b))) :
         ↥(A.affineOrderFourDiscRegion a) →
           ↥(A.affineOrderFourDiscRegion b)) := by
-  refine SphereSixComplex.isHomotopyEquivalence_of_comp_left
+  refine isHomotopyEquivalence_of_comp_left
     (f := regionInclusion hsub)
     (g := regionInclusion (A.orderFourDiscRegion_subset_centralRegion hb)) ?_
     (A.orderFourDiscRegionInclusion_isHomotopyEquivalence (ha0.trans_le hab) hb)
@@ -628,8 +628,8 @@ public theorem orderFourOverlapIsHomotopyEquivalence_of_shrink
           A.affineOrderFourCentralRegion) →
           ↥(A.orderFourFillingImage ∩
             A.affineOrderFourCentralRegion)) :=
-    SphereSixComplex.isHomotopyEquivalence_of_homotopic hshrink
-      SphereSixComplex.isHomotopyEquivalence_id
+    isHomotopyEquivalence_of_homotopic hshrink
+      isHomotopyEquivalence_id
   have hhg : IsHomotopyEquivalence
       ((((regionInclusion hOuter).comp (regionInclusion hsub)) :
         C(↥(A.affineOrderFourDiscRegion a),
@@ -645,7 +645,7 @@ public theorem orderFourOverlapIsHomotopyEquivalence_of_shrink
         ↥(A.orderFourFillingImage ∩
           A.affineOrderFourCentralRegion) →
           ↥(A.affineOrderFourDiscRegion (1 / 3))) :=
-    SphereSixComplex.isHomotopyEquivalence_last_of_interleaving
+    isHomotopyEquivalence_last_of_interleaving
       shrink (regionInclusion hsub) (regionInclusion hOuter) hgf hhg
   exact (A.orderFourDiscRegionInclusion_isHomotopyEquivalence (r := 1 / 3) (by norm_num)
     (by norm_num)).comp hmid
@@ -870,7 +870,7 @@ public theorem exists_orderThreeCayleyRadius_coordinate_lt {a : ℝ} (ha : 0 < a
     rw [A.modular.sourceCoordinate.coordinate_at_one]
     simpa using ha
   obtain ⟨t, ht, -, hsub⟩ :=
-    SphereSixComplex.UpperHalfPlane.exists_cayleyRadius_subset SphereSixComplex.TriangleGroup.fuchsianOneFixedPoint hopen hmem
+    UpperHalfPlane.exists_cayleyRadius_subset SphereSixComplex.TriangleGroup.fuchsianOneFixedPoint hopen hmem
   exact ⟨t, ht, fun z hz ↦ hsub z hz⟩
 
 
@@ -1304,7 +1304,7 @@ public theorem exists_orderFourCayleyRadius_coordinate_lt {a : ℝ} (ha : 0 < a)
     rw [A.modular.sourceCoordinate.coordinate_at_two]
     simpa using ha
   obtain ⟨t, ht, -, hsub⟩ :=
-    SphereSixComplex.UpperHalfPlane.exists_cayleyRadius_subset SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint hopen hmem
+    UpperHalfPlane.exists_cayleyRadius_subset SphereSixComplex.TriangleGroup.fuchsianTwoFixedPoint hopen hmem
   exact ⟨t, ht, fun z hz ↦ hsub z hz⟩
 
 /-- Shrinking preserves the selected order-four collar carrier. -/

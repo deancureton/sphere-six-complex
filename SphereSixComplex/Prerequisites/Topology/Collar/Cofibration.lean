@@ -1,7 +1,7 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Collar.OpenPush
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.UnitSquare
+public import ForMathlib.Topology.Collar.OpenPush
+public import ForMathlib.Topology.Homotopy.UnitSquare
 public import TauCeti.Topology.Homotopy.Extension.Basic
 
 /-! # Compact collared subsets have the homotopy extension property -/
@@ -12,7 +12,7 @@ noncomputable section
 
 open Set Topology unitInterval
 
-namespace SphereSixComplex.OpenTopologicalCollar
+namespace OpenTopologicalCollar
 
 variable {X : Type*} [TopologicalSpace X] [T2Space X] {B : Set X}
 
@@ -135,4 +135,4 @@ theorem hasHomotopyExtensionProperty (c : OpenTopologicalCollar X B) (hB : IsCom
       simp only [R, hx, dite_eq_left, F, ContinuousMap.coe_mk, hq,
         unitSquareCornerRetraction_zero_left, he0]
 
-end SphereSixComplex.OpenTopologicalCollar
+end OpenTopologicalCollar

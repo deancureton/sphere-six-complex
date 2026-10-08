@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Algebra.IntegralPrimitiveComplement
+public import ForMathlib.LinearAlgebra.FreeModule.Int
 public import SphereSixComplex.Prerequisites.Algebra.MixedThreeColumnBasis
 
 @[expose] public section

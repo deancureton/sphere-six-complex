@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.Identity
-public import SphereSixComplex.Prerequisites.Algebra.ExactSplitting
+public import ForMathlib.Algebra.Module.Projective
 public import SphereSixComplex.Prerequisites.Topology.Torus.CircleDegree
 public import SphereSixComplex.Prerequisites.Geometry.IntegerRealPeriodCoordinates
 

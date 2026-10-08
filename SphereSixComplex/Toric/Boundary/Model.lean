@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Toric.Boundary.Charts
-public import SphereSixComplex.Prerequisites.Topology.Gluing.OnePoint
+public import ForMathlib.Topology.Compactification.OnePoint
 
 @[expose] public section
 noncomputable section

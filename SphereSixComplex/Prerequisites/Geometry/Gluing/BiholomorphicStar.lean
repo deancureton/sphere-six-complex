@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.Gluing.FourPieceStar
-public import SphereSixComplex.Prerequisites.Geometry.Gluing.Compatibility
+public import ForMathlib.Geometry.Manifold.Gluing.Compatibility
 public import ChallengeDefs
 
 /-!

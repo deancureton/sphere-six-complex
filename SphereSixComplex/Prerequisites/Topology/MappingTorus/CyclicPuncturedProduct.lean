@@ -1,7 +1,7 @@
 module
 
-public import SphereSixComplex.Prerequisites.Geometry.Quotient.CyclicAffineAction
-public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.Basic
+public import ForMathlib.Topology.Algebra.MulAction.CyclicAffineAction
+public import ForMathlib.Analysis.Complex.UnitDisc.Basic
 public import SphereSixComplex.Prerequisites.Geometry.Quotient.EquivariantHomeomorph
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.IntervalClutching
 public import Mathlib.Analysis.SpecialFunctions.Complex.Circle

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Cusp.Collar.Basic
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.EquivariantDeformationRetraction
+public import ForMathlib.Topology.Homotopy.EquivariantDeformationRetraction
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.StarGluing
 
 /-!

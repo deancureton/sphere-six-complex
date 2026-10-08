@@ -17,7 +17,9 @@ noncomputable section
 
 open AlgebraicTopology CategoryTheory Limits Set TopologicalSpace
 
-namespace SphereSixComplex.BinaryOpenCover
+open SphereSixComplex
+
+namespace AlgebraicTopology.BinaryOpenCover
 
 /-- The set subtype underlying an open is homeomorphic to its `Opens.toTopCat` realization. -/
 public def opensCarrierHomeomorph {X : TopCat} (U : Opens X) :
@@ -589,4 +591,4 @@ public theorem integralMayerVietorisExactSequence_of_isOpen
   let C : OpenCoverHomologyComparison U V := openCoverHomologyComparisonOfCover hcover
   exact legacyExactSequence_of_restricted A B hA hB (C.toLegacyExactSequence hcover)
 
-end SphereSixComplex.BinaryOpenCover
+end AlgebraicTopology.BinaryOpenCover

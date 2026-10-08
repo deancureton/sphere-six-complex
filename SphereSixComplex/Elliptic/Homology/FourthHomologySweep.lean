@@ -4,7 +4,7 @@ public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.PowerFactor
 public import SphereSixComplex.Elliptic.FundamentalGroup.Relators
 public import SphereSixComplex.Elliptic.Band.MarkedDisc
 public import SphereSixComplex.Periods.FuchsianModularLift.Ramification
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.FreeLoopProduct
+public import ForMathlib.AlgebraicTopology.FundamentalGroupoid.Product
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.FreeLoop
 public import SphereSixComplex.Elliptic.Sweep.FourthInteriorTranslation
 

@@ -6,7 +6,7 @@ Authors: Paul Lezeau
 module
 
 public import SphereSixComplex.Elliptic.Homology.TwistObstruction
-public import SphereSixComplex.Prerequisites.Topology.Hurewicz.FundamentalGroup
+public import ForMathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 
 /-!
 # Geometric input for the paper's van Kampen computation

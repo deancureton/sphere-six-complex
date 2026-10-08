@@ -73,9 +73,9 @@ public theorem constructedPositiveQuotient_metrizable
   let _ : LocallyCompactSpace (constructedLocalPositivePart W.localWitness.radius) :=
     constructedLocalPositivePart_locallyCompactSpace W.localWitness.radius
   let _ : LocallyCompactSpace (PositiveQuotient W) :=
-    SphereSixComplex.Geometry.orbitQuotient_locallyCompactSpace
+    orbitQuotient_locallyCompactSpace
   let _ : SecondCountableTopology (PositiveQuotient W) :=
-    SphereSixComplex.Geometry.orbitQuotient_secondCountableTopology
+    orbitQuotient_secondCountableTopology
   let _ : T2Space (PositiveQuotient W) := constructedPositiveDeck_quotient_t2 W
   infer_instance
 

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.TorusFamily.Basic
-public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.CayleyManifold
+public import ForMathlib.Geometry.Manifold.Complex.UnitDisc
 public import SphereSixComplex.Periods.Functions
 
 /-!
@@ -46,7 +46,7 @@ public theorem parameterMap_val (z : UpperHalfPlane) :
 public theorem tau_contMDiff (n : WithTop ℕ∞) :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n
       (fun z ↦ (F.tau z : ℂ)) :=
-  SphereSixComplex.UpperHalfPlane.contMDiff_of_mdifferentiable (by
+  UpperHalfPlane.contMDiff_of_mdifferentiable (by
     intro z
     exact MDifferentiableAt.comp z (UpperHalfPlane.mdifferentiable_coe (F.tau z))
       (F.tau_holomorphic z)) n
@@ -54,12 +54,12 @@ public theorem tau_contMDiff (n : WithTop ℕ∞) :
 /-- The period `mu` is complex smooth. -/
 public theorem mu_contMDiff (n : WithTop ℕ∞) :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n F.mu :=
-  SphereSixComplex.UpperHalfPlane.contMDiff_of_mdifferentiable F.mu_holomorphic n
+  UpperHalfPlane.contMDiff_of_mdifferentiable F.mu_holomorphic n
 
 /-- The period `beta` is complex smooth. -/
 public theorem beta_contMDiff (n : WithTop ℕ∞) :
     ContMDiff (modelWithCornersSelf ℂ ℂ) (modelWithCornersSelf ℂ ℂ) n F.beta :=
-  SphereSixComplex.UpperHalfPlane.contMDiff_of_mdifferentiable F.beta_holomorphic n
+  UpperHalfPlane.contMDiff_of_mdifferentiable F.beta_holomorphic n
 
 
 

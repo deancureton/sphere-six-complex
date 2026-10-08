@@ -7,7 +7,7 @@ module
 
 public import SphereSixComplex.Toric.Model.Basic
 public import SphereSixComplex.Prerequisites.Geometry.Manifold.AtlasTransport
-public import SphereSixComplex.Prerequisites.Geometry.Gluing.Compatibility
+public import ForMathlib.Geometry.Manifold.Gluing.Compatibility
 
 /-!
 # The glued carrier of the standard infinite `A₂` toric model

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Toric.Boundary.Model
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.Quotient
+public import ForMathlib.Topology.Homotopy.Quotient
 
 @[expose] public section
 noncomputable section

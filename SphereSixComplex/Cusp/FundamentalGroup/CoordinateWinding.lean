@@ -2,6 +2,8 @@ module
 
 public import SphereSixComplex.Cusp.FundamentalGroup.MarkedLoop
 
+open Complex.PuncturedPlane
+
 /-!
 # Winding of the actual marked cusp coordinate
 

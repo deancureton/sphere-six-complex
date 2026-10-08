@@ -3,7 +3,7 @@ module
 public import SphereSixComplex.Elliptic.Homology.HomologyOne
 public import SphereSixComplex.Cusp.Wang.NormalizedBandMarking
 public import SphereSixComplex.Homology.First
-public import SphereSixComplex.Prerequisites.Algebra.ExactGeneration
+public import ForMathlib.Algebra.Exact.Generation
 
 @[expose] public section
 noncomputable section

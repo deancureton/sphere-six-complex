@@ -1,9 +1,9 @@
 module
 
-public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.Basic
-public import SphereSixComplex.Prerequisites.Geometry.Quotient.CyclicAffineAction
+public import ForMathlib.Analysis.Complex.UnitDisc.Basic
+public import ForMathlib.Topology.Algebra.MulAction.CyclicAffineAction
 public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.Action
-import all SphereSixComplex.Prerequisites.Geometry.ComplexDisc.Basic
+import all ForMathlib.Analysis.Complex.UnitDisc.Basic
 import all SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 
 namespace SphereSixComplex.Geometry.EllipticLocalCoordinates

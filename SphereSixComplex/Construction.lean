@@ -206,7 +206,7 @@ public import SphereSixComplex.Elliptic.Band.MarkedDisc
 public import SphereSixComplex.Elliptic.Band.OverlapCompletionData
 public import SphereSixComplex.Elliptic.Band.RadialEquivalence
 public import SphereSixComplex.Elliptic.Band.OverlapInterleaving
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.FreeLoopProduct
+public import ForMathlib.AlgebraicTopology.FundamentalGroupoid.Product
 public import SphereSixComplex.TriangleGroup.Representation
 
 public import SphereSixComplex.Cusp.Specialization.FiberSpecializationBijective

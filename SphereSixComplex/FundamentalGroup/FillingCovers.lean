@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Cusp.Cover.FillingComparison
 public import SphereSixComplex.Regular.Cover.MappingTorusUniversalCover
-public import SphereSixComplex.Prerequisites.Topology.Covering.EquivarianceExtension
+public import ForMathlib.Topology.Covering.Equivariance
 
 /-!
 # Elliptic filling covers and the marked cusp core
@@ -723,7 +723,7 @@ public theorem lift_equivariant
   let := A.ellipticThreeBoundaryAction
   let := E.fillingAction
   let := A.ellipticThreeBoundaryCover_simplyConnected
-  exact SphereSixComplex.Topology.quotientCover_equivariant_of_eq_at
+  exact Topology.quotientCover_equivariant_of_eq_at
     A.ellipticThreeBoundaryProjection
     A.ellipticThreeFillingProjection
     A.ellipticThreeBoundaryProjection_isQuotientCoveringMap
@@ -749,7 +749,7 @@ public theorem lift_equivariant
   let := A.ellipticFourBoundaryAction
   let := E.fillingAction
   let := A.ellipticFourBoundaryCover_simplyConnected
-  exact SphereSixComplex.Topology.quotientCover_equivariant_of_eq_at
+  exact Topology.quotientCover_equivariant_of_eq_at
     A.ellipticFourBoundaryProjection
     A.ellipticFourFillingProjection
     A.ellipticFourBoundaryProjection_isQuotientCoveringMap

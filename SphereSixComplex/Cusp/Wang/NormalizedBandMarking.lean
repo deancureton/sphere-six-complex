@@ -177,7 +177,7 @@ public theorem normalizedCuspProductClass_wang :
 public theorem normalizedThirdCylinder_primitive_boundary {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
-      (ConcreteCategory.hom ((BinaryOpenCover.openCoverHomologyComparisonOfCover
+      (ConcreteCategory.hom ((AlgebraicTopology.BinaryOpenCover.openCoverHomologyComparisonOfCover
         (ellipticOpenCover R.twoDiscCover)).boundary 1)
         (integralSingularHomologyMap 2
           (identityMappingTorusMapOfLoop
@@ -215,7 +215,7 @@ public theorem cuspChosenThirdSweep_interior_class (A : AnalyticData) :
 public theorem cuspChosenThirdSweep_primitive_boundary {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) :
     EllipticBandHomologyAlignment.bandOne (D := R.twoDiscCover)
-      (ConcreteCategory.hom ((BinaryOpenCover.openCoverHomologyComparisonOfCover
+      (ConcreteCategory.hom ((AlgebraicTopology.BinaryOpenCover.openCoverHomologyComparisonOfCover
         (ellipticOpenCover R.twoDiscCover)).boundary 1)
         (integralSingularHomologyMap 2
           (A.centralToEllipticInterior.comp A.cuspChosenThirdSweepCentral)
@@ -231,26 +231,26 @@ public theorem cuspPulledBackBoundaryHom_eq_interiorBoundary {A : AnalyticData}
     D.cuspPulledBackBoundaryHom x =
       ConcreteCategory.hom (D.ellipticOpenCoverHomologyComparison.boundary 1)
         (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom x) := by
-  have hn := BinaryOpenCover.OpenCoverHomologyComparison.boundary_pullback_naturality
+  have hn := AlgebraicTopology.BinaryOpenCover.OpenCoverHomologyComparison.boundary_pullback_naturality
     D.cuspToEllipticInteriorMap (orderThreeOpen D) (orderFourOpen D)
     D.cuspOpenCoverHomologyComparison D.ellipticOpenCoverHomologyComparison
     D.cuspOpenCoverPullbackNaturality 1
   change ConcreteCategory.hom
     (D.cuspOpenCoverHomologyComparison.boundary 1 ≫
-      BinaryOpenCover.openIntersectionPullbackHomologyMap D.cuspToEllipticInteriorMap
+      AlgebraicTopology.BinaryOpenCover.openIntersectionPullbackHomologyMap D.cuspToEllipticInteriorMap
         (orderThreeOpen D) (orderFourOpen D) 1 ≫
-      (BinaryOpenCover.opensIntersectionHomologyIso
+      (AlgebraicTopology.BinaryOpenCover.opensIntersectionHomologyIso
         (orderThreeOpen D) (orderFourOpen D) 1).inv) x = _
   erw [← Category.assoc, hn]
   have hi :
-      (TopCat.isoOfHomeo (BinaryOpenCover.opensIntersectionHomeomorph
+      (TopCat.isoOfHomeo (AlgebraicTopology.BinaryOpenCover.opensIntersectionHomeomorph
         (orderThreeOpen D) (orderFourOpen D))).inv =
       𝟙 (TopCat.of (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior)) := by
     ext y
     rfl
-  have hm := congrArg (BinaryOpenCover.integralHomologyFunctor 1).map hi
-  rw [(BinaryOpenCover.integralHomologyFunctor 1).map_id] at hm
-  change (BinaryOpenCover.opensIntersectionHomologyIso
+  have hm := congrArg (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 1).map hi
+  rw [(AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 1).map_id] at hm
+  change (AlgebraicTopology.BinaryOpenCover.opensIntersectionHomologyIso
     (orderThreeOpen D) (orderFourOpen D) 1).inv = _ at hm
   rw [hm]
   rfl

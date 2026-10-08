@@ -36,7 +36,7 @@ lets the affine completion be assembled without ever exhibiting an overlap quoti
 /-- The order-three overlap homotopy equivalence already gives the actual filling-to-side
 inclusion equivalence; no quotient model of the overlap is needed. -/
 public theorem orderThreeOverlapIsHomotopyEquivalence_inclusion
-    (h : IsHomotopyEquivalence (SphereSixComplex.OpenUnionHomotopy.interToRight
+    (h : IsHomotopyEquivalence (OpenUnionHomotopy.interToRight
       A.orderThreeFillingImage
       A.affineOrderThreeCentralRegion).hom) :
     IsHomotopyEquivalenceInclusion
@@ -56,14 +56,14 @@ public theorem orderThreeOverlapIsHomotopyEquivalence_inclusion
       Set ↥(A.orderThreeFillingImage ∪
         A.affineOrderThreeCentralRegion))
   exact SphereSixComplex.isHomotopyEquivalenceInclusion_of_leftToUnion _ _
-    (SphereSixComplex.OpenUnionHomotopy.leftToUnion_isHomotopyEquivalence_of_normal_paracompact
+    (ClosedCover.leftToUnion_isHomotopyEquivalence_of_normal_paracompact
       _ _ A.orderThreeFillingImage_isOpen
       A.actualAffineHeightSplit.centralHeightLowerRegion_isOpen h)
 
 /-- The order-four overlap homotopy equivalence already gives the actual filling-to-side
 inclusion equivalence; no quotient model of the overlap is needed. -/
 public theorem orderFourOverlapIsHomotopyEquivalence_inclusion
-    (h : IsHomotopyEquivalence (SphereSixComplex.OpenUnionHomotopy.interToRight
+    (h : IsHomotopyEquivalence (OpenUnionHomotopy.interToRight
       A.orderFourFillingImage
       A.affineOrderFourCentralRegion).hom) :
     IsHomotopyEquivalenceInclusion
@@ -83,7 +83,7 @@ public theorem orderFourOverlapIsHomotopyEquivalence_inclusion
       Set ↥(A.orderFourFillingImage ∪
         A.affineOrderFourCentralRegion))
   exact SphereSixComplex.isHomotopyEquivalenceInclusion_of_leftToUnion _ _
-    (SphereSixComplex.OpenUnionHomotopy.leftToUnion_isHomotopyEquivalence_of_normal_paracompact
+    (ClosedCover.leftToUnion_isHomotopyEquivalence_of_normal_paracompact
       _ _ A.orderFourFillingImage_isOpen
       A.actualAffineHeightSplit.centralHeightUpperRegion_isOpen h)
 

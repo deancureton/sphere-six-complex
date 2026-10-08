@@ -16,7 +16,7 @@ open scoped Manifold
 
 namespace SphereSixComplex.Geometry.GlobalTorusFamily
 
-open Matrix _root_.SphereSixComplex.UpperHalfPlane
+open Matrix _root_.UpperHalfPlane
 open SphereSixComplex.TriangleGroup SphereSixComplex.Periods
 open SphereSixComplex.Geometry.ComplexTorus SphereSixComplex.Geometry.AnalyticTorusFamily
 open SphereSixComplex.Geometry.FamilyEquivariance

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Elliptic.LogarithmicGauge.Homeomorph
-import all SphereSixComplex.Prerequisites.Geometry.Quotient.Manifold
+import all ForMathlib.Geometry.Manifold.Quotient.Manifold
 import all SphereSixComplex.TorusFamily.Basic
 
 @[expose] public section

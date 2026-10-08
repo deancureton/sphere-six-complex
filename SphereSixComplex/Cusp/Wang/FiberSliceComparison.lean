@@ -143,16 +143,16 @@ private theorem cuspOpenCoverConnectingHom_eq_zero_of_intersection_image
     ((TopologicalSpace.Opens.toTopCat _).map
       (TopologicalSpace.Opens.infLELeft U V)).hom w
   let HU : AddCommGrpCat :=
-    (BinaryOpenCover.integralHomologyFunctor 2).obj
+    (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 2).obj
       ((TopologicalSpace.Opens.toTopCat _).obj U)
   let HV : AddCommGrpCat :=
-    (BinaryOpenCover.integralHomologyFunctor 2).obj
+    (AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor 2).obj
       ((TopologicalSpace.Opens.toTopCat _).obj V)
   let p : ↑(HU ⊞ HV : AddCommGrpCat) :=
     (biprod.inl : HU ⟶ HU ⊞ HV).hom u
   refine ⟨p, ?_⟩
   dsimp [p]
-  unfold BinaryOpenCover.integralMVFromBiprod
+  unfold AlgebraicTopology.BinaryOpenCover.integralMVFromBiprod
   rw [← CategoryTheory.comp_apply, biprod.inl_desc]
   change integralSingularHomologyMap 2
     (TopologicalSpace.Opens.inclusion' U).hom u = x

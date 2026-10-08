@@ -26,7 +26,7 @@ noncomputable section
 
 namespace SphereSixComplex.Periods.NormalizedModularJLiftingExistence
 
-open Complex Filter Function Matrix Metric Set Topology SphereSixComplex.UpperHalfPlane
+open Complex Filter Function Matrix Metric Set Topology UpperHalfPlane
 open scoped Manifold MatrixGroups
 open SphereSixComplex.TriangleGroup
 open SphereSixComplex.Geometry.EllipticLocalCoordinates

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Collar.OpenPush
+public import ForMathlib.Topology.Collar.OpenPush
 public import TauCeti.Geometry.Manifold.Boundary.Collar.Brown
 
 /-!

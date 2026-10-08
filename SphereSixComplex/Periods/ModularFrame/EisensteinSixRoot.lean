@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Periods.ModularFrame.Basic
 import SphereSixComplex.Periods.FuchsianModularLift.Ramification
-import SphereSixComplex.Prerequisites.Periods.AnalyticSquareRoot
+import ForMathlib.Analysis.Complex.AnalyticSquareRoot
 
 /-!
 # Global square root of the pulled-back weight-six Eisenstein series
@@ -21,7 +21,7 @@ namespace SphereSixComplex.Periods
 
 open Filter Set
 open SphereSixComplex.TriangleGroup
-open SphereSixComplex.Periods.AnalyticSquareRoot
+open Complex.AnalyticSquareRoot
 
 private def ambientLiftedEisensteinSix
     (E : FuchsianModularLift) (w : ℂ) : ℂ :=

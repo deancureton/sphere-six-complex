@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Geometry.Gluing.Atlas
+public import ForMathlib.Geometry.Manifold.Gluing.Atlas
 
 /-!
 # Four-piece star gluings

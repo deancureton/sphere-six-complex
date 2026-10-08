@@ -42,7 +42,7 @@ public theorem circleMappingTorus_coverBoundary_twoSlices
   change overlapLegSum (fun _ : Unit ↦ phi) n ((fun _ ↦ a), fun _ ↦ -a) = _
   simp [overlapLegSum_apply, sub_eq_add_neg, a]
 
-open Topology.CanonicalProductWangBoundaryNaturality BinaryOpenCover
+open Topology.CanonicalProductWangBoundaryNaturality AlgebraicTopology.BinaryOpenCover
 private theorem mappingTorusUnionHomologyIso_apply
     {F : Type} [TopologicalSpace F] (phi : F ≃ₜ F) (n : ℕ)
     (x : IntegralSingularHomology n

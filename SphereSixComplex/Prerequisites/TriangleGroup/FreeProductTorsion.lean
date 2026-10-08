@@ -1,15 +1,14 @@
 module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.Action
-public import Mathlib.GroupTheory.CoprodI
+public import ForMathlib.GroupTheory.CoprodI.Torsion
 import all SphereSixComplex.Prerequisites.TriangleGroup.SourceGroup
 
 /-!
-# Reduced words and elliptic stabilizers for the triangle group
+# Elliptic stabilizers for the triangle group
 
-This file proves from Mathlib's indexed reduced-word model that every cyclically reduced word
-involving two factors has infinite order.  It also classifies the fixed points of the two
-distinguished cyclic factors of the explicit Fuchsian action.
+This file classifies the fixed points of the two distinguished cyclic factors of the explicit
+Fuchsian action.
 -/
 
 open UpperHalfPlane
@@ -19,56 +18,6 @@ noncomputable section
 namespace SphereSixComplex.TriangleGroup.FreeProductTorsion
 
 open SphereSixComplex.TriangleGroup
-
-namespace ReducedWord
-
-open Monoid.CoprodI
-
-variable {I : Type*} [DecidableEq I]
-variable {G : I → Type*} [∀ i, Group (G i)]
-
-/-- Positive concatenation powers of a reduced word whose endpoint factors differ. -/
-@[expose] public def cyclicPower {i j : I} (w : NeWord G i j) (hij : j ≠ i) :
-    ℕ → NeWord G i j
-  | 0 => w
-  | n + 1 => NeWord.append (cyclicPower w hij n) hij w
-
-omit [DecidableEq I] in
-@[simp]
-public theorem cyclicPower_prod {i j : I} (w : NeWord G i j) (hij : j ≠ i) (n : ℕ) :
-    (cyclicPower w hij n).prod = w.prod ^ (n + 1) := by
-  induction n with
-  | zero => simp [cyclicPower]
-  | succ n ih =>
-      rw [cyclicPower, NeWord.append_prod, ih]
-      simp [pow_succ]
-
-variable [∀ i, DecidableEq (G i)]
-
-public theorem neWord_prod_ne_one {i j : I} (w : NeWord G i j) : w.prod ≠ 1 := by
-  intro hw
-  have heq : w.toWord = Word.empty := by
-    exact (Word.equiv (M := G)).symm.injective (by
-      change w.toWord.prod = Word.empty.prod
-      simpa [NeWord.prod] using hw)
-  have hlist := congrArg Word.toList heq
-  exact w.toList_ne_nil (by simpa [NeWord.toWord, Word.empty] using hlist)
-
-/-- A cyclically reduced nonempty word crossing between factors has no positive trivial power. -/
-public theorem cyclicallyReduced_pow_ne_one {i j : I} (w : NeWord G i j) (hij : j ≠ i)
-    {n : ℕ} (hn : 0 < n) : w.prod ^ n ≠ 1 := by
-  obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn.ne'
-  rw [← cyclicPower_prod]
-  exact neWord_prod_ne_one (cyclicPower w hij k)
-
-/-- A cyclically reduced word involving at least two free-product factors has infinite order. -/
-public theorem cyclicallyReduced_not_isOfFinOrder {i j : I} (w : NeWord G i j)
-    (hij : j ≠ i) : ¬IsOfFinOrder w.prod := by
-  rw [isOfFinOrder_iff_pow_eq_one]
-  push Not
-  exact fun n hn ↦ cyclicallyReduced_pow_ne_one w hij hn
-
-end ReducedWord
 
 /-- The order-three generator has exactly one fixed point in the upper half-plane. -/
 public theorem fuchsianSourceAction_gOne_fixed_iff (z : UpperHalfPlane) :

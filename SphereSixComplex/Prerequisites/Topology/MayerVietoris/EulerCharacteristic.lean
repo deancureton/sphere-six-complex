@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Algebra.FiniteExactSequenceEuler
+public import ForMathlib.LinearAlgebra.Dimension.Int
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.EulerCharacteristic
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.StarGluing
 

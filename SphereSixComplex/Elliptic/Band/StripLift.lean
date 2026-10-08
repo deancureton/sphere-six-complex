@@ -26,7 +26,7 @@ public theorem quotientCover_fundamentalGroupToMulOpposite_naturality_at
   have h := quotientCover_fundamentalGroupToMulOpposite_naturality hp hq D e γ
   have hc := fundamentalGroupToMulOpposite_fiberBaseEq hq ⟨D.lift e, rfl⟩
     (D.commutes e).symm (FundamentalGroup.mapOfEq D.baseMap (D.commutes e) γ)
-  simp only [Topology.fundamentalGroupMulEquivOfEq_apply,
+  simp only [fundamentalGroupMulEquivOfEq_apply,
     FundamentalGroup.mapOfEq_apply, Path.Homotopic.Quotient.cast_cast,
     Path.Homotopic.Quotient.cast_rfl_rfl] at hc
   simp only [FundamentalGroup.mapOfEq_apply] at h
@@ -279,7 +279,7 @@ public theorem affineNormalizedBaseDeckHom_coordinate (A : AnalyticData)
         ⟨A.centralFamilyCoordinate, A.centralFamilyCoordinate_continuous⟩
         A.affineMarkedCentralCoordinate_base γ) =
         hq.fundamentalGroupToMulOpposite be (FundamentalGroup.map D.baseMap _ γ) := by
-    simpa only [Topology.fundamentalGroupMulEquivOfEq_apply,
+    simpa only [fundamentalGroupMulEquivOfEq_apply,
       FundamentalGroup.mapOfEq_apply, FundamentalGroup.map_apply,
       affineNormalizedBaseDeckHom, be, e, D,
       affineNormalizedMidpointTotal_base] using hc

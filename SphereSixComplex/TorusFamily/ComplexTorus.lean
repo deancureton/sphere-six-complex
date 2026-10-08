@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.IntegerRealPeriodCoordinates
-public import SphereSixComplex.Prerequisites.Geometry.Quotient.Manifold
+public import ForMathlib.Geometry.Manifold.Quotient.Manifold
 public import SphereSixComplex.Periods.Nondegeneracy
 public import Mathlib.NumberTheory.Modular
 
@@ -154,11 +154,11 @@ public abbrev PeriodGroup (x : Parameters) := Multiplicative (periodLattice x)
 
 /-- The complex torus associated to a full-rank period matrix. -/
 public abbrev Torus (x : Parameters) :=
-  SphereSixComplex.Geometry.OrbitQuotient (M := ComplexTwoSpace) (G := PeriodGroup x)
+  OrbitQuotient (M := ComplexTwoSpace) (G := PeriodGroup x)
 
 /-- Projection from `ℂ²` to its period-lattice quotient. -/
 @[expose] public def torusProjection (x : Parameters) : ComplexTwoSpace → Torus x :=
-  SphereSixComplex.Geometry.quotientProjection
+  quotientProjection
 
 /-- A full-rank period quotient is compact.  The image of the standard closed unit cube in
 real period coordinates is the whole quotient. -/

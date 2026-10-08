@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.Homeomorph
 public import SphereSixComplex.Homology.Euler.Collars
 public import SphereSixComplex.Elliptic.Band.OverlapInterleaving
 

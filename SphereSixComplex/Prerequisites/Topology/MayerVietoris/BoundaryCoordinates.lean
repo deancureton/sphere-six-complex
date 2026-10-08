@@ -6,7 +6,9 @@ public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.IntegralSequ
 
 open CategoryTheory TopologicalSpace
 
-namespace SphereSixComplex.BinaryOpenCover
+open SphereSixComplex
+
+namespace AlgebraicTopology.BinaryOpenCover
 
 theorem IntegralMayerVietorisData.legacyBoundary_unionHomeomorph_symm
     {X : TopCat} {U V : Opens X} {hcover : U ⊔ V = ⊤}
@@ -24,4 +26,4 @@ theorem IntegralMayerVietorisData.legacyBoundary_unionHomeomorph_symm
         (opensIntersectionHomologyIso U V n).inv) x = _
   simp
 
-end SphereSixComplex.BinaryOpenCover
+end AlgebraicTopology.BinaryOpenCover

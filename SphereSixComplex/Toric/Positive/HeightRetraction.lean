@@ -2,8 +2,8 @@ module
 
 public import SphereSixComplex.Toric.Positive.CompactSublevels
 public import SphereSixComplex.Toric.Positive.InteriorTorus
-public import SphereSixComplex.Prerequisites.Topology.Collar.HomotopyEquivalence
-public import SphereSixComplex.Prerequisites.Topology.Collar.SmallPush
+public import ForMathlib.Topology.Collar.HomotopyEquivalence
+public import ForMathlib.Topology.Collar.SmallPush
 
 @[expose] public section
 noncomputable section

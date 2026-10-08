@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Elliptic.DiscCircle.Splitting
-public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.Circle
+public import ForMathlib.Analysis.Complex.UnitDisc.Circle
 
 @[expose] public section
 noncomputable section

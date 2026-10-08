@@ -2413,8 +2413,8 @@ public theorem coverOpen (φ : ι → F ≃ₜ F) :
 omit [Fintype ι] [Inhabited ι] [DiscreteTopology ι] in
 /-- The canonical generated-chain comparison for the vertex/edge cover. -/
 public noncomputable def coverHomologyComparison (φ : ι → F ≃ₜ F) :
-    BinaryOpenCover.OpenCoverHomologyComparison (coverVertexOpen φ) (coverEdgeOpen φ) :=
-  BinaryOpenCover.openCoverHomologyComparisonOfCover (coverOpen φ)
+    AlgebraicTopology.BinaryOpenCover.OpenCoverHomologyComparison (coverVertexOpen φ) (coverEdgeOpen φ) :=
+  AlgebraicTopology.BinaryOpenCover.openCoverHomologyComparisonOfCover (coverOpen φ)
 
 
 /-- The Mayer--Vietoris boundary of the vertex/edge open cover. -/

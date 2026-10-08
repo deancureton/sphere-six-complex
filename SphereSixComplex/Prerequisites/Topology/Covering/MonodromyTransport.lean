@@ -81,10 +81,10 @@ public theorem fundamentalGroupToMulOpposite_fiberBaseEq
     (hp : IsQuotientCoveringMap p G) {x y : X}
     (e : p ⁻¹' {x}) (h : x = y) (gamma : FundamentalGroup X x) :
     hp.fundamentalGroupToMulOpposite ⟨e.val, e.property.trans h⟩
-      (Topology.fundamentalGroupMulEquivOfEq h gamma) =
+      (fundamentalGroupMulEquivOfEq h gamma) =
       hp.fundamentalGroupToMulOpposite e gamma := by
   cases h
-  simp only [Topology.fundamentalGroupMulEquivOfEq_apply,
+  simp only [fundamentalGroupMulEquivOfEq_apply,
     Path.Homotopic.Quotient.cast_rfl_rfl]
 
 public theorem IsCoveringMap.exists_path_lift_of_monodromy_eq

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.ProductSlice
+public import ForMathlib.Topology.Homotopy.Product
 public import SphereSixComplex.Elliptic.DiscCircle.Gluing
 public import SphereSixComplex.Elliptic.Band.CayleyBounds
 public import SphereSixComplex.Regular.Transport.Fiber

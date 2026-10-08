@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Construction.EllipticCentralEscape
 public import SphereSixComplex.Construction.FillingCompactCores
-public import SphereSixComplex.Prerequisites.Topology.Covering.CompactRepresentatives
+public import ForMathlib.Topology.Covering.CompactRepresentatives
 
 /-!
 # A compact core for the paper's central family
@@ -141,7 +141,7 @@ public theorem regularCoordinate_compact_has_compactRepresentatives
   have hopen : IsOpen (({0, 1} : Set ℂ)ᶜ) :=
     (Set.toFinite ({0, 1} : Set ℂ)).isClosed.isOpen_compl
   let _ : LocallyCompactSpace regularCoordinateBase := hopen.locallyCompactSpace
-  exact SphereSixComplex.IsLocalHomeomorph.exists_compact_source_cover
+  exact IsLocalHomeomorph.exists_compact_source_cover
     P.regularCoordinate_isLocalHomeomorph P.regularCoordinate_surjective hK
 
 /-- Simultaneous real-period-cube parametrization over the regular base. -/

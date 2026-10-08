@@ -1,10 +1,10 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.EquivariantDeformationRetraction
-public import SphereSixComplex.Prerequisites.Topology.Collar.HomotopyExtension
+public import ForMathlib.Topology.Homotopy.EquivariantDeformationRetraction
+public import ForMathlib.Topology.Collar.HomotopyExtension
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.SubspaceInclusion
 public import Mathlib.Topology.Homotopy.Lifting
-import SphereSixComplex.Prerequisites.Topology.Homotopy.Relative
+import ForMathlib.Topology.Homotopy.Extension
 
 /-!
 # Strong deformation retractions and covering lifts
@@ -65,7 +65,7 @@ public theorem hasHomotopyExtensionProperty_iff {X : Type u} [TopologicalSpace X
   ⟨.mk, HomotopyExtensionProperty.extend⟩
 
 public alias ⟨HasHomotopyExtensionProperty.homotopyExtensionProperty,
-  HomotopyExtensionProperty.hasHomotopyExtensionProperty⟩ := hasHomotopyExtensionProperty_iff
+  _root_.HomotopyExtensionProperty.hasHomotopyExtensionProperty⟩ := hasHomotopyExtensionProperty_iff
 
 /-- The subspace inclusion is a homotopy equivalence in the sense of `IsHomotopyEquivalence` iff it
 is one in the sense of `IsHomotopyEquivalenceInclusion`.  Source: Hatcher, *Algebraic Topology*,
@@ -111,7 +111,7 @@ namespace SphereSixComplex
 as a strong deformation retract: Hatcher's Corollary 0.20 for an arbitrary map, read off from
 `HomotopyExtensionProperty.exists_strongDeformationRetractData` (`RelativeHomotopy.lean`).
 Source: Hatcher, *Algebraic Topology*, Cor. 0.20 p. 16 via Prop. 0.19 pp. 16–17. -/
-public theorem HomotopyExtensionProperty.nonempty_strongDeformationRetraction
+public theorem _root_.HomotopyExtensionProperty.nonempty_strongDeformationRetraction
     {A' X : Type u} [TopologicalSpace A'] [TopologicalSpace X] {i : C(A', X)}
     (hep : HomotopyExtensionProperty i) (hi : IsHomotopyEquivalence ⇑i)
     {S : Set X} (hS : Set.range i = S) : Nonempty (StrongDeformationRetraction X S) :=

@@ -2,7 +2,7 @@ module
 
 public import SphereSixComplex.Cusp.Filling
 public import SphereSixComplex.Elliptic.Filling
-import all SphereSixComplex.Prerequisites.Geometry.ComplexDisc.Basic
+import all ForMathlib.Analysis.Complex.UnitDisc.Basic
 public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.EllipticCoordinates
 import all SphereSixComplex.Prerequisites.Geometry.ComplexDisc.EllipticCoordinates
 

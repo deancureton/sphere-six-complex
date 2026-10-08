@@ -179,9 +179,9 @@ private theorem fuchsianOneFixedPoint_orbitHeightMaximal :
         rw [← hg]
         exact neWord_ends_true_height_le w
     | false =>
-        rcases BinaryIndexedCoprod.NeWord.singleton_or_init_last w with
+        rcases Monoid.CoprodI.NeWord.singleton_or_init_last w with
           hsingle | ⟨k, p, hk, hprod, hlen⟩
-        · have hlast : w.last ≠ 1 := BinaryIndexedCoprod.NeWord.last_ne_one w
+        · have hlast : w.last ≠ 1 := Monoid.CoprodI.NeWord.last_ne_one w
           have hfix0 : fuchsianSourceAction
               (Monoid.Coprod.inl (show CyclicThree from w.last)) •
               fuchsianOneFixedPoint = fuchsianOneFixedPoint :=
@@ -195,7 +195,7 @@ private theorem fuchsianOneFixedPoint_orbitHeightMaximal :
           rw [← hg, hsingle.2.1, hfix]
         · have hktrue : k = true := by cases k <;> simp_all
           subst k
-          have hlast : w.last ≠ 1 := BinaryIndexedCoprod.NeWord.last_ne_one w
+          have hlast : w.last ≠ 1 := Monoid.CoprodI.NeWord.last_ne_one w
           have hfix0 : fuchsianSourceAction
               (Monoid.Coprod.inl (show CyclicThree from w.last)) •
               fuchsianOneFixedPoint = fuchsianOneFixedPoint :=

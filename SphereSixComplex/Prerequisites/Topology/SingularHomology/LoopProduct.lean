@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.FreeLoopProduct
+public import ForMathlib.AlgebraicTopology.FundamentalGroupoid.Product
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.FreeLoop
 
 @[expose] public section
@@ -17,7 +17,7 @@ theorem loopHomologyClass_prod_map
     loopHomologyClass ((p.prod q).map f.continuous) =
       loopHomologyClass (((Path.refl b).prod q).map f.continuous) +
         loopHomologyClass ((p.prod (Path.refl t)).map f.continuous) := by
-  obtain ⟨H⟩ := Topology.productLoop_map_homotopic_fiberThenBase p q f
+  obtain ⟨H⟩ := Path.Homotopic.productLoop_map_homotopic_fiberThenBase p q f
   simpa only [Path.map_trans, loopHomologyClass_trans] using loopHomologyClass_homotopic H
 
 theorem loopHomologyClass_prod_map_of_lift

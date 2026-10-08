@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Collar.HalfSpace
+public import ForMathlib.Topology.Collar.HalfSpace
 public import SphereSixComplex.Prerequisites.Topology.Collar.OrthantHalfSpace
 public import SphereSixComplex.Toric.Positive.Quotient
 

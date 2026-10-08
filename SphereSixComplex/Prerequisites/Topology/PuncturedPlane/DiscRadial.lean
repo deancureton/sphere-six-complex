@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.Basic
+public import ForMathlib.Analysis.Complex.UnitDisc.Basic
 
 open Set
 open scoped ContinuousMap

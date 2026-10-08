@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.Homology
-public import SphereSixComplex.Prerequisites.Topology.Sphere.LinearEquiv
+public import ForMathlib.Topology.Sphere.LinearEquiv
 public import SphereSixComplex.Prerequisites.Topology.Torus.Homology
 public import SphereSixComplex.Prerequisites.Topology.Sphere.PositiveHomology
 

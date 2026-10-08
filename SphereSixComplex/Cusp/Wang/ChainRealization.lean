@@ -36,9 +36,9 @@ public noncomputable def cuspCoverIntersectionToEllipticBandHomologyOne :
       IntegralSingularHomology 1
         (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) :=
   ConcreteCategory.hom
-    (BinaryOpenCover.openIntersectionPullbackHomologyMap D.cuspToEllipticInteriorMap
+    (AlgebraicTopology.BinaryOpenCover.openIntersectionPullbackHomologyMap D.cuspToEllipticInteriorMap
         (orderThreeOpen D) (orderFourOpen D) 1 ≫
-      (BinaryOpenCover.opensIntersectionHomologyIso
+      (AlgebraicTopology.BinaryOpenCover.opensIntersectionHomologyIso
         (orderThreeOpen D) (orderFourOpen D) 1).inv)
 
 /-- The connecting morphism of the explicit short exact chain sequence of the pulled-back cusp

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Geometry.Gluing.ClosedRelation
+public import ForMathlib.Geometry.Manifold.Gluing.ClosedRelation
 public import SphereSixComplex.Prerequisites.Geometry.Gluing.OpenEmbeddingStar
 
 /-!

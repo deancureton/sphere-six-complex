@@ -24,7 +24,7 @@ noncomputable section
 
 namespace SphereSixComplex.Periods.NormalizedModularJMarkedMonodromy
 
-open Complex Filter Set Topology _root_.SphereSixComplex.UpperHalfPlane
+open Complex Filter Set Topology _root_.UpperHalfPlane
 open scoped Manifold
 open SphereSixComplex.TriangleGroup
 open GlobalModularDeckComparison

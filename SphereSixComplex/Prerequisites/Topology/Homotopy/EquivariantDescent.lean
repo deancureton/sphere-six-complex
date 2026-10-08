@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.Quotient.EquivariantHomeomorph
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.Equivalence
+public import ForMathlib.Topology.Homotopy.Equivalence
 
 /-!
 # Equivariant homotopy equivalences descend to orbit quotients

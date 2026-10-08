@@ -1,8 +1,10 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.HalfPlaneRadial
-public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.FundamentalGroup
+public import ForMathlib.Analysis.Complex.PuncturedPlane.FundamentalGroup
 public import Mathlib.Analysis.Complex.Convex
+
+open Complex.PuncturedPlane
 
 /-!
 # A marked two-open cover of the twice-punctured complex plane

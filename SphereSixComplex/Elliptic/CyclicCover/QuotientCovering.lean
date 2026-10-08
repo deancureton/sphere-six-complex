@@ -72,8 +72,8 @@ public theorem affineCyclicKernelPath_fundamentalGroupEquiv
     (x : Lattice) :
     letI := affineCyclicFillingDeckAction P
     hp.fundamentalGroupEquiv ⟨(0 : ComplexTwoSpace), rfl⟩
-        (SphereSixComplex.Geometry.pathLoopClass
-          (SphereSixComplex.Geometry.projectedQuotientDeckPath hp
+        (pathLoopClass
+          (projectedQuotientDeckPath hp
             (0 : ComplexTwoSpace) (affineCyclicKernelIncl P x)
             (affineCyclicKernelPath P x))) =
       MulOpposite.op (affineCyclicKernelIncl P x) := by
@@ -89,7 +89,7 @@ public theorem projectedQuotientDeckPath_affineCyclicKernel_eq
         (affineCyclicBoundaryDeckData P).FillingDeck)
     (x : Lattice) :
     letI := affineCyclicFillingDeckAction P
-    SphereSixComplex.Geometry.projectedQuotientDeckPath hp
+    projectedQuotientDeckPath hp
         (0 : ComplexTwoSpace) (affineCyclicKernelIncl P x)
         (affineCyclicKernelPath P x) =
       projectedStraightPeriodLoop P x := by
@@ -106,7 +106,7 @@ public theorem projectedStraightPeriodLoop_fundamentalGroupEquiv
     (x : Lattice) :
     letI := affineCyclicFillingDeckAction P
     hp.fundamentalGroupEquiv ⟨(0 : ComplexTwoSpace), rfl⟩
-        (SphereSixComplex.Geometry.pathLoopClass
+        (pathLoopClass
           (projectedStraightPeriodLoop P x)) =
       MulOpposite.op (affineCyclicKernelIncl P x) := by
   let _ := affineCyclicFillingDeckAction P

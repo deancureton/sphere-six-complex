@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Construction.CentralFamilyTopology
-public import SphereSixComplex.Prerequisites.Geometry.Quotient.DeckFundamentalGroup
+public import ForMathlib.Geometry.Manifold.Quotient.DeckFundamentalGroup
 public import Mathlib.AlgebraicTopology.FundamentalGroupoid.InducedMaps
 
 /-!

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Geometry.Quotient.Topology
+public import ForMathlib.Geometry.Manifold.Quotient.Topology
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.CyclicPuncturedProduct
 
 open Set Topology

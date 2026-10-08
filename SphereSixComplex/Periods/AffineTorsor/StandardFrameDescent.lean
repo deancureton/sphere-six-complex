@@ -3,7 +3,7 @@ module
 public import SphereSixComplex.Periods.AffineTorsor.LocalCover
 public import SphereSixComplex.Periods.AffineTorsor.CuspGermBounds
 public import SphereSixComplex.Periods.AffineTorsor.Cocycle
-public import SphereSixComplex.Prerequisites.Analysis.HolomorphicCocycle
+public import ForMathlib.Analysis.Complex.HolomorphicCocycle
 
 @[expose] public section
 noncomputable section
@@ -21,7 +21,7 @@ public theorem hasCuspBoundedSection_of_standard_transition
   obtain ⟨f, hf, hfcoc, hfdiff⟩ := P.exists_local_section_cocycle U hU
     (fun i j hij ↦ distinct_overlap_regular hzero hone hij) s hs heqs
   obtain ⟨c, g, hc, hg, hcdiff, hcInfinity⟩ :=
-    Analysis.CauchyGreen.exists_negativeOne_holomorphic_cocycle_solution
+    Complex.CauchyGreen.exists_negativeOne_holomorphic_cocycle_solution
       hU hcov hf hfcoc none hR hRU
   obtain ⟨t, ht, heqt, hglue⟩ := P.glue_local_sections U hU hcov s hs heqs c hc (by
     intro i j z hi hj

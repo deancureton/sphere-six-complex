@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Covering.EquivariantHomotopyLift
+public import ForMathlib.Topology.Homotopy.Lifting
 public import SphereSixComplex.Construction.CentralCompactCore
 
 /-!

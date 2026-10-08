@@ -30,10 +30,10 @@ public theorem fundamentalGroupToMulOpposite_baseEq
     (hp : IsQuotientCoveringMap p G) (e : E) {y : X}
     (h : p e = y) (gamma : FundamentalGroup X (p e)) :
     hp.fundamentalGroupToMulOpposite ⟨e, h⟩
-        (Topology.fundamentalGroupMulEquivOfEq h gamma) =
+        (fundamentalGroupMulEquivOfEq h gamma) =
       hp.fundamentalGroupToMulOpposite ⟨e, rfl⟩ gamma := by
   cases h
-  simp only [Topology.fundamentalGroupMulEquivOfEq_apply,
+  simp only [fundamentalGroupMulEquivOfEq_apply,
     Path.Homotopic.Quotient.cast_rfl_rfl]
 
 /-- A specified trivial deck power is invariant under transport of a loop to another basepoint
@@ -436,9 +436,9 @@ public theorem markedCentralOuterDeckHom_zeroSection
   let hpE := regularFamilyQuotientMap_isQuotientCoveringMap A.periods
     A.modular.modularParameter.toTriangleUniformization_sourceAction hproper
   let hB := A.markedRegularBaseLift_projects
-  let gammaLit := (Topology.fundamentalGroupMulEquivOfEq hB).symm gamma
-  have hgamma : Topology.fundamentalGroupMulEquivOfEq hB gammaLit = gamma := by
-    exact (Topology.fundamentalGroupMulEquivOfEq hB).apply_symm_apply gamma
+  let gammaLit := (fundamentalGroupMulEquivOfEq hB).symm gamma
+  have hgamma : fundamentalGroupMulEquivOfEq hB gammaLit = gamma := by
+    exact (fundamentalGroupMulEquivOfEq hB).apply_symm_apply gamma
   let hE : regularFamilyQuotientMap A.periods
         (regularFamilyZeroSection A.periods A.markedRegularBaseLift) =
       A.centralZeroSection A.markedPuncturedBasepoint :=
@@ -451,7 +451,7 @@ public theorem markedCentralOuterDeckHom_zeroSection
     exact fundamentalGroupToMulOpposite_baseEq hpB
       A.markedRegularBaseLift hB gammaLit
   have hcentralClass :
-      Topology.fundamentalGroupMulEquivOfEq hE
+      fundamentalGroupMulEquivOfEq hE
         (centralZeroSectionAtLiftMap A.periods A.markedRegularBaseLift gammaLit) =
       A.centralZeroSectionFundamentalGroupMap gamma := by
     calc

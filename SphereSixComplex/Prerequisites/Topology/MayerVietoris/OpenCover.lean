@@ -10,7 +10,7 @@ public theorem IntegralMayerVietoris.exact_sequence_of_isOpen
     {X : Type} [TopologicalSpace X] (A B : Set X)
     (hA : IsOpen A) (hB : IsOpen B) :
     IntegralMayerVietoris.ExactSequence A B :=
-  BinaryOpenCover.integralMayerVietorisExactSequence_of_isOpen A B hA hB
+  AlgebraicTopology.BinaryOpenCover.integralMayerVietorisExactSequence_of_isOpen A B hA hB
 
 /-- If two open pieces have no seventh homology and their overlap has no sixth homology, then
 their union has no seventh homology. -/

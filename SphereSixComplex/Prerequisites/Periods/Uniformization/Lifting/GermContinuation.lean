@@ -6,8 +6,8 @@ public import TauCeti.Analysis.Complex.Conformal.Continuation.Etale
 import all TauCeti.Analysis.Complex.Conformal.Continuation.Etale
 public import Mathlib.Topology.Homotopy.Lifting
 import all Mathlib.Topology.Homotopy.Lifting
-public import SphereSixComplex.Prerequisites.Topology.Covering.Homogeneous
-import all SphereSixComplex.Prerequisites.Topology.Covering.Homogeneous
+public import ForMathlib.Topology.Covering.Homogeneous
+import all ForMathlib.Topology.Covering.Homogeneous
 
 @[expose] public section
 

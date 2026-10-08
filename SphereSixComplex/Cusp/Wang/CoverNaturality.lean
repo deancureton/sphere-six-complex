@@ -55,21 +55,21 @@ public theorem cuspOpenCover : D.cuspOrderThreeOpen ⊔ D.cuspOrderFourOpen = �
 
 /-- The canonical homology comparison for the pulled-back cusp cover. -/
 public noncomputable def cuspOpenCoverHomologyComparison :
-    BinaryOpenCover.OpenCoverHomologyComparison
+    AlgebraicTopology.BinaryOpenCover.OpenCoverHomologyComparison
       D.cuspOrderThreeOpen D.cuspOrderFourOpen :=
-  BinaryOpenCover.openCoverHomologyComparisonOfCover D.cuspOpenCover
+  AlgebraicTopology.BinaryOpenCover.openCoverHomologyComparisonOfCover D.cuspOpenCover
 
 /-- The canonical homology comparison for the elliptic two-disc cover. -/
 public noncomputable def ellipticOpenCoverHomologyComparison :
-    BinaryOpenCover.OpenCoverHomologyComparison (orderThreeOpen D) (orderFourOpen D) :=
-  BinaryOpenCover.openCoverHomologyComparisonOfCover (ellipticOpenCover D)
+    AlgebraicTopology.BinaryOpenCover.OpenCoverHomologyComparison (orderThreeOpen D) (orderFourOpen D) :=
+  AlgebraicTopology.BinaryOpenCover.openCoverHomologyComparisonOfCover (ellipticOpenCover D)
 
 
 /-- The canonical generated-cover comparisons satisfy the required pullback naturality. -/
 public theorem cuspOpenCoverPullbackNaturality :
     (D.cuspOpenCoverHomologyComparison.PullbackNaturality D.cuspToEllipticInteriorMap
          (orderThreeOpen D) (orderFourOpen D) D.ellipticOpenCoverHomologyComparison) :=
-  BinaryOpenCover.openCoverHomologyComparisonOfCover_pullbackNaturality
+  AlgebraicTopology.BinaryOpenCover.openCoverHomologyComparisonOfCover_pullbackNaturality
     D.cuspToEllipticInteriorMap (orderThreeOpen D) (orderFourOpen D)
       D.cuspOpenCover (ellipticOpenCover D)
 
@@ -81,9 +81,9 @@ public noncomputable def cuspPulledBackBoundary
       (D.orderThreeSide ∩ D.orderFourSide : Set A.ellipticInterior) :=
   ConcreteCategory.hom
     (D.cuspOpenCoverHomologyComparison.boundary 1 ≫
-      BinaryOpenCover.openIntersectionPullbackHomologyMap D.cuspToEllipticInteriorMap
+      AlgebraicTopology.BinaryOpenCover.openIntersectionPullbackHomologyMap D.cuspToEllipticInteriorMap
         (orderThreeOpen D) (orderFourOpen D) 1 ≫
-      (BinaryOpenCover.opensIntersectionHomologyIso
+      (AlgebraicTopology.BinaryOpenCover.opensIntersectionHomologyIso
         (orderThreeOpen D) (orderFourOpen D) 1).inv) x
 
 /-- The actual cusp inclusion on homology agrees with the union-subtype map used by the elliptic
@@ -106,24 +106,24 @@ public theorem canonicalBoundary_cuspToEllipticUnionHomology
     canonicalBoundary D 1 (cuspToEllipticUnionHomology D 2 x) =
       D.cuspPulledBackBoundary x := by
   let hNat := D.cuspOpenCoverPullbackNaturality
-  have hn := BinaryOpenCover.OpenCoverHomologyComparison.boundary_pullback_naturality
+  have hn := AlgebraicTopology.BinaryOpenCover.OpenCoverHomologyComparison.boundary_pullback_naturality
     D.cuspToEllipticInteriorMap (orderThreeOpen D) (orderFourOpen D)
       D.cuspOpenCoverHomologyComparison D.ellipticOpenCoverHomologyComparison hNat 1
   unfold cuspPulledBackBoundary cuspOpenCoverHomologyComparison
     cuspOrderThreeOpen cuspOrderFourOpen at hn ⊢
   have hn' := congrArg (fun q ↦ q ≫
-      (BinaryOpenCover.opensIntersectionHomologyIso
+      (AlgebraicTopology.BinaryOpenCover.opensIntersectionHomologyIso
         (orderThreeOpen D) (orderFourOpen D) 1).inv) hn
   unfold canonicalBoundary canonicalMayerVietorisData
   change ConcreteCategory.hom
-      ((BinaryOpenCover.opensUnionHomologyIso (orderThreeOpen D) (orderFourOpen D)
+      ((AlgebraicTopology.BinaryOpenCover.opensUnionHomologyIso (orderThreeOpen D) (orderFourOpen D)
           (ellipticOpenCover D) 2).hom ≫
         D.ellipticOpenCoverHomologyComparison.boundary 1 ≫
-        (BinaryOpenCover.opensIntersectionHomologyIso
+        (AlgebraicTopology.BinaryOpenCover.opensIntersectionHomologyIso
           (orderThreeOpen D) (orderFourOpen D) 1).inv)
         (cuspToEllipticUnionHomology D 2 x) = _
   have hUnion : ConcreteCategory.hom
-      (BinaryOpenCover.opensUnionHomologyIso (orderThreeOpen D) (orderFourOpen D)
+      (AlgebraicTopology.BinaryOpenCover.opensUnionHomologyIso (orderThreeOpen D) (orderFourOpen D)
         (ellipticOpenCover D) 2).hom
         (cuspToEllipticUnionHomology D 2 x) =
       integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom x := by
@@ -135,16 +135,16 @@ public theorem canonicalBoundary_cuspToEllipticUnionHomology
   calc
     _ = ConcreteCategory.hom
         (D.ellipticOpenCoverHomologyComparison.boundary 1 ≫
-          (BinaryOpenCover.opensIntersectionHomologyIso
+          (AlgebraicTopology.BinaryOpenCover.opensIntersectionHomologyIso
             (orderThreeOpen D) (orderFourOpen D) 1).inv)
           (integralSingularHomologyMap 2 D.cuspToEllipticInteriorMap.hom x) := by
       rw [← hUnion]
       rfl
     _ = ConcreteCategory.hom
-        (((BinaryOpenCover.integralHomologyFunctor (1 + 1)).map
+        (((AlgebraicTopology.BinaryOpenCover.integralHomologyFunctor (1 + 1)).map
             D.cuspToEllipticInteriorMap ≫
           D.ellipticOpenCoverHomologyComparison.boundary 1) ≫
-          (BinaryOpenCover.opensIntersectionHomologyIso
+          (AlgebraicTopology.BinaryOpenCover.opensIntersectionHomologyIso
             (orderThreeOpen D) (orderFourOpen D) 1).inv) x := by
       rfl
     _ = _ := DFunLike.congr_fun (congrArg ConcreteCategory.hom hn'.symm) x

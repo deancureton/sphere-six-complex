@@ -78,7 +78,7 @@ public theorem normalizedThirdOneCirclePath_mem_four {A : AnalyticData}
 public theorem normalizedThirdMeridianCylinder_boundary {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (CircleMappingTorus (Homeomorph.refl (StdTorus 1)))) :
-    ConcreteCategory.hom ((BinaryOpenCover.openCoverHomologyComparisonOfCover
+    ConcreteCategory.hom ((AlgebraicTopology.BinaryOpenCover.openCoverHomologyComparisonOfCover
       (ellipticOpenCover R.twoDiscCover)).boundary 1)
       (integralSingularHomologyMap 2
         (identityMappingTorusMapOfLoop

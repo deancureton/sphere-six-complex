@@ -1,7 +1,7 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Covering.Homogeneous
-import all SphereSixComplex.Prerequisites.Topology.Covering.Homogeneous
+public import ForMathlib.Topology.Covering.Homogeneous
+import all ForMathlib.Topology.Covering.Homogeneous
 public import SphereSixComplex.Prerequisites.Periods.FuchsianModularParameterExistence
 import all SphereSixComplex.Prerequisites.Periods.FuchsianModularParameterExistence
 import all SphereSixComplex.Prerequisites.TriangleGroup.Fuchsian.SmoothAction

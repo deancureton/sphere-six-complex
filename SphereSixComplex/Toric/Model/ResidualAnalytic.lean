@@ -6,7 +6,7 @@ Authors: Dean Cureton
 module
 
 public import SphereSixComplex.Toric.Model.CarrierGeometry
-public import SphereSixComplex.Prerequisites.Geometry.Manifold.LocalDiffeomorphTransport
+public import ForMathlib.Geometry.Manifold.LocalDiffeomorphTransport
 import Mathlib.Geometry.Manifold.Algebra.Structures
 
 /-!

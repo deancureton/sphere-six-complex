@@ -5,7 +5,7 @@ Authors: Paul Lezeau
 -/
 module
 
-public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.MapNaturality
+public import ForMathlib.AlgebraicTopology.SingularHomology.MayerVietoris.MapNaturality
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.OpenCover
 
 /-!
@@ -25,7 +25,9 @@ noncomputable section
 
 open AlgebraicTopology CategoryTheory Limits TopologicalSpace
 
-namespace SphereSixComplex.BinaryOpenCover
+open SphereSixComplex
+
+namespace AlgebraicTopology.BinaryOpenCover
 
 /-! ## Identification with the general small-chain construction -/
 
@@ -760,4 +762,4 @@ public theorem openCoverHomologyComparisonOfCover_pullbackNaturality
 
 
 
-end SphereSixComplex.BinaryOpenCover
+end AlgebraicTopology.BinaryOpenCover

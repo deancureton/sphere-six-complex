@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Elliptic.FixedPointCriterion
+public import SphereSixComplex.Prerequisites.Geometry.ComplexDisc.EllipticCayley
 
 /-!
 # Actual analytic charts near the elliptic fibres

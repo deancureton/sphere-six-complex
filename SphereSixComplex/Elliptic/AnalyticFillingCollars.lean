@@ -2,8 +2,8 @@ module
 
 public import SphereSixComplex.Construction.FillingPieces
 public import SphereSixComplex.Construction.CentralFamilyTopology
-public import SphereSixComplex.Prerequisites.Geometry.Manifold.LocalDiffeomorphOperations
-import all SphereSixComplex.Prerequisites.Geometry.Manifold.LocalDiffeomorphOperations
+public import ForMathlib.Geometry.Manifold.LocalDiffeomorphOperations
+import all ForMathlib.Geometry.Manifold.LocalDiffeomorphOperations
 import all Mathlib.Geometry.Manifold.LocalDiffeomorph
 import all SphereSixComplex.Construction.FillingPieces
 import all SphereSixComplex.Regular.BaseTopology

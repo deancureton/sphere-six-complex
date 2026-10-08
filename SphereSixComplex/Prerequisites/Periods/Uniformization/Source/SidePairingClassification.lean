@@ -293,7 +293,7 @@ private theorem neWordMatrix_eq_factorMatrix_of_singleton_prod' {i j : Bool}
     (hprod : w.prod = Monoid.CoprodI.of w.last) :
     neWordMatrix w = factorMatrix j w.last := by
   let v : Monoid.CoprodI.NeWord DeltaFactor j j :=
-    .singleton w.last (BinaryIndexedCoprod.NeWord.last_ne_one w)
+    .singleton w.last (Monoid.CoprodI.NeWord.last_ne_one w)
   have hvprod : w.prod = v.prod := by
     rw [hprod]
     simp [v]
@@ -306,7 +306,7 @@ private theorem neWordMatrix_eq_init_mul_factorMatrix' {i j k : Bool}
     (hprod : w.prod = p.prod * Monoid.CoprodI.of w.last) :
     neWordMatrix w = neWordMatrix p * factorMatrix j w.last := by
   let v : Monoid.CoprodI.NeWord DeltaFactor i j :=
-    .append p hkj (.singleton w.last (BinaryIndexedCoprod.NeWord.last_ne_one w))
+    .append p hkj (.singleton w.last (Monoid.CoprodI.NeWord.last_ne_one w))
   have hvprod : w.prod = v.prod := by
     rw [hprod]
     simp [v]
@@ -324,7 +324,7 @@ private theorem neWord_bottomRow_ne_one_one {i j : Bool}
       rw [hc, hd] at hrow
       norm_num [OppositeQuadrantRow, CoeffNonnegative, CoeffNonpositive] at hrow
   | true =>
-      rcases BinaryIndexedCoprod.NeWord.singleton_or_init_last w with
+      rcases Monoid.CoprodI.NeWord.singleton_or_init_last w with
         hsingle | ⟨k, p, hkj, hwprod, _⟩
       · have hmatrix := neWordMatrix_eq_factorMatrix_of_singleton_prod' w hsingle.2.1
         have hc' := congrArg (fun M => M 1 0) hmatrix
@@ -337,7 +337,7 @@ private theorem neWord_bottomRow_ne_one_one {i j : Bool}
         have hnb_lt : nb < 4 := ZMod.val_lt _
         have hnb_ne : nb ≠ 0 := by
           intro hnb
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 4
           change nb = 0
@@ -368,7 +368,7 @@ private theorem neWord_bottomRow_ne_one_one {i j : Bool}
         have hnb_lt : nb < 4 := ZMod.val_lt _
         have hnb_ne : nb ≠ 0 := by
           intro hnb
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 4
           change nb = 0
@@ -416,7 +416,7 @@ private theorem neWord_bottomRow_ne_neg_one_neg_one {i j : Bool}
       rw [hc, hd] at hrow
       norm_num [OppositeQuadrantRow, CoeffNonnegative, CoeffNonpositive] at hrow
   | true =>
-      rcases BinaryIndexedCoprod.NeWord.singleton_or_init_last w with
+      rcases Monoid.CoprodI.NeWord.singleton_or_init_last w with
         hsingle | ⟨k, p, hkj, hwprod, _⟩
       · have hmatrix := neWordMatrix_eq_factorMatrix_of_singleton_prod' w hsingle.2.1
         have hc' := congrArg (fun M => M 1 0) hmatrix
@@ -429,7 +429,7 @@ private theorem neWord_bottomRow_ne_neg_one_neg_one {i j : Bool}
         have hnb_lt : nb < 4 := ZMod.val_lt _
         have hnb_ne : nb ≠ 0 := by
           intro hnb
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 4
           change nb = 0
@@ -457,7 +457,7 @@ private theorem neWord_bottomRow_ne_neg_one_neg_one {i j : Bool}
         have hnb_lt : nb < 4 := ZMod.val_lt _
         have hnb_ne : nb ≠ 0 := by
           intro hnb
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 4
           change nb = 0
@@ -506,7 +506,7 @@ private theorem neWord_bottomRow_ne_one_neg_sqrtd {i j : Bool}
       rw [hc, hd] at hrow
       norm_num [SameQuadrantRow, CoeffNonnegative, CoeffNonpositive] at hrow
   | false =>
-      rcases BinaryIndexedCoprod.NeWord.singleton_or_init_last w with
+      rcases Monoid.CoprodI.NeWord.singleton_or_init_last w with
         hsingle | ⟨k, p, hkj, hwprod, _⟩
       · have hmatrix := neWordMatrix_eq_factorMatrix_of_singleton_prod' w hsingle.2.1
         have hc' := congrArg (fun M => M 1 0) hmatrix
@@ -519,7 +519,7 @@ private theorem neWord_bottomRow_ne_one_neg_sqrtd {i j : Bool}
         have hna_lt : na < 3 := ZMod.val_lt _
         have hna_ne : na ≠ 0 := by
           intro hna
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 3
           change na = 0
@@ -551,7 +551,7 @@ private theorem neWord_bottomRow_ne_one_neg_sqrtd {i j : Bool}
         have hna_lt : na < 3 := ZMod.val_lt _
         have hna_ne : na ≠ 0 := by
           intro hna
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 3
           change na = 0
@@ -600,7 +600,7 @@ private theorem neWord_bottomRow_ne_neg_one_sqrtd {i j : Bool}
       rw [hc, hd] at hrow
       norm_num [SameQuadrantRow, CoeffNonnegative, CoeffNonpositive] at hrow
   | false =>
-      rcases BinaryIndexedCoprod.NeWord.singleton_or_init_last w with
+      rcases Monoid.CoprodI.NeWord.singleton_or_init_last w with
         hsingle | ⟨k, p, hkj, hwprod, _⟩
       · have hmatrix := neWordMatrix_eq_factorMatrix_of_singleton_prod' w hsingle.2.1
         have hc' := congrArg (fun M => M 1 0) hmatrix
@@ -613,7 +613,7 @@ private theorem neWord_bottomRow_ne_neg_one_sqrtd {i j : Bool}
         have hna_lt : na < 3 := ZMod.val_lt _
         have hna_ne : na ≠ 0 := by
           intro hna
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 3
           change na = 0
@@ -645,7 +645,7 @@ private theorem neWord_bottomRow_ne_neg_one_sqrtd {i j : Bool}
         have hna_lt : na < 3 := ZMod.val_lt _
         have hna_ne : na ≠ 0 := by
           intro hna
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 3
           change na = 0
@@ -693,7 +693,7 @@ private theorem neWord_bottomRow_ne_one_neg_two {i j : Bool}
       rw [hc, hd] at hrow
       norm_num [SameQuadrantRow, CoeffNonnegative, CoeffNonpositive] at hrow
   | false =>
-      rcases BinaryIndexedCoprod.NeWord.singleton_or_init_last w with
+      rcases Monoid.CoprodI.NeWord.singleton_or_init_last w with
         hsingle | ⟨k, p, hkj, hwprod, _⟩
       · have hmatrix := neWordMatrix_eq_factorMatrix_of_singleton_prod' w hsingle.2.1
         have hc' := congrArg (fun M => M 1 0) hmatrix
@@ -706,7 +706,7 @@ private theorem neWord_bottomRow_ne_one_neg_two {i j : Bool}
         have hna_lt : na < 3 := ZMod.val_lt _
         have hna_ne : na ≠ 0 := by
           intro hna
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 3
           change na = 0
@@ -734,7 +734,7 @@ private theorem neWord_bottomRow_ne_one_neg_two {i j : Bool}
         have hna_lt : na < 3 := ZMod.val_lt _
         have hna_ne : na ≠ 0 := by
           intro hna
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 3
           change na = 0
@@ -801,7 +801,7 @@ private theorem neWord_bottomRow_ne_neg_one_two {i j : Bool}
       rw [hc, hd] at hrow
       norm_num [SameQuadrantRow, CoeffNonnegative, CoeffNonpositive] at hrow
   | false =>
-      rcases BinaryIndexedCoprod.NeWord.singleton_or_init_last w with
+      rcases Monoid.CoprodI.NeWord.singleton_or_init_last w with
         hsingle | ⟨k, p, hkj, hwprod, _⟩
       · have hmatrix := neWordMatrix_eq_factorMatrix_of_singleton_prod' w hsingle.2.1
         have hc' := congrArg (fun M => M 1 0) hmatrix
@@ -814,7 +814,7 @@ private theorem neWord_bottomRow_ne_neg_one_two {i j : Bool}
         have hna_lt : na < 3 := ZMod.val_lt _
         have hna_ne : na ≠ 0 := by
           intro hna
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 3
           change na = 0
@@ -842,7 +842,7 @@ private theorem neWord_bottomRow_ne_neg_one_two {i j : Bool}
         have hna_lt : na < 3 := ZMod.val_lt _
         have hna_ne : na ≠ 0 := by
           intro hna
-          apply BinaryIndexedCoprod.NeWord.last_ne_one w
+          apply Monoid.CoprodI.NeWord.last_ne_one w
           apply Multiplicative.toAdd.injective
           apply ZMod.val_injective 3
           change na = 0

@@ -49,7 +49,7 @@ Descend the dual monodromy powers to the two cyclic factors, then use the coprod
 The integral functional $`\gamma` is invariant under both dual monodromy matrices $`A_1` and $`A_2`.
 :::
 
-:::theorem "atlas-transport" (parent := "construction_spine") (lean := "SphereSixComplex.isManifold_transportChartedSpace")
+:::theorem "atlas-transport" (parent := "construction_spine") (lean := "isManifold_transportChartedSpace")
 A manifold atlas and its differentiability structure transport along a homeomorphism without changing
 the transition functions.
 :::
@@ -59,7 +59,7 @@ Conjugate every chart by the homeomorphism. In each transition map the conjugati
 the original transition map in the same structure groupoid.
 :::
 
-:::theorem "complex-quotient" (parent := "construction_spine") (lean := "SphereSixComplex.Geometry.quotientProjection_isOpenQuotientMap, SphereSixComplex.Geometry.orbitQuotient_t2Space, SphereSixComplex.Geometry.quotientChartContDiff_of_contMDiff_smul, SphereSixComplex.Geometry.orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul")
+:::theorem "complex-quotient" (parent := "construction_spine") (lean := "quotientProjection_isOpenQuotientMap, orbitQuotient_t2Space, quotientChartContDiff_of_contMDiff_smul, orbitQuotient_isManifold_and_projection_isLocalDiffeomorph_of_contMDiff_smul")
 A free properly discontinuous action by smooth translations gives the orbit space a manifold structure
 and makes the quotient projection a local diffeomorphism.
 :::
@@ -162,14 +162,14 @@ order-four orbits.  The inhomogeneous $`\beta` cocycles sum to zero, and weighte
 the explicit local primitives used to build the two analytic torsors.
 :::
 
-:::theorem "projective-line-cech-splitting" (parent := "period-functions") (lean := "SphereSixComplex.Analysis.CauchyGreen.exists_negativeOne_holomorphic_cocycle_solution")
+:::theorem "projective-line-cech-splitting" (parent := "period-functions") (lean := "Complex.CauchyGreen.exists_negativeOne_holomorphic_cocycle_solution")
 A holomorphic additive cocycle on an open cover of the complex plane has holomorphic local
 primitives. If one chart contains the complement of a disc, its primitive can be normalized as
 $`z^{-1}g(z^{-1})`, with $`g` holomorphic near zero. This proved Cauchy–Green splitting supplies
 the corrections used by both affine torsors and controls their behavior at the cusp.
 :::
 
-:::theorem "fuchsian-modular-neg-one-frame" (parent := "projective-line-cech-splitting") (lean := "SphereSixComplex.Periods.AnalyticSquareRoot.exists_analyticOnNhd_sq_eq, SphereSixComplex.Periods.nonempty_eisensteinSixRoot, SphereSixComplex.Periods.nonempty_modularFrameCuspGerm, SphereSixComplex.Periods.ModularNegOneFrame, SphereSixComplex.Periods.nonempty_modularNegOneFrame, SphereSixComplex.Periods.FuchsianAffineDescent.liftedNegOneInfinityFrame, SphereSixComplex.Periods.muAffineOne_closes, SphereSixComplex.Periods.muAffineTwo_closes, SphereSixComplex.Periods.betaCocycleOne_cycle, SphereSixComplex.Periods.betaCocycleTwo_cycle")
+:::theorem "fuchsian-modular-neg-one-frame" (parent := "projective-line-cech-splitting") (lean := "Complex.AnalyticSquareRoot.exists_analyticOnNhd_sq_eq, SphereSixComplex.Periods.nonempty_eisensteinSixRoot, SphereSixComplex.Periods.nonempty_modularFrameCuspGerm, SphereSixComplex.Periods.ModularNegOneFrame, SphereSixComplex.Periods.nonempty_modularNegOneFrame, SphereSixComplex.Periods.FuchsianAffineDescent.liftedNegOneInfinityFrame, SphereSixComplex.Periods.muAffineOne_closes, SphereSixComplex.Periods.muAffineTwo_closes, SphereSixComplex.Periods.betaCocycleOne_cycle, SphereSixComplex.Periods.betaCocycleTwo_cycle")
 The divisor, ramification, and cusp calculations for $`E_4^2\sqrt{E_6}/\Delta` construct the exact
 two-chart frame for the pulled-back $`\mathcal O(-1)` bundle, including its elliptic orders and cusp
 factorization. The modular uniformization and frame constructions are proved results.
@@ -223,7 +223,7 @@ through both quotients, giving the punctured family a complex-threefold atlas wi
 biholomorphic projection.
 :::
 
-:::theorem "elliptic-orbit-freeness" (parent := "torus-family") (lean := "SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaIndexedEquiv, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaNormalForm, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_isConj_inl_or_inr, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_fixed_regular_eq_one, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inl_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.isOfFinOrder_of_fixed_of_properlyDiscontinuous, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.fuchsian_fixed_regular_eq_one")
+:::theorem "elliptic-orbit-freeness" (parent := "torus-family") (lean := "SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaIndexedEquiv, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.deltaNormalForm, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_isConj_inl_or_inr, SphereSixComplex.TriangleGroup.BinaryIndexedCoprod.finiteOrder_fixed_regular_eq_one, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inl_fixed_iff, SphereSixComplex.TriangleGroup.FreeProductTorsion.fuchsianSourceAction_inr_fixed_iff, ProperlyDiscontinuousSMul.isOfFinOrder_of_fixed_of_properlyDiscontinuous, SphereSixComplex.TriangleGroup.FuchsianProperFreeness.fuchsian_fixed_regular_eq_one")
 Every nonidentity element of either cyclic factor fixes exactly its marked elliptic point, and its
 conjugates fix exactly the corresponding elliptic orbit. Removing those orbits eliminates all such
 stabilizers. An explicit equivalence with the indexed free product proves every nontrivial
@@ -307,13 +307,13 @@ Use {uses "torus-family"}[the torus family] and the unimodular cusp lattice map 
 The selected order-three and order-four affine actions are free for the twist vectors in the Setup. Their varying-family quotients provide the elliptic filling pieces described below.
 :::
 
-:::theorem "elliptic-local-coordinates" (parent := "elliptic-fillings") (lean := "SphereSixComplex.UpperHalfPlane.norm_cayley_lt_one, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderThreeCayley_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderFourCayley_generator, SphereSixComplex.UpperHalfPlane.cayleyHomeomorph, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderThreeCayleyHomeomorph_generator, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderFourCayleyHomeomorph_generator")
+:::theorem "elliptic-local-coordinates" (parent := "elliptic-fillings") (lean := "UpperHalfPlane.norm_cayley_lt_one, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderThreeCayley_generator, SphereSixComplex.Geometry.EllipticLocalCoordinates.orderFourCayley_generator, UpperHalfPlane.cayleyHomeomorph, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderThreeCayleyHomeomorph_generator, SphereSixComplex.Geometry.EllipticCayleyHomeomorph.orderFourCayleyHomeomorph_generator")
 The explicit Cayley formulas give homeomorphisms from the upper half-plane to the unit disc and
 conjugate the source generators to rotations of orders three and four. The remaining affine fibre
 data then gives the free logarithmic-transform quotient manifolds.
 :::
 
-:::theorem "elliptic-local-trivialization" (parent := "elliptic-local-coordinates") (lean := "SphereSixComplex.UpperHalfPlane.cayleyDiffeomorph")
+:::theorem "elliptic-local-trivialization" (parent := "elliptic-local-coordinates") (lean := "UpperHalfPlane.cayleyDiffeomorph")
 The Cayley map gives a complex diffeomorphism from the upper half-plane to the unit disc.
 :::
 
@@ -353,7 +353,7 @@ Glue {uses "cusp-filling"}[the cusp filling] and
 {uses "torus-family"}[torus family], and verify the resulting charts and transition maps.
 :::
 
-:::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "SphereSixComplex.CrossPieceGluingCompatible, SphereSixComplex.gluingAtlasCompatible_of_crossPiece, SphereSixComplex.gluedChartedSpace, SphereSixComplex.isManifold_gluedChartedSpace, SphereSixComplex.secondCountableTopology_gluedSpace, SphereSixComplex.connectedSpace_gluedSpace, SphereSixComplex.BiholomorphicStarGluing.BiholomorphicFourPieceStarData.gluing_atlas_compatible, SphereSixComplex.ComplexThreefold.RealAtlas.isManifold, SphereSixComplex.CompactComplexStar.gluedSecondCountable")
+:::theorem "manifold-gluing" (parent := "compact-complex-threefold") (lean := "CrossPieceGluingCompatible, gluingAtlasCompatible_of_crossPiece, gluedChartedSpace, isManifold_gluedChartedSpace, secondCountableTopology_gluedSpace, connectedSpace_gluedSpace, SphereSixComplex.BiholomorphicStarGluing.BiholomorphicFourPieceStarData.gluing_atlas_compatible, SphereSixComplex.ComplexThreefold.RealAtlas.isManifold, SphereSixComplex.CompactComplexStar.gluedSecondCountable")
 Compatible atlases on the filling pieces transport to their topological gluing and make the glued
 space a manifold. A countable open gluing of second-countable pieces is second countable, and
 connected pieces with a connected overlap graph give a connected gluing. Restriction of a complex atlas to
@@ -408,7 +408,7 @@ make all generators commute. This uses the explicit lattice monodromies and no e
 relation.
 :::
 
-:::theorem "van-kampen-generation" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.PaperVanKampenFourPieceCover.localFundamentalGroupImages_generate, SphereSixComplex.Topology.PaperVanKampenFourPieceCover.coreFundamentalGroupMap_surjective_of_overlap_surjective, SphereSixComplex.ChartedSpace.stronglyLocallyContractibleSpace, SphereSixComplex.ChartedSpace.semilocallySimplyConnectedSpace")
+:::theorem "van-kampen-generation" (parent := "fundamental-group") (lean := "SphereSixComplex.Topology.PaperVanKampenFourPieceCover.localFundamentalGroupImages_generate, SphereSixComplex.Topology.PaperVanKampenFourPieceCover.coreFundamentalGroupMap_surjective_of_overlap_surjective, ChartedSpace.stronglyLocallyContractibleSpace, ChartedSpace.semilocallySimplyConnectedSpace")
 A subgroup of $`\pi_1(X)` containing the images of the four local fundamental groups is
 everything.  The proof is the covering-space one: the subgroup is realised by a covering whose
 recovered subgroup is exactly it, the hypotheses lift each piece through that covering, the lifts

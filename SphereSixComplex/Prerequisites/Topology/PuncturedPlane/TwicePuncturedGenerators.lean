@@ -6,6 +6,8 @@ public import SphereSixComplex.Prerequisites.Topology.Manifold.LocallyContractib
 public import Mathlib.Analysis.Normed.Module.Connected
 public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 
+open Complex.PuncturedPlane
+
 /-!
 # Generation of the twice-punctured-plane fundamental group
 
@@ -46,7 +48,7 @@ public theorem ambient_pathConnected : PathConnectedSpace TwicePuncturedComplex 
 
 public theorem ambient_locallyPathConnected : LocallyPathConnectedSpace TwicePuncturedComplex := by
   have _ : StronglyLocallyContractibleSpace ℂ :=
-    SphereSixComplex.normedSpace_stronglyLocallyContractibleSpace
+    normedSpace_stronglyLocallyContractibleSpace
   have _ : StronglyLocallyContractibleSpace TwicePuncturedComplex :=
     ambient_isOpen.stronglyLocallyContractibleSpace
   infer_instance
@@ -54,7 +56,7 @@ public theorem ambient_locallyPathConnected : LocallyPathConnectedSpace TwicePun
 public theorem ambient_semilocallySimplyConnected :
     TauCeti.SemilocallySimplyConnectedSpace TwicePuncturedComplex := by
   have _ : StronglyLocallyContractibleSpace ℂ :=
-    SphereSixComplex.normedSpace_stronglyLocallyContractibleSpace
+    normedSpace_stronglyLocallyContractibleSpace
   have _ : StronglyLocallyContractibleSpace TwicePuncturedComplex :=
     ambient_isOpen.stronglyLocallyContractibleSpace
   infer_instance

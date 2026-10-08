@@ -1,6 +1,7 @@
 module
 
 public import Mathlib.Topology.Algebra.ConstMulAction
+public import Mathlib.GroupTheory.OrderOfElement
 
 /-!
 # Stabilizer slices for properly discontinuous actions
@@ -14,6 +15,21 @@ every point. The slice is invariant under the point stabilizer, and no other tra
 open Set Topology
 
 namespace ProperlyDiscontinuousSMul
+
+/-- An element fixing a point of a properly discontinuous group action has finite order. -/
+public theorem isOfFinOrder_of_fixed_of_properlyDiscontinuous
+    {G X : Type*} [Group G] [TopologicalSpace X] [MulAction G X]
+    [ProperlyDiscontinuousSMul G X] {g : G} {x : X} (hfixed : g • x = x) :
+    IsOfFinOrder g := by
+  rw [← finite_powers]
+  apply (ProperlyDiscontinuousSMul.finite_stabilizer (Γ := G) x).subset
+  intro h hh
+  change h • x = x
+  obtain ⟨n, rfl⟩ := (Submonoid.mem_powers_iff h g).mp hh
+  clear hh
+  induction n with
+  | zero => simp
+  | succ n ih => rw [pow_succ, mul_smul, hfixed, ih]
 
 universe u v
 

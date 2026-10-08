@@ -189,8 +189,8 @@ public theorem ellipticOpenCover (D : A.EllipticTwoDiscCoverData) :
 /-- The canonical chain-level Mayer--Vietoris data for the elliptic two-disc cover. -/
 public noncomputable def canonicalMayerVietorisData
     (D : A.EllipticTwoDiscCoverData) :=
-  BinaryOpenCover.OpenCoverHomologyComparison.toIntegralMayerVietorisData
-    (BinaryOpenCover.openCoverHomologyComparisonOfCover (ellipticOpenCover D))
+  AlgebraicTopology.BinaryOpenCover.OpenCoverHomologyComparison.toIntegralMayerVietorisData
+    (AlgebraicTopology.BinaryOpenCover.openCoverHomologyComparisonOfCover (ellipticOpenCover D))
     (ellipticOpenCover D)
 
 /-- The canonical connecting map for the elliptic two-disc cover. -/

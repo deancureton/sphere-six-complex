@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Toric.Boundary.DeckAttachment
-public import SphereSixComplex.Prerequisites.Topology.Collar.CompactAdjunction
+public import ForMathlib.Topology.Collar.CompactAdjunction
 public import SphereSixComplex.Toric.Boundary.Model
 
 @[expose] public section

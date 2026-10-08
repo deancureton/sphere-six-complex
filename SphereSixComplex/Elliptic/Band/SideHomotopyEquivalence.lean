@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.NumeratedCover
+public import ForMathlib.Topology.Homotopy.NumeratedCover
 public import SphereSixComplex.Elliptic.Band.RadialCompletionData
 
 /-!
@@ -63,7 +63,7 @@ end SphereSixComplex
 
 namespace SphereSixComplex.Geometry.AnalyticData
 
-open SphereSixComplex.OpenUnionHomotopy
+open OpenUnionHomotopy
 
 variable (A : AnalyticData)
 

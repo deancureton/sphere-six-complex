@@ -40,7 +40,7 @@ variable (P : AffineCyclicCentralFiberPresentationData m p D)
 public theorem difference_eq : I.extension.difference = P.latticeDifference := by
   apply LinearMap.ext
   intro x
-  rw [SphereSixComplex.Topology.CyclicExtension.Data.difference_apply,
+  rw [CyclicExtension.Data.difference_apply,
     P.latticeDifference_eq, LinearMap.sub_apply, LinearMap.id_apply]
   exact congrArg (fun y ↦ y - x) (LinearEquiv.congr_fun I.action_eq x)
 
@@ -77,7 +77,7 @@ group. -/
       Additive.ofMul
         (Abelianization.of (I.extension.incl x) * Abelianization.of I.extension.gen ^ k) := by
   rw [toAbelianization, CyclicCoinvariants.lift_mk,
-    SphereSixComplex.Topology.CyclicExtension.Data.kernelToAbelianization_apply,
+    CyclicExtension.Data.kernelToAbelianization_apply,
     ← ofMul_zpow, ← ofMul_mul]
 
 public theorem toAbelianization_surjective : Function.Surjective (I.toAbelianization P) := by

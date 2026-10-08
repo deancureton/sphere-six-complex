@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Algebra.FiniteExactSequenceEuler
+public import ForMathlib.LinearAlgebra.Dimension.Int
 public import SphereSixComplex.Prerequisites.Topology.Torus.FourTorusHomology
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.WangPresentation
 

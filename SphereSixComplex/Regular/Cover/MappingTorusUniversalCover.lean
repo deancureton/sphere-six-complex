@@ -78,8 +78,8 @@ public theorem affineTorusClutching_zpow_mk
     (hlift : ∀ z, φ (Quotient.mk _ z) = Quotient.mk _ (lift z + b))
     (k : ℤ) (z : ComplexTwoSpace) :
     (φ ^ k) (Quotient.mk _ z) =
-      Quotient.mk _ ((Geometry.affineEquiv lift b ^ k) z) := by
-  let a := Geometry.affineEquiv lift b
+      Quotient.mk _ ((affineEquiv lift b ^ k) z) := by
+  let a := affineEquiv lift b
   have hinv (z : ComplexTwoSpace) :
       φ.symm (Quotient.mk _ z) = Quotient.mk _ (a.symm z) := by
     apply φ.injective
@@ -114,13 +114,13 @@ public theorem affineTorusMappingTorusLiftProjection_eq_iff_affine_period
         affineTorusMappingTorusLiftProjection p φ w' ↔
       ∃ k : ℤ, ∃ n : IntegerPeriods,
         w'.1 = w.1 - k ∧
-          w'.2 = periodVector p n + (Geometry.affineEquiv lift b ^ k) w.2 := by
+          w'.2 = periodVector p n + (affineEquiv lift b ^ k) w.2 := by
   rw [affineTorusMappingTorusLiftProjection_eq_iff]
   constructor
   · rintro ⟨k, htime, htorus⟩
     have hquot :
         (Quotient.mk _ w'.2 : AdditiveTorus p) =
-          Quotient.mk _ ((Geometry.affineEquiv lift b ^ k) w.2) := by
+          Quotient.mk _ ((affineEquiv lift b ^ k) w.2) := by
       rw [← affineTorusClutching_zpow_mk p φ lift b hlift k w.2]
       exact htorus
     rw [Quotient.eq, MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at hquot
@@ -128,7 +128,7 @@ public theorem affineTorusMappingTorusLiftProjection_eq_iff_affine_period
     obtain ⟨n, hn⟩ := g.toAdd.property
     refine ⟨k, n, htime, ?_⟩
     change (g.toAdd : ComplexTwoSpace) +
-      (Geometry.affineEquiv lift b ^ k) w.2 = w'.2 at hg
+      (affineEquiv lift b ^ k) w.2 = w'.2 at hg
     rw [show periodVector p n = (g.toAdd : ComplexTwoSpace) from hn]
     exact hg.symm
   · rintro ⟨k, n, htime, hspace⟩
@@ -136,7 +136,7 @@ public theorem affineTorusMappingTorusLiftProjection_eq_iff_affine_period
     rw [affineTorusClutching_zpow_mk p φ lift b hlift]
     apply Quotient.sound
     change MulAction.orbitRel (PeriodGroup p) ComplexTwoSpace w'.2
-      ((Geometry.affineEquiv lift b ^ k) w.2)
+      ((affineEquiv lift b ^ k) w.2)
     rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
     refine ⟨Multiplicative.ofAdd
       ⟨periodVector p n, ⟨n, rfl⟩⟩, ?_⟩
@@ -174,11 +174,11 @@ the linear part to the translating vector. -/
 public theorem affineEquiv_zpow_add
     {A : Type*} [AddCommGroup A] (L : A ≃+ A) (b : A)
     (k : ℤ) (x y : A) :
-    (Geometry.affineEquiv L b ^ k) (x + y) =
-      (L.toEquiv ^ k) x + (Geometry.affineEquiv L b ^ k) y := by
-  let a := Geometry.affineEquiv L b
+    (affineEquiv L b ^ k) (x + y) =
+      (L.toEquiv ^ k) x + (affineEquiv L b ^ k) y := by
+  let a := affineEquiv L b
   have hstep (x y : A) : a (x + y) = L x + a y := by
-    simp only [a, Geometry.affineEquiv_apply, map_add]
+    simp only [a, affineEquiv_apply, map_add]
     abel
   have hinv (x y : A) : a.symm (x + y) = L.symm x + a.symm y := by
     change L.symm (x + y - b) = L.symm x + L.symm (y - b)
@@ -372,7 +372,7 @@ coordinates. -/
     ℝ × ComplexTwoSpace :=
   (w.1 - d.right.toAdd,
     periodVector p d.left.toAdd +
-      (Geometry.affineEquiv D.lift b ^ d.right.toAdd) w.2)
+      (affineEquiv D.lift b ^ d.right.toAdd) w.2)
 
 public theorem affineTorusMappingTorusDeckTransform_one
     {p : Parameters} (D : DescendedAffineTorusAutomorphism p) (b : ComplexTwoSpace)
@@ -396,11 +396,11 @@ public theorem affineTorusMappingTorusDeckTransform_mul
   · change periodVector p
           (d.left.toAdd +
             (affineDeckIntegerMonodromy D.latticeMap.toAddEquiv d.right e.left).toAdd) +
-        (Geometry.affineEquiv D.lift b ^ (d.right.toAdd + e.right.toAdd)) w.2 =
+        (affineEquiv D.lift b ^ (d.right.toAdd + e.right.toAdd)) w.2 =
       periodVector p d.left.toAdd +
-        (Geometry.affineEquiv D.lift b ^ d.right.toAdd)
+        (affineEquiv D.lift b ^ d.right.toAdd)
           (periodVector p e.left.toAdd +
-            (Geometry.affineEquiv D.lift b ^ e.right.toAdd) w.2)
+            (affineEquiv D.lift b ^ e.right.toAdd) w.2)
     rw [periodVector_add, affineDeckIntegerMonodromy_apply,
       affineEquiv_zpow_add,
       descendedAffineTorusLift_zpow_period,
@@ -436,7 +436,7 @@ public theorem affineTorusMappingTorusDeckAction_free
     simpa using hk
   have hspace := congrArg Prod.snd hd
   change periodVector p d.left.toAdd +
-      (Geometry.affineEquiv D.lift b ^ d.right.toAdd) w.2 = w.2 at hspace
+      (affineEquiv D.lift b ^ d.right.toAdd) w.2 = w.2 at hspace
   rw [hk] at hspace
   simp at hspace
   have hp : periodVector p d.left.toAdd = 0 := by
@@ -455,8 +455,8 @@ public theorem affineTorusMappingTorusDeckAction_free
 public theorem continuous_affineEquiv_zpow
     {V : Type*} [TopologicalSpace V] [AddCommGroup V] [IsTopologicalAddGroup V]
     (L : V ≃+ V) (b : V) (hL : Continuous L) (hLinv : Continuous L.symm) (k : ℤ) :
-    Continuous (Geometry.affineEquiv L b ^ k) := by
-  let a := Geometry.affineEquiv L b
+    Continuous (affineEquiv L b ^ k) := by
+  let a := affineEquiv L b
   have ha : Continuous a := hL.add continuous_const
   have hainv : Continuous a.symm := hLinv.comp (continuous_id.sub continuous_const)
   induction k using Int.induction_on with
@@ -480,7 +480,7 @@ public theorem affineTorusMappingTorusDeckAction_continuous
   refine ⟨fun d ↦ ?_⟩
   change Continuous fun w : ℝ × ComplexTwoSpace ↦
     (w.1 - d.right.toAdd,
-      periodVector p d.left.toAdd + (Geometry.affineEquiv D.lift b ^ d.right.toAdd) w.2)
+      periodVector p d.left.toAdd + (affineEquiv D.lift b ^ d.right.toAdd) w.2)
   exact (continuous_fst.sub continuous_const).prodMk
     (continuous_const.add
       ((continuous_affineEquiv_zpow D.lift b hL hLinv d.right.toAdd).comp continuous_snd))
@@ -522,7 +522,7 @@ public theorem affineTorusMappingTorusDeckAction_properlyDiscontinuous
   · intro k hk
     let C : Set ComplexTwoSpace :=
       (fun zw : ComplexTwoSpace × ComplexTwoSpace ↦
-        zw.1 - (Geometry.affineEquiv D.lift b ^ k) zw.2) ''
+        zw.1 - (affineEquiv D.lift b ^ k) zw.2) ''
         ((Prod.snd '' L) ×ˢ (Prod.snd '' K))
     have hC : IsCompact C := by
       apply ((hLcompact.image continuous_snd).prod (hK.image continuous_snd)).image
@@ -538,7 +538,7 @@ public theorem affineTorusMappingTorusDeckAction_properlyDiscontinuous
       rcases hdS with ⟨q, ⟨w, hwK, hwdq⟩, hqL⟩
       have hspace := congrArg Prod.snd hwdq
       change periodVector p d.left.toAdd +
-          (Geometry.affineEquiv D.lift b ^ d.right.toAdd) w.2 = q.2 at hspace
+          (affineEquiv D.lift b ^ d.right.toAdd) w.2 = q.2 at hspace
       rw [hdright'] at hspace
       refine ⟨(q.2, w.2), ⟨⟨q, hqL, rfl⟩, ⟨w, hwK, rfl⟩⟩, ?_⟩
       exact (eq_sub_iff_add_eq.mpr hspace).symm

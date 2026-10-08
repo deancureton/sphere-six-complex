@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Elliptic.Homology.FirstHomologyGeneration
-public import SphereSixComplex.Prerequisites.Algebra.CyclicExtensionAbelianization
+public import ForMathlib.GroupTheory.Abelianization.CyclicExtension
 public import SphereSixComplex.Prerequisites.Topology.Covering.UnwrappedAffineFillings
 
 /-!
@@ -385,7 +385,7 @@ private theorem affineCyclicBoundaryDegree_eq_one_iff
 
 public noncomputable def canonicalAffineCyclicFillingExtension
     (P : AffineCyclicCentralFiberPresentationData m p D) :
-    SphereSixComplex.Topology.CyclicExtension.Data m Lattice
+    CyclicExtension.Data m Lattice
       (affineCyclicBoundaryDeckData P).FillingDeck where
   incl := affineCyclicKernelIncl P
   incl_add := affineCyclicKernelIncl_add P
@@ -441,7 +441,7 @@ full-iterate translation.  Its abelianization is identified with first homology,
 lattice subgroup. -/
 public structure AffineCyclicUniversalCoverHOneIdentification
     (P : AffineCyclicCentralFiberPresentationData m p D) where
-  extension : SphereSixComplex.Topology.CyclicExtension.Data m Lattice
+  extension : CyclicExtension.Data m Lattice
     (affineCyclicBoundaryDeckData P).FillingDeck
   action_eq : extension.act = P.affine.latticeMap
   twist_eq : extension.twist = P.twist

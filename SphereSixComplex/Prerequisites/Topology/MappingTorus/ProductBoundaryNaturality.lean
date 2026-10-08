@@ -111,7 +111,7 @@ public theorem mappingTorusOpenCover (phi : F ≃ₜ F) :
 
 /-- The canonical comparison for the mapping-torus vertex/edge cover. -/
 public noncomputable def mappingTorusOpenCoverHomologyComparison (phi : F ≃ₜ F) :
-    BinaryOpenCover.OpenCoverHomologyComparison
+    AlgebraicTopology.BinaryOpenCover.OpenCoverHomologyComparison
       (mappingTorusVertexOpen phi) (mappingTorusEdgeOpen phi) :=
   coverHomologyComparison (fun _ : Unit ↦ phi)
 

@@ -6,7 +6,7 @@ Authors: Dean Cureton
 module
 
 public import SphereSixComplex.Toric.Model.PolarModulus
-public import SphereSixComplex.Prerequisites.Geometry.Quotient.Topology
+public import ForMathlib.Geometry.Manifold.Quotient.Topology
 public import ForMathlib.Topology.Gluing.LocallyFiniteClosedCover
 public import SphereSixComplex.Toric.Phase.AmbientHomotopy
 public import SphereSixComplex.Toric.Phase.Stabilizers
@@ -629,7 +629,7 @@ public theorem constructedQuotient_t2_of_properlyDiscontinuous
     constructedLocalPositivePart_locallyCompactSpace r
   let _ : ProperlyDiscontinuousSMul (Multiplicative ParameterLattice)
       (constructedLocalPositivePart r) := hproper
-  exact SphereSixComplex.Geometry.orbitQuotient_t2Space
+  exact orbitQuotient_t2Space
 
 /-- The positive quotient at the quantitative cusp radius is Hausdorff. -/
 public theorem constructedPositiveDeck_quotient_t2

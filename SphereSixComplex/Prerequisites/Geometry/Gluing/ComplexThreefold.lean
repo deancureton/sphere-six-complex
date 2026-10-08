@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Geometry.Manifold.ComplexThreefold
-public import SphereSixComplex.Prerequisites.Geometry.Gluing.Atlas
+public import ForMathlib.Geometry.Manifold.Gluing.Atlas
 
 /-!
 # Complex threefolds obtained by gluing

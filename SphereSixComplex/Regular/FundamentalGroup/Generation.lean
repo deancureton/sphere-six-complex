@@ -501,7 +501,7 @@ public noncomputable def markedBaseFundamentalGroupEquiv :
           A.markedRegularBaseLift) ≃*
       FundamentalGroup (PuncturedOrbifoldBase
         (U := A.paperTriangleUniformization)) A.markedPuncturedBasepoint :=
-  SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
+  fundamentalGroupMulEquivOfEq
     A.markedRegularBaseLift_projects
 
 /-- Based transport from the literal quotient representative to the marked zero-section
@@ -513,7 +513,7 @@ public noncomputable def markedCentralBaseEquiv :
             (A.markedRegularBaseLift, (0 : ComplexTwoSpace)))) ≃*
       FundamentalGroup A.CentralFamily
         (A.centralZeroSection A.markedPuncturedBasepoint) :=
-  SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq
+  fundamentalGroupMulEquivOfEq
     A.markedCentralBase_eq_lift.symm
 
 /-- Geometric labelled-period translations at the marked central-family basepoint. -/
@@ -537,8 +537,8 @@ public theorem markedCentralZeroSection_naturality
         (A.markedBaseFundamentalGroupEquiv γ) := by
   unfold markedCentralBaseEquiv markedBaseFundamentalGroupEquiv
     centralZeroSectionFundamentalGroupMap centralZeroSectionAtLiftMap
-  rw [SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply,
-    SphereSixComplex.Topology.fundamentalGroupMulEquivOfEq_apply,
+  rw [fundamentalGroupMulEquivOfEq_apply,
+    fundamentalGroupMulEquivOfEq_apply,
     FundamentalGroup.mapOfEq_apply]
   induction γ using Quotient.ind with
   | _ P =>

@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.TriangleGroup.Representation
-public import SphereSixComplex.Prerequisites.Geometry.Quotient.CyclicAffineAction
+public import ForMathlib.Topology.Algebra.MulAction.CyclicAffineAction
 
 /-!
 # Elliptic logarithmic-transform fillings

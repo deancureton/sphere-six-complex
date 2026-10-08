@@ -1,8 +1,8 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Collar.AdjunctionEquiv
+public import ForMathlib.Topology.Collar.AdjunctionEquiv
 public import SphereSixComplex.Prerequisites.Topology.Torus.Homology
-public import SphereSixComplex.Prerequisites.Topology.Torus.CircleExponential
+public import ForMathlib.Analysis.Complex.Circle
 public section
 open Set Topology ContinuousMap
 open SphereSixComplex

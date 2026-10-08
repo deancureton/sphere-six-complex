@@ -15,7 +15,7 @@ noncomputable section
 open Set Topology TopologicalSpace ContinuousMap CategoryTheory
 open scoped OnePoint unitInterval ContinuousMap
 open SphereSixComplex.Periods
-open SphereSixComplex.BinaryOpenCover
+open AlgebraicTopology.BinaryOpenCover
 namespace SphereSixComplex.Geometry.InfiniteA2Toric.Construction.CentralBoundary
 open CuspCollar CuspFilling CuspLocalPhaseAction CuspPeriodExpansion CuspPhaseEstimates
 variable {E : FuchsianModularLift} {D : FuchsianPeriodData E}

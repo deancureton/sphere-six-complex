@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Algebra.CyclicCoinvariantPresentation
+public import ForMathlib.GroupTheory.Abelianization.CyclicPresentation
 public import SphereSixComplex.Elliptic.Homology.TwistObstruction
 
 /-!

@@ -1,8 +1,8 @@
 module
 
 public import SphereSixComplex.Toric.CentralFiber.Attachment
-public import SphereSixComplex.Prerequisites.Topology.Collar.AdjunctionEquiv
-public import SphereSixComplex.Prerequisites.Topology.Sphere.LinearEquiv
+public import ForMathlib.Topology.Collar.AdjunctionEquiv
+public import ForMathlib.Topology.Sphere.LinearEquiv
 
 @[expose] public section
 noncomputable section
@@ -76,7 +76,7 @@ public def centralInnerHomotopyEquiv
     Homeomorph.setCongr (by ext x; simp [Metric.mem_ball, dist_zero_right])
   exact (centralRadialHomeomorph W (Iio s) (fun _ hx ↦ hx.trans_le hs1)).symm.toHomotopyEquiv.trans
     ((hball.prodCongr (Homeomorph.refl _)).toHomotopyEquiv.trans
-      (SphereSixComplex.ballProdHomotopyEquiv (Fin 2 → ℝ) (Fin 2 → Circle) s hs))
+      (ballProdHomotopyEquiv (Fin 2 → ℝ) (Fin 2 → Circle) s hs))
 
 @[simp] public theorem centralInnerHomotopyEquiv_diskMap
     (W : ActualPuncturedCuspCollarWitness N constructedModel)
@@ -98,7 +98,7 @@ public def centralAnnulusHomotopyEquiv
     {x | centralRadius W x ∈ Ioo r s} ≃ₕ
       Metric.sphere (0 : Fin 2 → ℝ) 1 × (Fin 2 → Circle) :=
   (centralRadialHomeomorph W (Ioo r s) (fun _ hx ↦ hx.2.trans_le hs1)).symm.toHomotopyEquiv.trans
-    (SphereSixComplex.normPreimageProdHomotopyEquiv (Fin 2 → ℝ) (Fin 2 → Circle)
+    (normPreimageProdHomotopyEquiv (Fin 2 → ℝ) (Fin 2 → Circle)
       (Ioo r s) (fun _ hx ↦ hr.trans hx.1) (convex_Ioo r s) (nonempty_Ioo.mpr hrs))
 
 public def centralInnerTorusHomotopyEquiv
@@ -113,7 +113,7 @@ public def centralAnnulusTorusHomotopyEquiv
     (r s : ℝ) (hr : 0 < r) (hrs : r < s) (hs1 : s ≤ 1) :
     {x | centralRadius W x ∈ Ioo r s} ≃ₕ (Fin 3 → UnitAddCircle) := by
   let e : Metric.sphere (0 : Fin 2 → ℝ) 1 ≃ₜ (Fin 1 → UnitAddCircle) :=
-    (SphereSixComplex.supNormUnitSphereCircleHomeomorph.trans
+    (supNormUnitSphereCircleHomeomorph.trans
       (AddCircle.homeomorphCircle one_ne_zero).symm).trans
         (Homeomorph.funUnique (Fin 1) UnitAddCircle).symm
   let eT : (Fin 2 → Circle) ≃ₜ (Fin 2 → UnitAddCircle) :=

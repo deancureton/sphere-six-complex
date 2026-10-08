@@ -17,7 +17,9 @@ noncomputable section
 
 open AlgebraicTopology CategoryTheory TopologicalSpace
 
-namespace SphereSixComplex.BinaryOpenCover
+open SphereSixComplex
+
+namespace AlgebraicTopology.BinaryOpenCover
 
 /-- The generated boundary naturality square, expressed through the typed refinement maps. -/
 @[reassoc]
@@ -93,7 +95,7 @@ public theorem OpenCoverHomologyComparison.boundary_refinement_pullback_naturali
     source.boundary_refinement_naturality hU hV pullback hRefine n,
     pullback.boundary_pullback_naturality f U V target hPullback n]
 
-end SphereSixComplex.BinaryOpenCover
+end AlgebraicTopology.BinaryOpenCover
 
 end
 

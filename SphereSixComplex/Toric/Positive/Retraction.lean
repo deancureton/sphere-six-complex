@@ -101,7 +101,7 @@ variable {M : Model} {r : ℝ} (P : PolarHoneycombData M r)
 lattice covering. -/
 public noncomputable def positiveEquivariantStrongDeformationRetraction :
     letI := P.positiveDeckAction
-    SphereSixComplex.EquivariantStrongDeformationRetraction
+    EquivariantStrongDeformationRetraction
       (Multiplicative ParameterLattice) P.positivePart P.central := by
   letI := P.positiveDeckAction
   exact Classical.choice

@@ -158,7 +158,7 @@ private theorem neWordMatrix_eq_factorMatrix_of_singleton_prod {i j : Bool}
     (hprod : w.prod = Monoid.CoprodI.of w.last) :
     neWordMatrix w = factorMatrix j w.last := by
   let v : Monoid.CoprodI.NeWord DeltaFactor j j :=
-    .singleton w.last (BinaryIndexedCoprod.NeWord.last_ne_one w)
+    .singleton w.last (Monoid.CoprodI.NeWord.last_ne_one w)
   have hvprod : w.prod = v.prod := by
     rw [hprod]
     simp [v]
@@ -171,7 +171,7 @@ private theorem neWordMatrix_eq_init_mul_factorMatrix {i j k : Bool}
     (hprod : w.prod = p.prod * Monoid.CoprodI.of w.last) :
     neWordMatrix w = neWordMatrix p * factorMatrix j w.last := by
   let v : Monoid.CoprodI.NeWord DeltaFactor i j :=
-    .append p hkj (.singleton w.last (BinaryIndexedCoprod.NeWord.last_ne_one w))
+    .append p hkj (.singleton w.last (Monoid.CoprodI.NeWord.last_ne_one w))
   have hvprod : w.prod = v.prod := by
     rw [hprod]
     simp [v]
@@ -215,7 +215,7 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
   induction n using Nat.strong_induction_on with
   | h n ih =>
       intro i j w hlength hzero
-      rcases BinaryIndexedCoprod.NeWord.singleton_or_init_last w with
+      rcases Monoid.CoprodI.NeWord.singleton_or_init_last w with
         hsingle | ⟨k, p, hkj, hwprod, hpLength⟩
       · have hmatrix := neWordMatrix_eq_factorMatrix_of_singleton_prod w hsingle.2.1
         have hfactorZero : factorMatrix j w.last 1 0 = 0 := by
@@ -231,7 +231,7 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
             have hna_lt : na < 3 := ZMod.val_lt _
             have hna_ne : na ≠ 0 := by
               intro hna
-              apply BinaryIndexedCoprod.NeWord.last_ne_one w
+              apply Monoid.CoprodI.NeWord.last_ne_one w
               change a = 1
               apply Multiplicative.toAdd.injective
               apply ZMod.val_injective 3
@@ -252,7 +252,7 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
             have hnb_lt : nb < 4 := ZMod.val_lt _
             have hnb_ne : nb ≠ 0 := by
               intro hnb
-              apply BinaryIndexedCoprod.NeWord.last_ne_one w
+              apply Monoid.CoprodI.NeWord.last_ne_one w
               change b = 1
               apply Multiplicative.toAdd.injective
               apply ZMod.val_injective 4
@@ -269,7 +269,7 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
             · have hre := congrArg Zsqrtd.re hfactorZero
               norm_num [nb, hnb, quadraticTwo, pow_two, pow_succ,
                 Matrix.one_apply, Matrix.mul_apply, Fin.sum_univ_succ] at hre
-      · rcases BinaryIndexedCoprod.NeWord.singleton_or_init_last p with
+      · rcases Monoid.CoprodI.NeWord.singleton_or_init_last p with
           hpSingle | ⟨l, q, hlk, hpprod, hqLength⟩
         · have hik := hpSingle.1
           subst i
@@ -287,8 +287,8 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
               simpa [MatrixRowsBeforeFactor] using identity_rowsBeforeFactor false
             have hclassified := sameQuadrant_pair_bottomLeft_zero 1 (hrow 1)
               (Or.inr (by norm_num [Matrix.one_apply])) p.last
-              (BinaryIndexedCoprod.NeWord.last_ne_one p) w.last
-              (BinaryIndexedCoprod.NeWord.last_ne_one w) hpairZero
+              (Monoid.CoprodI.NeWord.last_ne_one p) w.last
+              (Monoid.CoprodI.NeWord.last_ne_one w) hpairZero
             refine Or.inl ⟨rfl, rfl, 1, by omega, ?_⟩
             rw [hwprod, hpSingle.2.1, hclassified.2.1, hclassified.2.2]
             unfold indexedCuspForward
@@ -303,8 +303,8 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
               simpa [MatrixRowsBeforeFactor] using identity_rowsBeforeFactor true
             have hclassified := oppositeQuadrant_pair_bottomLeft_zero 1 (hrow 1)
               (Or.inr (by norm_num [Matrix.one_apply])) p.last
-              (BinaryIndexedCoprod.NeWord.last_ne_one p) w.last
-              (BinaryIndexedCoprod.NeWord.last_ne_one w) hpairZero
+              (Monoid.CoprodI.NeWord.last_ne_one p) w.last
+              (Monoid.CoprodI.NeWord.last_ne_one w) hpairZero
             refine Or.inr ⟨rfl, rfl, 1, by omega, ?_⟩
             rw [hwprod, hpSingle.2.1, hclassified.2.1, hclassified.2.2]
             unfold indexedCuspBackward
@@ -335,8 +335,8 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
                 exact hzero
               have hclassified := oppositeQuadrant_pair_bottomLeft_zero
                 (neWordMatrix q) hrow (neWordMatrix_bottomRow_ne_zero q)
-                p.last (BinaryIndexedCoprod.NeWord.last_ne_one p)
-                w.last (BinaryIndexedCoprod.NeWord.last_ne_one w) hpairZero
+                p.last (Monoid.CoprodI.NeWord.last_ne_one p)
+                w.last (Monoid.CoprodI.NeWord.last_ne_one w) hpairZero
               have hqClass := ih q.toList.length hqShort q rfl hclassified.1
               rcases hqClass with hqForward | hqBackward
               · exact Bool.noConfusion hqForward.2.1
@@ -364,8 +364,8 @@ private theorem neWord_bottomLeft_zero_classification (n : ℕ) :
                 exact hzero
               have hclassified := sameQuadrant_pair_bottomLeft_zero
                 (neWordMatrix q) hrow (neWordMatrix_bottomRow_ne_zero q)
-                p.last (BinaryIndexedCoprod.NeWord.last_ne_one p)
-                w.last (BinaryIndexedCoprod.NeWord.last_ne_one w) hpairZero
+                p.last (Monoid.CoprodI.NeWord.last_ne_one p)
+                w.last (Monoid.CoprodI.NeWord.last_ne_one w) hpairZero
               have hqClass := ih q.toList.length hqShort q rfl hclassified.1
               rcases hqClass with hqForward | hqBackward
               · rcases hqForward with ⟨hi, hj, m, hm, hqprod⟩

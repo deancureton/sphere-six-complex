@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.TriangleGroup.BinaryIndexedCoprod
+public import ForMathlib.GroupTheory.CoprodI.Centralizer
 import all SphereSixComplex.Prerequisites.TriangleGroup.BinaryIndexedCoprod
 
 /-!
@@ -13,85 +14,10 @@ corresponding free factor.
 
 noncomputable section
 
-namespace SphereSixComplex.TriangleGroup.FreeProductCentralizers
-
-open SphereSixComplex.TriangleGroup
-open BinaryIndexedCoprod
-open Monoid.CoprodI
-
-variable {I : Type*} {G : I → Type*} [DecidableEq I]
-variable [∀ i, Group (G i)] [∀ i, DecidableEq (G i)]
-
-/-- Two nonempty reduced words with equal products are the same reduced word. -/
-private theorem neWord_toWord_eq_of_prod_eq {i j k l : I}
-    {u : NeWord G i j} {v : NeWord G k l} (h : u.prod = v.prod) :
-    u.toWord = v.toWord := by
-  apply (Word.equiv (M := G)).symm.injective
-  change u.toWord.prod = v.toWord.prod
-  exact h
-
-/-- A reduced word whose last factor differs from that of a nonidentity letter cannot commute
-with that letter. -/
-public theorem neWord_not_commute_of_last_ne {i j k : I} (w : NeWord G i j)
-    (s : G k) (hjk : j ≠ k) (hs : s ≠ 1) :
-    ¬Commute w.prod (Monoid.CoprodI.of s) := by
-  let single : NeWord G k k := .singleton s hs
-  let middle : NeWord G i k := .append w hjk single
-  let conjugate : NeWord G i i := .append middle hjk.symm w.inv
-  intro hcomm
-  have hprod : conjugate.prod = single.prod := by
-    simp only [conjugate, middle, NeWord.append_prod, NeWord.inv_prod]
-    exact hcomm.mul_inv_cancel
-  have hword : conjugate.toWord = single.toWord :=
-    neWord_toWord_eq_of_prod_eq hprod
-  have hlen := congrArg (fun q : Word G ↦ q.toList.length) hword
-  have hwpos : 0 < w.toList.length := List.length_pos_of_ne_nil w.toList_ne_nil
-  simp only [conjugate, middle, NeWord.toWord, NeWord.toList, List.length_append] at hlen
-  omega
-
-/-- In an indexed free product, if every element of one factor commutes with a fixed nonidentity
-letter of that factor, then its centralizer is contained in the factor. -/
-public theorem eq_of_of_commute_of {k : I} (s : G k) (hs : s ≠ 1)
-    (hfactor : ∀ a : G k, Commute a s) (x : Monoid.CoprodI G)
-    (hx : Commute x (Monoid.CoprodI.of s)) :
-    ∃ a : G k, x = Monoid.CoprodI.of a := by
-  let word := Word.equiv (M := G) x
-  have hwordProd : word.prod = x := by
-    exact (Word.equiv (M := G)).symm_apply_apply x
-  by_cases hword : word = Word.empty
-  · refine ⟨1, ?_⟩
-    rw [hword, Word.prod_empty] at hwordProd
-    simpa only [map_one] using hwordProd.symm
-  · obtain ⟨i, j, w, hw⟩ := NeWord.of_word word hword
-    have hprod : w.prod = x := by
-      change w.toWord.prod = x
-      rw [hw]
-      exact hwordProd
-    have hwcomm : Commute w.prod (Monoid.CoprodI.of s) := by
-      simpa only [hprod] using hx
-    by_cases hjk : j = k
-    · subst j
-      rcases BinaryIndexedCoprod.NeWord.singleton_or_init_last w with
-        hsingle | ⟨l, p, hlk, hsplit, _⟩
-      · refine ⟨w.last, ?_⟩
-        exact hprod.symm.trans hsingle.2.1
-      · have hletter : Commute (Monoid.CoprodI.of w.last) (Monoid.CoprodI.of s) :=
-          (hfactor w.last).map (Monoid.CoprodI.of : G k →* Monoid.CoprodI G)
-        have hwhole : Commute (p.prod * Monoid.CoprodI.of w.last)
-            (Monoid.CoprodI.of s) := by
-          simpa only [hsplit] using hwcomm
-        have hpcomm : Commute p.prod (Monoid.CoprodI.of s) := by
-          have hcancel := hwhole.mul_left hletter.inv_left
-          simpa only [mul_assoc, mul_inv_cancel, mul_one] using hcancel
-        exact (neWord_not_commute_of_last_ne p s hlk hs hpcomm).elim
-    · exact (neWord_not_commute_of_last_ne w s hjk hs hwcomm).elim
-
-end SphereSixComplex.TriangleGroup.FreeProductCentralizers
-
 namespace SphereSixComplex.TriangleGroup
 
 open BinaryIndexedCoprod
-open FreeProductCentralizers
+open Monoid.CoprodI.Centralizer
 
 /-- An element commuting with the order-three generator lies in the embedded `C₃` factor. -/
 public theorem eq_inl_of_commute_g₁ (g : Delta) (h : Commute g g₁) :
@@ -138,7 +64,5 @@ public theorem eq_inr_of_commute_g₂ (g : Delta) (h : Commute g g₂) :
   apply deltaIndexedEquiv.injective
   change deltaToIndexed g = deltaToIndexed (Monoid.Coprod.inr a)
   exact ha.trans (deltaToIndexed_inr a).symm
-
-
 
 end SphereSixComplex.TriangleGroup
