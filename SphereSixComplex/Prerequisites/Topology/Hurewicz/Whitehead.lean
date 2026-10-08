@@ -29,13 +29,4 @@ public theorem integralSingularHomologyMap_eq_of_homotopic
     h.some (AddCommGrpCat.of ℤ) k
 
 
-
-
-
-
-
-
-
-
-
 end SphereSixComplex

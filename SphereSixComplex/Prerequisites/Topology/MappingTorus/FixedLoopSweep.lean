@@ -116,7 +116,6 @@ public noncomputable def fixedLoopSweepClass
     positiveCircleProductGenerator
 
 
-
 private theorem opensUnionHomologyIso_hom_apply
     {ι F : Type} [Fintype ι] [Inhabited ι] [TopologicalSpace ι]
     [DiscreteTopology ι] [TopologicalSpace F]
@@ -292,7 +291,6 @@ public def fixedLoopCylinderTopCatMap
     TopCat.of (CircleMappingTorus (Homeomorph.refl (StdTorus 1))) ⟶
       TopCat.of (CircleMappingTorus phi) :=
   TopCat.ofHom (fixedLoopCylinderMappingTorusMap phi c)
-
 
 
 public theorem identityMappingTorusBoundary_positiveCircleProductGenerator :

@@ -1,5 +1,6 @@
 module
 
+public import Mathlib.Analysis.Complex.Basic
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.StrongDeformationRetraction
 
 /-!

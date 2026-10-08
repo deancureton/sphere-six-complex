@@ -38,7 +38,6 @@ public noncomputable def coverSmallSingularSubcomplex :
     (TopCat.toSSet.map (topologicalSubsetInclusion X (U j)))
 
 
-
 /-- Integral chains on the cover-small singular simplicial set. -/
 public noncomputable abbrev coverSmallIntegralSingularChainComplex :
     ChainComplex AddCommGrpCat ℕ :=
@@ -50,25 +49,10 @@ public noncomputable def coverSmallIntegralSingularChainInclusion :
   SSet.chainComplexMap (coverSmallSingularSubcomplex X U).ι (AddCommGrpCat.of ℤ)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /-- A subspace equal to the whole space is homeomorphic to the ambient space by its inclusion. -/
 public noncomputable def topologicalSubsetHomeomorphOfEqUniv
     (s : Set X) (hs : s = Set.univ) : s ≃ₜ X :=
   (Homeomorph.setCongr hs).trans (Homeomorph.Set.univ X)
-
-
-
 
 
 end SmallChains

@@ -4,13 +4,13 @@ public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyZero
 public import Mathlib.Algebra.Homology.HomologySequence
 public import Mathlib.Algebra.Homology.HomologicalComplexAbelian
 
-/-! # Integral singular chains and induced chain maps -/
+/-! # Integral singular chains -/
 
 @[expose] public section
 
 noncomputable section
 
-open AlgebraicTopology CategoryTheory CategoryTheory.Limits
+open AlgebraicTopology CategoryTheory
 
 namespace SphereSixComplex
 

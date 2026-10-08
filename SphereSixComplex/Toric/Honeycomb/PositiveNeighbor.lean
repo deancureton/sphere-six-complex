@@ -34,7 +34,7 @@ public theorem positiveNeighborChart_low
   fin_cases r <;>
     simp [positiveNeighborSource, positiveNeighborDisplacement,
       positiveNeighborTargetLow, cellChart, e₁, e₂]
-  all_goals first | ring | (ext k; fin_cases k <;> rfl)
+  all_goals first | exact sub_eq_add_neg _ _ | (ext k; fin_cases k <;> rfl)
 
 public theorem correctedPlaneTile_positiveNeighbor_low_iff
     (r : Fin 3) (v : ToricLattice) (p q : CellSquare) :

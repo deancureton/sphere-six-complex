@@ -104,5 +104,4 @@ theorem exists_sourceChamber_closureHomeomorph :
   exact ⟨g, e, hgd, hgbij, fun _ ↦ rfl⟩
 
 
-
 end SphereSixComplex.Periods.SourceChamberTopology

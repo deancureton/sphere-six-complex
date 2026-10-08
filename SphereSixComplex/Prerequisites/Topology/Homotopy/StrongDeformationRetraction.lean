@@ -1,16 +1,13 @@
 module
 
 public import ForMathlib.Topology.Homotopy.EquivariantDeformationRetraction
-public import ForMathlib.Topology.Collar.HomotopyExtension
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.SubspaceInclusion
 public import Mathlib.Topology.Homotopy.Lifting
-import ForMathlib.Topology.Homotopy.Extension
 
 /-!
 # Strong deformation retractions and covering lifts
 
-Homotopy extension upgrades a homotopy-equivalent inclusion to a strong deformation
-retract. Strong deformation retractions lift equivariantly through quotient coverings
+Strong deformation retractions lift equivariantly through quotient coverings
 by uniqueness of path lifts.
 -/
 
@@ -21,16 +18,9 @@ noncomputable section
 open Set Topology unitInterval
 open scoped ContinuousMap
 
-universe u
 
 namespace SphereSixComplex
 
-/-- The homotopy-extension property for the inclusion `A ⊆ X`. -/
-public def HasHomotopyExtensionProperty {X : Type u} [TopologicalSpace X] (A : Set X) : Prop :=
-  ∀ (Y : Type u) (_ : TopologicalSpace Y) (f : C(X, Y)) (g : C(A, Y))
-    (h : ContinuousMap.Homotopy (f.comp (topologicalSubsetInclusionMap A)) g),
-    ∃ (f₁ : C(X, Y)) (H : ContinuousMap.Homotopy f f₁),
-      ∀ s (a : A), H (s, (a : X)) = h (s, a)
 
 /-- Extract the homotopy equivalence recorded by a homotopy-equivalent subspace inclusion. -/
 public noncomputable def IsHomotopyEquivalenceInclusion.toHomotopyEquiv
@@ -53,30 +43,6 @@ public structure StrongDeformationRetraction (X : Type*) [TopologicalSpace X] (A
   retract_fixed : ∀ x, x ∈ A → retract x = x
   homotopy_fixed : ∀ s x, x ∈ A → homotopy (s, x) = x
 
-
-
-/-! ## Interface translations -/
-
-/-- The subspace form of the homotopy-extension property is the map form for the subspace
-inclusion.  Source: Hatcher, *Algebraic Topology*, §0 p. 14 (definition of the homotopy extension
-property). -/
-public theorem hasHomotopyExtensionProperty_iff {X : Type u} [TopologicalSpace X] (A : Set X) :
-    HasHomotopyExtensionProperty A ↔ HomotopyExtensionProperty (topologicalSubsetInclusionMap A) :=
-  ⟨.mk, HomotopyExtensionProperty.extend⟩
-
-
-/-- The subspace inclusion is a homotopy equivalence in the sense of `IsHomotopyEquivalence` iff it
-is one in the sense of `IsHomotopyEquivalenceInclusion`.  Source: Hatcher, *Algebraic Topology*,
-Cor. 0.20 p. 16 (hypothesis "the inclusion `A ↪ X` is a homotopy equivalence"). -/
-public theorem isHomotopyEquivalenceInclusion_iff {X : Type*} [TopologicalSpace X] (A : Set X) :
-    IsHomotopyEquivalenceInclusion A ↔
-      IsHomotopyEquivalence ⇑(topologicalSubsetInclusionMap A) :=
-  ⟨fun ⟨e, he⟩ ↦ ⟨e.symm, congrArg DFunLike.coe he⟩, fun ⟨e, he⟩ ↦ ⟨e.symm, DFunLike.ext' he⟩⟩
-
-
-end SphereSixComplex
-
-namespace SphereSixComplex
 
 /-! ## Lifting a strong deformation retraction through a covering -/
 
@@ -146,7 +112,6 @@ public theorem liftTrack_smul {G E B : Type*} [Group G] [TopologicalSpace E] [To
   · intro s
     rw [apply_smul_eq hp, liftTrack_lifts, apply_smul_eq hp]
   · rw [liftTrack_zero]
-
 
 
 /-- A strong deformation retraction lifts uniquely through a regular quotient covering. The

@@ -156,7 +156,6 @@ public def orderFourAffineDiscLiftInclusion {r : ℝ} (hr : r ≤ 1 - 1 / 3) :
   fun q ↦ ⟨q.1, A.orderFourAffineDiscLiftCarrier_subset_halfPlane hr q.2⟩
 
 
-
 @[instance_reducible] public noncomputable def orderThreeAffineDiscLiftAction (r : ℝ) :=
   restrictedMulAction (regularFamilyDeckAction A.periods)
     (A.orderThreeAffineDiscLiftCarrier r)
@@ -272,7 +271,6 @@ public noncomputable def orderFourAffineDiscLiftQuotientInclusion
       Quotient (orbitRelOf A.orderFourAffineHalfPlaneLiftAction) :=
   Quotient.map (A.orderFourAffineDiscLiftInclusion hr)
     (A.orderFourAffineDiscLiftInclusion_respects hr)
-
 
 
 public theorem regularFamilyDeckAction_continuous :
@@ -414,9 +412,6 @@ public theorem quotientToFun_eq_orderFourAffineDiscLiftQuotientInclusion
     change Quotient.mk _ (E.toFun x) =
       Quotient.mk _ (A.orderFourAffineDiscLiftInclusion hr x)
     rw [hE]
-
-
-
 
 
 end SphereSixComplex.Geometry.AnalyticData
