@@ -37,7 +37,6 @@ open SphereSixComplex.Geometry.CuspPeriodExpansion
 open SphereSixComplex.Geometry.CuspCollar
 open SphereSixComplex.Geometry.CuspStraightening
 open SphereSixComplex.Geometry.CuspStraighteningRetraction
-open SphereSixComplex.Geometry.CuspStraightening
 open SphereSixComplex.Geometry.CuspToricPhaseAction
 open SphereSixComplex.Geometry.CuspPeriodExpansion.NormalizedFuchsianCuspCoordinate
 open SphereSixComplex.Geometry.InfiniteA2Toric.QuantitativeRegions

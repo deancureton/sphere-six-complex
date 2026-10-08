@@ -125,7 +125,6 @@ public theorem transport_mem_range_core (D : PaperVanKampenFourPieceCover base) 
             (⟨fun z : (D.core ∩ P : Set Y) ↦ (⟨z, z.2.2⟩ : P), by fun_prop⟩ :
               C((D.core ∩ P : Set Y), P)) ⟨pt, hpt⟩ y)) ∈
       D.coreFundamentalGroupMap.range := by
-  classical
   set connCore : Path (⟨base, D.base_mem_core⟩ : D.core) ⟨pt, hpt.1⟩ :=
     D.connectorInCore conn hconn hpt.1 with hconnCore
   refine ⟨(FundamentalGroup.fundamentalGroupMulEquivOfPath connCore.symm)

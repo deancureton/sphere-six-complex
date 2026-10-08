@@ -19,7 +19,7 @@ public theorem continuous_torusCoordinates_of_height_ne_zero
     (hf : Continuous f) (ht : ∀ x, M.t (f x) ≠ 0) :
     Continuous (fun x ↦ torusCoordinates M (f x)) := by
   apply M.torus_openEmbedding.isEmbedding.continuous_iff.mpr
-  convert hf using 1 <;> first | rfl | exact funext (fun x ↦ torusEmbedding_torusCoordinates M (ht x))
+  convert hf using 1; first | rfl | exact funext (fun x ↦ torusEmbedding_torusCoordinates M (ht x))
 namespace Construction
 
 

@@ -53,7 +53,7 @@ public theorem integralMatrix_rhoLambda_gOne :
     LinearMap.toMatrix' (rhoLambda g₁).toLinearMap = A₁ := by
   ext i j
   rw [LinearMap.toMatrix'_apply]
-  convert congrFun (rhoLambda_g₁_apply (Pi.single j 1)) i using 1 <;> simp
+  convert congrFun (rhoLambda_g₁_apply (Pi.single j 1)) i using 1; simp
 
 /-- An affine automorphism of a period torus together with its actual lift and integral lattice
 automorphism. -/

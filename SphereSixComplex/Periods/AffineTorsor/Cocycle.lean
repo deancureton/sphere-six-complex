@@ -153,7 +153,6 @@ public theorem glue_local_sections (P : OrbifoldAffineDescentData)
       (∀ g z, t (fuchsianSourceAction g • z) = (P.affineTransport g (z, t z)).2) ∧
       ∀ i z, P.quotient.coordinate z ∈ U i →
         t z = s i z - c i (P.quotient.coordinate z) * P.frameZero z := by
-  classical
   let idx (z : UpperHalfPlane) := (hcover (P.quotient.coordinate z)).choose
   have hidx (z : UpperHalfPlane) : P.quotient.coordinate z ∈ U (idx z) :=
     (hcover (P.quotient.coordinate z)).choose_spec

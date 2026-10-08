@@ -95,7 +95,6 @@ public theorem ExactFuchsianOrbifoldCoordinate.exists_regular_holomorphic_descen
     (hinvariant : ∀ g z, C.coordinate z ∈ W → f (fuchsianSourceAction g • z) = f z) :
     ∃ F : ℂ → ℂ, DifferentiableOn ℂ F W ∧
       ∀ z, C.coordinate z ∈ W → F (C.coordinate z) = f z := by
-  classical
   let lift (q : ℂ) := (C.coordinate_isQuotientMap.surjective q).choose
   have hlift (q : ℂ) : C.coordinate (lift q) = q :=
     (C.coordinate_isQuotientMap.surjective q).choose_spec

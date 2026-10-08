@@ -208,7 +208,7 @@ private theorem orderThreeCross_action_zero :
     norm_num [standardExteriorSquareMap, standardSecondCompoundMatrix,
       orderThreeProductIntegerExtension, Matrix.mulVec, dotProduct,
       Fin.sum_univ_succ, standardPeriodPairFirst, standardPeriodPairSecond,
-      Pi.single_apply] <;> decide
+      Pi.single_apply]
 
 private theorem orderThreeCross_action_one :
     positiveCircleCross
@@ -227,7 +227,7 @@ private theorem orderThreeCross_action_one :
     norm_num [standardExteriorSquareMap, standardSecondCompoundMatrix,
       orderThreeProductIntegerExtension, Matrix.mulVec, dotProduct,
       Fin.sum_univ_succ, standardPeriodPairFirst, standardPeriodPairSecond,
-      Pi.single_apply] <;> decide
+      Pi.single_apply]
 
 private theorem orderFourCross_action_zero :
     positiveCircleCross
@@ -245,7 +245,7 @@ private theorem orderFourCross_action_zero :
     norm_num [standardExteriorSquareMap, standardSecondCompoundMatrix,
       orderFourProductIntegerExtension, Matrix.mulVec, dotProduct,
       Fin.sum_univ_succ, standardPeriodPairFirst, standardPeriodPairSecond,
-      Pi.single_apply] <;> decide
+      Pi.single_apply]
 
 private theorem orderFourCross_action_one :
     positiveCircleCross
@@ -264,7 +264,7 @@ private theorem orderFourCross_action_one :
     norm_num [standardExteriorSquareMap, standardSecondCompoundMatrix,
       orderFourProductIntegerExtension, Matrix.mulVec, dotProduct,
       Fin.sum_univ_succ, standardPeriodPairFirst, standardPeriodPairSecond,
-      Pi.single_apply] <;> decide
+      Pi.single_apply]
 
 /-- Translation of the source base circle by one normalized deck step. -/
 private def normalizedBaseStep (X : Type) [TopologicalSpace X] :

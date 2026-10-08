@@ -81,7 +81,6 @@ private theorem addMonoidHom_ext_of_equiv_pi_single_one
     have hz : (Pi.single i z : Fin n → ℤ) =
         z • (Pi.single i 1 : Fin n → ℤ) := by
       ext j
-      classical
       by_cases hji : j = i
       · subst j
         simp

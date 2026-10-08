@@ -16,7 +16,7 @@ public theorem cuspThirdCoordinate_fixed :
     rhoLambda g₀ (Pi.single (2 : Fin 4) 1) = Pi.single 2 1 := by
   rw [rhoLambda_g₀_apply]
   ext i
-  fin_cases i <;> norm_num [M₀, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, Pi.single_apply] <;> decide
+  fin_cases i <;> norm_num [M₀, Matrix.mulVec, dotProduct, Fin.sum_univ_succ, Pi.single_apply]
 
 public def cuspThirdFixedCircle (x : PeriodDomain) :
     FixedTopologicalCircle (cuspFiberClutching x) :=

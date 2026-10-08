@@ -88,7 +88,7 @@ public theorem integralMatrix_rhoLambda_gZero :
     LinearMap.toMatrix' (rhoLambda g₀).toLinearMap = M₀ := by
   ext i j
   rw [LinearMap.toMatrix'_apply]
-  convert congrFun (rhoLambda_g₀_apply (Pi.single j 1)) i using 1 <;> simp
+  convert congrFun (rhoLambda_g₀_apply (Pi.single j 1)) i using 1; simp
 
 public theorem exteriorSquareMatrix_rhoLambda_gZero :
     exteriorSquareMatrix (rhoLambda g₀) =

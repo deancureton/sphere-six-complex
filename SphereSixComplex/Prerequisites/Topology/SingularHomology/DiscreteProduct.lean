@@ -53,7 +53,6 @@ theorem discreteProductEquiv_component [DecidableEq J] (n : ℕ) (j : J)
     discreteProductEquiv J X n (integralSingularHomologyMap n
       ((ContinuousMap.const X j).prodMk (ContinuousMap.id X)) x) =
       Pi.single j x := by
-  classical
   apply (discreteProductEquiv J X n).symm.injective
   rw [AddEquiv.symm_apply_apply, discreteProductEquiv_symm_apply]
   simp [Pi.single_apply, apply_ite]

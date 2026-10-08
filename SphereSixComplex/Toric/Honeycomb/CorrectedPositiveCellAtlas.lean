@@ -15,7 +15,6 @@ open SphereSixComplex.Geometry.CuspCombinatorics
 open SphereSixComplex.Geometry.CuspFilling
 open SphereSixComplex.Geometry.CuspLocalPhaseAction
 open SphereSixComplex.Geometry.InfiniteA2Toric
-open SphereSixComplex.Geometry.InfiniteA2Toric.Construction
 
 namespace Construction
 
@@ -48,7 +47,6 @@ public theorem correctedPositiveHexagonMap_of_mem_closedBall
         ⟨correctedHexagonHomeomorph v x,
           (correctedHexagonHomeomorph_mem_closed_iff v x).mpr hx⟩ :
             constructedPositiveCentralCell r v) := by
-  classical
   rw [correctedPositiveHexagonMap, dite_eq_left]
 
 
