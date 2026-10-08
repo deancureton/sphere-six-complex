@@ -6,16 +6,15 @@ compact complex threefold diffeomorphic to the standard smooth six-sphere.
 The Lean development separates reusable mathematics in `SphereSixComplex/Prerequisites/` from
 the construction in topic directories such as `Elliptic/`, `Cusp/`, `Toric/`, and `Homology/`.
 See [MODULE-LAYOUT.md](MODULE-LAYOUT.md) for the classification and entry points. The `blueprint/` directory tracks the
-retained construction and its Lean dependencies. `ChallengeDefs.lean`, `ChallengeAxioms.lean`, `Challenge.lean`,
+retained construction and its Lean dependencies. `ChallengeDefs.lean`, `Challenge.lean`,
 `Solution.lean`, and `comparator.json` form the Comparator boundary. `ChallengeDefs` contains
-the Mathlib-only statement definitions; `ChallengeAxioms` catalogs the three standard logical
-axioms for both Comparator environments. Nothing imports `Challenge`.
+the Mathlib-only statement definitions. Comparator permits only the three standard logical axioms. Nothing imports `Challenge`.
 
 ## Status
 
 The headline theorem is source-sorry-free. Its trust boundary consists of Lean's three standard
 logical axioms, documented in [TRUST-BOUNDARY.md](TRUST-BOUNDARY.md)
-and checked by the allowlists in `scripts/`. No paper-specific axioms remain. The two `sorry`s
+and checked by `scripts/check-axioms.sh`. No paper-specific axioms remain. The two `sorry`s
 in `Challenge.lean` are Comparator challenge declarations and are not imported by the solution.
 The topological endpoint `mathoverflow_1973` uses only Lean’s three standard axioms: it
 transports the complex atlas along the proved homeomorphism, without smooth classification.
@@ -94,17 +93,11 @@ We thank Thomas Zhu for giving us permission to use and port the van Kampen deve
 
 ## Trust boundary
 
-Every `axiom` in the development is a trust boundary, so two scripts keep them visible.
-
-`./scripts/check-axioms.sh` is the gate: it requires the recursive final and implemented-construction
-dependency closures to match `scripts/allowed-axioms.txt` and
-`scripts/allowed-construction-axioms.txt` exactly. Entries must be removed when dependencies are
-discharged, and the generated catalog in `ChallengeAxioms.lean` must be current. Set
-`CHECK_AXIOMS_SKIP_BUILD=1` to reuse an existing build.
-
-`./scripts/axiom_inventory.py` is the static counterpart: it lists every `axiom` declaration in
-`SphereSixComplex/` and marks whether it is reachable from `Final` (so the headline theorem may
-come to depend on it), only from `Main`, or from neither.
+`./scripts/check-axioms.sh` checks the compiled dependency closure of the final theorems
+and construction, following types, proof bodies, constructors and recursors. It rejects
+any axiom other than `propext`, `Classical.choice` and `Quot.sound`, and checks that
+`comparator.json` permits exactly those axioms. Set `CHECK_AXIOMS_SKIP_BUILD=1` to reuse
+an existing build.
 
 `./scripts/check-sorries.py` checks that no `sorry`, `admit`, or `native_decide` appears outside
 the trusted Comparator statements in `Challenge.lean`. It counts them, so an extra placeholder in
@@ -120,6 +113,7 @@ These gates run in CI after `lake build`.
 ## Comparator
 
 ```sh
-./scripts/setup-comparator.sh
-./scripts/run-comparator.sh
+lake comparator
 ```
+
+The bundled Comparator requires Linux with bubblewrap for sandboxed verification.

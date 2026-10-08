@@ -1,8 +1,0 @@
-# Constants in the current final-theorem trust closure.
-# Exact contract and sources are reviewed in TRUST-BOUNDARY.md.
-# No construction-specific axioms remain.
-
-# Lean's standard logical axioms.
-propext
-Quot.sound
-Classical.choice

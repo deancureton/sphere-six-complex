@@ -1,14 +1,13 @@
 module
 
 public import ChallengeDefs
-public import ChallengeAxioms
 
 /-!
 # The Comparator challenge statement
 
-This module is the trusted statement boundary. Every definition the final theorem mentions is
-declared in `ChallengeDefs`. The established results permitted by Comparator are imported through
-`ChallengeAxioms`, so Challenge and Solution share the exact same declarations.
+This module is the trusted statement boundary. `ChallengeDefs` supplies the shared statement
+definitions and depends only on Mathlib. Comparator permits only Lean's three standard axioms:
+`propext`, `Classical.choice`, and `Quot.sound`.
 
 The final theorem is stated as the existence of a complex atlas compatible with the standard smooth
 structure on the six-sphere. This is stronger than the existence of an almost-complex tangent

@@ -1,17 +1,18 @@
-import SphereSixComplex.Main
+import Solution
 
 open Lean Elab Command
 
--- Keep this traversal in sync with `ComparatorAxiomClosure.lean`: unlike `#print axioms`, it
--- follows constants appearing in types as well as values and therefore sees the complete trust
--- boundary of the implemented construction.
 run_cmd do
   let env ← getEnv
-  let mut worklist : Array Name :=
-    #[`SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere,
-      `SphereSixComplex.Geometry.AnalyticData.star_simplyConnectedSpace,
-      `SphereSixComplex.Geometry.AnalyticData.compactComplexStar,
-      `SphereSixComplex.exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere]
+  let mut worklist : Array Name := #[
+    `sphere_six_admits_complex_structure,
+    `mathoverflow_1973,
+    `SphereSixComplex.exists_complexThreefold_nonempty_diffeomorph_sixSphere,
+    `SphereSixComplex.Geometry.AnalyticData.star_nonempty_homologyEquiv_sixSphere,
+    `SphereSixComplex.Geometry.AnalyticData.star_simplyConnectedSpace,
+    `SphereSixComplex.Geometry.AnalyticData.compactComplexStar,
+    `SphereSixComplex.exists_complexThreefold_simplyConnected_homologyEquiv_sixSphere]
+  let permitted := #[`propext, `Classical.choice, `Quot.sound]
   let mut checked : Std.HashSet Name := {}
   let mut axioms : Std.HashSet Name := {}
   while !worklist.isEmpty do
@@ -42,9 +43,13 @@ run_cmd do
       let some dependency := env.find? name
         | throwError "dependency not found: {name}"
       if let .axiomInfo axiomInfo := dependency then
+        unless permitted.contains axiomInfo.name do
+          throwError "forbidden axiom: {axiomInfo.name} (reached from {target})"
         axioms := axioms.insert axiomInfo.name
       if !checked.contains name then
         worklist := worklist.push name
     checked := checked.insert target
-  for name in axioms.toArray.qsort Name.lt do
-    logInfo m!"{name}"
+  for name in permitted do
+    unless axioms.contains name do
+      throwError "expected standard axiom absent from audited closure: {name}"
+  logInfo m!"Axiom audit passed: {checked.size} constants; only propext, Classical.choice, Quot.sound."

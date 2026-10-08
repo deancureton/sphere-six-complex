@@ -1,6 +1,0 @@
-# The implemented construction uses only Lean's three standard logical axioms.
-# Smooth six-sphere recognition occurs only in the final theorem.
-
-Classical.choice
-Quot.sound
-propext

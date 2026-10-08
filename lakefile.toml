@@ -42,9 +42,6 @@ name = "SphereSixComplex"
 name = "ChallengeDefs"
 
 [[lean_lib]]
-name = "ChallengeAxioms"
-
-[[lean_lib]]
 name = "Challenge"
 
 [[lean_lib]]
