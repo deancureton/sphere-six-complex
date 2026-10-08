@@ -14,7 +14,7 @@ open SphereSixComplex.EllipticFilling
 public theorem regularMovingToFixed_period_smul (A : AnalyticData)
     (b : RegularBase (U := A.paperTriangleUniformization)) (n : IntegerPeriods) (t : ℝ) :
     A.regularMovingToFixed b (t • periodVector (regularParameterMap A.periods b).1 n) =
-      t • periodVector A.duplicatedSectionSevenBandParameter n := by
+      t • periodVector A.commonBandParameter n := by
   change (fullRankDomain _).realEquiv
     ((fullRankDomain _).realEquiv.symm (t • periodVector _ n)) = _
   dsimp only [Prod.fst]
@@ -28,8 +28,8 @@ public theorem regularMovingToFixed_period_smul (A : AnalyticData)
 public theorem normalizedMarkedPeriodCircle_central (A : AnalyticData)
     (n : IntegerPeriods) (z : StdTorus 1) :
     A.stripLiftPoint A.affineNamedStripLift affineStripMidpoint
-      (integerPeriodCircle A.duplicatedSectionSevenBandParameter
-        A.duplicatedSectionSevenBandFullRank n z) =
+      (integerPeriodCircle A.commonBandParameter
+        A.commonBandFullRank n z) =
       regularPeriodCircleInGlobal A.periods n
         (z 0, A.affineNormalizedMidpoint) := by
   obtain ⟨t, ht⟩ := QuotientAddGroup.mk_surjective (s := AddSubgroup.zmultiples (1 : ℝ)) (z 0)
@@ -53,8 +53,8 @@ public def normalizedMarkedPeriodBandCircle {A : AnalyticData}
   toFun z := A.actualAffineHeightSplit.sidesIntersectionHomeomorph.symm
     ((A.affineCentralBandMarkedProductHomeomorph
       A.affineCentralSeparation).symm
-        (affineStripMidpoint, integerPeriodCircle A.duplicatedSectionSevenBandParameter
-          A.duplicatedSectionSevenBandFullRank n z))
+        (affineStripMidpoint, integerPeriodCircle A.commonBandParameter
+          A.commonBandFullRank n z))
   continuous_toFun := A.actualAffineHeightSplit.sidesIntersectionHomeomorph.symm.continuous.comp
     ((A.affineCentralBandMarkedProductHomeomorph
       A.affineCentralSeparation).symm.continuous.comp
@@ -63,8 +63,8 @@ public def normalizedMarkedPeriodBandCircle {A : AnalyticData}
 public theorem normalizedMarkedPeriodBandCircle_coordinate {A : AnalyticData}
     (R : A.AffineRadialCompletionInput) (n : IntegerPeriods) :
     R.twoDiscCover.bandHomotopyEquiv.toFun.comp (normalizedMarkedPeriodBandCircle R n) =
-      integerPeriodCircle A.duplicatedSectionSevenBandParameter
-        A.duplicatedSectionSevenBandFullRank n := by
+      integerPeriodCircle A.commonBandParameter
+        A.commonBandFullRank n := by
   ext1 z
   change (A.affineCentralBandMarkedProductHomeomorph
     A.affineCentralSeparation
@@ -83,8 +83,8 @@ public theorem normalizedMarkedPeriodBandCircle_interior {A : AnalyticData}
         (regularPeriodCircleInGlobal A.periods n (z 0, A.affineNormalizedMidpoint)) := by
   have h := A.affineCentralBandMarkedProductHomeomorph_symm_toCentralFamily
     A.affineCentralSeparation
-    (affineStripMidpoint, integerPeriodCircle A.duplicatedSectionSevenBandParameter
-      A.duplicatedSectionSevenBandFullRank n z)
+    (affineStripMidpoint, integerPeriodCircle A.commonBandParameter
+      A.commonBandFullRank n z)
   rw [A.normalizedMarkedPeriodCircle_central] at h
   have h' := congrArg A.centralToEllipticInterior h
   dsimp only [centralToEllipticInterior, affineCentralBandToCentralFamily,
@@ -99,8 +99,8 @@ public theorem normalizedMarkedPeriodBandCircle_bandOne {A : AnalyticData}
         standardCircleHomologyGenerator) = n := by
   let e := EllipticFilling.RadialEllipticActionData.centralFiberCoverSourceHomeomorph
     (orderThreeRadialActionData A.periods)
-  change additiveTorusHomologyDegreeOne A.duplicatedSectionSevenBandParameter
-    A.duplicatedSectionSevenBandFullRank
+  change additiveTorusHomologyDegreeOne A.commonBandParameter
+    A.commonBandFullRank
       (integralSingularHomologyMap 1 ⟨e, e.continuous⟩
         (integralSingularHomologyMap 1 ⟨e.symm, e.symm.continuous⟩
           (integralSingularHomologyMap 1 R.twoDiscCover.bandHomotopyEquiv.toFun
@@ -262,10 +262,10 @@ public theorem cuspToEllipticInteriorMap_eq_central {A : AnalyticData}
   have h : A.ellipticCentralImageHomeomorph
       ⟨D.cuspToEllipticInteriorMap q, D.cuspToEllipticInteriorMap_mem_centralImage q⟩ =
       A.starToCentral 0 q := by
-    apply A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.injective
+    apply A.openEmbeddingStarData.centralToEulerPieceHomeomorph.injective
     apply Subtype.ext
-    rw [A.centralToSectionSevenEulerPiece_centralImage]
-    exact (A.centralToSectionSevenEulerPiece_starToCentral 0 q).symm
+    rw [A.centralToEulerPiece_centralImage]
+    exact (A.centralToEulerPiece_starToCentral 0 q).symm
   have h' := congrArg A.ellipticCentralImageHomeomorph.symm h
   rw [Homeomorph.symm_apply_apply] at h'
   exact congrArg Subtype.val h'

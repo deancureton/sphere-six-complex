@@ -111,9 +111,9 @@ variable (A : AnalyticData)
 /-- The actual cusp collar source is canonically the central--cusp overlap in the glued star. -/
 public noncomputable def cuspCollarToStarOverlapHomeomorph :
     A.openEmbeddingStarData.collarSource 0 ≃ₜ
-      ((sectionSevenStarOpenCover
+      ((starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 1 :
           Set (GluedSpace
             A.openEmbeddingStarData.toFourPieceStarGluingData.glueData)) := by
@@ -132,7 +132,7 @@ public theorem cuspCollarToStarOverlapHomeomorph_coe
 /-- The actual cusp filling is canonically its open image in the glued star. -/
 public noncomputable def cuspFillingToStarPieceHomeomorph :
     A.openEmbeddingStarData.filling 0 ≃ₜ
-      (sectionSevenStarOpenCover
+      (starOpenCover
         A.openEmbeddingStarData.toFourPieceStarGluingData).piece 1 := by
   let S := A.openEmbeddingStarData
   let e : S.filling 0 ≃ₜ Set.range
@@ -150,9 +150,9 @@ public theorem cuspFillingToStarPieceHomeomorph_coe
 /-- The normalized additive projection transported to the exact cusp overlap of the glued star. -/
 public noncomputable def cuspBoundaryProjection :
     C(additiveCuspRadiusCover A.starCuspWitness.localWitness.radius,
-      ((sectionSevenStarOpenCover
+      ((starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 1 :
           Set (GluedSpace
             A.openEmbeddingStarData.toFourPieceStarGluingData.glueData))) :=
@@ -163,7 +163,7 @@ public noncomputable def cuspBoundaryProjection :
 /-- The full local-carrier projection transported to the exact cusp piece of the glued star. -/
 public noncomputable def cuspFillingProjectionToStar :
     C(localCarrier constructedModel A.starCuspWitness.localWitness.radius,
-      (sectionSevenStarOpenCover
+      (starOpenCover
         A.openEmbeddingStarData.toFourPieceStarGluingData).piece 1) :=
   (⟨A.cuspFillingToStarPieceHomeomorph,
     A.cuspFillingToStarPieceHomeomorph.continuous⟩ : C(_, _)).comp
@@ -171,13 +171,13 @@ public noncomputable def cuspFillingProjectionToStar :
 
 /-- Inclusion of the actual central--cusp overlap into the cusp piece. -/
 public def cuspOverlapToFillingPiece :
-    C(((sectionSevenStarOpenCover
+    C(((starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 1 :
           Set (GluedSpace
             A.openEmbeddingStarData.toFourPieceStarGluingData.glueData)),
-      (sectionSevenStarOpenCover
+      (starOpenCover
         A.openEmbeddingStarData.toFourPieceStarGluingData).piece 1) where
   toFun x := ⟨x.1, x.2.2⟩
   continuous_toFun := continuous_subtype_val.subtype_mk _

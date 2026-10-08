@@ -19,13 +19,13 @@ theorem geometricCentralToCore_hurewicz
     (g : FundamentalGroup A.CentralFamily A.centralAffineBase) :
     hurewiczFunction _ (A.geometricMarkedCentralToCoreEquiv g) =
       integralSingularHomologyMap 1
-        ⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
-          A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩
+        ⟨A.openEmbeddingStarData.centralToEulerPieceHomeomorph,
+          A.openEmbeddingStarData.centralToEulerPieceHomeomorph.continuous⟩
         (hurewiczFunction _ g) := by
   have h : hurewiczFunction _ (A.cuspCentralToCoreEquiv g) =
       integralSingularHomologyMap 1
-          ⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
-            A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩
+          ⟨A.openEmbeddingStarData.centralToEulerPieceHomeomorph,
+            A.openEmbeddingStarData.centralToEulerPieceHomeomorph.continuous⟩
         (hurewiczFunction _ g) := by
     unfold cuspCentralToCoreEquiv
     erw [hurewiczFunction_basePath, hurewiczFunction_homeomorphMulEquivOfEq]

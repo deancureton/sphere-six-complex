@@ -77,8 +77,8 @@ public theorem ellipticFillingImages_disjoint :
         A.starCover.piece 1 ∩
           A.starCover.piece 2 = ∅ := by
       simpa [starCover,
-        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
-        sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using
+        OpenEmbeddingStarData.mayerVietorisCover,
+        mayerVietorisOpenCover, mayerVietorisOrder] using
         A.openEmbeddingStarData.fillingPiece_inter_fillingPiece
           (i := 1) (j := 2) (by decide)
     rw [hdisjoint] at h
@@ -89,44 +89,44 @@ public theorem ellipticFillingImages_disjoint :
 
 
 /-- Use the order-three fixed period lattice as the common band parameter. -/
-public def duplicatedSectionSevenBandParameter : Parameters :=
+public def commonBandParameter : Parameters :=
   (SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap A.periods
     A.modular.modularParameter.toTriangleUniformization.zOne).1
 
 /-- The canonical band parameter has full rank. -/
-public noncomputable def duplicatedSectionSevenBandFullRank :
-    FullRank A.duplicatedSectionSevenBandParameter :=
+public noncomputable def commonBandFullRank :
+    FullRank A.commonBandParameter :=
   let p := SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap A.periods
     A.modular.modularParameter.toTriangleUniformization.zOne
   FullRank.ofSetupInequalities p.1 p.2
 
 /-- Real period coordinates identify the order-three and order-four central four-tori. -/
-public noncomputable def duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph :
-    AdditiveTorus A.duplicatedSectionSevenBandParameter ≃ₜ
+public noncomputable def orderThreeToOrderFourBandHomeomorph :
+    AdditiveTorus A.commonBandParameter ≃ₜ
       AdditiveTorus
         (SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).1 :=
   let p₄ := SphereSixComplex.Geometry.AnalyticTorusFamily.parameterMap A.periods
     A.modular.modularParameter.toTriangleUniformization.zTwo
   fullRankAdditiveTorusHomeomorph
-    A.duplicatedSectionSevenBandParameter p₄.1
-    A.duplicatedSectionSevenBandFullRank
+    A.commonBandParameter p₄.1
+    A.commonBandFullRank
     (FullRank.ofSetupInequalities p₄.1 p₄.2)
 
 /-- The order-three restricted covering source is the canonical band torus. -/
-public noncomputable def duplicatedSectionSevenBandToOrderThreeCoverSource :
-    AdditiveTorus A.duplicatedSectionSevenBandParameter ≃ₜ
+public noncomputable def commonBandToOrderThreeCoverSource :
+    AdditiveTorus A.commonBandParameter ≃ₜ
       RadialEllipticActionData.CentralFiberCoverSource
         (orderThreeRadialActionData A.periods) :=
   (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
     (orderThreeRadialActionData A.periods)).symm
 
 /-- Transport the canonical band torus to the order-four restricted covering source. -/
-public noncomputable def duplicatedSectionSevenBandToOrderFourCoverSource :
-    AdditiveTorus A.duplicatedSectionSevenBandParameter ≃ₜ
+public noncomputable def commonBandToOrderFourCoverSource :
+    AdditiveTorus A.commonBandParameter ≃ₜ
       RadialEllipticActionData.CentralFiberCoverSource
         (orderFourRadialActionData A.periods) :=
-  A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.trans
+  A.orderThreeToOrderFourBandHomeomorph.trans
     (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
       (orderFourRadialActionData A.periods)).symm
 

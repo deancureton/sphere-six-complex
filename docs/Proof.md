@@ -162,7 +162,8 @@ All paths below are under `SphereSixComplex/`.
 
 Use a specific module when possible. `SphereSixComplex.Final` contains the final
 argument; `SphereSixComplex.Construction` and `SphereSixComplex.Prerequisites`
-are aggregates; `SphereSixComplex` imports the retained library.
+are aggregates. `SphereSixComplex` imports the final argument; import
+`SphereSixComplex.All` for the full library. The default build checks both.
 
 Follow Mathlib's [naming](https://leanprover-community.github.io/contribute/naming.html)
 and [style](https://leanprover-community.github.io/contribute/style.html) conventions.

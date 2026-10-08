@@ -14,7 +14,7 @@ import sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
 LIB = "SphereSixComplex"
-ROOT_MODULE = f"{LIB}.Main"
+ROOT_MODULE = f"{LIB}.All"
 
 IMPORT_RE = re.compile(r"^\s*(?:public\s+)?import\s+(?:all\s+)?([\w.]+)")
 
@@ -50,7 +50,7 @@ def main() -> int:
         for module in orphans:
             print(f"  {module}")
         print()
-        print(f"Nothing checks these modules. Import them from {LIB}/Main.lean, or delete them.")
+        print(f"Nothing checks these modules. Import them from {LIB}/All.lean, or delete them.")
         return 1
 
     missing = sorted((module, dependency) for module, dependencies in imports.items()

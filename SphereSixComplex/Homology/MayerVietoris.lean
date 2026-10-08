@@ -30,10 +30,10 @@ variable (A : OpenEmbeddingStarData)
 /-- At every Mayer--Vietoris stage, the new filling meets the preceding union only in its
 central collar.  Earlier fillings contribute no additional points to this overlap. -/
 public theorem stage_inter_filling_eq_central_inter (r : Fin 3) :
-    (sectionSevenStarOpenCover A.toFourPieceStarGluingData).stage r.castSucc ∩
-        (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece r.succ =
-      (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece 0 ∩
-        (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece r.succ := by
+    (starOpenCover A.toFourPieceStarGluingData).stage r.castSucc ∩
+        (starOpenCover A.toFourPieceStarGluingData).piece r.succ =
+      (starOpenCover A.toFourPieceStarGluingData).piece 0 ∩
+        (starOpenCover A.toFourPieceStarGluingData).piece r.succ := by
   ext x
   constructor
   · rintro ⟨hxstage, hxnew⟩
@@ -48,8 +48,8 @@ public theorem stage_inter_filling_eq_central_inter (r : Fin 3) :
       · subst i
         exact (not_le_of_gt (Fin.castSucc_lt_succ : r.castSucc < r.succ) hj).elim
       · have hpair :
-            x ∈ (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece i.succ ∩
-              (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece r.succ :=
+            x ∈ (starOpenCover A.toFourPieceStarGluingData).piece i.succ ∩
+              (starOpenCover A.toFourPieceStarGluingData).piece r.succ :=
           ⟨hxj, hxnew⟩
         rw [A.fillingPiece_inter_fillingPiece hir] at hpair
         exact hpair.elim
@@ -62,8 +62,8 @@ public theorem stage_inter_filling_eq_central_inter (r : Fin 3) :
 successive Mayer--Vietoris sequence. -/
 public noncomputable def collarToMayerVietorisOverlapHomeomorph (r : Fin 3) :
     A.collarSource r ≃ₜ
-      ((sectionSevenStarOpenCover A.toFourPieceStarGluingData).stage r.castSucc ∩
-        (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece r.succ : Set
+      ((starOpenCover A.toFourPieceStarGluingData).stage r.castSucc ∩
+        (starOpenCover A.toFourPieceStarGluingData).piece r.succ : Set
           (GluedSpace A.toFourPieceStarGluingData.glueData)) :=
   (A.centralFillingIntersectionHomeomorph r).trans
     (Homeomorph.setCongr (by

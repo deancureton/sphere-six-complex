@@ -36,7 +36,7 @@ variable (A : AnalyticData)
 
 /-- The actual cusp-complement: the central family with both elliptic fillings attached. -/
 public abbrev ellipticInterior :=
-  (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4)
+  (A.openEmbeddingStarData.mayerVietorisCover).stage (2 : Fin 4)
 
 /-- Geometric data for the two-disc cover used in Lemma 7.19.  The compatibility fields say
 that, after trivializing the band fibre and retracting either side to its reduced central fibre,

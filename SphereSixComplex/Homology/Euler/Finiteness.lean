@@ -52,10 +52,10 @@ theorem integralHomologyFiniteSix_gluedSpace (A : OpenEmbeddingStarData)
     (hCollar : ∀ i, IntegralHomologyFiniteSix (A.collarSource i))
     (hCollarSix : ∀ i, Subsingleton (IntegralSingularHomology 6 (A.collarSource i))) :
     IntegralHomologyFiniteSix (GluedSpace A.toFourPieceStarGluingData.glueData) := by
-  let C := A.sectionSevenEulerCover
+  let C := A.eulerCover
   have hStage (i : Fin 4) : IntegralHomologyFiniteSix (C.stage i) := by
     induction i using Fin.induction with
-    | zero => exact hCentral.homeomorph A.centralToSectionSevenEulerStageZeroHomeomorph
+    | zero => exact hCentral.homeomorph A.centralToEulerStageZeroHomeomorph
     | succ i ih =>
       let e := A.collarToMayerVietorisOverlapHomeomorph i
       have hOverlapSix : Subsingleton (IntegralSingularHomology 6
@@ -65,10 +65,10 @@ theorem integralHomologyFiniteSix_gluedSpace (A : OpenEmbeddingStarData)
         exact (integralSingularHomologyEquiv 6 e).symm.injective.subsingleton
       exact (IntegralMayerVietoris.integralHomologyFiniteSix_union _ _
         (C.isOpen_stage i.castSucc) (C.isOpen_piece i.succ) ih
-        ((hFilling i).homeomorph (A.fillingToSectionSevenEulerPieceHomeomorph i))
+        ((hFilling i).homeomorph (A.fillingToEulerPieceHomeomorph i))
         ((hCollar i).homeomorph e) hOverlapSix).homeomorph
-          (A.sectionSevenEulerStageNextHomeomorph i)
-  exact (hStage 3).homeomorph A.sectionSevenEulerStageLastHomeomorph
+          (A.eulerStageNextHomeomorph i)
+  exact (hStage 3).homeomorph A.eulerStageLastHomeomorph
 
 end OpenEmbeddingStarData
 

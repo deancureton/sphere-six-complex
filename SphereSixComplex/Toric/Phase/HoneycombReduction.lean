@@ -67,7 +67,7 @@ public theorem constructedLocalPositivePart_locallyCompactSpace (r : ℝ) :
     ChartedSpace.locallyCompactSpace ComplexModel constructedModel.Carrier
   let _ : LocallyCompactSpace (localCarrier constructedModel r) :=
     (cuspNeighborhood constructedModel r).isOpen.locallyCompactSpace
-  exact (constructedLocalPositivePart_isClosed r).locallyCompactSpace
+  exact (isClosed_constructedLocalPositivePart r).locallyCompactSpace
 
 /-- Every normalized positive deck transformation is continuous. -/
 public theorem constructedPositiveDeck_continuous

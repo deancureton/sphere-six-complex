@@ -169,18 +169,18 @@ public noncomputable def orderThreeFillingToActualPieceHomeomorph :
     A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius ≃ₜ
       A.actualVanKampenFourPieceCover.ellipticThree := by
   change A.openEmbeddingStarData.filling 1 ≃ₜ
-    (A.openEmbeddingStarData.sectionSevenEulerCover).piece 2
+    (A.openEmbeddingStarData.eulerCover).piece 2
   exact
-    A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 1
+    A.openEmbeddingStarData.fillingToEulerPieceHomeomorph 1
 
 /-- The analytic order-four filling is the exact order-four piece of the actual cover. -/
 public noncomputable def orderFourFillingToActualPieceHomeomorph :
     A.OrderFourVaryingFilling A.starSeparation.orderFour.radius ≃ₜ
       A.actualVanKampenFourPieceCover.ellipticFour := by
   change A.openEmbeddingStarData.filling 2 ≃ₜ
-    (A.openEmbeddingStarData.sectionSevenEulerCover).piece 3
+    (A.openEmbeddingStarData.eulerCover).piece 3
   exact
-    A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 2
+    A.openEmbeddingStarData.fillingToEulerPieceHomeomorph 2
 
 /-- Inclusion of the actual order-three overlap into its filling piece is the original star
 collar-to-filling map in the canonical source and target coordinates. -/

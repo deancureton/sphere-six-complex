@@ -28,7 +28,7 @@ variable (A : AnalyticData)
 
 /-- The space obtained by gluing the four analytic pieces is locally compact. -/
 public theorem starUnion_locallyCompact :
-    LocallyCompactSpace A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := by
+    LocallyCompactSpace A.openEmbeddingStarData.MayerVietorisSpace := by
   let S := A.openEmbeddingStarData.toFourPieceStarGluingData
   let B := A.biholomorphicFourPieceStarData
   let _ := S.nonemptyPieceOfCollars A.fourPieceStarGluingData_nonemptyCentralCollar
@@ -45,7 +45,7 @@ public theorem starUnion_locallyCompact :
 
 /-- The concrete four-piece gluing is second countable. -/
 public theorem starUnion_secondCountable :
-    SecondCountableTopology A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := by
+    SecondCountableTopology A.openEmbeddingStarData.MayerVietorisSpace := by
   let D := A.openEmbeddingStarData.toFourPieceStarGluingData.glueData
   let _ : Countable D.J := by
     change Countable (Option (Fin 3))
@@ -57,7 +57,7 @@ public theorem starUnion_secondCountable :
 public theorem ellipticInterior_locallyCompact :
     LocallyCompactSpace A.ellipticInterior := by
   let _ : LocallyCompactSpace
-      A.openEmbeddingStarData.SectionSevenMayerVietorisSpace :=
+      A.openEmbeddingStarData.MayerVietorisSpace :=
     A.starUnion_locallyCompact
   exact A.starCover.isOpen_stage (2 : Fin 4) |>.locallyCompactSpace
 
@@ -70,9 +70,9 @@ public theorem ellipticInteriorOpenSubspace_paracompact
     A.ellipticInterior_locallyCompact
   let _ : LocallyCompactSpace U := hU.locallyCompactSpace
   let _ : SecondCountableTopology
-      A.openEmbeddingStarData.SectionSevenMayerVietorisSpace :=
+      A.openEmbeddingStarData.MayerVietorisSpace :=
     A.starUnion_secondCountable
-  let _ : T2Space A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := A.t2Space_starGlued
+  let _ : T2Space A.openEmbeddingStarData.MayerVietorisSpace := A.t2Space_starGlued
   infer_instance
 
 /-- Every open subspace of the elliptic interior is normal. -/
@@ -80,7 +80,7 @@ public theorem ellipticInteriorOpenSubspace_normal
     (U : Set A.ellipticInterior) (hU : IsOpen U) :
     NormalSpace U := by
   let _ : ParacompactSpace U := A.ellipticInteriorOpenSubspace_paracompact U hU
-  let _ : T2Space A.openEmbeddingStarData.SectionSevenMayerVietorisSpace := A.t2Space_starGlued
+  let _ : T2Space A.openEmbeddingStarData.MayerVietorisSpace := A.t2Space_starGlued
   infer_instance
 
 variable {A : AnalyticData}
@@ -93,8 +93,8 @@ public noncomputable def affineBandOrderThreeCoverMap (A : AnalyticData) :
       orderThreeReducedCentralFiber A.periods) :=
   (RadialEllipticActionData.centralFiberCoverProjection
       (orderThreeRadialActionData A.periods)).comp
-    ⟨A.duplicatedSectionSevenBandToOrderThreeCoverSource,
-      A.duplicatedSectionSevenBandToOrderThreeCoverSource.continuous⟩ |>.comp
+    ⟨A.commonBandToOrderThreeCoverSource,
+      A.commonBandToOrderThreeCoverSource.continuous⟩ |>.comp
         (A.actualAffineHeightSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
           (A.affineCentralBandHomotopyEquiv
             A.affineCentralSeparation)).toFun
@@ -108,8 +108,8 @@ public noncomputable def affineBandOrderFourCoverMap (A : AnalyticData) :
       orderFourReducedCentralFiber A.periods) :=
   (RadialEllipticActionData.centralFiberCoverProjection
       (orderFourRadialActionData A.periods)).comp
-    ⟨A.duplicatedSectionSevenBandToOrderFourCoverSource,
-      A.duplicatedSectionSevenBandToOrderFourCoverSource.continuous⟩ |>.comp
+    ⟨A.commonBandToOrderFourCoverSource,
+      A.commonBandToOrderFourCoverSource.continuous⟩ |>.comp
         (A.actualAffineHeightSplit.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
           (A.affineCentralBandHomotopyEquiv
             A.affineCentralSeparation)).toFun

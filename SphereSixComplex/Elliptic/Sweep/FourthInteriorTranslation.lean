@@ -174,9 +174,9 @@ public theorem fourthTranslation_fillings_disjoint (A : AnalyticData)
     (x : A.ellipticInterior)
     (h1 : x ∈ A.orderThreeFillingImage)
     (h2 : x ∈ A.orderFourFillingImage) : False := by
-  have h : x.1 ∈ (sectionSevenStarOpenCover
+  have h : x.1 ∈ (starOpenCover
       A.openEmbeddingStarData.toFourPieceStarGluingData).piece (1 : Fin 3).succ ∩
-      (sectionSevenStarOpenCover
+      (starOpenCover
       A.openEmbeddingStarData.toFourPieceStarGluingData).piece (2 : Fin 3).succ := ⟨h1,h2⟩
   rw [A.openEmbeddingStarData.fillingPiece_inter_fillingPiece (by decide)] at h
   exact h

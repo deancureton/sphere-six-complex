@@ -3,9 +3,8 @@ module
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.Splitting
 public import SphereSixComplex.Elliptic.Band.OverlapCompletionData
 public import SphereSixComplex.Elliptic.Band.OrderThreeOverlapIdentification
-public import SphereSixComplex.Elliptic.Band.OrderThreeRadialEquivalence
+public import SphereSixComplex.Elliptic.Band.RadialEquivalence
 public import SphereSixComplex.Elliptic.Band.OrderFourOverlapIdentification
-public import SphereSixComplex.Elliptic.Band.OrderFourRadialEquivalence
 
 /-!
 # Interleaving the star collars with the affine discs
@@ -43,21 +42,21 @@ open SphereSixComplex.TriangleGroup.FuchsianArithmeticTermination
 variable (A : AnalyticData)
 
 /-- A collar point sits inside the glued space exactly at its central-family image. -/
-public theorem centralToSectionSevenEulerPiece_starToCentral (i : Fin 3)
+public theorem centralToEulerPiece_starToCentral (i : Fin 3)
     (q : A.StarCollarSource i) :
-    (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+    (A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         (A.starToCentral i q)).1 =
       A.openEmbeddingStarData.collarSourceToGlued i q := by
   let hι := A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.ι_isOpenEmbedding none
   exact (Topology.IsEmbedding.toHomeomorph_apply_coe hι.isEmbedding (A.starToCentral i q))
 
 /-- A central-image point sits inside the glued space at its own underlying point. -/
-public theorem centralToSectionSevenEulerPiece_centralImage
+public theorem centralToEulerPiece_centralImage
     (x : A.ellipticCentralImage) :
-    (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+    (A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         (A.ellipticCentralImageHomeomorph x)).1 = x.1.1 :=
   congrArg Subtype.val
-    (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.apply_symm_apply
+    (A.openEmbeddingStarData.centralToEulerPieceHomeomorph.apply_symm_apply
       ⟨x.1.1, x.2⟩)
 
 /-- The central-image homeomorphism identifies the collar points of the elliptic interior with
@@ -67,9 +66,9 @@ public theorem mem_orderThreeFillingImage_iff_mem_starToCentral_range
     x.1 ∈ A.orderThreeFillingImage ↔
       A.ellipticCentralImageHomeomorph x ∈ Set.range (A.starToCentral (1 : Fin 3)) := by
   have hrange : Set.range (A.openEmbeddingStarData.collarSourceToGlued 1) =
-      (sectionSevenStarOpenCover
+      (starOpenCover
         A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
-      (sectionSevenStarOpenCover
+      (starOpenCover
         A.openEmbeddingStarData.toFourPieceStarGluingData).piece 2 := by
     simpa using A.openEmbeddingStarData.range_collarSourceToGlued 1
   constructor
@@ -77,31 +76,31 @@ public theorem mem_orderThreeFillingImage_iff_mem_starToCentral_range
     have hpair : x.1.1 ∈ A.starCover.piece 0 ∩
         A.starCover.piece 1 := ⟨x.2, hx⟩
     have hpair' : x.1.1 ∈
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 2 := by
       simpa [starCover,
-        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
-        sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
+        OpenEmbeddingStarData.mayerVietorisCover,
+        mayerVietorisOpenCover, mayerVietorisOrder] using hpair
     rw [← hrange] at hpair'
     obtain ⟨q, hq⟩ := hpair'
     refine ⟨q, ?_⟩
-    apply A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.injective
+    apply A.openEmbeddingStarData.centralToEulerPieceHomeomorph.injective
     apply Subtype.ext
-    rw [A.centralToSectionSevenEulerPiece_starToCentral 1 q,
-      A.centralToSectionSevenEulerPiece_centralImage x, hq]
+    rw [A.centralToEulerPiece_starToCentral 1 q,
+      A.centralToEulerPiece_centralImage x, hq]
   · rintro ⟨q, hq⟩
     have hglued : A.openEmbeddingStarData.collarSourceToGlued 1 q = x.1.1 := by
-      rw [← A.centralToSectionSevenEulerPiece_starToCentral 1 q, hq,
-        A.centralToSectionSevenEulerPiece_centralImage x]
+      rw [← A.centralToEulerPiece_starToCentral 1 q, hq,
+        A.centralToEulerPiece_centralImage x]
     have hmem : x.1.1 ∈ Set.range (A.openEmbeddingStarData.collarSourceToGlued 1) := ⟨q, hglued⟩
     rw [hrange] at hmem
     have hpair : x.1.1 ∈ A.starCover.piece 0 ∩
         A.starCover.piece 1 := by
       simpa [starCover,
-        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
-        sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hmem
+        OpenEmbeddingStarData.mayerVietorisCover,
+        mayerVietorisOpenCover, mayerVietorisOrder] using hmem
     exact hpair.2
 
 
@@ -471,9 +470,9 @@ public theorem mem_orderFourFillingImage_iff_mem_starToCentral_range
       A.ellipticCentralImageHomeomorph x ∈
         Set.range (A.starToCentral (2 : Fin 3)) := by
   have hrange : Set.range (A.openEmbeddingStarData.collarSourceToGlued 2) =
-      (sectionSevenStarOpenCover
+      (starOpenCover
         A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
-      (sectionSevenStarOpenCover
+      (starOpenCover
         A.openEmbeddingStarData.toFourPieceStarGluingData).piece 3 := by
     simpa using A.openEmbeddingStarData.range_collarSourceToGlued 2
   constructor
@@ -481,31 +480,31 @@ public theorem mem_orderFourFillingImage_iff_mem_starToCentral_range
     have hpair : x.1.1 ∈ A.starCover.piece 0 ∩
         A.starCover.piece 2 := ⟨x.2, hx⟩
     have hpair' : x.1.1 ∈
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 3 := by
       simpa [starCover,
-        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
-        sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
+        OpenEmbeddingStarData.mayerVietorisCover,
+        mayerVietorisOpenCover, mayerVietorisOrder] using hpair
     rw [← hrange] at hpair'
     obtain ⟨q, hq⟩ := hpair'
     refine ⟨q, ?_⟩
-    apply A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.injective
+    apply A.openEmbeddingStarData.centralToEulerPieceHomeomorph.injective
     apply Subtype.ext
-    rw [A.centralToSectionSevenEulerPiece_starToCentral 2 q,
-      A.centralToSectionSevenEulerPiece_centralImage x, hq]
+    rw [A.centralToEulerPiece_starToCentral 2 q,
+      A.centralToEulerPiece_centralImage x, hq]
   · rintro ⟨q, hq⟩
     have hglued : A.openEmbeddingStarData.collarSourceToGlued 2 q = x.1.1 := by
-      rw [← A.centralToSectionSevenEulerPiece_starToCentral 2 q, hq,
-        A.centralToSectionSevenEulerPiece_centralImage x]
+      rw [← A.centralToEulerPiece_starToCentral 2 q, hq,
+        A.centralToEulerPiece_centralImage x]
     have hmem : x.1.1 ∈ Set.range (A.openEmbeddingStarData.collarSourceToGlued 2) := ⟨q, hglued⟩
     rw [hrange] at hmem
     have hpair : x.1.1 ∈ A.starCover.piece 0 ∩
         A.starCover.piece 2 := by
       simpa [starCover,
-        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
-        sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hmem
+        OpenEmbeddingStarData.mayerVietorisCover,
+        mayerVietorisOpenCover, mayerVietorisOrder] using hmem
     exact hpair.2
 
 /-- The selected order-four collar lies over the affine disc of radius `1/3` centred at `1`. -/

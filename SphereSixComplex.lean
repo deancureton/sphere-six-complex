@@ -1,3 +1,3 @@
 module
 
-public import SphereSixComplex.Main
+public import SphereSixComplex.Final

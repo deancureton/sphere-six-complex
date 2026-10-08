@@ -152,7 +152,7 @@ public theorem orderFourFillingImage_subset_side :
 split.  The band parameter and its two cover-source identifications are canonical. -/
 public structure RadialHomotopyData
     (bandHomotopyEquiv : centralHeightBand S.height S.lower S.upper ≃ₕ
-      AdditiveTorus A.duplicatedSectionSevenBandParameter) where
+      AdditiveTorus A.commonBandParameter) where
   orderThreeHomotopyEquivalence :
     IsHomotopyEquivalenceInclusion S.orderThreeFillingSubspace
   orderFourHomotopyEquivalence :
@@ -167,8 +167,8 @@ public structure RadialHomotopyData
           S.allocation.orderThreeSide S.allocation.orderFourSide))).Homotopic
       ((RadialEllipticActionData.centralFiberCoverProjection
           (orderThreeRadialActionData A.periods)).comp
-        ⟨A.duplicatedSectionSevenBandToOrderThreeCoverSource,
-          A.duplicatedSectionSevenBandToOrderThreeCoverSource.continuous⟩ |>.comp
+        ⟨A.commonBandToOrderThreeCoverSource,
+          A.commonBandToOrderThreeCoverSource.continuous⟩ |>.comp
             (S.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
               bandHomotopyEquiv).toFun)
   orderFour_inclusion_compatibility :
@@ -181,8 +181,8 @@ public structure RadialHomotopyData
           S.allocation.orderThreeSide S.allocation.orderFourSide))).Homotopic
       ((RadialEllipticActionData.centralFiberCoverProjection
           (orderFourRadialActionData A.periods)).comp
-        ⟨A.duplicatedSectionSevenBandToOrderFourCoverSource,
-          A.duplicatedSectionSevenBandToOrderFourCoverSource.continuous⟩ |>.comp
+        ⟨A.commonBandToOrderFourCoverSource,
+          A.commonBandToOrderFourCoverSource.continuous⟩ |>.comp
             (S.sidesIntersectionHomeomorph.toHomotopyEquiv.trans
               bandHomotopyEquiv).toFun)
 
@@ -190,7 +190,7 @@ namespace RadialHomotopyData
 
 variable {S : A.CentralHeightSplit}
   {bandHomotopyEquiv : centralHeightBand S.height S.lower S.upper ≃ₕ
-    AdditiveTorus A.duplicatedSectionSevenBandParameter}
+    AdditiveTorus A.commonBandParameter}
 
 /-- Assemble all fields of the radial realization from the genuine central-band input. -/
 public noncomputable def toRadialRealization (R : S.RadialHomotopyData bandHomotopyEquiv) :
@@ -205,12 +205,12 @@ public noncomputable def toRadialRealization (R : S.RadialHomotopyData bandHomot
       (nestedSubtypeHomeomorph S.allocation.orderFourSide
         A.orderFourFillingImage
         S.orderFourFillingImage_subset_side).toHomotopyEquiv
-  bandParameter := A.duplicatedSectionSevenBandParameter
-  bandFullRank := A.duplicatedSectionSevenBandFullRank
+  bandParameter := A.commonBandParameter
+  bandFullRank := A.commonBandFullRank
   bandHomotopyEquiv :=
     S.sidesIntersectionHomeomorph.toHomotopyEquiv.trans bandHomotopyEquiv
-  bandToOrderThreeCoverSource := A.duplicatedSectionSevenBandToOrderThreeCoverSource
-  bandToOrderFourCoverSource := A.duplicatedSectionSevenBandToOrderFourCoverSource
+  bandToOrderThreeCoverSource := A.commonBandToOrderThreeCoverSource
+  bandToOrderFourCoverSource := A.commonBandToOrderFourCoverSource
   orderThree_inclusion_compatibility := R.orderThree_inclusion_compatibility
   orderFour_inclusion_compatibility := R.orderFour_inclusion_compatibility
 

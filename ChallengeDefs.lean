@@ -19,7 +19,7 @@ Comparator reports as a mismatch. Keeping one copy here, imported by both sides,
 
 `Solution` must still never import `Challenge` itself, or the theorem name would resolve to the
 sorried challenge statement instead of the proved one. Nothing under `SphereSixComplex/` imports
-`Challenge`; the development reaches these definitions through `SphereSixComplex.ComplexStructure`,
+`Challenge`; the development reaches these definitions through `SphereSixComplex.Construction.ComplexStructure`,
 which re-exports this module.
 -/
 

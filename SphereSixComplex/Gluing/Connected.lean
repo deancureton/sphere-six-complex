@@ -128,10 +128,10 @@ public theorem starCuspCollarSource_pathConnected :
 
 /-- The actual final overlap is exactly the central--cusp intersection. -/
 public theorem cuspAttachmentOverlap_eq_centralCuspIntersection :
-    (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
-      (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3 =
-      (A.openEmbeddingStarData.sectionSevenEulerCover).piece 0 ∩
-        (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 := by
+    (A.openEmbeddingStarData.mayerVietorisCover).stage (2 : Fin 4) ∩
+      (A.openEmbeddingStarData.mayerVietorisCover).piece 3 =
+      (A.openEmbeddingStarData.eulerCover).piece 0 ∩
+        (A.openEmbeddingStarData.eulerCover).piece 1 := by
   ext x
   constructor
   · rintro ⟨hxstage, hxcusp⟩
@@ -141,21 +141,21 @@ public theorem cuspAttachmentOverlap_eq_centralCuspIntersection :
     fin_cases i
     · exact ⟨hxi, hxcusp⟩
     · have hbad :
-          x ∈ (A.openEmbeddingStarData.sectionSevenEulerCover).piece 2 ∩
-            (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 := ⟨hxi, hxcusp⟩
+          x ∈ (A.openEmbeddingStarData.eulerCover).piece 2 ∩
+            (A.openEmbeddingStarData.eulerCover).piece 1 := ⟨hxi, hxcusp⟩
       have hempty :
-          (A.openEmbeddingStarData.sectionSevenEulerCover).piece 2 ∩
-            (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 = ∅ := by
+          (A.openEmbeddingStarData.eulerCover).piece 2 ∩
+            (A.openEmbeddingStarData.eulerCover).piece 1 = ∅ := by
         simpa using A.openEmbeddingStarData.fillingPiece_inter_fillingPiece
           (i := 1) (j := 0) (by decide)
       rw [hempty] at hbad
       exact hbad.elim
     · have hbad :
-          x ∈ (A.openEmbeddingStarData.sectionSevenEulerCover).piece 3 ∩
-            (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 := ⟨hxi, hxcusp⟩
+          x ∈ (A.openEmbeddingStarData.eulerCover).piece 3 ∩
+            (A.openEmbeddingStarData.eulerCover).piece 1 := ⟨hxi, hxcusp⟩
       have hempty :
-          (A.openEmbeddingStarData.sectionSevenEulerCover).piece 3 ∩
-            (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 = ∅ := by
+          (A.openEmbeddingStarData.eulerCover).piece 3 ∩
+            (A.openEmbeddingStarData.eulerCover).piece 1 = ∅ := by
         simpa using A.openEmbeddingStarData.fillingPiece_inter_fillingPiece
           (i := 2) (j := 0) (by decide)
       rw [hempty] at hbad
@@ -168,19 +168,19 @@ public theorem cuspAttachmentOverlap_eq_centralCuspIntersection :
     exact mem_iUnion.mpr ⟨0, mem_iUnion.mpr ⟨by omega, hxcentral⟩⟩
 
 /-- The punctured cusp collar is homeomorphic to the actual final overlap. -/
-public noncomputable def cuspCollarToSectionSevenFinalOverlapHomeomorph :
+public noncomputable def cuspCollarToFinalOverlapHomeomorph :
     A.openEmbeddingStarData.collarSource 0 ≃ₜ
-      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
-        (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3 :
-          Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace) :=
+      ((A.openEmbeddingStarData.mayerVietorisCover).stage (2 : Fin 4) ∩
+        (A.openEmbeddingStarData.mayerVietorisCover).piece 3 :
+          Set A.openEmbeddingStarData.MayerVietorisSpace) :=
   (A.openEmbeddingStarData.collarToMayerVietorisOverlapHomeomorph 0).trans
     (Homeomorph.setCongr (by
       change
-        (A.openEmbeddingStarData.sectionSevenEulerCover).stage 0 ∩
-            (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 =
-          (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage 2 ∩
-            (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3
-      rw [A.openEmbeddingStarData.sectionSevenEulerStage_zero]
+        (A.openEmbeddingStarData.eulerCover).stage 0 ∩
+            (A.openEmbeddingStarData.eulerCover).piece 1 =
+          (A.openEmbeddingStarData.mayerVietorisCover).stage 2 ∩
+            (A.openEmbeddingStarData.mayerVietorisCover).piece 3
+      rw [A.openEmbeddingStarData.eulerStage_zero]
       exact (A.cuspAttachmentOverlap_eq_centralCuspIntersection).symm))
 
 

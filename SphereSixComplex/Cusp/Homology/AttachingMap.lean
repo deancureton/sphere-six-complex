@@ -68,12 +68,12 @@ variable (A : AnalyticData)
 /-- Pointwise, the final right inclusion is the original cusp collar embedding, transported
 through the canonical source and target homeomorphisms. -/
 public theorem cuspFinalRightInclusion_comm (x : A.openEmbeddingStarData.collarSource 0) :
-    A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0
+    A.openEmbeddingStarData.fillingToEulerPieceHomeomorph 0
         (A.openEmbeddingStarData.toFilling 0 x) =
       IntegralMayerVietoris.interToRight
-        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
-        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)
-        (A.cuspCollarToSectionSevenFinalOverlapHomeomorph x) := by
+        ((A.openEmbeddingStarData.mayerVietorisCover).stage (2 : Fin 4))
+        ((A.openEmbeddingStarData.mayerVietorisCover).piece 3)
+        (A.cuspCollarToFinalOverlapHomeomorph x) := by
   apply Subtype.ext
   change
     A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.toGlueData.ι
@@ -94,18 +94,18 @@ public theorem cuspFinalRightInclusion_comm (x : A.openEmbeddingStarData.collarS
 collar-to-filling embedding. -/
 public theorem cuspFinalRightHomologyMap_conjugacy (k : ℕ)
     (x : IntegralSingularHomology k
-      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4) ∩
-        (A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3 :
-          Set A.openEmbeddingStarData.SectionSevenMayerVietorisSpace)) :
+      ((A.openEmbeddingStarData.mayerVietorisCover).stage (2 : Fin 4) ∩
+        (A.openEmbeddingStarData.mayerVietorisCover).piece 3 :
+          Set A.openEmbeddingStarData.MayerVietorisSpace)) :
     (integralSingularHomologyEquiv k
-      (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm
+      (A.openEmbeddingStarData.fillingToEulerPieceHomeomorph 0)).symm
         (integralSingularHomologyMap k
           (IntegralMayerVietoris.interToRight
-            ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
-            ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)) x) =
+            ((A.openEmbeddingStarData.mayerVietorisCover).stage (2 : Fin 4))
+            ((A.openEmbeddingStarData.mayerVietorisCover).piece 3)) x) =
       integralSingularHomologyMap k (A.openEmbeddingStarData.toFilling 0).hom
         ((integralSingularHomologyEquiv k
-          A.cuspCollarToSectionSevenFinalOverlapHomeomorph).symm x) := by
+          A.cuspCollarToFinalOverlapHomeomorph).symm x) := by
   apply integralSingularHomologyEquiv_conjugates_commutative_square
   apply ContinuousMap.ext
   intro y

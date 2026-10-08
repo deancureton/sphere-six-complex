@@ -2,10 +2,10 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.Manifold.FundamentalClass
 public import SphereSixComplex.Prerequisites.Topology.Manifold.PuncturedHomology
-public import DifferentialGeometry.Topology.Cobordism.HCobordism
-public import DifferentialGeometry.Topology.Morse.Strip.ModelTransport
-public import DifferentialGeometry.Topology.Cobordism.HomotopySphere
-public import DifferentialGeometry.Topology.HighDimensional.TwistedSphere
+import DifferentialGeometry.Topology.Cobordism.HCobordism
+import DifferentialGeometry.Topology.Morse.Strip.ModelTransport
+import DifferentialGeometry.Topology.Cobordism.HomotopySphere
+import DifferentialGeometry.Topology.HighDimensional.TwistedSphere
 
 /-!
 # Topological recognition of smooth homology spheres

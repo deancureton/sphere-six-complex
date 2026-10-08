@@ -211,6 +211,7 @@ public import Mathlib.Topology.Homotopy.Lifting
 public import SphereSixComplex.Elliptic.FundamentalGroup.Relators
 public import SphereSixComplex.Elliptic.Band.MarkedDisc
 public import SphereSixComplex.Elliptic.Band.OverlapCompletionData
+public import SphereSixComplex.Elliptic.Band.RadialEquivalence
 public import SphereSixComplex.Elliptic.Band.OverlapInterleaving
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.FreeLoopProduct
 public import Mathlib.Topology.Subpath
@@ -247,7 +248,6 @@ public import SphereSixComplex.Cusp.Sweep.SweepAnchorHomotopy
 public import SphereSixComplex.Cusp.Sweep.ThirdCircle
 public import SphereSixComplex.Cusp.Sweep.ThirdPeripheralInvariance
 public import SphereSixComplex.Cusp.Sweep.ThirdSweep
-public import SphereSixComplex.Cusp.Sweep.ThirdSweepLoopRealization
 public import SphereSixComplex.Cusp.Wang.Kernel
 public import SphereSixComplex.Cusp.FundamentalGroup.FundamentalGroup
 public import SphereSixComplex.Elliptic.Cover.CentralCoverSourceGammaCoordinates
@@ -269,17 +269,13 @@ public import SphereSixComplex.Elliptic.MappingTorus.WangLattice
 public import SphereSixComplex.Toric.Phase.Spreading
 public import SphereSixComplex.FundamentalGroup.Generators
 public import SphereSixComplex.Prerequisites.Topology.Gluing.FiniteIntersections
-public import SphereSixComplex.Homology.OpenCoverExactSequence
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyZero
-public import SphereSixComplex.Homology.IntegralCalculation
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.StarGluing
 public import Mathlib.Algebra.Homology.ShortComplex.Ab
 public import Mathlib.Algebra.Category.Grp.Zero
 public import SphereSixComplex.Prerequisites.Topology.Sphere.PositiveHomology
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.OpenCover
-public import SphereSixComplex.Elliptic.Band.RadialCompletion
-public import SphereSixComplex.Elliptic.Band.OverlapCompletion
 
 public import SphereSixComplex.Homology.FiniteCoverPairing
 
@@ -390,16 +386,13 @@ public import SphereSixComplex.Elliptic.Band.MarkedTrivialization
 public import SphereSixComplex.Elliptic.Band.CayleyBounds
 public import SphereSixComplex.Elliptic.Band.StripLift
 public import SphereSixComplex.Elliptic.Band.OrderFourOverlapIdentification
-public import SphereSixComplex.Elliptic.Band.OrderFourRadialEquivalence
 public import SphereSixComplex.Elliptic.Band.OrderThreeOverlapIdentification
-public import SphereSixComplex.Elliptic.Band.OrderThreeRadialEquivalence
 public import SphereSixComplex.Regular.Cover.DeckCover
 public import SphereSixComplex.Regular.Cover.RadialEquivalence
 public import SphereSixComplex.Regular.Cover.SideRegions
 public import SphereSixComplex.Elliptic.Band.SideHomotopyEquivalence
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.EquivariantDescent
 public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.HalfPlaneRadial
-public import SphereSixComplex.Elliptic.Band.Midpoint
 
 public import SphereSixComplex.Elliptic.Band.Split
 public import SphereSixComplex.Homology.Assembly

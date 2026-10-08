@@ -67,7 +67,7 @@ public def monomial (A : Matrix (Fin 3) (Fin 3) ℤ) (z : RawCoordinates) : RawC
 public def monomialDomain (A : Matrix (Fin 3) (Fin 3) ℤ) : Set RawCoordinates :=
   {z | ∀ i j, A i j < 0 → z j ≠ 0}
 
-public theorem monomialDomain_isOpen (A : Matrix (Fin 3) (Fin 3) ℤ) :
+public theorem isOpen_monomialDomain (A : Matrix (Fin 3) (Fin 3) ℤ) :
     IsOpen (monomialDomain A) := by
   unfold monomialDomain
   simp only [Set.ofPred_forall]
@@ -82,7 +82,7 @@ public theorem monomialDomain_isOpen (A : Matrix (Fin 3) (Fin 3) ℤ) :
 /-- The dense coordinate torus. -/
 public def coordinateTorus : Set RawCoordinates := {z | ∀ j, z j ≠ 0}
 
-public theorem coordinateTorus_isDense : Dense coordinateTorus := by
+public theorem dense_coordinateTorus : Dense coordinateTorus := by
   simpa [coordinateTorus, Set.pi] using
     (dense_pi (Set.univ : Set (Fin 3)) fun _ _ ↦ dense_compl_singleton (0 : ℂ))
 
@@ -90,12 +90,12 @@ public theorem coordinateTorus_subset_monomialDomain
     (A : Matrix (Fin 3) (Fin 3) ℤ) : coordinateTorus ⊆ monomialDomain A :=
   fun _ hz _ j _ ↦ hz j
 
-public theorem monomial_mapsTo_coordinateTorus (A : Matrix (Fin 3) (Fin 3) ℤ) :
+public theorem mapsTo_monomial_coordinateTorus (A : Matrix (Fin 3) (Fin 3) ℤ) :
     MapsTo (monomial A) coordinateTorus coordinateTorus := by
   intro z hz i
   exact Finset.prod_ne_zero_iff.mpr fun j _ ↦ zpow_ne_zero _ (hz j)
 
-public theorem monomial_contDiffOn (A : Matrix (Fin 3) (Fin 3) ℤ) (n : ℕ∞ω) :
+public theorem contDiffOn_monomial (A : Matrix (Fin 3) (Fin 3) ℤ) (n : ℕ∞ω) :
     ContDiffOn ℂ n (monomial A) (monomialDomain A) := by
   apply contDiffOn_pi.mpr
   intro i
@@ -210,9 +210,9 @@ private theorem inverse_mapsTo_domain {A B : Matrix (Fin 3) (Fin 3) ℤ}
 public def overlap (A B : Matrix (Fin 3) (Fin 3) ℤ) : Set RawCoordinates :=
   monomialDomain A ∩ monomial A ⁻¹' monomialDomain B
 
-public theorem overlap_isOpen (A B : Matrix (Fin 3) (Fin 3) ℤ) : IsOpen (overlap A B) :=
-  (monomial_contDiffOn A 0).continuousOn.isOpen_inter_preimage
-    (monomialDomain_isOpen A) (monomialDomain_isOpen B)
+public theorem isOpen_overlap (A B : Matrix (Fin 3) (Fin 3) ℤ) : IsOpen (overlap A B) :=
+  (contDiffOn_monomial A 0).continuousOn.isOpen_inter_preimage
+    (isOpen_monomialDomain A) (isOpen_monomialDomain B)
 
 
 public theorem overlap_eq_monomialDomain {A B : Matrix (Fin 3) (Fin 3) ℤ}
@@ -235,11 +235,11 @@ private theorem monomial_comp_on_overlap {A B : Matrix (Fin 3) (Fin 3) ℤ}
       (overlap A B ∩ coordinateTorus) :=
     fun _ hz ↦ monomial_comp_on_coordinateTorus B A hz.2
   refine h.of_subset_closure ?_ ?_ Set.inter_subset_left
-    (coordinateTorus_isDense.open_subset_closure_inter (overlap_isOpen A B))
-  · exact (monomial_contDiffOn B 0).continuousOn.comp
-      ((monomial_contDiffOn A 0).continuousOn.mono Set.inter_subset_left)
+    (dense_coordinateTorus.open_subset_closure_inter (isOpen_overlap A B))
+  · exact (contDiffOn_monomial B 0).continuousOn.comp
+      ((contDiffOn_monomial A 0).continuousOn.mono Set.inter_subset_left)
       (fun _ hz ↦ hz.2)
-  · exact (monomial_contDiffOn (B * A) 0).continuousOn.mono
+  · exact (contDiffOn_monomial (B * A) 0).continuousOn.mono
       (overlap_subset_composite_domain hA)
 
 public theorem monomial_inverse_on_overlap (A B : Matrix (Fin 3) (Fin 3) ℤ)
@@ -248,9 +248,9 @@ public theorem monomial_inverse_on_overlap (A B : Matrix (Fin 3) (Fin 3) ℤ)
     intro z hz
     simpa [hBA] using monomial_comp_on_coordinateTorus B A hz.2
   refine h.of_subset_closure ?_ continuousOn_id Set.inter_subset_left
-    (coordinateTorus_isDense.open_subset_closure_inter (overlap_isOpen A B))
-  exact (monomial_contDiffOn B 0).continuousOn.comp
-    ((monomial_contDiffOn A 0).continuousOn.mono Set.inter_subset_left)
+    (dense_coordinateTorus.open_subset_closure_inter (isOpen_overlap A B))
+  exact (contDiffOn_monomial B 0).continuousOn.comp
+    ((contDiffOn_monomial A 0).continuousOn.mono Set.inter_subset_left)
     (fun _ hz ↦ hz.2)
 
 /-- The partial homeomorphism associated to a pair of mutually inverse Laurent monomials. -/
@@ -273,10 +273,10 @@ public def monomialChange (A B : Matrix (Fin 3) (Fin 3) ℤ)
       exact hz.1⟩
   left_inv' := monomial_inverse_on_overlap A B hBA
   right_inv' := monomial_inverse_on_overlap B A hAB
-  open_source := overlap_isOpen A B
-  open_target := overlap_isOpen B A
-  continuousOn_toFun := (monomial_contDiffOn A 0).continuousOn.mono Set.inter_subset_left
-  continuousOn_invFun := (monomial_contDiffOn B 0).continuousOn.mono Set.inter_subset_left
+  open_source := isOpen_overlap A B
+  open_target := isOpen_overlap B A
+  continuousOn_toFun := (contDiffOn_monomial A 0).continuousOn.mono Set.inter_subset_left
+  continuousOn_invFun := (contDiffOn_monomial B 0).continuousOn.mono Set.inter_subset_left
 
 /-- The integral transition matrix from chart `a` to chart `b`. -/
 public def transitionMatrix (a b : ChartIndex) : Matrix (Fin 3) (Fin 3) ℤ :=
@@ -353,9 +353,9 @@ public theorem chartChange_inter (a b c : ChartIndex) {z : RawCoordinates}
   have hinv : chartChange b a (chartChange a b z) = z := (chartChange a b).left_inv hb
   exact (chartChange_cocycle b a c hi (by rwa [hinv])).1
 
-public theorem chartChange_contDiffOn (a b : ChartIndex) :
+public theorem contDiffOn_chartChange (a b : ChartIndex) :
     ContDiffOn ℂ ω (chartChange a b) (chartChange a b).source :=
-  (monomial_contDiffOn (transitionMatrix a b) ω).mono Set.inter_subset_left
+  (contDiffOn_monomial (transitionMatrix a b) ω).mono Set.inter_subset_left
 
 /-- The topological gluing datum of all affine charts of the infinite fan. -/
 public abbrev gluingCore : TopCat.GlueData.MkCore where
@@ -387,7 +387,7 @@ public abbrev Carrier := GluedSpace gluing
 public def inclusion (a : ChartIndex) : RawCoordinates → Carrier :=
   gluing.toGlueData.ι a
 
-public theorem inclusion_isOpenEmbedding (a : ChartIndex) : IsOpenEmbedding (inclusion a) :=
+public theorem isOpenEmbedding_inclusion (a : ChartIndex) : IsOpenEmbedding (inclusion a) :=
   gluing.ι_isOpenEmbedding a
 
 public theorem inclusion_jointly_surjective (x : Carrier) :
@@ -410,7 +410,7 @@ public theorem inclusion_eq_iff (a b : ChartIndex) (z w : RawCoordinates) :
 /-- The parametrization of the glued carrier by one affine chart. -/
 public def parametrization (a : ChartIndex) :
     OpenPartialHomeomorph RawCoordinates Carrier :=
-  (inclusion_isOpenEmbedding a).toOpenPartialHomeomorph (inclusion a)
+  (isOpenEmbedding_inclusion a).toOpenPartialHomeomorph (inclusion a)
 
 @[simp]
 public theorem parametrization_target (a : ChartIndex) :
@@ -425,7 +425,7 @@ private theorem parametrization_transition (a b : ChartIndex) {z : RawCoordinate
   have he := (inclusion_eq_iff a b z w).mp hw.symm
   refine ⟨he.1, ?_⟩
   rw [← hw]
-  exact ((inclusion_isOpenEmbedding b).toOpenPartialHomeomorph_left_inv).trans he.2.symm
+  exact ((isOpenEmbedding_inclusion b).toOpenPartialHomeomorph_left_inv).trans he.2.symm
 
 public noncomputable def preferredChart (x : Carrier) : ChartIndex :=
   (inclusion_jointly_surjective x).choose
@@ -446,7 +446,7 @@ public noncomputable def rawChartedSpace : ChartedSpace RawCoordinates Carrier w
   chart_mem_atlas x := Set.mem_range_self _
 
 /-- The raw atlas is a complex manifold atlas because all transitions are Laurent monomials. -/
-public theorem rawIsManifold :
+public theorem isManifold_rawChartedSpace :
     letI := rawChartedSpace
     IsManifold (modelWithCornersSelf ℂ RawCoordinates) ∞ Carrier := by
   let _ := rawChartedSpace
@@ -461,7 +461,7 @@ public theorem rawIsManifold :
           ((parametrization a).trans (parametrization b).symm) z = chartChange a b z := by
     intro z hz
     exact parametrization_transition a b (by simpa [hparam] using hz.2)
-  simpa using ((((chartChange_contDiffOn a b).mono (fun z hz ↦ (h z hz).1)).congr
+  simpa using ((((contDiffOn_chartChange a b).mono (fun z hz ↦ (h z hz).1)).congr
     (fun z hz ↦ (h z hz).2)).of_le (by simp : (∞ : ℕ∞ω) ≤ ω))
 
 /-- The raw coordinate model and the project's `ComplexModel` are linearly equivalent. -/
@@ -479,7 +479,7 @@ public theorem isManifold :
     letI := chartedSpace
     IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ Carrier := by
   let _ : ChartedSpace RawCoordinates Carrier := rawChartedSpace
-  let _ : IsManifold (modelWithCornersSelf ℂ RawCoordinates) ∞ Carrier := rawIsManifold
+  let _ : IsManifold (modelWithCornersSelf ℂ RawCoordinates) ∞ Carrier := isManifold_rawChartedSpace
   exact isManifold_linearRechart rawToComplexModel
 
 /-- Countability of the fan gives the glued carrier a second-countable topology. -/
@@ -656,10 +656,10 @@ private theorem characters_mul_on_domain
       (monomialDomain A ∩ coordinateTorus) :=
     fun _ hz ↦ characters_mul_on_coordinateTorus A a b h hz.2
   refine he.of_subset_closure ?_ continuousOn_const Set.inter_subset_left
-    (coordinateTorus_isDense.open_subset_closure_inter (monomialDomain_isOpen A))
+    (dense_coordinateTorus.open_subset_closure_inter (isOpen_monomialDomain A))
   exact (character_contDiff a ha 0).continuous.continuousOn.mul
     ((character_contDiff b hb 0).continuous.comp_continuousOn
-      (monomial_contDiffOn A 0).continuousOn)
+      (contDiffOn_monomial A 0).continuousOn)
 
 private def overlapGraph (A : Matrix (Fin 3) (Fin 3) ℤ) :
     Set (RawCoordinates × RawCoordinates) :=
@@ -692,8 +692,8 @@ private theorem overlapGraph_isClosed
   refine ⟨hD, ?_⟩
   let : (𝓝[overlapGraph A] p).NeBot := mem_closure_iff_nhdsWithin_neBot.mp hp
   have hf : ContinuousAt (fun q : RawCoordinates × RawCoordinates ↦ monomial A q.1) p :=
-    ((monomial_contDiffOn A 0).continuousOn.continuousAt
-      ((monomialDomain_isOpen A).mem_nhds hD)).comp continuous_fst.continuousAt
+    ((contDiffOn_monomial A 0).continuousOn.continuousAt
+      ((isOpen_monomialDomain A).mem_nhds hD)).comp continuous_fst.continuousAt
   have he : (fun q : RawCoordinates × RawCoordinates ↦ monomial A q.1) =ᶠ[𝓝[overlapGraph A] p]
       Prod.snd := by
     filter_upwards [self_mem_nhdsWithin (s := overlapGraph A) (a := p)] with q hq
@@ -721,8 +721,8 @@ public theorem t2Space : T2Space Carrier := by
   obtain ⟨U, V, hU, hV, hz, hw, hUV⟩ :=
     isOpen_prod_iff.mp (chartOverlapGraph_isClosed a b).isOpen_compl z w hn
   refine ⟨inclusion a '' U, inclusion b '' V,
-    (inclusion_isOpenEmbedding a).isOpenMap _ hU,
-    (inclusion_isOpenEmbedding b).isOpenMap _ hV,
+    (isOpenEmbedding_inclusion a).isOpenMap _ hU,
+    (isOpenEmbedding_inclusion b).isOpenMap _ hV,
     Set.mem_image_of_mem _ hz, Set.mem_image_of_mem _ hw, ?_⟩
   apply Set.disjoint_left.mpr
   rintro q ⟨u, hu, hau⟩ ⟨v, hv, hbv⟩

@@ -98,7 +98,7 @@ public abbrev VanKampenSpace :=
 
 /-- The canonical four open images of the actual analytic star. -/
 public noncomputable abbrev vanKampenOpenCover :=
-  sectionSevenStarOpenCover A.openEmbeddingStarData.toFourPieceStarGluingData
+  starOpenCover A.openEmbeddingStarData.toFourPieceStarGluingData
 
 /-- The canonical central and filling images, with concrete connector paths in the central
 piece, form the exact four-piece cover consumed by the finite van Kampen diagram. -/
@@ -129,7 +129,7 @@ public noncomputable def actualVanKampenFourPieceCover :
   let _ : PathConnectedSpace A.CentralFamily := A.starCentral_pathConnected
   let _ : PathConnectedSpace S.central := A.starCentral_pathConnected
   let _ : PathConnectedSpace (C.piece 0) :=
-    pathConnectedSpace_of_homeomorph S.centralToSectionSevenEulerPieceHomeomorph
+    pathConnectedSpace_of_homeomorph S.centralToEulerPieceHomeomorph
   have hcore : IsPathConnected (C.piece 0) :=
     isPathConnected_iff_pathConnectedSpace.mpr inferInstance
   have hjoin₁ : JoinedIn (C.piece 0) p₀ p₁ := hcore.joinedIn p₀ hp₀.1 p₁ hp₁.1
@@ -138,7 +138,7 @@ public noncomputable def actualVanKampenFourPieceCover :
   let connector₂ : Path p₀ p₂ := Classical.choose hjoin₂
   let _ (i : Fin 3) : PathConnectedSpace (S.filling i) := A.starFilling_pathConnected i
   let _ (i : Fin 3) : PathConnectedSpace (C.piece i.succ) :=
-    pathConnectedSpace_of_homeomorph (S.fillingToSectionSevenEulerPieceHomeomorph i)
+    pathConnectedSpace_of_homeomorph (S.fillingToEulerPieceHomeomorph i)
   have hfilling (i : Fin 3) : IsPathConnected (C.piece i.succ) :=
     isPathConnected_iff_pathConnectedSpace.mpr inferInstance
   let _ (i : Fin 3) : PathConnectedSpace (S.collarSource i) :=

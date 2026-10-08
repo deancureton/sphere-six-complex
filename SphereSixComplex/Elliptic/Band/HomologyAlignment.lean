@@ -75,28 +75,28 @@ variable {A : AnalyticData} {S : A.CentralHeightSplit}
 induce the same integral period basis from both sides of its central band. -/
 public theorem CentralHeightSplit.RadialHomotopyData.bandHomologyAlignment
     {bandHomotopyEquiv : centralHeightBand S.height S.lower S.upper ≃ₕ
-      AdditiveTorus A.duplicatedSectionSevenBandParameter}
+      AdditiveTorus A.commonBandParameter}
     (R : S.RadialHomotopyData bandHomotopyEquiv) :
     A.EllipticBandHomologyAlignment
-      R.toRadialRealization.toSectionSevenEllipticTwoDiscCoverData where
+      R.toRadialRealization.toEllipticTwoDiscCoverData where
   degreeOne z := by
     change IntegralSingularHomology 1
       (AdditiveTorus (AnalyticTorusFamily.parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zOne).1) at z
     have h := (StandardTorusHomology.fullRankAdditiveTorusHomeomorph_naturality
-      A.duplicatedSectionSevenBandParameter
+      A.commonBandParameter
       (AnalyticTorusFamily.parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zTwo).1
-      A.duplicatedSectionSevenBandFullRank
+      A.commonBandFullRank
       (FullRank.ofSetupInequalities
         (AnalyticTorusFamily.parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).1
         (AnalyticTorusFamily.parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).2)).1 z
     dsimp only [CentralHeightSplit.RadialHomotopyData.toRadialRealization,
-      EllipticCentralAllocation.RadialRealization.toSectionSevenEllipticTwoDiscCoverData,
-      duplicatedSectionSevenBandToOrderThreeCoverSource,
-      duplicatedSectionSevenBandToOrderFourCoverSource,
+      EllipticCentralAllocation.RadialRealization.toEllipticTwoDiscCoverData,
+      commonBandToOrderThreeCoverSource,
+      commonBandToOrderFourCoverSource,
       orderThreeCentralFiberCoverSourceHomologyBasis,
       orderFourCentralFiberCoverSourceHomologyBasis,
       FourTorusHomologyBasis.homeomorph]
@@ -105,10 +105,10 @@ public theorem CentralHeightSplit.RadialHomotopyData.bandHomologyAlignment
           (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
             (orderFourRadialActionData A.periods))
           (integralSingularHomologyMap 1
-            ⟨A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.trans
+            ⟨A.orderThreeToOrderFourBandHomeomorph.trans
                 (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
                   (orderFourRadialActionData A.periods)).symm,
-              (A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.trans
+              (A.orderThreeToOrderFourBandHomeomorph.trans
                 (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
                   (orderFourRadialActionData A.periods)).symm).continuous⟩ z)) =
       (orderThreeTorusHomologyBasis A.periods).degreeOne
@@ -123,7 +123,7 @@ public theorem CentralHeightSplit.RadialHomotopyData.bandHomologyAlignment
     rw [homologyEquiv_map_trans_symm 1
       (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
         (orderFourRadialActionData A.periods))
-      A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph z,
+      A.orderThreeToOrderFourBandHomeomorph z,
       homologyEquiv_map_symm 1
         (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
           (orderThreeRadialActionData A.periods)) z]
@@ -133,19 +133,19 @@ public theorem CentralHeightSplit.RadialHomotopyData.bandHomologyAlignment
       (AdditiveTorus (AnalyticTorusFamily.parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zOne).1) at z
     have h := (StandardTorusHomology.fullRankAdditiveTorusHomeomorph_naturality
-      A.duplicatedSectionSevenBandParameter
+      A.commonBandParameter
       (AnalyticTorusFamily.parameterMap A.periods
         A.modular.modularParameter.toTriangleUniformization.zTwo).1
-      A.duplicatedSectionSevenBandFullRank
+      A.commonBandFullRank
       (FullRank.ofSetupInequalities
         (AnalyticTorusFamily.parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).1
         (AnalyticTorusFamily.parameterMap A.periods
           A.modular.modularParameter.toTriangleUniformization.zTwo).2)).2 z
     dsimp only [CentralHeightSplit.RadialHomotopyData.toRadialRealization,
-      EllipticCentralAllocation.RadialRealization.toSectionSevenEllipticTwoDiscCoverData,
-      duplicatedSectionSevenBandToOrderThreeCoverSource,
-      duplicatedSectionSevenBandToOrderFourCoverSource,
+      EllipticCentralAllocation.RadialRealization.toEllipticTwoDiscCoverData,
+      commonBandToOrderThreeCoverSource,
+      commonBandToOrderFourCoverSource,
       orderThreeCentralFiberCoverSourceHomologyBasis,
       orderFourCentralFiberCoverSourceHomologyBasis,
       FourTorusHomologyBasis.homeomorph]
@@ -154,10 +154,10 @@ public theorem CentralHeightSplit.RadialHomotopyData.bandHomologyAlignment
           (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
             (orderFourRadialActionData A.periods))
           (integralSingularHomologyMap 2
-            ⟨A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.trans
+            ⟨A.orderThreeToOrderFourBandHomeomorph.trans
                 (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
                   (orderFourRadialActionData A.periods)).symm,
-              (A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.trans
+              (A.orderThreeToOrderFourBandHomeomorph.trans
                 (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
                   (orderFourRadialActionData A.periods)).symm).continuous⟩ z)) =
       (orderThreeTorusHomologyBasis A.periods).degreeTwo
@@ -172,7 +172,7 @@ public theorem CentralHeightSplit.RadialHomotopyData.bandHomologyAlignment
     rw [homologyEquiv_map_trans_symm 2
       (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
         (orderFourRadialActionData A.periods))
-      A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph z,
+      A.orderThreeToOrderFourBandHomeomorph z,
       homologyEquiv_map_symm 2
         (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
           (orderThreeRadialActionData A.periods)) z]

@@ -19,6 +19,9 @@ open AlgebraicTopology Matrix Set TopologicalSpace
 
 namespace SphereSixComplex
 
+/-- The generator of the kernel of the degree-one difference matrix. -/
+public def alphaOneKernelGenerator : Fin 4 → ℤ := ![0, -1, -1, 1]
+
 /-- The actual degree-one difference matrix from the two reduced central fibres.  The first
 coordinates carry the covering indices three and four; these factors cannot be removed by an
 integral change of basis. -/

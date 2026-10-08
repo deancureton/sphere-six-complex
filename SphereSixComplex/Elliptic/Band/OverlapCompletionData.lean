@@ -123,36 +123,7 @@ public noncomputable def affineOrderFourBandToReducedFiber
 
 
 
-/-- Exact residual affine data once the overlap geometry is a bare pair of homotopy
-equivalences: the two overlap equivalences and the two marked band homotopies. -/
-public structure AffineOverlapCompletionInput where
-  orderThreeOverlap : IsHomotopyEquivalence (SphereSixComplex.OpenUnionHomotopy.interToRight
-    A.orderThreeFillingImage A.affineOrderThreeCentralRegion).hom
-  orderFourOverlap : IsHomotopyEquivalence (SphereSixComplex.OpenUnionHomotopy.interToRight
-    A.orderFourFillingImage A.affineOrderFourCentralRegion).hom
-  orderThreeCompatibility :
-    (affineOrderThreeBandToReducedFiber
-      (orderThreeOverlapIsHomotopyEquivalence_inclusion orderThreeOverlap)).Homotopic
-      (affineBandOrderThreeCoverMap A)
-  orderFourCompatibility :
-    (affineOrderFourBandToReducedFiber
-      (orderFourOverlapIsHomotopyEquivalence_inclusion orderFourOverlap)).Homotopic
-      (affineBandOrderFourCoverMap A)
 
-namespace AffineOverlapCompletionInput
-
-/-- Assemble the original affine radial input from the two bare overlap homotopy equivalences. -/
-public theorem toRadialCompletion
-    (R : A.AffineOverlapCompletionInput) :
-    A.AffineRadialCompletionInput where
-  orderThreeHomotopyEquivalence :=
-    orderThreeOverlapIsHomotopyEquivalence_inclusion R.orderThreeOverlap
-  orderFourHomotopyEquivalence :=
-    orderFourOverlapIsHomotopyEquivalence_inclusion R.orderFourOverlap
-  orderThree_inclusion_compatibility := R.orderThreeCompatibility
-  orderFour_inclusion_compatibility := R.orderFourCompatibility
-
-end AffineOverlapCompletionInput
 
 end SphereSixComplex.Geometry.AnalyticData
 

@@ -60,7 +60,7 @@ public theorem torusAction_inclusion_eq_iff
   change carrierTorusActionFun g (inclusion a z) =
       carrierTorusActionFun h (inclusion a z) ↔ _
   rw [carrierTorusActionFun_inclusion, carrierTorusActionFun_inclusion,
-    (inclusion_isOpenEmbedding a).injective.eq_iff]
+    (isOpenEmbedding_inclusion a).injective.eq_iff]
   constructor
   · intro heq j hj
     exact mul_right_cancel₀ hj (congrFun heq j)

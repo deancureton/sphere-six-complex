@@ -22,11 +22,11 @@ public theorem cuspRawFour_ellipticUnionInclusion {A : AnalyticData}
       (cuspToEllipticUnionHomology D 2
         (A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1))) = 0 := by
   let x := A.cuspRawHomologyTwoEquiv.symm (Pi.single (4 : Fin 6) 1)
-  let U := A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage 2
-  let V := A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3
-  let eS := integralSingularHomologyEquiv 2 A.cuspCollarToSectionSevenFinalOverlapHomeomorph
+  let U := A.openEmbeddingStarData.mayerVietorisCover.stage 2
+  let V := A.openEmbeddingStarData.mayerVietorisCover.piece 3
+  let eS := integralSingularHomologyEquiv 2 A.cuspCollarToFinalOverlapHomeomorph
   let eT := integralSingularHomologyEquiv 2
-    (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)
+    (A.openEmbeddingStarData.fillingToEulerPieceHomeomorph 0)
   have hFilling : integralSingularHomologyMap 2
       (A.openEmbeddingStarData.toFilling 0).hom x = 0 := by
     apply A.actualCuspFillingHomologyTwoEquiv.injective

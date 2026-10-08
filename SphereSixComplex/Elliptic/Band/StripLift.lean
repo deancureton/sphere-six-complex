@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Elliptic.Band.Midpoint
+public import SphereSixComplex.Elliptic.Band.MarkedTrivialization
 public import SphereSixComplex.Elliptic.Cover.OuterDeckCoordinateNaturality
 
 @[expose] public section
@@ -333,7 +333,7 @@ public theorem affineNormalizedBaseDeckHom_one (A : AnalyticData) :
   rw [hm] at h
   exact (congrArg MulOpposite.unop h.symm).trans A.affineNormalizedMidpointTotal_one_label
 
-public theorem exists_sectionSevenAffineNormalizedLoopLift (A : AnalyticData)
+public theorem exists_affineNormalizedLoopLift (A : AnalyticData)
     (γ : Path twicePuncturedComplexBasepoint twicePuncturedComplexBasepoint) (g : Delta)
     (hg : (A.affineNormalizedBaseDeckHom (Path.Homotopic.Quotient.mk γ)).unop = g) :
     ∃ L : Path A.affineNormalizedMidpoint
@@ -362,46 +362,46 @@ public theorem exists_sectionSevenAffineNormalizedLoopLift (A : AnalyticData)
 public noncomputable def affineNormalizedZeroLift (A : AnalyticData) :
     Path A.affineNormalizedMidpoint
       (regularSourceEquiv g₁ A.affineNormalizedMidpoint) :=
-  (A.exists_sectionSevenAffineNormalizedLoopLift twicePuncturedClockwiseZeroMeridian g₁
+  (A.exists_affineNormalizedLoopLift twicePuncturedClockwiseZeroMeridian g₁
     A.affineNormalizedBaseDeckHom_zero).choose
 
 public theorem affineNormalizedZeroLift_projects (A : AnalyticData)
     (t : unitInterval) :
     A.regularCoordinate (A.affineNormalizedZeroLift t) =
       twicePuncturedClockwiseZeroMeridian t :=
-  (A.exists_sectionSevenAffineNormalizedLoopLift twicePuncturedClockwiseZeroMeridian g₁
+  (A.exists_affineNormalizedLoopLift twicePuncturedClockwiseZeroMeridian g₁
     A.affineNormalizedBaseDeckHom_zero).choose_spec t
 
 public noncomputable def affineNormalizedOneLift (A : AnalyticData) :
     Path A.affineNormalizedMidpoint
       (regularSourceEquiv g₂ A.affineNormalizedMidpoint) :=
-  (A.exists_sectionSevenAffineNormalizedLoopLift twicePuncturedClockwiseOneMeridian g₂
+  (A.exists_affineNormalizedLoopLift twicePuncturedClockwiseOneMeridian g₂
     A.affineNormalizedBaseDeckHom_one).choose
 
 public theorem affineNormalizedOneLift_projects (A : AnalyticData)
     (t : unitInterval) :
     A.regularCoordinate (A.affineNormalizedOneLift t) =
       twicePuncturedClockwiseOneMeridian t :=
-  (A.exists_sectionSevenAffineNormalizedLoopLift twicePuncturedClockwiseOneMeridian g₂
+  (A.exists_affineNormalizedLoopLift twicePuncturedClockwiseOneMeridian g₂
     A.affineNormalizedBaseDeckHom_one).choose_spec t
 
 public noncomputable def affineNormalizedStripContinuousLift (A : AnalyticData) :
     C(affineVerticalStrip,
       RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :=
-  (A.existsUnique_sectionSevenAffineStripContinuousLift
+  (A.existsUnique_affineStripContinuousLift
     affineStripMidpoint A.affineNormalizedMidpoint
     A.affineNormalizedMidpoint_projects).choose
 
 public theorem affineNormalizedStripContinuousLift_midpoint (A : AnalyticData) :
     A.affineNormalizedStripContinuousLift affineStripMidpoint =
       A.affineNormalizedMidpoint :=
-  (A.existsUnique_sectionSevenAffineStripContinuousLift
+  (A.existsUnique_affineStripContinuousLift
     affineStripMidpoint A.affineNormalizedMidpoint
     A.affineNormalizedMidpoint_projects).choose_spec.1.1
 
 public theorem affineNormalizedStripContinuousLift_coordinate (A : AnalyticData) :
     A.regularCoordinate ∘ A.affineNormalizedStripContinuousLift = stripInclusion :=
-  (A.existsUnique_sectionSevenAffineStripContinuousLift
+  (A.existsUnique_affineStripContinuousLift
     affineStripMidpoint A.affineNormalizedMidpoint
     A.affineNormalizedMidpoint_projects).choose_spec.1.2
 

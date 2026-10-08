@@ -27,6 +27,12 @@ namespace SphereSixComplex.Geometry.AnalyticData
 public def affineVerticalStrip : Set ℂ :=
   {z : ℂ | (1 / 3 : ℝ) < z.re ∧ z.re < 2 / 3}
 
+public noncomputable def affineStripMidpoint : affineVerticalStrip :=
+  ⟨(2 : ℂ)⁻¹, by
+    change (1 / 3 : ℝ) < ((2 : ℂ)⁻¹).re ∧ ((2 : ℂ)⁻¹).re < 2 / 3
+    norm_num⟩
+
+
 public theorem affineVerticalStrip_convex :
     Convex ℝ affineVerticalStrip := by
   exact (convex_halfSpace_gt (Complex.reCLM : ℂ →L[ℝ] ℝ).isLinear (1 / 3 : ℝ)).inter

@@ -260,7 +260,7 @@ public theorem centralFamily_isManifold :
     (fuchsianPuncturedGlobalFamily_isManifold_and_projection_isLocalDiffeomorph
       A.modular.modularParameter A.periods).1
   let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder A.CentralFamily := hmanifold
-  exact globalDeckComplexManifold
+  exact isManifold_globalDeckComplexCharts
 
 /-- The selected central family is connected. -/
 public theorem centralFamily_connected : ConnectedSpace A.CentralFamily := by

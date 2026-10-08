@@ -92,7 +92,7 @@ public def ellipticCentralImageToPiece :
 public noncomputable def ellipticCentralImageHomeomorph :
     A.ellipticCentralImage ≃ₜ A.CentralFamily :=
   A.ellipticCentralImageToPiece.trans
-    A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.symm
+    A.openEmbeddingStarData.centralToEulerPieceHomeomorph.symm
 
 /-- A point of the central image inherits the exact affine base coordinate. -/
 public noncomputable def ellipticCentralCoordinate :
@@ -196,25 +196,25 @@ public theorem orderFourStarCollar_twoThirds_lt_centralCoordinate_re
         (abs_le.mp hre).1
       linarith
 
-private theorem sectionSevenEllipticCentralImageHomeomorph_of_collar
+private theorem ellipticCentralImageHomeomorph_of_collar
     (i : Fin 3) (q : A.StarCollarSource i)
     (x : A.ellipticCentralImage)
     (hx : A.openEmbeddingStarData.collarSourceToGlued i q = x.1.1) :
     A.ellipticCentralImageHomeomorph x = A.starToCentral i q := by
-  apply A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.injective
+  apply A.openEmbeddingStarData.centralToEulerPieceHomeomorph.injective
   apply Subtype.ext
-  let y : A.openEmbeddingStarData.sectionSevenEulerCover.piece 0 := ⟨x.1.1, x.2⟩
+  let y : A.openEmbeddingStarData.eulerCover.piece 0 := ⟨x.1.1, x.2⟩
   have hxy : A.ellipticCentralImageHomeomorph x =
-      A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.symm y := rfl
+      A.openEmbeddingStarData.centralToEulerPieceHomeomorph.symm y := rfl
   calc
-    ↑(A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+    ↑(A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         (A.ellipticCentralImageHomeomorph x)) = y.1 := by
       rw [hxy]
       exact congrArg Subtype.val
-        (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.apply_symm_apply y)
+        (A.openEmbeddingStarData.centralToEulerPieceHomeomorph.apply_symm_apply y)
     _ = x.1.1 := rfl
     _ = A.openEmbeddingStarData.collarSourceToGlued i q := hx.symm
-    _ = ↑(A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+    _ = ↑(A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         (A.starToCentral i q)) := by
       let hι :=
         A.openEmbeddingStarData.toFourPieceStarGluingData.glueData.ι_isOpenEmbedding none
@@ -241,23 +241,23 @@ public theorem affineCentralSeparation :
     have hpair : y.1.1 ∈ A.starCover.piece 0 ∩
         A.starCover.piece 1 := ⟨y.2, hx₃⟩
     have hpair' : y.1.1 ∈
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 2 := by
       simpa [starCover,
-        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
-        sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
+        OpenEmbeddingStarData.mayerVietorisCover,
+        mayerVietorisOpenCover, mayerVietorisOrder] using hpair
     have hrange : Set.range (A.openEmbeddingStarData.collarSourceToGlued 1) =
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 2 := by
       simpa using A.openEmbeddingStarData.range_collarSourceToGlued 1
     rw [← hrange] at hpair'
     obtain ⟨q, hq⟩ := hpair'
     have hcoord := A.orderThreeStarCollar_centralCoordinate_re_lt q
-    have hcentral := sectionSevenEllipticCentralImageHomeomorph_of_collar A 1 q y hq
+    have hcentral := ellipticCentralImageHomeomorph_of_collar A 1 q y hq
     change 1 / 3 <
       (A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph y)).1.re at hy
     rw [hcentral] at hy
@@ -267,23 +267,23 @@ public theorem affineCentralSeparation :
     have hpair : y.1.1 ∈ A.starCover.piece 0 ∩
         A.starCover.piece 2 := ⟨y.2, hx₄⟩
     have hpair' : y.1.1 ∈
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 3 := by
       simpa [starCover,
-        OpenEmbeddingStarData.sectionSevenMayerVietorisCover,
-        sectionSevenMayerVietorisOpenCover, sectionSevenMayerVietorisOrder] using hpair
+        OpenEmbeddingStarData.mayerVietorisCover,
+        mayerVietorisOpenCover, mayerVietorisOrder] using hpair
     have hrange : Set.range (A.openEmbeddingStarData.collarSourceToGlued 2) =
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 0 ∩
-        (sectionSevenStarOpenCover
+        (starOpenCover
           A.openEmbeddingStarData.toFourPieceStarGluingData).piece 3 := by
       simpa using A.openEmbeddingStarData.range_collarSourceToGlued 2
     rw [← hrange] at hpair'
     obtain ⟨q, hq⟩ := hpair'
     have hcoord := A.orderFourStarCollar_twoThirds_lt_centralCoordinate_re q
-    have hcentral := sectionSevenEllipticCentralImageHomeomorph_of_collar A 2 q y hq
+    have hcentral := ellipticCentralImageHomeomorph_of_collar A 2 q y hq
     change (A.centralFamilyCoordinate
       (A.ellipticCentralImageHomeomorph y)).1.re < 2 / 3 at hy
     rw [hcentral] at hy

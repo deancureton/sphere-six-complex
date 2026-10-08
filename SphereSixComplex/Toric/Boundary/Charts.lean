@@ -53,7 +53,7 @@ theorem axisOrbit_injOn_nonzero
     (axisPoint W upper i z) (axisPoint W upper i w)
     (axisPoint_support W upper i z hz') (axisPoint_support W upper i w hw')
     (Quotient.exact h)
-  have hinj := (inclusion_isOpenEmbedding (upper, 0)).injective he
+  have hinj := (isOpenEmbedding_inclusion (upper, 0)).injective he
   simpa [singleAxis] using congrFun hinj i
 
 private theorem singleAxis_zero (i : Fin 3) : singleAxis i 0 = 0 := by
@@ -449,7 +449,7 @@ theorem continuous_axisPoint
     (upper : Bool) (i : Fin 3) : Continuous (axisPoint W upper i) := by
   apply Continuous.subtype_mk
   apply Continuous.subtype_mk
-  apply (inclusion_isOpenEmbedding (upper, 0)).continuous.comp
+  apply (isOpenEmbedding_inclusion (upper, 0)).continuous.comp
   apply continuous_pi
   intro j
   by_cases hj : j = i
@@ -468,7 +468,7 @@ theorem continuous_upperPoint
     (i : Fin 3) : Continuous (upperPoint W i) := by
   apply Continuous.subtype_mk
   apply Continuous.subtype_mk
-  apply (inclusion_isOpenEmbedding (upperChart i)).continuous.comp
+  apply (isOpenEmbedding_inclusion (upperChart i)).continuous.comp
   apply continuous_pi
   intro j
   by_cases hj : j = upperAxis i

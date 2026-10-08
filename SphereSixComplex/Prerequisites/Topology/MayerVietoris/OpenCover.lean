@@ -33,4 +33,13 @@ public theorem subsingleton_homology_seven_union
     rw [show w = 0 from Prod.ext hw1 hw2, map_zero]
   rw [key x, key y]
 
+/-- The established binary theorem supplies exactness at each stage of an ordered four-piece open
+cover. -/
+public theorem FourPieceOpenCover.mayerVietoris_exact
+    {X : Type} [TopologicalSpace X] (C : FourPieceOpenCover X) :
+    FourPieceMayerVietorisExactness C := by
+  intro r
+  exact IntegralMayerVietoris.exact_sequence_of_isOpen _ _
+    (C.isOpen_stage r.castSucc) (C.isOpen_piece r.succ)
+
 end SphereSixComplex

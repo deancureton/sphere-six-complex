@@ -20,13 +20,13 @@ variable (A : AnalyticData)
 
 public theorem regularFixedFiberPoint_coordinate
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
-    (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (t : AdditiveTorus A.commonBandParameter) :
     A.centralFamilyCoordinate (A.regularFixedFiberPoint b t) = A.regularCoordinate b := by
   induction t using Quotient.inductionOn with
   | _ v => rfl
 
 theorem midpointComparisonLowerFiber_mem
-    (p : A.OrderThreeAffineHalfPlaneBaseLift × AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (p : A.OrderThreeAffineHalfPlaneBaseLift × AdditiveTorus A.commonBandParameter) :
     A.ellipticCentralHeight (A.ellipticCentralImageHomeomorph.symm
       (A.regularFixedFiberPoint p.1.1 p.2)) < 2 / 3 := by
   change (A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph
@@ -37,7 +37,7 @@ theorem midpointComparisonLowerFiber_mem
 
 public def midpointComparisonLowerFiber :
     C(A.OrderThreeAffineHalfPlaneBaseLift ×
-      AdditiveTorus A.duplicatedSectionSevenBandParameter, A.affineOrderThreeCentralRegion) where
+      AdditiveTorus A.commonBandParameter, A.affineOrderThreeCentralRegion) where
   toFun p := ⟨(A.ellipticCentralImageHomeomorph.symm
       (A.regularFixedFiberPoint p.1.1 p.2)).1,
     ⟨A.ellipticCentralImageHomeomorph.symm (A.regularFixedFiberPoint p.1.1 p.2),
@@ -49,7 +49,7 @@ public def midpointComparisonLowerFiber :
 
 public def midpointComparisonLowerFiberSide :
     C(A.OrderThreeAffineHalfPlaneBaseLift ×
-      AdditiveTorus A.duplicatedSectionSevenBandParameter,
+      AdditiveTorus A.commonBandParameter,
       A.actualAffineHeightSplit.allocation.orderThreeSide) :=
   (⟨fun x : A.affineOrderThreeCentralRegion ↦ ⟨x.1, Or.inr x.2⟩,
       continuous_subtype_val.subtype_mk _⟩ : C(_, _)).comp A.midpointComparisonLowerFiber
@@ -95,7 +95,7 @@ open EllipticLinearCollarGlobalDescent EllipticLocalCoordinates EllipticFilling
 theorem midpointComparisonThreeCollarTorus_mem
     (c : ComplexUnitDisc) (hc0 : 0 < ‖(c : ℂ)‖)
     (hcr : ‖(c : ℂ)‖ < A.starSeparation.orderThree.radius)
-    (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (t : AdditiveTorus A.commonBandParameter) :
     (orderThreeRealPeriodProductHomeomorph A.periods).symm (c, t) ∈
       (orderThreeAffinePuncturedCarrier A.periods
         A.modular.modularParameter.toTriangleUniformization_sourceAction
@@ -108,8 +108,8 @@ theorem midpointComparisonThreeCollarTorus_mem
 public def midpointComparisonThreeCollarTorus
     (c : ComplexUnitDisc) (hc0 : 0 < ‖(c : ℂ)‖)
     (hcr : ‖(c : ℂ)‖ < A.starSeparation.orderThree.radius)
-    (a : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
-    C(AdditiveTorus A.duplicatedSectionSevenBandParameter,
+    (a : AdditiveTorus A.commonBandParameter) :
+    C(AdditiveTorus A.commonBandParameter,
       (orderThreeAffinePuncturedCarrier A.periods
         A.modular.modularParameter.toTriangleUniformization_sourceAction
         A.starSeparation.orderThree.radius).carrier) :=
@@ -121,8 +121,8 @@ public def midpointComparisonThreeCollarTorus
 public def midpointComparisonThreeFillingTorus
     (c : ComplexUnitDisc) (hc0 : 0 < ‖(c : ℂ)‖)
     (hcr : ‖(c : ℂ)‖ < A.starSeparation.orderThree.radius)
-    (a : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
-    C(AdditiveTorus A.duplicatedSectionSevenBandParameter,
+    (a : AdditiveTorus A.commonBandParameter) :
+    C(AdditiveTorus A.commonBandParameter,
       A.OrderThreeVaryingFilling A.starSeparation.orderThree.radius) :=
   (⟨A.starToFilling 1, (A.starToFilling_isOpenEmbedding 1).continuous⟩ : C(_, _)).comp
     ((⟨Quotient.mk _, continuous_quot_mk⟩ : C(_, _)).comp
@@ -131,7 +131,7 @@ public def midpointComparisonThreeFillingTorus
 public theorem midpointComparisonThreeFillingTorus_retraction
     (c : ComplexUnitDisc) (hc0 : 0 < ‖(c : ℂ)‖)
     (hcr : ‖(c : ℂ)‖ < A.starSeparation.orderThree.radius)
-    (a t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (a t : AdditiveTorus A.commonBandParameter) :
     (orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun
       (A.midpointComparisonThreeFillingTorus c hc0 hcr a t) =
       RadialEllipticActionData.centralFiberCoverProjection (orderThreeRadialActionData A.periods)
@@ -146,16 +146,16 @@ public theorem midpointComparisonThreeFillingTorus_retraction
 public theorem midpointComparisonThreeFillingTorus_homotopic
     (c : ComplexUnitDisc) (hc0 : 0 < ‖(c : ℂ)‖)
     (hcr : ‖(c : ℂ)‖ < A.starSeparation.orderThree.radius)
-    (a : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (a : AdditiveTorus A.commonBandParameter) :
     ((orderThreeSelectedFillingHomotopyEquivCentralFiber A).toFun.comp
       (A.midpointComparisonThreeFillingTorus c hc0 hcr a)).Homotopic
       ((RadialEllipticActionData.centralFiberCoverProjection
         (orderThreeRadialActionData A.periods)).comp
         (RadialEllipticActionData.centralFiberCoverSourceHomeomorph
           (orderThreeRadialActionData A.periods)).symm.toHomotopyEquiv.toFun) := by
-  let : PathConnectedSpace (AdditiveTorus A.duplicatedSectionSevenBandParameter) :=
+  let : PathConnectedSpace (AdditiveTorus A.commonBandParameter) :=
     Function.Surjective.pathConnectedSpace
-      (f := torusProjection A.duplicatedSectionSevenBandParameter)
+      (f := torusProjection A.commonBandParameter)
       Quotient.mk_surjective continuous_quot_mk
   let p := (PathConnectedSpace.joined a 0).some
   let k := (RadialEllipticActionData.centralFiberCoverProjection
@@ -180,7 +180,7 @@ public theorem midpointComparisonThreeCollarTorus_central
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
     (hc0 : 0 < ‖(orderThreeCayleyHomeomorph b.1 : ℂ)‖)
     (hcr : ‖(orderThreeCayleyHomeomorph b.1 : ℂ)‖ < A.starSeparation.orderThree.radius)
-    (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (t : AdditiveTorus A.commonBandParameter) :
     A.starToCentral 1 (Quotient.mk _
       (A.midpointComparisonThreeCollarTorus (orderThreeCayleyHomeomorph b.1) hc0 hcr
         (-A.midpointComparisonThreeGauge b.1) t)) = A.regularFixedFiberPoint b t := by
@@ -229,7 +229,7 @@ public theorem midpointComparisonThree_endpoint_in_side
     (b : A.OrderThreeAffineHalfPlaneBaseLift)
     (hc0 : 0 < ‖(orderThreeCayleyHomeomorph b.1.1 : ℂ)‖)
     (hcr : ‖(orderThreeCayleyHomeomorph b.1.1 : ℂ)‖ < A.starSeparation.orderThree.radius)
-    (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (t : AdditiveTorus A.commonBandParameter) :
     A.midpointComparisonLowerFiberSide (b, t) =
       A.midpointComparisonThreeFillingToSide
         (A.midpointComparisonThreeFillingTorus (orderThreeCayleyHomeomorph b.1.1)
@@ -242,17 +242,17 @@ public theorem midpointComparisonThree_endpoint_in_side
   let y := A.ellipticCentralImageHomeomorph.symm (A.regularFixedFiberPoint b.1 t)
   change y.1.1 = _
   calc
-    y.1.1 = (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+    y.1.1 = (A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         (A.regularFixedFiberPoint b.1 t)).1 := by
-      have h := A.centralToSectionSevenEulerPiece_centralImage y
+      have h := A.centralToEulerPiece_centralImage y
       rw [show A.ellipticCentralImageHomeomorph y = A.regularFixedFiberPoint b.1 t
         from A.ellipticCentralImageHomeomorph.apply_symm_apply _] at h
       exact h.symm
-    _ = (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+    _ = (A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         (A.starToCentral 1 q)).1 := by
       rw [A.midpointComparisonThreeCollarTorus_central b.1 hc0 hcr t]
     _ = A.openEmbeddingStarData.collarSourceToGlued 1 q :=
-      A.centralToSectionSevenEulerPiece_starToCentral 1 q
+      A.centralToEulerPiece_starToCentral 1 q
     _ = _ := (A.openEmbeddingStarData.fillingInclusion_toFilling 1 q).symm
 
 public theorem midpointComparisonThree_chosen_inverse :
@@ -281,14 +281,14 @@ public theorem midpointComparisonThree_chosen_inverse :
 public def midpointComparisonProduct :
     (A.actualAffineHeightSplit.allocation.orderThreeSide ∩
       A.actualAffineHeightSplit.allocation.orderFourSide : Set A.ellipticInterior) ≃ₜ
-      affineVerticalStrip × AdditiveTorus A.duplicatedSectionSevenBandParameter :=
+      affineVerticalStrip × AdditiveTorus A.commonBandParameter :=
   A.actualAffineHeightSplit.sidesIntersectionHomeomorph.trans
     (A.affineCentralBandMarkedProductHomeomorph A.affineCentralSeparation)
 
 public def midpointComparisonSlice :=
   A.midpointComparisonProduct.symm.toHomotopyEquiv.toFun.comp
     ((ContinuousMap.const _ affineStripMidpoint).prodMk (ContinuousMap.id
-      (AdditiveTorus A.duplicatedSectionSevenBandParameter)))
+      (AdditiveTorus A.commonBandParameter)))
 
 public theorem midpointComparisonSlice_lower :
     (IntegralMayerVietoris.interToLeft
@@ -296,7 +296,7 @@ public theorem midpointComparisonSlice_lower :
       A.actualAffineHeightSplit.allocation.orderFourSide).comp A.midpointComparisonSlice =
       A.midpointComparisonLowerFiberSide.comp
         ((ContinuousMap.const _ (A.affineNormalizedOrderThreeHalfPlaneLift affineStripMidpoint)).prodMk
-          (ContinuousMap.id (AdditiveTorus A.duplicatedSectionSevenBandParameter))) := by
+          (ContinuousMap.id (AdditiveTorus A.commonBandParameter))) := by
   apply ContinuousMap.ext
   intro t
   apply Subtype.ext
@@ -381,7 +381,7 @@ public theorem midpointComparisonThree_compatibility :
 
 
 theorem midpointComparisonUpperFiber_mem
-    (p : A.OrderFourAffineHalfPlaneBaseLift × AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (p : A.OrderFourAffineHalfPlaneBaseLift × AdditiveTorus A.commonBandParameter) :
     A.ellipticCentralHeight (A.ellipticCentralImageHomeomorph.symm
       (A.regularFixedFiberPoint p.1.1 p.2)) > 1 / 3 := by
   change (A.centralFamilyCoordinate (A.ellipticCentralImageHomeomorph
@@ -392,7 +392,7 @@ theorem midpointComparisonUpperFiber_mem
 
 public def midpointComparisonUpperFiber :
     C(A.OrderFourAffineHalfPlaneBaseLift ×
-      AdditiveTorus A.duplicatedSectionSevenBandParameter, A.affineOrderFourCentralRegion) where
+      AdditiveTorus A.commonBandParameter, A.affineOrderFourCentralRegion) where
   toFun p := ⟨(A.ellipticCentralImageHomeomorph.symm
       (A.regularFixedFiberPoint p.1.1 p.2)).1,
     ⟨A.ellipticCentralImageHomeomorph.symm (A.regularFixedFiberPoint p.1.1 p.2),
@@ -404,7 +404,7 @@ public def midpointComparisonUpperFiber :
 
 public def midpointComparisonUpperFiberSide :
     C(A.OrderFourAffineHalfPlaneBaseLift ×
-      AdditiveTorus A.duplicatedSectionSevenBandParameter,
+      AdditiveTorus A.commonBandParameter,
       A.actualAffineHeightSplit.allocation.orderFourSide) :=
   (⟨fun x : A.affineOrderFourCentralRegion ↦ ⟨x.1, Or.inr x.2⟩,
       continuous_subtype_val.subtype_mk _⟩ : C(_, _)).comp A.midpointComparisonUpperFiber
@@ -534,27 +534,27 @@ public theorem midpointComparisonFourCollarTorus_central
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
     (hc0 : 0 < ‖(orderFourCayleyHomeomorph b.1 : ℂ)‖)
     (hcr : ‖(orderFourCayleyHomeomorph b.1 : ℂ)‖ < A.starSeparation.orderFour.radius)
-    (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (t : AdditiveTorus A.commonBandParameter) :
     A.starToCentral 2 (Quotient.mk _
       (A.midpointComparisonFourCollarTorus (orderFourCayleyHomeomorph b.1) hc0 hcr
-        (-A.midpointComparisonFourGauge b.1) (A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph t))) = A.regularFixedFiberPoint b t := by
+        (-A.midpointComparisonFourGauge b.1) (A.orderThreeToOrderFourBandHomeomorph t))) = A.regularFixedFiberPoint b t := by
   induction t using Quotient.inductionOn with
   | _ v =>
       let r := regularFamilyCoverProjection A.periods
         (b, A.regularFixedToMoving b v)
       have ht : (orderFourRealPeriodProductHomeomorph A.periods
-          (regularFamilyInclusion A.periods r)).2 = A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph (Quotient.mk _ v) := by
+          (regularFamilyInclusion A.periods r)).2 = A.orderThreeToOrderFourBandHomeomorph (Quotient.mk _ v) := by
         change (orderFourRealPeriodProductHomeomorph A.periods
           (regularFamilyInclusion A.periods (Quotient.mk _ (b, A.regularFixedToMoving b v)))).2 = _
         rw [regularFamilyInclusion_mk, orderFourRealPeriodProductHomeomorph_mk]
         apply congrArg (Quotient.mk _)
         simp [regularBundleInclusion, movingToFixedCover, regularFixedToMoving,
           fixedToMovingCover, periodCoordinates, fullRankDomain,
-          duplicatedSectionSevenBandFullRank, duplicatedSectionSevenBandParameter]
+          commonBandFullRank, commonBandParameter]
       have hq : (A.midpointComparisonFourCollarTorus
           (orderFourCayleyHomeomorph b.1) hc0 hcr
           (-A.midpointComparisonFourGauge b.1)
-            (A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph (Quotient.mk _ v))).1 =
+            (A.orderThreeToOrderFourBandHomeomorph (Quotient.mk _ v))).1 =
           (orderFourPrincipalGaugeEquiv A.periods).symm
             (regularFamilyInclusion A.periods r) := by
         apply (orderFourRealPeriodProductHomeomorph A.periods).injective
@@ -585,32 +585,32 @@ public theorem midpointComparisonFour_endpoint_in_side
     (b : A.OrderFourAffineHalfPlaneBaseLift)
     (hc0 : 0 < ‖(orderFourCayleyHomeomorph b.1.1 : ℂ)‖)
     (hcr : ‖(orderFourCayleyHomeomorph b.1.1 : ℂ)‖ < A.starSeparation.orderFour.radius)
-    (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (t : AdditiveTorus A.commonBandParameter) :
     A.midpointComparisonUpperFiberSide (b, t) =
       A.midpointComparisonFourFillingToSide
         (A.midpointComparisonFourFillingTorus (orderFourCayleyHomeomorph b.1.1)
           hc0 hcr (-A.midpointComparisonFourGauge b.1.1)
-          (A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph t)) := by
+          (A.orderThreeToOrderFourBandHomeomorph t)) := by
   apply Subtype.ext
   apply Subtype.ext
   let q : A.StarCollarSource 2 := Quotient.mk _ (A.midpointComparisonFourCollarTorus
     (orderFourCayleyHomeomorph b.1.1) hc0 hcr
     (-A.midpointComparisonFourGauge b.1.1)
-          (A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph t))
+          (A.orderThreeToOrderFourBandHomeomorph t))
   let y := A.ellipticCentralImageHomeomorph.symm (A.regularFixedFiberPoint b.1 t)
   change y.1.1 = _
   calc
-    y.1.1 = (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+    y.1.1 = (A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         (A.regularFixedFiberPoint b.1 t)).1 := by
-      have h := A.centralToSectionSevenEulerPiece_centralImage y
+      have h := A.centralToEulerPiece_centralImage y
       rw [show A.ellipticCentralImageHomeomorph y = A.regularFixedFiberPoint b.1 t
         from A.ellipticCentralImageHomeomorph.apply_symm_apply _] at h
       exact h.symm
-    _ = (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+    _ = (A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         (A.starToCentral 2 q)).1 := by
       rw [A.midpointComparisonFourCollarTorus_central b.1 hc0 hcr t]
     _ = A.openEmbeddingStarData.collarSourceToGlued 2 q :=
-      A.centralToSectionSevenEulerPiece_starToCentral 2 q
+      A.centralToEulerPiece_starToCentral 2 q
     _ = _ := (A.openEmbeddingStarData.fillingInclusion_toFilling 2 q).symm
 
 public theorem midpointComparisonFour_chosen_inverse :
@@ -643,7 +643,7 @@ public theorem midpointComparisonSlice_upper :
       A.actualAffineHeightSplit.allocation.orderFourSide).comp A.midpointComparisonSlice =
       A.midpointComparisonUpperFiberSide.comp
         ((ContinuousMap.const _ (A.affineNormalizedOrderFourHalfPlaneLift affineStripMidpoint)).prodMk
-          (ContinuousMap.id (AdditiveTorus A.duplicatedSectionSevenBandParameter))) := by
+          (ContinuousMap.id (AdditiveTorus A.commonBandParameter))) := by
   apply ContinuousMap.ext
   intro t
   apply Subtype.ext
@@ -693,7 +693,7 @@ public theorem midpointComparisonFour_compatibility :
   have hz0 := A.midpointComparison_regular_four_positive z.1
   have hzr : ‖(orderFourCayleyHomeomorph z.1.1 : ℂ)‖ <
       A.starSeparation.orderFour.radius := A.affineNormalizedOrderFourRadialLift_midpoint_cayley
-  let H := A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph.toHomotopyEquiv.toFun
+  let H := A.orderThreeToOrderFourBandHomeomorph.toHomotopyEquiv.toFun
   let q := (A.midpointComparisonFourFillingTorus (orderFourCayleyHomeomorph z.1.1)
     hz0 hzr (-A.midpointComparisonFourGauge z.1.1)).comp H
   have hrad := A.midpointComparisonUpperRadialHomotopy
@@ -725,11 +725,21 @@ public theorem midpointComparisonFour_compatibility :
     intro t
     change (orderFourRadialActionData A.periods).centralFiberCoverProjection
       ((orderFourRadialActionData A.periods).centralFiberCoverSourceHomeomorph.symm
-        (A.duplicatedSectionSevenOrderThreeToOrderFourBandHomeomorph
+        (A.orderThreeToOrderFourBandHomeomorph
           (A.midpointComparisonProduct
             (A.midpointComparisonProduct.symm (affineStripMidpoint, t))).2)) = _
     rw [Homeomorph.apply_symm_apply]
     rfl
 
+
+/-- The side equivalences and marked inclusion homotopies for the affine central band. -/
+public theorem affineRadialCompletionInput (A : AnalyticData) :
+    A.AffineRadialCompletionInput where
+  orderThreeHomotopyEquivalence :=
+    orderThreeOverlapIsHomotopyEquivalence_inclusion A.orderThreeOverlapIsHomotopyEquivalence
+  orderFourHomotopyEquivalence :=
+    orderFourOverlapIsHomotopyEquivalence_inclusion A.orderFourOverlapIsHomotopyEquivalence
+  orderThree_inclusion_compatibility := A.midpointComparisonThree_compatibility
+  orderFour_inclusion_compatibility := A.midpointComparisonFour_compatibility
 
 end SphereSixComplex.Geometry.AnalyticData

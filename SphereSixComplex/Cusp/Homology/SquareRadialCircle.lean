@@ -12,7 +12,7 @@ open Geometry.InfiniteA2Toric
 open StandardCircleHomologyLiftDegree
 
 public theorem squareRadialCirclePoint (r : ℝ) (hr : 0 < r) (t : ℝ) :
-    cwSquareBoundaryCircleHomeomorph
+    supNormUnitSphereCircleHomeomorph
       (puncturedPlaneToSquareBoundary (planeCirclePuncturedPoint r hr.ne' t)) =
       Circle.exp (2 * Real.pi * t) := by
   let e : (Fin 2 → ℝ) ≃L[ℝ] ℂ :=
@@ -48,7 +48,7 @@ public theorem squareRadialAddCirclePoint (r : ℝ) (hr : 0 < r) (t : ℝ) :
   apply (AddCircle.homeomorphCircle (by norm_num : (1 : ℝ) ≠ 0)).injective
   change (AddCircle.homeomorphCircle _)
     ((AddCircle.homeomorphCircle _).symm
-      (cwSquareBoundaryCircleHomeomorph
+      (supNormUnitSphereCircleHomeomorph
         (puncturedPlaneToSquareBoundary (planeCirclePuncturedPoint r hr.ne' t)))) = _
   rw [Homeomorph.apply_symm_apply, squareRadialCirclePoint r hr]
   simp [AddCircle.homeomorphCircle_apply, AddCircle.toCircle_apply_mk]

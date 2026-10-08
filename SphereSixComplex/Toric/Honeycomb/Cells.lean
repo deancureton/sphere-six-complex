@@ -149,7 +149,7 @@ public def cellSquareCarrierPoint
 
 public theorem continuous_cellSquareCarrierPoint (v : ToricLattice) (i : Fin 6) :
     Continuous (cellSquareCarrierPoint v i) := by
-  exact (inclusion_isOpenEmbedding (cellChart v i)).continuous.comp
+  exact (isOpenEmbedding_inclusion (cellChart v i)).continuous.comp
     ((continuous_cellLiftCoordinates i).comp
       (continuous_pi fun k ↦ Complex.continuous_ofReal.comp
         ((continuous_apply k).comp continuous_subtype_val)))

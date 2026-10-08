@@ -80,8 +80,8 @@ public theorem localIntegralHomologyFiniteSix (M : LocalEulerModels A) :
         A.starSeparation.orderFour.radius M.orderFourRadialChart).symm
 
 /-- The exact Section 7 local Euler calculation, derived from geometric models. -/
-public theorem sectionSevenLocalEulerExpression_eq_two (M : LocalEulerModels A) :
-    A.openEmbeddingStarData.sectionSevenLocalEulerExpression = 2 :=
+public theorem localEulerExpression_eq_two (M : LocalEulerModels A) :
+    A.openEmbeddingStarData.localEulerExpression = 2 :=
   A.localEulerExpression_eq_two_of_modelCalculations
     M.cuspRetraction M.orderThreeRadialChart M.orderFourRadialChart
     M.centralModel.euler_eq_zero M.cuspEuler_eq_two

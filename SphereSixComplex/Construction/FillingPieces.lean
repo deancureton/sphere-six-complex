@@ -425,7 +425,7 @@ public theorem orderThreeFilling_isManifold (r : ℝ) :
   let _ := A.orderThreeFillingProductCharts r
   let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (A.OrderThreeVaryingFilling r) := A.orderThreeFillingProduct_isManifold r
-  exact globalDeckComplexManifold
+  exact isManifold_globalDeckComplexCharts
 
 public theorem orderFourFilling_isManifold (r : ℝ) :
     @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel
@@ -434,7 +434,7 @@ public theorem orderFourFilling_isManifold (r : ℝ) :
   let _ := A.orderFourFillingProductCharts r
   let _ : IsManifold globalDeckTotalModel regularSmoothnessOrder
       (A.OrderFourVaryingFilling r) := A.orderFourFillingProduct_isManifold r
-  exact globalDeckComplexManifold
+  exact isManifold_globalDeckComplexCharts
 
 public theorem totalSpace_secondCountable :
     SecondCountableTopology (TotalSpace (parameterMap A.periods)) := by

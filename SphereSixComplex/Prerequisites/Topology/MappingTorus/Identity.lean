@@ -123,6 +123,14 @@ public theorem circleProductIdentityMappingTorusHomeomorph_interval
   rw [h]
   exact realMappingTorusHomeomorph_intervalProjection (Homeomorph.refl X) (t, x)
 
+public theorem circleProductIdentityMappingTorusHomeomorph_symm_interval
+    {X : Type} [TopologicalSpace X] (t : unitInterval) (x : X) :
+    circleProductIdentityMappingTorusHomeomorph.symm
+      (circleMappingTorusCylinderProjection (Homeomorph.refl X) (t, x)) =
+      (((t : ℝ) : UnitAddCircle), x) := by
+  rw [← circleProductIdentityMappingTorusHomeomorph_interval, Homeomorph.symm_apply_apply]
+
+
 public theorem circleProductIdentityMappingTorusHomeomorph_fiber (x : X) :
     circleProductIdentityMappingTorusHomeomorph (0, x) =
       finiteBouquetMappingTorusFiberInclusion

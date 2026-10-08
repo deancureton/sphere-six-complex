@@ -1,7 +1,8 @@
 module
 
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.OrbifoldCoordinate
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.Uniformization
+public import SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.ModularForms
+import all SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.ModularForms
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Lifting.Existence
 
 /-!
@@ -31,7 +32,7 @@ public theorem ExactFuchsianOrbifoldCoordinate.nonempty :
 exact orbit fibres, elliptic ramification, special values, and completed cusp. -/
 public theorem ExactNormalizedModularJUniformization.nonempty :
     Nonempty ExactNormalizedModularJUniformization :=
-  nonempty_exactNormalizedModularJUniformization
+  ⟨ExactNormalizedModularJTau.exactNormalizedModularJUniformization⟩
 
 /-- Classical normalized branched-lifting theorem from an exact `(3, 4, ∞)` quotient coordinate
 through the exact level-one modular quotient. -/

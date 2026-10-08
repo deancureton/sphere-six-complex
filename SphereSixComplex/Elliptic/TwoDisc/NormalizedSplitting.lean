@@ -29,10 +29,10 @@ public noncomputable def cuspToEllipticUnionHomology
       (D.orderThreeSide ∪ D.orderFourSide) D.sides_cover)).symm
     (integralSingularHomologyMap k
       (IntegralMayerVietoris.interToLeft
-        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
-        ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3))
+        ((A.openEmbeddingStarData.mayerVietorisCover).stage (2 : Fin 4))
+        ((A.openEmbeddingStarData.mayerVietorisCover).piece 3))
       (integralSingularHomologyEquiv k
-        A.cuspCollarToSectionSevenFinalOverlapHomeomorph x))
+        A.cuspCollarToFinalOverlapHomeomorph x))
 
 end EllipticTwoDiscHomologyCoordinates
 

@@ -82,7 +82,7 @@ public noncomputable def centralAffineRegionsIntersectionHomotopyEquiv :
     (A.affineOrderThreeCentralRegion ∩
         A.affineOrderFourCentralRegion :
       Set A.ellipticInterior) ≃ₕ
-      AdditiveTorus A.duplicatedSectionSevenBandParameter :=
+      AdditiveTorus A.commonBandParameter :=
   (Homeomorph.setCongr
     A.actualAffineHeightSplit.centralRegions_intersection).toHomotopyEquiv.trans
       (A.affineCentralBandHomotopyEquiv
@@ -94,7 +94,7 @@ public theorem centralAffineRegionsIntersection_integralHomologyFiniteSix :
         A.affineOrderFourCentralRegion :
           Set A.ellipticInterior) :=
   (StandardTorusHomology.additiveTorus_integralHomologyFiniteSix
-    A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank).homotopyEquiv
+    A.commonBandParameter A.commonBandFullRank).homotopyEquiv
       A.centralAffineRegionsIntersectionHomotopyEquiv.symm
 
 public theorem centralAffineRegionsIntersection_euler_eq_zero :
@@ -105,7 +105,7 @@ public theorem centralAffineRegionsIntersection_euler_eq_zero :
   (integralHomologyEulerCharacteristicSix_homotopyEquiv
     A.centralAffineRegionsIntersectionHomotopyEquiv).trans
       (StandardTorusHomology.additiveTorus_euler_eq_zero
-        A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank)
+        A.commonBandParameter A.commonBandFullRank)
 
 public theorem centralAffineRegionsIntersection_subsingleton_homology_six :
     Subsingleton (IntegralSingularHomology 6
@@ -115,7 +115,7 @@ public theorem centralAffineRegionsIntersection_subsingleton_homology_six :
   subsingleton_homology_of_homotopyEquiv 6
     A.centralAffineRegionsIntersectionHomotopyEquiv
       (StandardTorusHomology.additiveTorus_subsingleton_homology_six
-        A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank)
+        A.commonBandParameter A.commonBandFullRank)
 
 /-- The two affine half-plane regions are exactly the regular central image. -/
 public theorem centralAffineRegions_union :

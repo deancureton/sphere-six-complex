@@ -52,10 +52,10 @@ public noncomputable def cuspCentralToCoreEquiv :
       FundamentalGroup A.actualVanKampenFourPieceCover.core
         ⟨A.vanKampenBase, A.actualVanKampenFourPieceCover.base_mem_core⟩ :=
   (TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
-      A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+      A.openEmbeddingStarData.centralToEulerPieceHomeomorph
       (by
         rw [A.centralAffineBase_eq_cuspCentralBase]
-        exact A.centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral
+        exact A.centralToEulerPieceHomeomorph_cuspOverlapToCentral
           A.cuspOverlapBase)).trans
     (FundamentalGroup.fundamentalGroupMulEquivOfPath
       (A.actualVanKampenFourPieceCover.connectorInCore
@@ -75,29 +75,29 @@ public theorem cuspOverlapToCore_eq_central
         (FundamentalGroup.mapOfEq A.cuspOverlapToCentral
           A.centralAffineBase_eq_cuspCentralBase.symm γ) := by
   have hmap :
-      (⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
-          A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
+      (⟨A.openEmbeddingStarData.centralToEulerPieceHomeomorph,
+          A.openEmbeddingStarData.centralToEulerPieceHomeomorph.continuous⟩ :
         C(A.CentralFamily, A.actualVanKampenFourPieceCover.core)).comp
           A.cuspOverlapToCentral =
         A.actualVanKampenFourPieceCover.overlapToCore
           A.actualVanKampenFourPieceCover.cusp := by
     apply ContinuousMap.ext
     intro x
-    exact A.centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral x
+    exact A.centralToEulerPieceHomeomorph_cuspOverlapToCentral x
   have hcentral :
-      A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+      A.openEmbeddingStarData.centralToEulerPieceHomeomorph
           A.centralAffineBase =
         A.actualVanKampenFourPieceCover.overlapToCore
           A.actualVanKampenFourPieceCover.cusp A.cuspOverlapBase := by
     rw [A.centralAffineBase_eq_cuspCentralBase]
-    exact A.centralToSectionSevenEulerPieceHomeomorph_cuspOverlapToCentral
+    exact A.centralToEulerPieceHomeomorph_cuspOverlapToCentral
       A.cuspOverlapBase
   have hcusp : A.cuspOverlapToCentral A.cuspOverlapBase =
       A.centralAffineBase :=
     A.centralAffineBase_eq_cuspCentralBase.symm
   have hcompbase :
-      ((⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
-          A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
+      ((⟨A.openEmbeddingStarData.centralToEulerPieceHomeomorph,
+          A.openEmbeddingStarData.centralToEulerPieceHomeomorph.continuous⟩ :
         C(A.CentralFamily, A.actualVanKampenFourPieceCover.core)).comp
           A.cuspOverlapToCentral) A.cuspOverlapBase =
         (A.actualVanKampenFourPieceCover.overlapToCore
@@ -107,7 +107,7 @@ public theorem cuspOverlapToCore_eq_central
       A.actualVanKampenFourPieceCover.core) ↦ k A.cuspOverlapBase) hmap
   have hinner : ∀ δ,
       (TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
-        A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+        A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         hcentral)
           (FundamentalGroup.mapOfEq A.cuspOverlapToCentral
             hcusp δ) =
@@ -117,14 +117,14 @@ public theorem cuspOverlapToCore_eq_central
           A.cuspOverlapBase δ := by
     intro δ
     change FundamentalGroup.mapOfEq
-        (⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
-          A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
+        (⟨A.openEmbeddingStarData.centralToEulerPieceHomeomorph,
+          A.openEmbeddingStarData.centralToEulerPieceHomeomorph.continuous⟩ :
             C(A.CentralFamily, A.actualVanKampenFourPieceCover.core)) hcentral
           (FundamentalGroup.mapOfEq A.cuspOverlapToCentral hcusp δ) = _
     calc
       _ = FundamentalGroup.mapOfEq
-          ((⟨A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph,
-              A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.continuous⟩ :
+          ((⟨A.openEmbeddingStarData.centralToEulerPieceHomeomorph,
+              A.openEmbeddingStarData.centralToEulerPieceHomeomorph.continuous⟩ :
             C(A.CentralFamily, A.actualVanKampenFourPieceCover.core)).comp
               A.cuspOverlapToCentral)
           hcompbase δ :=
@@ -140,7 +140,7 @@ public theorem cuspOverlapToCore_eq_central
         rw [TauCeti.FundamentalGroup.mapOfEq_rfl]
   have hhom :
       (TauCeti.FundamentalGroup.homeomorphMulEquivOfEq
-        A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+        A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         hcentral).toMonoidHom.comp
           (FundamentalGroup.mapOfEq A.cuspOverlapToCentral
             hcusp) =

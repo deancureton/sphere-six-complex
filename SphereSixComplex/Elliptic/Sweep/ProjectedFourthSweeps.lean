@@ -24,13 +24,13 @@ public def fourthFirstCoordinateTorus : C(StdTorus 2, StdTorus 4) :=
     (standardTwoTorusMatrixMap !![0,1;1,0])
 
 public theorem fourthFirstCoordinateTorus_real (A : AnalyticData) (hi : standardPeriodPairSecond i = 3) (t s : ℝ) :
-    (additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
-      A.duplicatedSectionSevenBandFullRank).symm
+    (additiveTorusStdHomeomorph A.commonBandParameter
+      A.commonBandFullRank).symm
       (fourthFirstCoordinateTorus i ![(t : UnitAddCircle), (s : UnitAddCircle)]) =
-    additiveTorusProjection A.duplicatedSectionSevenBandParameter
-      (t • periodVector A.duplicatedSectionSevenBandParameter ![0,0,0,1] +
-        s • periodVector A.duplicatedSectionSevenBandParameter (Pi.single (standardPeriodPairFirst i) 1)) := by
-  apply (additiveTorusStdHomeomorph _ A.duplicatedSectionSevenBandFullRank).injective
+    additiveTorusProjection A.commonBandParameter
+      (t • periodVector A.commonBandParameter ![0,0,0,1] +
+        s • periodVector A.commonBandParameter (Pi.single (standardPeriodPairFirst i) 1)) := by
+  apply (additiveTorusStdHomeomorph _ A.commonBandFullRank).injective
   rw [Homeomorph.apply_symm_apply]
   change _ = periodCoordMap _ _ _
   ext j
@@ -40,8 +40,8 @@ public theorem fourthFirstCoordinateTorus_real (A : AnalyticData) (hi : standard
 public def normalizedFourthFirstTorus (A : AnalyticData) :
     C(StdTorus 2, A.CentralFamily) :=
   (A.regularFixedFiberMap A.affineNormalizedMidpoint).comp
-    (((additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
-      A.duplicatedSectionSevenBandFullRank).symm : C(_, _)).comp (fourthFirstCoordinateTorus i))
+    (((additiveTorusStdHomeomorph A.commonBandParameter
+      A.commonBandFullRank).symm : C(_, _)).comp (fourthFirstCoordinateTorus i))
 
 public theorem normalizedFourthFirstTorus_real (A : AnalyticData) (hi : standardPeriodPairSecond i = 3) (t s : ℝ) :
     normalizedFourthFirstTorus i A ![(t : UnitAddCircle), (s : UnitAddCircle)] =
@@ -144,8 +144,8 @@ public def normalizedFourthFirstBandTorus {A : AnalyticData}
     ((A.affineCentralBandMarkedProductHomeomorph
       A.affineCentralSeparation).symm
         (affineStripMidpoint,
-          (additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
-            A.duplicatedSectionSevenBandFullRank).symm (fourthFirstCoordinateTorus i z)))
+          (additiveTorusStdHomeomorph A.commonBandParameter
+            A.commonBandFullRank).symm (fourthFirstCoordinateTorus i z)))
   continuous_toFun := A.actualAffineHeightSplit.sidesIntersectionHomeomorph.symm.continuous.comp
     ((A.affineCentralBandMarkedProductHomeomorph
       A.affineCentralSeparation).symm.continuous.comp
@@ -161,7 +161,7 @@ public theorem normalizedFourthFirstBandTorus_interior {A : AnalyticData}
   have h := A.affineCentralBandMarkedProductHomeomorph_symm_toCentralFamily
     A.affineCentralSeparation
     (affineStripMidpoint, (additiveTorusStdHomeomorph
-      A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank).symm
+      A.commonBandParameter A.commonBandFullRank).symm
       (fourthFirstCoordinateTorus i z))
   rw [← A.regularFixedFiberPoint_strip, A.affineNamedStripLift_apply_midpoint] at h
   have h' := congrArg A.centralToEllipticInterior h
@@ -174,12 +174,12 @@ private theorem bandTwo_fixedCoordinates {A : AnalyticData}
     (R : A.AffineRadialCompletionInput)
     (x : IntegralSingularHomology 2 (R.twoDiscCover.orderThreeSide ∩ R.twoDiscCover.orderFourSide : Set _)) :
     EllipticBandHomologyAlignment.bandTwo (D := R.twoDiscCover) x =
-    additiveTorusHomologyDegreeTwo A.duplicatedSectionSevenBandParameter A.duplicatedSectionSevenBandFullRank
+    additiveTorusHomologyDegreeTwo A.commonBandParameter A.commonBandFullRank
       (integralSingularHomologyMap 2 R.twoDiscCover.bandHomotopyEquiv.toFun x) := by
   let e := EllipticFilling.RadialEllipticActionData.centralFiberCoverSourceHomeomorph
     (orderThreeRadialActionData A.periods)
-  change additiveTorusHomologyDegreeTwo A.duplicatedSectionSevenBandParameter
-    A.duplicatedSectionSevenBandFullRank
+  change additiveTorusHomologyDegreeTwo A.commonBandParameter
+    A.commonBandFullRank
       (integralSingularHomologyMap 2 ⟨e, e.continuous⟩
         (integralSingularHomologyMap 2 ⟨e.symm, e.symm.continuous⟩
           (integralSingularHomologyMap 2 R.twoDiscCover.bandHomotopyEquiv.toFun
@@ -201,13 +201,13 @@ public theorem normalizedFourthFirstBandTorus_bandTwo {A : AnalyticData}
       (integralSingularHomologyMap 2 (normalizedFourthFirstBandTorus i R)
         standardTwoTorusHomologyGenerator) = -Pi.single i 1 := by
   rw [bandTwo_fixedCoordinates R]
-  erw [additiveTorusTwo_apply A.duplicatedSectionSevenBandParameter
-    A.duplicatedSectionSevenBandFullRank]
+  erw [additiveTorusTwo_apply A.commonBandParameter
+    A.commonBandFullRank]
   rw [integralSingularHomologyMap_comp_wang]
   erw [integralSingularHomologyMap_comp_wang 2
     (R.twoDiscCover.bandHomotopyEquiv.toFun.comp (normalizedFourthFirstBandTorus i R))]
-  have hc : (additiveTorusStdHomeomorph A.duplicatedSectionSevenBandParameter
-      A.duplicatedSectionSevenBandFullRank : C(AdditiveTorus A.duplicatedSectionSevenBandParameter, StdTorus 4)).comp
+  have hc : (additiveTorusStdHomeomorph A.commonBandParameter
+      A.commonBandFullRank : C(AdditiveTorus A.commonBandParameter, StdTorus 4)).comp
       (R.twoDiscCover.bandHomotopyEquiv.toFun.comp (normalizedFourthFirstBandTorus i R)) =
       fourthFirstCoordinateTorus i := by
     ext1 z

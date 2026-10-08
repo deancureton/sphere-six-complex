@@ -37,7 +37,7 @@ public noncomputable def globalDeckComplexCharts
   linearRechart globalDeckComplexModelEquiv
 
 /-- A manifold in the product coordinates is a complex threefold in the canonical model. -/
-public theorem globalDeckComplexManifold
+public theorem isManifold_globalDeckComplexCharts
     {M : Type*} [TopologicalSpace M] [c : ChartedSpace (ModelProd ℂ ComplexTwoSpace) M]
     {n : ℕ∞ω} [m : IsManifold globalDeckTotalModel n M] :
     @IsManifold ℂ inferInstance ComplexModel inferInstance inferInstance ComplexModel

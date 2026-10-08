@@ -30,7 +30,7 @@ open SphereSixComplex.Geometry.InfiniteA2Toric
 public def coordinateModulus (z : RawCoordinates) : RawCoordinates :=
   fun i ↦ (‖z i‖ : ℂ)
 
-public theorem coordinateModulus_continuous : Continuous coordinateModulus := by
+public theorem continuous_coordinateModulus : Continuous coordinateModulus := by
   exact continuous_pi fun i ↦ Complex.continuous_ofReal.comp (continuous_apply i).norm
 
 @[simp]
@@ -90,7 +90,7 @@ public theorem carrierModulus_inclusion (a : ChartIndex) (z : RawCoordinates) :
     exact (coordinateModulus_mem_monomialDomain_iff _ _).mpr hchange.1
   · rw [chartChange_coordinateModulus, hchange.2]
 
-public theorem carrierModulus_continuous : Continuous carrierModulus := by
+public theorem continuous_carrierModulus : Continuous carrierModulus := by
   apply continuous_iff_continuousAt.mpr
   intro x
   obtain ⟨a, z, rfl⟩ := inclusion_jointly_surjective x
@@ -101,7 +101,7 @@ public theorem carrierModulus_continuous : Continuous carrierModulus := by
     funext w
     exact carrierModulus_inclusion a w
   rw [h]
-  exact ((inclusion_isOpenEmbedding a).continuous.comp coordinateModulus_continuous).continuousAt
+  exact ((isOpenEmbedding_inclusion a).continuous.comp continuous_coordinateModulus).continuousAt
 
 @[simp]
 public theorem carrierModulus_idempotent (x : Carrier) :
@@ -119,7 +119,7 @@ public def carrierPositivePart : Set Carrier :=
 public theorem inclusion_mem_carrierPositivePart_iff (a : ChartIndex) (z : RawCoordinates) :
     inclusion a z ∈ carrierPositivePart ↔ z ∈ nonnegativeCoordinates := by
   change carrierModulus (inclusion a z) = inclusion a z ↔ _
-  rw [carrierModulus_inclusion, (inclusion_isOpenEmbedding a).injective.eq_iff,
+  rw [carrierModulus_inclusion, (isOpenEmbedding_inclusion a).injective.eq_iff,
     coordinateModulus_eq_self_iff]
 
 @[simp]
@@ -224,7 +224,7 @@ public theorem exists_compactTorus_chart_mul_modulus (a : ChartIndex) (z : RawCo
     exact zero_ne_one h
   let rawIntrinsic := monomial (a2ConeMatrix a.1 a.2) w
   have hrawIntrinsic : rawIntrinsic ∈ coordinateTorus :=
-    monomial_mapsTo_coordinateTorus _ hw0
+    mapsTo_monomial_coordinateTorus _ hw0
   let g := denseTorusOfCoordinateTorus rawIntrinsic hrawIntrinsic
   have hchart : torusChartCoordinates a g = w := by
     change monomial (dualMatrix a) (denseRawCoordinates g) = w
@@ -272,10 +272,10 @@ public def constructedLocalModulus (r : ℝ)
   ⟨carrierModulus (show Carrier from p.1),
     (carrierModulus_mem_cuspNeighborhood_iff r (show Carrier from p.1)).mpr p.property⟩
 
-public theorem constructedLocalModulus_continuous (r : ℝ) :
+public theorem continuous_constructedLocalModulus (r : ℝ) :
     Continuous (constructedLocalModulus r) := by
   rw [continuous_induced_rng]
-  exact carrierModulus_continuous.comp continuous_subtype_val
+  exact continuous_carrierModulus.comp continuous_subtype_val
 
 
 @[simp]
@@ -290,9 +290,9 @@ public def constructedLocalPositivePart (r : ℝ) :
     Set (localCarrier constructedModel r) :=
   {p | constructedLocalModulus r p = p}
 
-public theorem constructedLocalPositivePart_isClosed (r : ℝ) :
+public theorem isClosed_constructedLocalPositivePart (r : ℝ) :
     IsClosed (constructedLocalPositivePart r) := by
-  exact isClosed_eq (constructedLocalModulus_continuous r) continuous_id
+  exact isClosed_eq (continuous_constructedLocalModulus r) continuous_id
 
 public theorem mem_constructedLocalPositivePart_iff (r : ℝ)
     (p : localCarrier constructedModel r) :
@@ -307,7 +307,7 @@ public theorem mem_constructedLocalPositivePart_iff (r : ℝ)
 public def constructedLocalModulusRetraction (r : ℝ) :
     C(localCarrier constructedModel r, constructedLocalPositivePart r) where
   toFun p := ⟨constructedLocalModulus r p, constructedLocalModulus_idempotent r p⟩
-  continuous_toFun := (constructedLocalModulus_continuous r).subtype_mk _
+  continuous_toFun := (continuous_constructedLocalModulus r).subtype_mk _
 
 public theorem constructedLocalModulusRetraction_fixed (r : ℝ)
     (q : constructedLocalPositivePart r) :
@@ -372,9 +372,9 @@ public def positiveChartDomainHomeomorph (a : ChartIndex) :
 public def carrierPositiveChart (a : ChartIndex) : PositiveOrthant → carrierPositivePart :=
   carrierPositivePart.restrictPreimage (inclusion a) ∘ positiveChartDomainHomeomorph a
 
-public theorem carrierPositiveChart_isOpenEmbedding (a : ChartIndex) :
+public theorem isOpenEmbedding_carrierPositiveChart (a : ChartIndex) :
     IsOpenEmbedding (carrierPositiveChart a) := by
-  exact ((inclusion_isOpenEmbedding a).restrictPreimage carrierPositivePart).comp
+  exact ((isOpenEmbedding_inclusion a).restrictPreimage carrierPositivePart).comp
     (positiveChartDomainHomeomorph a).isOpenEmbedding
 
 /-- The positive affine charts jointly cover the global positive part. -/

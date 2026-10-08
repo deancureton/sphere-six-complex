@@ -39,7 +39,7 @@ The marked fibre is the collar's own fibre over a normalized cusp parameter `mar
 inside the horodisc, and its recorded coordinate is the actual additive period coordinate there
 (`fiberNormalization`); the degree-one and degree-two markings are read off that one coordinate.
 Producing the marking is the same real-period-coordinate construction used for the central band in
-`PaperSectionSevenAffineMarkedBandTrivialization`: lift the contractible base through the
+`SphereSixComplex.Elliptic.Band.MarkedTrivialization`: lift the contractible base through the
 covering, then read the period coordinate on the lifted sheet. -/
 public noncomputable def radialClutchingData
     {E : FuchsianModularLift} {D : FuchsianPeriodData E}

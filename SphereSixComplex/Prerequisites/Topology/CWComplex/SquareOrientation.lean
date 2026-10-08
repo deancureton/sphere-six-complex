@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.CWComplex.SquareBoundary
+public import SphereSixComplex.Prerequisites.Topology.CWComplex.Homology
+public import SphereSixComplex.Prerequisites.Topology.Sphere.LinearEquiv
 public import SphereSixComplex.Prerequisites.Topology.Torus.Homology
 public import SphereSixComplex.Prerequisites.Topology.Sphere.PositiveHomology
 
@@ -14,7 +15,7 @@ namespace SphereSixComplex
 
 public def cwSquareBoundaryAddCircleHomeomorph :
     CWCharacteristicBoundarySphere 2 ≃ₜ UnitAddCircle :=
-  cwSquareBoundaryCircleHomeomorph.trans (AddCircle.homeomorphCircle (by norm_num : (1 : ℝ) ≠ 0)).symm
+  supNormUnitSphereCircleHomeomorph.trans (AddCircle.homeomorphCircle (by norm_num : (1 : ℝ) ≠ 0)).symm
 
 public def cwSquareBoundaryHomologyWinding :
     IntegralSingularHomology 1 (CWCharacteristicBoundarySphere 2) ≃+ ℤ :=

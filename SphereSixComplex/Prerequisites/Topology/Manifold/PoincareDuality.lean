@@ -1,7 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.ModuleComparison
-public import DifferentialGeometry.Topology.Homology.CompactlySupportedCohomology.Manifold
+import DifferentialGeometry.Topology.Homology.CompactlySupportedCohomology.Manifold
 
 /-!
 # Integral Poincaré duality for simply connected compact manifolds

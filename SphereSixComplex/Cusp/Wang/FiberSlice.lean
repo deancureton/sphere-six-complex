@@ -38,19 +38,19 @@ piece. -/
 public theorem cuspToEllipticInteriorMap_mem_centralImage
     (q : A.openEmbeddingStarData.collarSource 0) :
     D.cuspToEllipticInteriorMap q ∈ A.ellipticCentralImage := by
-  let y := A.cuspCollarToSectionSevenFinalOverlapHomeomorph q
+  let y := A.cuspCollarToFinalOverlapHomeomorph q
   have hy : y.1 ∈
-      (A.openEmbeddingStarData.sectionSevenEulerCover).piece 0 ∩
-        (A.openEmbeddingStarData.sectionSevenEulerCover).piece 1 := by
+      (A.openEmbeddingStarData.eulerCover).piece 0 ∩
+        (A.openEmbeddingStarData.eulerCover).piece 1 := by
     rw [← A.cuspAttachmentOverlap_eq_centralCuspIntersection]
     exact y.2
-  change (A.cuspCollarToSectionSevenFinalOverlapHomeomorph q).1 ∈
-    (A.openEmbeddingStarData.sectionSevenEulerCover).piece 0
+  change (A.cuspCollarToFinalOverlapHomeomorph q).1 ∈
+    (A.openEmbeddingStarData.eulerCover).piece 0
   exact hy.1
 
 /-- The central coordinate of an arbitrary additive cusp-cover point is computed before the
 quotient by the explicit additive-to-global map. -/
-public theorem sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint
+public theorem ellipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
     A.ellipticCentralCoordinate
       ⟨D.cuspToEllipticInteriorMap
@@ -61,9 +61,9 @@ public theorem sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_a
         (A.cuspOverlapToCentral (A.cuspBoundaryProjection p)) := by
   unfold ellipticCentralCoordinate
   congr 1
-  apply A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph.injective
+  apply A.openEmbeddingStarData.centralToEulerPieceHomeomorph.injective
   apply Subtype.ext
-  rw [A.centralToSectionSevenEulerPiece_centralImage,
+  rw [A.centralToEulerPiece_centralImage,
     A.cuspOverlapToCentral_boundaryProjection]
   have hglobal :
       additiveCuspCoverToGlobal A.starCuspWitness p =
@@ -81,16 +81,16 @@ public theorem sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_a
           A.ellipticCentralImage) =
         A.openEmbeddingStarData.collarSourceToGlued 0
           (additiveCuspBoundaryProjection A.starCuspWitness p) := rfl
-    _ = (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+    _ = (A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         (A.starToCentral 0
           (additiveCuspBoundaryProjection A.starCuspWitness p))).1 :=
-      (A.centralToSectionSevenEulerPiece_starToCentral 0 _).symm
-    _ = (A.openEmbeddingStarData.centralToSectionSevenEulerPieceHomeomorph
+      (A.centralToEulerPiece_starToCentral 0 _).symm
+    _ = (A.openEmbeddingStarData.centralToEulerPieceHomeomorph
         (additiveCuspCoverToGlobal A.starCuspWitness p)).1 := by rw [hglobal]
 
 /-- In particular, the affine base coordinate is independent of the additive period vector. -/
 public theorem
-    sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint_fst
+    ellipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint_fst
     (p : additiveCuspRadiusCover A.starCuspWitness.localWitness.radius) :
     (A.ellipticCentralCoordinate
       ⟨D.cuspToEllipticInteriorMap
@@ -98,7 +98,7 @@ public theorem
         D.cuspToEllipticInteriorMap_mem_centralImage
           (additiveCuspBoundaryProjection A.starCuspWitness p)⟩).1 =
       A.modular.sourceCoordinate.coordinate (A.cuspCoordinate.lift p.1.2) := by
-  rw [D.sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint,
+  rw [D.ellipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint,
     A.cuspOverlapToCentral_boundaryProjection]
   rfl
 
@@ -119,7 +119,7 @@ public theorem cuspToEllipticInteriorMap_additivePoint_mem_sideIntersection
     D.cuspToEllipticInteriorMap_mem_centralImage _
   have hheight : A.ellipticCentralHeight ⟨x, hxcentral⟩ = 1 / 2 := by
     change (A.ellipticCentralCoordinate ⟨x, hxcentral⟩).1.re = 1 / 2
-    rw [D.sectionSevenEllipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint_fst]
+    rw [D.ellipticCentralCoordinate_cuspToEllipticInteriorMap_additivePoint_fst]
     exact hp
   change x ∈ A.actualAffineHeightSplit.allocation.orderThreeSide ∩
     A.actualAffineHeightSplit.allocation.orderFourSide

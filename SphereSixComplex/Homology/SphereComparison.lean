@@ -58,7 +58,7 @@ public theorem star_nonempty_homologyEquiv_sixSphere_of_lowDegrees (P : Analytic
     rw [integralHomologyEulerCharacteristicSix_eq_localExpression_of_homologySeven_subsingleton
       P.openEmbeddingStarData (hFinite.subsingleton_homology_of_six_lt 7 (by omega))
       hCentral hFilling hCollar]
-    exact P.localEulerModels.sectionSevenLocalEulerExpression_eq_two
+    exact P.localEulerModels.localEulerExpression_eq_two
   exact ComplexThreefold.nonempty_homologyEquiv_sixSphere (GluedSpace D) hFinite hOne hTwo hEuler
 
 end SphereSixComplex.Geometry.AnalyticData

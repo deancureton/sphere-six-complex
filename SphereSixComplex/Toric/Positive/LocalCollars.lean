@@ -39,7 +39,7 @@ public def carrierPositiveHalfSpaceChart (a : ChartIndex) :
 
 public theorem carrierPositiveHalfSpaceChart_isOpenEmbedding (a : ChartIndex) :
     IsOpenEmbedding (carrierPositiveHalfSpaceChart a) :=
-  (carrierPositiveChart_isOpenEmbedding a).comp orthantThreeHalfSpaceHomeomorph.symm.isOpenEmbedding
+  (isOpenEmbedding_carrierPositiveChart a).comp orthantThreeHalfSpaceHomeomorph.symm.isOpenEmbedding
 
 public theorem carrierPositiveHalfSpaceChart_height_zero (a : ChartIndex)
     (p : (Fin 2 → ℝ) × ℝ≥0) :

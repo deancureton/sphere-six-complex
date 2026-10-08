@@ -58,8 +58,8 @@ public theorem rawHeight_monomial_on_domain
     ((contDiff_apply ℂ ℂ 0).mul (contDiff_apply ℂ ℂ 1)).mul
       (contDiff_apply ℂ ℂ 2)
   refine h.of_subset_closure ?_ ?_ Set.inter_subset_left
-    (coordinateTorus_isDense.open_subset_closure_inter (monomialDomain_isOpen A))
-  · exact hraw.continuous.comp_continuousOn (monomial_contDiffOn A 0).continuousOn
+    (dense_coordinateTorus.open_subset_closure_inter (isOpen_monomialDomain A))
+  · exact hraw.continuous.comp_continuousOn (contDiffOn_monomial A 0).continuousOn
   · exact hraw.continuous.continuousOn
 
 public theorem rawHeight_chartChange (a b : ChartIndex) :
@@ -159,7 +159,7 @@ public def carrierTorusEmbedding (x : DenseTorus) : Carrier :=
 
 public theorem carrierTorusEmbedding_isOpenEmbedding :
     IsOpenEmbedding carrierTorusEmbedding :=
-  (inclusion_isOpenEmbedding baseChart).comp
+  (isOpenEmbedding_inclusion baseChart).comp
     (denseRawCoordinates_isOpenEmbedding.comp baseTorusHomeomorph.isOpenEmbedding)
 
 public theorem carrierHeight_torus (x : DenseTorus) :
@@ -175,7 +175,7 @@ public def torusChartCoordinates (a : ChartIndex) (x : DenseTorus) : RawCoordina
 
 public theorem torusChartCoordinates_mem_coordinateTorus (a : ChartIndex) (x : DenseTorus) :
     torusChartCoordinates a x ∈ coordinateTorus :=
-  monomial_mapsTo_coordinateTorus _ (denseRawCoordinates_mem_coordinateTorus x)
+  mapsTo_monomial_coordinateTorus _ (denseRawCoordinates_mem_coordinateTorus x)
 
 public theorem baseChartCoordinates_eq_torusChartCoordinates (x : DenseTorus) :
     baseChartCoordinates x = torusChartCoordinates baseChart x := by
@@ -220,7 +220,7 @@ public theorem inclusion_coordinateTorus_mem_torus_range
     inclusion a z ∈ Set.range carrierTorusEmbedding := by
   let rawIntrinsic := monomial (a2ConeMatrix a.1 a.2) z
   have hrawIntrinsic : rawIntrinsic ∈ coordinateTorus :=
-    monomial_mapsTo_coordinateTorus _ hz
+    mapsTo_monomial_coordinateTorus _ hz
   let x := denseTorusOfCoordinateTorus rawIntrinsic hrawIntrinsic
   refine ⟨x, ?_⟩
   rw [carrierTorusEmbedding_eq_inclusion_torusChartCoordinates a x]
@@ -238,8 +238,8 @@ public theorem carrierTorusEmbedding_denseRange : DenseRange carrierTorusEmbeddi
   apply Set.eq_univ_of_forall
   intro p
   obtain ⟨a, z, rfl⟩ := inclusion_jointly_surjective p
-  apply map_mem_closure (inclusion_isOpenEmbedding a).continuous
-    (coordinateTorus_isDense z)
+  apply map_mem_closure (isOpenEmbedding_inclusion a).continuous
+    (dense_coordinateTorus z)
   intro w hw
   exact inclusion_coordinateTorus_mem_torus_range a hw
 
@@ -281,7 +281,7 @@ public theorem parametrization_contMDiffOn (a : ChartIndex) :
       (modelWithCornersSelf ℂ RawCoordinates) ∞
       (parametrization a) (parametrization a).source := by
   let _ := rawChartedSpace
-  let _ : IsManifold (modelWithCornersSelf ℂ RawCoordinates) ∞ Carrier := rawIsManifold
+  let _ : IsManifold (modelWithCornersSelf ℂ RawCoordinates) ∞ Carrier := isManifold_rawChartedSpace
   have hmax : (parametrization a).symm ∈
       IsManifold.maximalAtlas (modelWithCornersSelf ℂ RawCoordinates) ∞ Carrier :=
     IsManifold.subset_maximalAtlas (parametrization_symm_mem_rawAtlas a)
@@ -293,7 +293,7 @@ public theorem parametrization_symm_contMDiffOn (a : ChartIndex) :
       (modelWithCornersSelf ℂ RawCoordinates) ∞
       (parametrization a).symm (parametrization a).target := by
   let _ := rawChartedSpace
-  let _ : IsManifold (modelWithCornersSelf ℂ RawCoordinates) ∞ Carrier := rawIsManifold
+  let _ : IsManifold (modelWithCornersSelf ℂ RawCoordinates) ∞ Carrier := isManifold_rawChartedSpace
   have hmax : (parametrization a).symm ∈
       IsManifold.maximalAtlas (modelWithCornersSelf ℂ RawCoordinates) ∞ Carrier :=
     IsManifold.subset_maximalAtlas (parametrization_symm_mem_rawAtlas a)
@@ -333,7 +333,7 @@ public noncomputable def toricChart (a : ChartIndex) :
     PartialDiffeomorph (modelWithCornersSelf ℂ ComplexModel)
       (modelWithCornersSelf ℂ ComplexModel) Carrier ComplexModel ∞ := by
   let _ : ChartedSpace RawCoordinates Carrier := rawChartedSpace
-  let _ : IsManifold (modelWithCornersSelf ℂ RawCoordinates) ∞ Carrier := rawIsManifold
+  let _ : IsManifold (modelWithCornersSelf ℂ RawCoordinates) ∞ Carrier := isManifold_rawChartedSpace
   let _ : ChartedSpace ComplexModel Carrier := chartedSpace
   let _ : IsManifold (modelWithCornersSelf ℂ ComplexModel) ∞ Carrier := isManifold
   let e := toricChartOpen a

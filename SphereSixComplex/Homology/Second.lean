@@ -15,8 +15,8 @@ public theorem star_homologyTwo_subsingleton_of_interior
     {A : AnalyticData} (R : A.AffineRadialCompletionInput)
     (hInterior : integralSingularHomologyMap 2 A.ellipticInteriorInclusion = 0) :
     Subsingleton (IntegralSingularHomology 2 A.VanKampenSpace) := by
-  let U := A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage 2
-  let V := A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3
+  let U := A.openEmbeddingStarData.mayerVietorisCover.stage 2
+  let V := A.openEmbeddingStarData.mayerVietorisCover.piece 3
   let e := integralSingularHomologyEquiv 2
     (OpenEmbeddingStarData.cuspAttachmentUnionHomeomorph
       (A := A.openEmbeddingStarData))
@@ -31,9 +31,9 @@ public theorem star_homologyTwo_subsingleton_of_interior
   have hRightSurj : Function.Surjective
       (integralSingularHomologyMap 2 (IntegralMayerVietoris.interToRight U V)) := by
     let eS := integralSingularHomologyEquiv 2
-      A.cuspCollarToSectionSevenFinalOverlapHomeomorph
+      A.cuspCollarToFinalOverlapHomeomorph
     let eT := integralSingularHomologyEquiv 2
-      (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)
+      (A.openEmbeddingStarData.fillingToEulerPieceHomeomorph 0)
     intro y
     obtain ⟨x, hx⟩ := A.cuspToFilling_homologyTwo_surjective (eT.symm y)
     refine ⟨eS x, eT.symm.injective ?_⟩
@@ -53,18 +53,18 @@ public theorem star_homologyTwo_subsingleton_of_interior
       integralSingularHomologyMap 2 (IntegralMayerVietoris.rightToUnion U V) x.2 = 0
     rw [hLeft, hRight, add_zero]
   have hExact := FourPieceOpenCover.mayerVietoris_exact
-    A.openEmbeddingStarData.sectionSevenMayerVietorisCover 2
+    A.openEmbeddingStarData.mayerVietorisCover 2
   have hTwo : Function.Surjective (IntegralMayerVietoris.differenceMap U V 2) := by
     obtain ⟨boundary, h⟩ := hExact
     intro x
     exact ((h 2).2.2 x).mp (hSum x)
   let eS := (integralSingularHomologyEquiv 1
-    A.cuspCollarToSectionSevenFinalOverlapHomeomorph).symm.trans A.cuspRawHomologyOneEquiv
+    A.cuspCollarToFinalOverlapHomeomorph).symm.trans A.cuspRawHomologyOneEquiv
   let eT :=
     ((EllipticHomologyOne.normalizedEllipticInteriorHomologyOneEquiv
       R.homologyAlignment.degreeOne).prodCongr
       ((integralSingularHomologyEquiv 1
-        (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0)).symm.trans
+        (A.openEmbeddingStarData.fillingToEulerPieceHomeomorph 0)).symm.trans
         A.cuspFillingHomologyOneEquiv)).trans
       ((LinearEquiv.sumArrowLequivProdArrow (Fin 1) (Fin 2) ℤ ℤ).symm.trans
         (LinearEquiv.piCongrLeft ℤ (fun _ : Fin 3 ↦ ℤ) finSumFinEquiv)).toAddEquiv

@@ -127,13 +127,13 @@ public theorem coordinateTorus_inter_affineHeightSublevel_isPathConnected
 public theorem monomialDomain_inter_affineHeightSublevel_isPathConnected
     (A : Matrix (Fin 3) (Fin 3) ℤ) {r : ℝ} (hr : 0 < r) :
     IsPathConnected (monomialDomain A ∩ affineHeightSublevel r) := by
-  apply ((monomialDomain_isOpen A).inter
+  apply ((isOpen_monomialDomain A).inter
     (affineHeightSublevel_isOpen r)).isConnected_iff_isPathConnected.mp
   apply (coordinateTorus_inter_affineHeightSublevel_isPathConnected hr).isConnected.subset_closure
   · exact fun _ hz ↦ ⟨coordinateTorus_subset_monomialDomain A hz.1, hz.2⟩
   · intro z hz
     simpa only [Set.inter_comm] using
-      (coordinateTorus_isDense.open_subset_closure_inter
+      (dense_coordinateTorus.open_subset_closure_inter
         (affineHeightSublevel_isOpen r) hz.2)
 
 /-- The image of one affine height sublevel in the glued carrier. -/
@@ -142,12 +142,12 @@ public def carrierAffineHeightSublevel (a : ChartIndex) (r : ℝ) : Set Carrier 
 
 public theorem carrierAffineHeightSublevel_isOpen (a : ChartIndex) (r : ℝ) :
     IsOpen (carrierAffineHeightSublevel a r) :=
-  (inclusion_isOpenEmbedding a).isOpenMap _ (affineHeightSublevel_isOpen r)
+  (isOpenEmbedding_inclusion a).isOpenMap _ (affineHeightSublevel_isOpen r)
 
 public theorem carrierAffineHeightSublevel_isSimplyConnected
     (a : ChartIndex) {r : ℝ} (hr : 0 < r) :
     IsSimplyConnected (carrierAffineHeightSublevel a r) :=
-  (inclusion_isOpenEmbedding a).isEmbedding.isSimplyConnected_image.mpr
+  (isOpenEmbedding_inclusion a).isEmbedding.isSimplyConnected_image.mpr
     (affineHeightSublevel_isSimplyConnected hr)
 
 public theorem carrierAffineHeightSublevels_inter (a b : ChartIndex) (r : ℝ) :
@@ -177,7 +177,7 @@ public theorem carrierAffineHeightSublevels_inter_isPathConnected
   rw [carrierAffineHeightSublevels_inter]
   exact
     (monomialDomain_inter_affineHeightSublevel_isPathConnected _ hr).image
-      (inclusion_isOpenEmbedding a).continuous
+      (isOpenEmbedding_inclusion a).continuous
 
 public theorem carrierHeightSublevel_eq_iUnion (r : ℝ) :
     carrierHeight ⁻¹' Metric.ball 0 r =

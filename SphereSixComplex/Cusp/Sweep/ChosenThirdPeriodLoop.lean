@@ -1,6 +1,7 @@
 module
 public import SphereSixComplex.Cusp.Sweep.ChosenThirdSweep
-public import SphereSixComplex.Cusp.Sweep.ThirdSweepLoopRealization
+public import SphereSixComplex.Cusp.Sweep.CoordinateCircleTransport
+public import SphereSixComplex.Prerequisites.Topology.Homotopy.CircleSweep
 
 @[expose] public section
 noncomputable section
@@ -80,7 +81,7 @@ public theorem cuspChosenThirdSweepCentral_loop_realization (A : AnalyticData) :
     cases u
     change A.cuspChosenThirdPeriodLoop t x =
       A.cuspChosenThirdSweepCentral (circleProductIdentityMappingTorusHomeomorph.symm
-        (torusPt (fun _ : Unit ↦ Homeomorph.refl (StdTorus 1)) () t x))
+        (circleMappingTorusCylinderProjection (Homeomorph.refl (StdTorus 1)) (t, x)))
     rw [circleProductIdentityMappingTorusHomeomorph_symm_interval]
     exact A.cuspChosenThirdPeriodFamily_eq_sweep t x
 

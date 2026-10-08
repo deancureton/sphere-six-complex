@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Elliptic.Band.RadialCompletion
+public import SphereSixComplex.Elliptic.Band.HomologyComparison
 public import SphereSixComplex.Homology.Second
 public import SphereSixComplex.Elliptic.Homology.HomologyVanishing
 public import SphereSixComplex.Homology.SphereComparison

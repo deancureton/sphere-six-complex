@@ -10,9 +10,9 @@ The base of the concrete central height band is the convex vertical strip
 contractibility of the strip gives the homotopy equivalence required by the radial input.
 
 The strip, the band projection, and the product-trivialization statement itself now live in
-`PaperSectionSevenAffineBandTrivializationDefs`; the trivialization is proved in
-`PaperSectionSevenAffineMarkedBandTrivialization` and is merely repackaged here under its
-historical name.
+`SphereSixComplex.Elliptic.Band.Basic`; the trivialization is proved in
+`SphereSixComplex.Elliptic.Band.MarkedTrivialization`. This module records its marked coordinate
+formulas.
 -/
 
 @[expose] public section
@@ -41,7 +41,7 @@ public theorem affineNamedStripLift_apply_midpoint :
   A.affineNormalizedStripContinuousLift_midpoint
 
 /-- The named marked product trivialization of the affine central band: the marked trivialization
-of `PaperSectionSevenAffineMarkedBandTrivialization` taken at `affineNamedStripLift`.
+of `SphereSixComplex.Elliptic.Band.MarkedTrivialization` taken at `affineNamedStripLift`.
 Both coordinates are pinned — the base coordinate by
 `affineCentralBandMarkedProductHomeomorph_fst` and the fibre coordinate by
 `affineCentralBandMarkedProductHomeomorph_symm_toCentralFamily`. -/
@@ -52,7 +52,7 @@ public noncomputable def affineCentralBandMarkedProductHomeomorph
         (A.affineCentralHeightSplit S).lower
         (A.affineCentralHeightSplit S).upper ≃ₜ
       affineVerticalStrip ×
-        AdditiveTorus A.duplicatedSectionSevenBandParameter :=
+        AdditiveTorus A.commonBandParameter :=
   (A.affineCentralBandProductHomeomorphOfLift S
     A.affineNamedStripLift).symm
 
@@ -63,7 +63,7 @@ property that `Exists.choose` of the unmarked statement could never supply. -/
 public theorem affineCentralBandMarkedProductHomeomorph_symm_toCentralFamily
     (S : A.AffineCentralSeparation)
     (p : affineVerticalStrip ×
-      AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+      AdditiveTorus A.commonBandParameter) :
     A.affineCentralBandToCentralFamily S
         ((A.affineCentralBandMarkedProductHomeomorph S).symm p) =
       A.stripLiftPoint A.affineNamedStripLift p.1 p.2 := by
@@ -81,12 +81,12 @@ public noncomputable def AffineCentralBandProductTrivialization.bandHomotopyEqui
         (A.affineCentralHeightSplit S).lower
         (A.affineCentralHeightSplit S).upper ≃ₜ
       affineVerticalStrip ×
-        AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+        AdditiveTorus A.commonBandParameter) :
     centralHeightBand
         (A.affineCentralHeightSplit S).height
         (A.affineCentralHeightSplit S).lower
         (A.affineCentralHeightSplit S).upper ≃ₕ
-      AdditiveTorus A.duplicatedSectionSevenBandParameter := by
+      AdditiveTorus A.commonBandParameter := by
   let _ : ContractibleSpace affineVerticalStrip :=
     affineVerticalStrip_contractibleSpace
   exact homotopyEquivFiberOfTrivialBundle e
@@ -100,7 +100,7 @@ public noncomputable def affineCentralBandHomotopyEquiv
         (A.affineCentralHeightSplit S).height
         (A.affineCentralHeightSplit S).lower
         (A.affineCentralHeightSplit S).upper ≃ₕ
-      AdditiveTorus A.duplicatedSectionSevenBandParameter :=
+      AdditiveTorus A.commonBandParameter :=
   AffineCentralBandProductTrivialization.bandHomotopyEquiv A
     (A.affineCentralBandMarkedProductHomeomorph S)
 

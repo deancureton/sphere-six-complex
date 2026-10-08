@@ -128,7 +128,7 @@ public theorem stripInclusion_isOpenMap : IsOpenMap stripInclusion := by
 
 /-- A point of the affine strip and a chosen point above it determine a unique continuous lift of
 the entire strip. -/
-public theorem existsUnique_sectionSevenAffineStripContinuousLift
+public theorem existsUnique_affineStripContinuousLift
     (a₀ : affineVerticalStrip)
     (e₀ : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
     (he₀ : A.regularCoordinate e₀ = stripInclusion a₀) :
@@ -233,7 +233,7 @@ public theorem regularFixedToMoving_period_add
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
     (n : IntegerPeriods) (v : ComplexTwoSpace) :
     A.regularFixedToMoving b
-        (periodVector A.duplicatedSectionSevenBandParameter n + v) =
+        (periodVector A.commonBandParameter n + v) =
       periodVector (regularParameterMap A.periods b).1 n +
         A.regularFixedToMoving b v :=
   congrArg Prod.snd (fixedToMovingCover_period_add A.periods
@@ -249,16 +249,16 @@ public def stripLiftCover (L : A.AffineStripLift)
 
 public theorem stripLiftCover_respects (L : A.AffineStripLift)
     (z : affineVerticalStrip) (v v' : ComplexTwoSpace)
-    (h : MulAction.orbitRel (PeriodGroup A.duplicatedSectionSevenBandParameter)
+    (h : MulAction.orbitRel (PeriodGroup A.commonBandParameter)
       ComplexTwoSpace v v') :
     A.stripLiftCover L z v = A.stripLiftCover L z v' := by
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at h
   obtain ⟨g, hg⟩ := h
   change (g.toAdd : ComplexTwoSpace) + v' = v at hg
   obtain ⟨n, hn⟩ := g.toAdd.2
-  change periodVector A.duplicatedSectionSevenBandParameter n =
+  change periodVector A.commonBandParameter n =
     (g.toAdd : ComplexTwoSpace) at hn
-  have hv : v = periodVector A.duplicatedSectionSevenBandParameter n + v' := by
+  have hv : v = periodVector A.commonBandParameter n + v' := by
     rw [hn]
     exact hg.symm
   rw [stripLiftCover, stripLiftCover, hv, A.regularFixedToMoving_period_add]
@@ -271,7 +271,7 @@ public theorem stripLiftCover_respects (L : A.AffineStripLift)
 central family. -/
 public def stripLiftPoint (L : A.AffineStripLift)
     (z : affineVerticalStrip)
-    (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) : A.CentralFamily :=
+    (t : AdditiveTorus A.commonBandParameter) : A.CentralFamily :=
   Quotient.liftOn t (A.stripLiftCover L z) (A.stripLiftCover_respects L z)
 
 
@@ -285,7 +285,7 @@ public theorem centralFamilyCoordinate_stripLiftCover (L : A.AffineStripLift)
 @[simp]
 public theorem centralFamilyCoordinate_stripLiftPoint (L : A.AffineStripLift)
     (z : affineVerticalStrip)
-    (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (t : AdditiveTorus A.commonBandParameter) :
     A.centralFamilyCoordinate (A.stripLiftPoint L z t) = stripInclusion z := by
   induction t using Quotient.inductionOn with
   | _ v => exact A.centralFamilyCoordinate_stripLiftCover L z v
@@ -294,7 +294,7 @@ public theorem centralFamilyCoordinate_stripLiftPoint (L : A.AffineStripLift)
 the actual central family. -/
 public def stripLiftMap (L : A.AffineStripLift) :
     affineVerticalStrip ×
-        AdditiveTorus A.duplicatedSectionSevenBandParameter → A.CentralFamily :=
+        AdditiveTorus A.commonBandParameter → A.CentralFamily :=
   fun p ↦ A.stripLiftPoint L p.1 p.2
 
 public theorem stripLiftCover_continuous (L : A.AffineStripLift) :
@@ -315,10 +315,10 @@ public theorem stripTorusQuotient_isOpenQuotientMap :
     IsOpenQuotientMap
       (Prod.map (id : affineVerticalStrip → affineVerticalStrip)
         (Quotient.mk (MulAction.orbitRel
-          (PeriodGroup A.duplicatedSectionSevenBandParameter) ComplexTwoSpace))) :=
+          (PeriodGroup A.commonBandParameter) ComplexTwoSpace))) :=
   IsOpenQuotientMap.id.prodMap
     (MulAction.isOpenQuotientMap_quotientMk
-      (Γ := PeriodGroup A.duplicatedSectionSevenBandParameter) (T := ComplexTwoSpace))
+      (Γ := PeriodGroup A.commonBandParameter) (T := ComplexTwoSpace))
 
 public theorem stripLiftMap_continuous (L : A.AffineStripLift) :
     Continuous (A.stripLiftMap L) := by
@@ -364,14 +364,14 @@ public theorem stripLiftMap_isOpenMap (L : A.AffineStripLift) :
   have hpre : IsOpen (Prod.map (id : affineVerticalStrip →
       affineVerticalStrip)
       (Quotient.mk (MulAction.orbitRel
-        (PeriodGroup A.duplicatedSectionSevenBandParameter) ComplexTwoSpace)) ⁻¹' W) :=
+        (PeriodGroup A.commonBandParameter) ComplexTwoSpace)) ⁻¹' W) :=
     hW.preimage (A.stripTorusQuotient_isOpenQuotientMap).continuous
   have himage : A.stripLiftMap L '' W =
       (fun p : affineVerticalStrip × ComplexTwoSpace ↦
         A.stripLiftCover L p.1 p.2) ''
         (Prod.map (id : affineVerticalStrip → affineVerticalStrip)
           (Quotient.mk (MulAction.orbitRel
-            (PeriodGroup A.duplicatedSectionSevenBandParameter) ComplexTwoSpace)) ⁻¹' W) := by
+            (PeriodGroup A.commonBandParameter) ComplexTwoSpace)) ⁻¹' W) := by
     apply Set.Subset.antisymm
     · rintro _ ⟨q, hq, rfl⟩
       obtain ⟨v, hv⟩ := Quotient.mk_surjective q.2
@@ -406,7 +406,7 @@ public theorem stripLiftCover_inj (L : A.AffineStripLift)
     (z z' : affineVerticalStrip) (v v' : ComplexTwoSpace)
     (h : A.stripLiftCover L z v = A.stripLiftCover L z' v') :
     z = z' ∧
-      (Quotient.mk _ v : AdditiveTorus A.duplicatedSectionSevenBandParameter) =
+      (Quotient.mk _ v : AdditiveTorus A.commonBandParameter) =
         Quotient.mk _ v' := by
   have hz : z = z' := by
     have hcoord := congrArg A.centralFamilyCoordinate h
@@ -445,15 +445,15 @@ public theorem stripLiftCover_inj (L : A.AffineStripLift)
   have hsnd := congrArg Prod.snd ha
   rw [family_smul_snd] at hsnd
   have hveq : A.regularFixedToMoving (L.lift z)
-      (periodVector A.duplicatedSectionSevenBandParameter a.coeff + v) =
+      (periodVector A.commonBandParameter a.coeff + v) =
       A.regularFixedToMoving (L.lift z) v' := by
     rw [A.regularFixedToMoving_period_add]
     exact hsnd
   have hv := A.regularFixedToMoving_injective (L.lift z) hveq
   refine (Quotient.sound ?_).symm
   exact ⟨Multiplicative.ofAdd
-    (⟨periodVector A.duplicatedSectionSevenBandParameter a.coeff, ⟨a.coeff, rfl⟩⟩ :
-      periodLattice A.duplicatedSectionSevenBandParameter), hv⟩
+    (⟨periodVector A.commonBandParameter a.coeff, ⟨a.coeff, rfl⟩⟩ :
+      periodLattice A.commonBandParameter), hv⟩
 
 public theorem stripLiftMap_injective (L : A.AffineStripLift) :
     Function.Injective (A.stripLiftMap L) := by
@@ -524,7 +524,7 @@ public theorem stripLiftMap_isOpenEmbedding (L : A.AffineStripLift) :
 /-- The actual central band inside the central family, in marked product coordinates. -/
 public noncomputable def stripLiftHomeomorph (L : A.AffineStripLift) :
     affineVerticalStrip ×
-        AdditiveTorus A.duplicatedSectionSevenBandParameter ≃ₜ
+        AdditiveTorus A.commonBandParameter ≃ₜ
       {q : A.CentralFamily | (1 / 3 : ℝ) < (A.centralFamilyCoordinate q).1.re ∧
         (A.centralFamilyCoordinate q).1.re < 2 / 3} :=
   (A.stripLiftMap_isOpenEmbedding L).isEmbedding.toHomeomorph.trans
@@ -556,7 +556,7 @@ public noncomputable def affineCentralBandToCentralFamily
 public noncomputable def affineCentralBandProductHomeomorphOfLift
     (S : A.AffineCentralSeparation) (L : A.AffineStripLift) :
     affineVerticalStrip ×
-        AdditiveTorus A.duplicatedSectionSevenBandParameter ≃ₜ
+        AdditiveTorus A.commonBandParameter ≃ₜ
       centralHeightBand
         (A.affineCentralHeightSplit S).height
         (A.affineCentralHeightSplit S).lower
@@ -573,7 +573,7 @@ public noncomputable def affineCentralBandProductHomeomorphOfLift
 public theorem affineCentralBandProductHomeomorphOfLift_toCentralFamily
     (S : A.AffineCentralSeparation) (L : A.AffineStripLift)
     (p : affineVerticalStrip ×
-      AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+      AdditiveTorus A.commonBandParameter) :
     A.affineCentralBandToCentralFamily S
         (A.affineCentralBandProductHomeomorphOfLift S L p) =
       A.stripLiftPoint L p.1 p.2 :=

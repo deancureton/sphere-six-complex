@@ -39,12 +39,12 @@ public theorem collarSourceToGlued_isOpenEmbedding (i : Fin 3) :
 corresponding filling piece. -/
 public theorem range_collarSourceToGlued (i : Fin 3) :
     Set.range (A.collarSourceToGlued i) =
-      (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece 0 ∩
-        (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece i.succ := by
+      (starOpenCover A.toFourPieceStarGluingData).piece 0 ∩
+        (starOpenCover A.toFourPieceStarGluingData).piece i.succ := by
   let D := A.toFourPieceStarGluingData.glueData
-  rw [show (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece 0 =
+  rw [show (starOpenCover A.toFourPieceStarGluingData).piece 0 =
     Set.range (D.toGlueData.ι none) from rfl]
-  rw [show (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece i.succ =
+  rw [show (starOpenCover A.toFourPieceStarGluingData).piece i.succ =
     Set.range (D.toGlueData.ι (some i)) from rfl]
   rw [D.image_inter none (some i)]
   ext x
@@ -63,7 +63,7 @@ the analytic gluing. -/
 public noncomputable def centralFillingIntersectionHomeomorph (i : Fin 3) :
     A.collarSource i ≃ₜ
       finiteCoverIntersection
-        (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece {0, i.succ} := by
+        (starOpenCover A.toFourPieceStarGluingData).piece {0, i.succ} := by
   let e : A.collarSource i ≃ₜ Set.range (A.collarSourceToGlued i) :=
     (A.collarSourceToGlued_isOpenEmbedding i).isEmbedding.toHomeomorph
   refine e.trans (Homeomorph.setCongr ?_)
@@ -73,12 +73,12 @@ public noncomputable def centralFillingIntersectionHomeomorph (i : Fin 3) :
 
 /-- Distinct filling images in the four-piece star are disjoint. -/
 public theorem fillingPiece_inter_fillingPiece {i j : Fin 3} (hij : i ≠ j) :
-    (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece i.succ ∩
-      (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece j.succ = ∅ := by
+    (starOpenCover A.toFourPieceStarGluingData).piece i.succ ∩
+      (starOpenCover A.toFourPieceStarGluingData).piece j.succ = ∅ := by
   let D := A.toFourPieceStarGluingData.glueData
-  rw [show (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece i.succ =
+  rw [show (starOpenCover A.toFourPieceStarGluingData).piece i.succ =
     Set.range (D.toGlueData.ι (some i)) from rfl]
-  rw [show (sectionSevenStarOpenCover A.toFourPieceStarGluingData).piece j.succ =
+  rw [show (starOpenCover A.toFourPieceStarGluingData).piece j.succ =
     Set.range (D.toGlueData.ι (some j)) from rfl]
   rw [D.image_inter (some i) (some j)]
   ext x

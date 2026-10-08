@@ -128,7 +128,6 @@ public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.M
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.CuspJordan
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Reflection.DiscBoundaryTriple
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.OrbifoldCoordinate
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.Uniformization
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.BranchedMaps.AnalyticOrder
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.BranchedMaps.EllipticLifts
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.CuspUnitBounds
@@ -194,7 +193,6 @@ public import SphereSixComplex.Prerequisites.Topology.MappingTorus.ProductBounda
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.ProductBoundarySlant
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.ChainModel
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.Homology
-public import SphereSixComplex.Prerequisites.Topology.CWComplex.SquareBoundary
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.SquareOrientation
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.CircleProduct
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.CircleSweep
@@ -314,7 +312,6 @@ public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Relative
 public import SphereSixComplex.Prerequisites.Topology.Gluing.RestrictedOrbitQuotient
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.SmallChains
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.OpenCover
-public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.Projective
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.DegreeZero
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
 public import SphereSixComplex.Prerequisites.Topology.Manifold.RestrictScalars

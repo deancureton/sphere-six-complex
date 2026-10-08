@@ -106,11 +106,11 @@ public theorem localEulerExpression_eq_two_of_modelCalculations
       (orderFourReducedCentralFiber A.periods) = 0)
     (hCollar : ∀ i : Fin 3, integralHomologyEulerCharacteristicSix
       (A.openEmbeddingStarData.collarSource i) = 0) :
-    A.openEmbeddingStarData.sectionSevenLocalEulerExpression = 2 := by
+    A.openEmbeddingStarData.localEulerExpression = 2 := by
   have hFillZero := A.cuspFilling_euler_eq_of_centralFiberRetraction R hCuspCore
   have hFillOne := A.orderThreeFilling_euler_eq_zero_of_affineRadialChart C₃ hThreeCore
   have hFillTwo := A.orderFourFilling_euler_eq_zero_of_affineRadialChart C₄ hFourCore
-  unfold OpenEmbeddingStarData.sectionSevenLocalEulerExpression
+  unfold OpenEmbeddingStarData.localEulerExpression
   rw [hCentral, hFillZero, hFillOne, hFillTwo, hCollar 0, hCollar 1, hCollar 2]
   norm_num
 

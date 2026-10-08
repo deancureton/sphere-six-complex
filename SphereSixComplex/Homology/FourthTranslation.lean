@@ -90,14 +90,14 @@ public theorem starFourth_collar (A : AnalyticData) (z : UnitAddCircle)
   exact A.starFourth_additive_collar t s hs v
 
 public def starFourthCuspChart (A : AnalyticData) :
-    (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3) ≃ₜ
+    (A.openEmbeddingStarData.mayerVietorisCover.piece 3) ≃ₜ
       A.openEmbeddingStarData.filling 0 :=
-  (A.openEmbeddingStarData.fillingToSectionSevenEulerPieceHomeomorph 0).symm
+  (A.openEmbeddingStarData.fillingToEulerPieceHomeomorph 0).symm
 
 public def starFourthPatchSet (A : AnalyticData) :
     Fin 2 → Set (UnitAddCircle × A.VanKampenSpace) :=
   ![Prod.snd ⁻¹' A.ellipticInterior,
-    Prod.snd ⁻¹' A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3]
+    Prod.snd ⁻¹' A.openEmbeddingStarData.mayerVietorisCover.piece 3]
 
 public def starFourthPatch (A : AnalyticData) :
     (i : Fin 2) → C(A.starFourthPatchSet i, A.VanKampenSpace) := by
@@ -115,7 +115,7 @@ public def starFourthPatch (A : AnalyticData) :
 public theorem starFourth_overlap (A : AnalyticData) (x : UnitAddCircle × A.VanKampenSpace)
     (h0 : x ∈ A.starFourthPatchSet 0) (h1 : x ∈ A.starFourthPatchSet 1) :
     A.starFourthPatch 0 ⟨x,h0⟩ = A.starFourthPatch 1 ⟨x,h1⟩ := by
-  obtain ⟨q,hq⟩ := A.cuspCollarToSectionSevenFinalOverlapHomeomorph.surjective ⟨x.2,h0,h1⟩
+  obtain ⟨q,hq⟩ := A.cuspCollarToFinalOverlapHomeomorph.surjective ⟨x.2,h0,h1⟩
   have hc : A.starFourthCentralInclusion (A.starToCentral 0 q) = x.2 := congrArg Subtype.val hq
   have hf : A.starFourthCuspInclusion (A.starToFilling 0 q) = x.2 :=
     (A.starFourth_glue q).symm.trans hc
@@ -146,21 +146,21 @@ public theorem starFourthPatch_compatible (A : AnalyticData)
 public theorem starFourthPatchSet_isOpen (A : AnalyticData) (i : Fin 2) :
     IsOpen (A.starFourthPatchSet i) := by
   fin_cases i
-  · exact (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.isOpen_stage 2).preimage
+  · exact (A.openEmbeddingStarData.mayerVietorisCover.isOpen_stage 2).preimage
       continuous_snd
-  · exact (A.openEmbeddingStarData.sectionSevenMayerVietorisCover.isOpen_piece 3).preimage
+  · exact (A.openEmbeddingStarData.mayerVietorisCover.isOpen_piece 3).preimage
       continuous_snd
 
 public theorem starFourthPatchSet_nhds (A : AnalyticData) (x : UnitAddCircle × A.VanKampenSpace) :
     ∃ i, A.starFourthPatchSet i ∈ nhds x := by
   have hx : x.2 ∈ A.ellipticInterior ∪
-      A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3 := by
-    change x.2 ∈ A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage 2 ∪ _
-    have hu := A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage_union_next (2 : Fin 3)
-    change A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage 2 ∪
-      A.openEmbeddingStarData.sectionSevenMayerVietorisCover.piece 3 = _ at hu
+      A.openEmbeddingStarData.mayerVietorisCover.piece 3 := by
+    change x.2 ∈ A.openEmbeddingStarData.mayerVietorisCover.stage 2 ∪ _
+    have hu := A.openEmbeddingStarData.mayerVietorisCover.stage_union_next (2 : Fin 3)
+    change A.openEmbeddingStarData.mayerVietorisCover.stage 2 ∪
+      A.openEmbeddingStarData.mayerVietorisCover.piece 3 = _ at hu
     rw [hu]
-    change x.2 ∈ A.openEmbeddingStarData.sectionSevenMayerVietorisCover.stage ⟨3,by decide⟩
+    change x.2 ∈ A.openEmbeddingStarData.mayerVietorisCover.stage ⟨3,by decide⟩
     rw [FourPieceOpenCover.stage_last]
     trivial
   rcases hx with h | h

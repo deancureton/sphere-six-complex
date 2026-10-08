@@ -32,7 +32,7 @@ open EllipticFilling
 variable (A : AnalyticData)
 
 public abbrev starCover :=
-  A.openEmbeddingStarData.sectionSevenMayerVietorisCover
+  A.openEmbeddingStarData.mayerVietorisCover
 
 /-- The open image of the order-three filling, regarded as a subset of the elliptic interior. -/
 public def orderThreeFillingImage :
@@ -257,7 +257,7 @@ variable {D : A.EllipticCentralAllocation} (R : D.RadialRealization)
 
 /-- Completing only the central allocation, lifted contractions, and band trivialization produces
 the exact two-disc datum consumed by the Section 7 homology calculation. -/
-public def toSectionSevenEllipticTwoDiscCoverData :
+public def toEllipticTwoDiscCoverData :
     A.EllipticTwoDiscCoverData where
   orderThreeSide := D.orderThreeSide
   orderFourSide := D.orderFourSide

@@ -1,6 +1,6 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.Projective
+public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.SmallChains
 import DifferentialGeometry.Topology.Homology.SmallChains.QuasiIso
 import Mathlib.AlgebraicTopology.SimplicialSet.Homology.MapHomologicalComplex
 import Mathlib.Algebra.Category.Grp.ZModuleEquivalence
@@ -26,7 +26,7 @@ variable {ι : Type} (X : TopCat) (U : ι → Set X)
 /-- The cover-small inclusion is a quasi-isomorphism for every open cover. -/
 public theorem coverSmallChainQuasiIsomorphism_of_openCover
     (hUopen : ∀ i, IsOpen (U i)) (hUcover : ⋃ i, U i = Set.univ) :
-    CoverSmallChainQuasiIsomorphism X U := by
+    QuasiIso (coverSmallIntegralSingularChainInclusion X U) := by
   let F := forget₂ (ModuleCat ℤ) AddCommGrpCat
   let R := ModuleCat.of ℤ ℤ
   have h := DifferentialGeometry.Homology.quasiIso_smallChainMap X U R hUopen (by

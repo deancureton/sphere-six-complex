@@ -26,16 +26,16 @@ public def regularFixedFiberCover
 public theorem regularFixedFiberCover_respects
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
     (v v' : ComplexTwoSpace)
-    (h : MulAction.orbitRel (PeriodGroup A.duplicatedSectionSevenBandParameter)
+    (h : MulAction.orbitRel (PeriodGroup A.commonBandParameter)
       ComplexTwoSpace v v') :
     A.regularFixedFiberCover b v = A.regularFixedFiberCover b v' := by
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff] at h
   obtain ⟨g, hg⟩ := h
   change (g.toAdd : ComplexTwoSpace) + v' = v at hg
   obtain ⟨n, hn⟩ := g.toAdd.2
-  change periodVector A.duplicatedSectionSevenBandParameter n =
+  change periodVector A.commonBandParameter n =
     (g.toAdd : ComplexTwoSpace) at hn
-  have hv : v = periodVector A.duplicatedSectionSevenBandParameter n + v' := by
+  have hv : v = periodVector A.commonBandParameter n + v' := by
     rw [hn]
     exact hg.symm
   rw [regularFixedFiberCover, regularFixedFiberCover, hv, A.regularFixedToMoving_period_add]
@@ -45,20 +45,20 @@ public theorem regularFixedFiberCover_respects
 
 public def regularFixedFiberPoint
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization))
-    (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) : A.CentralFamily :=
+    (t : AdditiveTorus A.commonBandParameter) : A.CentralFamily :=
   Quotient.liftOn t (A.regularFixedFiberCover b) (A.regularFixedFiberCover_respects b)
 
 public theorem regularFixedFiberPoint_continuous :
     Continuous fun p : RegularBase (U := A.modular.modularParameter.toTriangleUniformization) ×
-        AdditiveTorus A.duplicatedSectionSevenBandParameter ↦ A.regularFixedFiberPoint p.1 p.2 := by
+        AdditiveTorus A.commonBandParameter ↦ A.regularFixedFiberPoint p.1 p.2 := by
   have hq : IsOpenQuotientMap
       (Prod.map (id : RegularBase
         (U := A.modular.modularParameter.toTriangleUniformization) → _)
         (Quotient.mk (MulAction.orbitRel
-          (PeriodGroup A.duplicatedSectionSevenBandParameter) ComplexTwoSpace))) :=
+          (PeriodGroup A.commonBandParameter) ComplexTwoSpace))) :=
     IsOpenQuotientMap.id.prodMap
     (MulAction.isOpenQuotientMap_quotientMk
-      (Γ := PeriodGroup A.duplicatedSectionSevenBandParameter) (T := ComplexTwoSpace))
+      (Γ := PeriodGroup A.commonBandParameter) (T := ComplexTwoSpace))
   apply hq.isQuotientMap.continuous_iff.mpr
   have hfib : Continuous fun p :
       RegularBase (U := A.modular.modularParameter.toTriangleUniformization) × ComplexTwoSpace ↦
@@ -71,12 +71,12 @@ public theorem regularFixedFiberPoint_continuous :
 
 public def regularFixedFiberMap
     (b : RegularBase (U := A.modular.modularParameter.toTriangleUniformization)) :
-    C(AdditiveTorus A.duplicatedSectionSevenBandParameter, A.CentralFamily) :=
+    C(AdditiveTorus A.commonBandParameter, A.CentralFamily) :=
   ⟨A.regularFixedFiberPoint b,
     A.regularFixedFiberPoint_continuous.comp (continuous_const.prodMk continuous_id)⟩
 
 public theorem regularFixedFiberPoint_strip (L : A.AffineStripLift)
-    (z : affineVerticalStrip) (t : AdditiveTorus A.duplicatedSectionSevenBandParameter) :
+    (z : affineVerticalStrip) (t : AdditiveTorus A.commonBandParameter) :
     A.regularFixedFiberPoint (L.lift z) t = A.stripLiftPoint L z t := rfl
 
 end SphereSixComplex.Geometry.AnalyticData

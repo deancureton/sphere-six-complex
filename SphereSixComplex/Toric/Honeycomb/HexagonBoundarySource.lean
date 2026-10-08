@@ -1,7 +1,8 @@
 module
 
 public import SphereSixComplex.Toric.Positive.BoundaryPaths
-public import SphereSixComplex.Prerequisites.Topology.CWComplex.SquareBoundary
+public import SphereSixComplex.Prerequisites.Topology.CWComplex.Homology
+public import SphereSixComplex.Prerequisites.Topology.Sphere.LinearEquiv
 
 @[expose] public section
 noncomputable section

@@ -41,7 +41,7 @@ variable {A : AnalyticData}
 public noncomputable def AffineRadialCompletionInput.twoDiscCover
     (R : A.AffineRadialCompletionInput) :
     A.EllipticTwoDiscCoverData :=
-  R.toRadialRealization.toSectionSevenEllipticTwoDiscCoverData
+  R.toRadialRealization.toEllipticTwoDiscCoverData
 
 /-- The canonical band homology alignment for the completed affine radial geometry. -/
 public theorem AffineRadialCompletionInput.homologyAlignment

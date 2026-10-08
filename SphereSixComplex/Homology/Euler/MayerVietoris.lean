@@ -117,48 +117,48 @@ namespace OpenEmbeddingStarData
 
 variable (A : OpenEmbeddingStarData)
 
-public abbrev sectionSevenEulerCover :=
-  sectionSevenStarOpenCover A.toFourPieceStarGluingData
+public abbrev eulerCover :=
+  starOpenCover A.toFourPieceStarGluingData
 
 /-- The central source is homeomorphic to the first actual open piece. -/
-public noncomputable def centralToSectionSevenEulerPieceHomeomorph :
-    A.central ≃ₜ (A.sectionSevenEulerCover).piece 0 :=
+public noncomputable def centralToEulerPieceHomeomorph :
+    A.central ≃ₜ (A.eulerCover).piece 0 :=
   (A.toFourPieceStarGluingData.glueData.ι_isOpenEmbedding none)
     |>.isEmbedding.toHomeomorph
 
 /-- Every filling source is homeomorphic to its actual open image. -/
-public noncomputable def fillingToSectionSevenEulerPieceHomeomorph (i : Fin 3) :
-    A.filling i ≃ₜ (A.sectionSevenEulerCover).piece i.succ :=
+public noncomputable def fillingToEulerPieceHomeomorph (i : Fin 3) :
+    A.filling i ≃ₜ (A.eulerCover).piece i.succ :=
   (A.toFourPieceStarGluingData.glueData.ι_isOpenEmbedding (some i))
     |>.isEmbedding.toHomeomorph
 
-public theorem sectionSevenEulerStage_zero :
-    (A.sectionSevenEulerCover).stage 0 = (A.sectionSevenEulerCover).piece 0 := by
+public theorem eulerStage_zero :
+    (A.eulerCover).stage 0 = (A.eulerCover).piece 0 := by
   ext x
   simp [FourPieceOpenCover.stage]
 
 /-- The central source is homeomorphic to the initial Mayer--Vietoris stage. -/
-public noncomputable def centralToSectionSevenEulerStageZeroHomeomorph :
-    A.central ≃ₜ (A.sectionSevenEulerCover).stage 0 :=
-  A.centralToSectionSevenEulerPieceHomeomorph.trans
-    (Homeomorph.setCongr A.sectionSevenEulerStage_zero.symm)
+public noncomputable def centralToEulerStageZeroHomeomorph :
+    A.central ≃ₜ (A.eulerCover).stage 0 :=
+  A.centralToEulerPieceHomeomorph.trans
+    (Homeomorph.setCongr A.eulerStage_zero.symm)
 
 /-- The union occurring at one binary Mayer--Vietoris step is the next partial stage. -/
-public noncomputable def sectionSevenEulerStageNextHomeomorph (r : Fin 3) :
-    ((A.sectionSevenEulerCover).stage r.castSucc ∪
-      (A.sectionSevenEulerCover).piece r.succ : Set
+public noncomputable def eulerStageNextHomeomorph (r : Fin 3) :
+    ((A.eulerCover).stage r.castSucc ∪
+      (A.eulerCover).piece r.succ : Set
         (GluedSpace A.toFourPieceStarGluingData.glueData)) ≃ₜ
-      (A.sectionSevenEulerCover).stage r.succ :=
-  Homeomorph.setCongr ((A.sectionSevenEulerCover).stage_union_next r)
+      (A.eulerCover).stage r.succ :=
+  Homeomorph.setCongr ((A.eulerCover).stage_union_next r)
 
 /-- The last partial stage is homeomorphic to the whole glued star. -/
-public noncomputable def sectionSevenEulerStageLastHomeomorph :
-    (A.sectionSevenEulerCover).stage (3 : Fin 4) ≃ₜ
+public noncomputable def eulerStageLastHomeomorph :
+    (A.eulerCover).stage (3 : Fin 4) ≃ₜ
       GluedSpace A.toFourPieceStarGluingData.glueData :=
-  topologicalSubsetHomeomorphOfEqUniv _ _ (A.sectionSevenEulerCover).stage_last
+  topologicalSubsetHomeomorphOfEqUniv _ _ (A.eulerCover).stage_last
 
 /-- The explicit local finite-rank expression for the Euler characteristic of the star. -/
-public noncomputable def sectionSevenLocalEulerExpression : ℤ :=
+public noncomputable def localEulerExpression : ℤ :=
   integralHomologyEulerCharacteristicSix A.central +
   integralHomologyEulerCharacteristicSix (A.filling 0) +
   integralHomologyEulerCharacteristicSix (A.filling 1) +
@@ -176,12 +176,12 @@ public theorem integralHomologyEulerCharacteristicSeven_eq_localExpression
     (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i)) :
     integralHomologyEulerCharacteristicSeven
         (GluedSpace A.toFourPieceStarGluingData.glueData) =
-      A.sectionSevenLocalEulerExpression := by
-  let C := A.sectionSevenEulerCover
+      A.localEulerExpression := by
+  let C := A.eulerCover
   let eCentralStage : A.central ≃ₜ C.stage 0 := by
-    simpa only [C] using A.centralToSectionSevenEulerStageZeroHomeomorph
+    simpa only [C] using A.centralToEulerStageZeroHomeomorph
   let ePiece (i : Fin 3) : A.filling i ≃ₜ C.piece i.succ := by
-    simpa only [C] using A.fillingToSectionSevenEulerPieceHomeomorph i
+    simpa only [C] using A.fillingToEulerPieceHomeomorph i
   let eOverlap (i : Fin 3) : A.collarSource i ≃ₜ
       (C.stage i.castSucc ∩ C.piece i.succ : Set
         (GluedSpace A.toFourPieceStarGluingData.glueData)) := by
@@ -189,10 +189,10 @@ public theorem integralHomologyEulerCharacteristicSeven_eq_localExpression
   let eNext (i : Fin 3) :
       (C.stage i.castSucc ∪ C.piece i.succ : Set
         (GluedSpace A.toFourPieceStarGluingData.glueData)) ≃ₜ C.stage i.succ := by
-    simpa only [C] using A.sectionSevenEulerStageNextHomeomorph i
+    simpa only [C] using A.eulerStageNextHomeomorph i
   let eLast : C.stage (3 : Fin 4) ≃ₜ
       GluedSpace A.toFourPieceStarGluingData.glueData := by
-    simpa only [C] using A.sectionSevenEulerStageLastHomeomorph
+    simpa only [C] using A.eulerStageLastHomeomorph
   have hPiece : ∀ (i : Fin 3), IntegralHomologyFiniteSix (C.piece i.succ) := fun i ↦
     (hFillingFinite i).homeomorph (ePiece i)
   have hOverlap : ∀ (i : Fin 3), IntegralHomologyFiniteSix
@@ -292,7 +292,7 @@ public theorem integralHomologyEulerCharacteristicSeven_eq_localExpression
     simpa using hOverlapEuler (2 : Fin 3)
   rw [hPieceEuler0, hPieceEuler1, hPieceEuler2,
     hOverlapEuler0, hOverlapEuler1, hOverlapEuler2]
-  unfold sectionSevenLocalEulerExpression
+  unfold localEulerExpression
   ring
 
 /-- Six-manifold dimensionality removes the final degree-seven correction from the sound
@@ -305,7 +305,7 @@ public theorem integralHomologyEulerCharacteristicSix_eq_localExpression_of_homo
     (hCollarFinite : ∀ i, IntegralHomologyFiniteSix (A.collarSource i)) :
     integralHomologyEulerCharacteristicSix
         (GluedSpace A.toFourPieceStarGluingData.glueData) =
-      A.sectionSevenLocalEulerExpression := by
+      A.localEulerExpression := by
   have hTruncation : integralHomologyEulerCharacteristicSeven
       (GluedSpace A.toFourPieceStarGluingData.glueData) =
         integralHomologyEulerCharacteristicSix

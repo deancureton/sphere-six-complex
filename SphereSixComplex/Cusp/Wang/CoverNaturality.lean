@@ -32,10 +32,10 @@ public def cuspToEllipticInteriorMap (_D : A.EllipticTwoDiscCoverData) :
     TopCat.of (A.openEmbeddingStarData.collarSource 0) ⟶
       TopCat.of A.ellipticInterior :=
   TopCat.ofHom ((IntegralMayerVietoris.interToLeft
-      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).stage (2 : Fin 4))
-      ((A.openEmbeddingStarData.sectionSevenMayerVietorisCover).piece 3)).comp
-    ⟨A.cuspCollarToSectionSevenFinalOverlapHomeomorph,
-      A.cuspCollarToSectionSevenFinalOverlapHomeomorph.continuous⟩)
+      ((A.openEmbeddingStarData.mayerVietorisCover).stage (2 : Fin 4))
+      ((A.openEmbeddingStarData.mayerVietorisCover).piece 3)).comp
+    ⟨A.cuspCollarToFinalOverlapHomeomorph,
+      A.cuspCollarToFinalOverlapHomeomorph.continuous⟩)
 
 /-- The pullback of the order-three side to the actual cusp collar. -/
 public def cuspOrderThreeOpen : Opens (TopCat.of (A.openEmbeddingStarData.collarSource 0)) :=
