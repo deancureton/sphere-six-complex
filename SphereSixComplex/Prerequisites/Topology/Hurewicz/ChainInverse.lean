@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.Definitions
+import Mathlib.Algebra.Category.Grp.EpiMono
 
 /-!
 # A chain-level proof of the first Hurewicz theorem
@@ -22,11 +23,16 @@ open SphereSixComplex.StandardCircleHomologyLiftDegree
 open Hurewicz
 
 def simplexCoordinate (n : ℕ) (i : Fin (n + 1)) : C(simplex n, unitInterval) where
-  toFun s := ⟨s i, stdSimplex.zero_le s i, stdSimplex.le_one s i⟩
-  continuous_toFun := ((continuous_apply i).comp continuous_subtype_val).subtype_mk _
+  toFun s := ⟨s.weights i, s.weights_nonneg i, s.weights_apply_le_one i⟩
+  continuous_toFun := (Convexity.StdSimplex.continuous_weights_apply ℝ i).subtype_mk _
+
+@[simp]
+theorem simplexCoordinate_one_one (s : simplex 1) :
+    simplexCoordinate 1 1 s = Convexity.StdSimplex.homeomorphI s :=
+  Subtype.ext (Convexity.StdSimplex.homeomorphI_apply_coe s).symm
 
 theorem simplexFace_one_zero (s : simplex 1) :
-    (simplexFace 1 0 s : Fin 3 → ℝ) = ![0, s 0, s 1] := by
+    ((simplexFace 1 0 s).weights : Fin 3 → ℝ) = ![0, s.weights 0, s.weights 1] := by
   funext k
   fin_cases k
   · exact simplexFace_apply_self 1 0 s
@@ -34,7 +40,7 @@ theorem simplexFace_one_zero (s : simplex 1) :
   · exact simplexFace_apply_succAbove 1 0 s 1
 
 theorem simplexFace_one_one (s : simplex 1) :
-    (simplexFace 1 1 s : Fin 3 → ℝ) = ![s 0, 0, s 1] := by
+    ((simplexFace 1 1 s).weights : Fin 3 → ℝ) = ![s.weights 0, 0, s.weights 1] := by
   funext k
   fin_cases k
   · exact simplexFace_apply_succAbove 1 1 s 0
@@ -42,7 +48,7 @@ theorem simplexFace_one_one (s : simplex 1) :
   · exact simplexFace_apply_succAbove 1 1 s 1
 
 theorem simplexFace_one_two (s : simplex 1) :
-    (simplexFace 1 2 s : Fin 3 → ℝ) = ![s 0, s 1, 0] := by
+    ((simplexFace 1 2 s).weights : Fin 3 → ℝ) = ![s.weights 0, s.weights 1, 0] := by
   funext k
   fin_cases k
   · exact simplexFace_apply_succAbove 1 2 s 0
@@ -51,19 +57,19 @@ theorem simplexFace_one_two (s : simplex 1) :
 
 def concatTime : C(simplex 2, unitInterval) where
   toFun s :=
-    ⟨s 1 / 2 + s 2, by
-      have h0 := stdSimplex.zero_le s 0
-      have h1 := stdSimplex.zero_le s 1
-      have h2 := stdSimplex.zero_le s 2
-      have hs := stdSimplex.sum_eq_one s
+    ⟨s.weights 1 / 2 + s.weights 2, by
+      have h0 := s.weights_nonneg 0
+      have h1 := s.weights_nonneg 1
+      have h2 := s.weights_nonneg 2
+      have hs := s.total_of_fintype
       simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero] at hs
-      change s 0 + (s 1 + s 2) = 1 at hs
+      change s.weights 0 + (s.weights 1 + s.weights 2) = 1 at hs
       constructor <;> linarith⟩
   continuous_toFun := by
     apply Continuous.subtype_mk
     exact
-      ((continuous_apply (1 : Fin 3)).comp continuous_subtype_val).div_const 2 |>.add
-        ((continuous_apply (2 : Fin 3)).comp continuous_subtype_val)
+      (Convexity.StdSimplex.continuous_weights_apply ℝ (1 : Fin 3)).div_const 2 |>.add
+        (Convexity.StdSimplex.continuous_weights_apply ℝ (2 : Fin 3))
 
 def concatSimplex {X : Type*} [TopologicalSpace X] {x y z : X}
     (p : Path x y) (q : Path y z) : C(simplex 2, X) :=
@@ -71,7 +77,7 @@ def concatSimplex {X : Type*} [TopologicalSpace X] {x y z : X}
 
 theorem concatSimplex_apply {X : Type*} [TopologicalSpace X] {x y z : X}
     (p : Path x y) (q : Path y z) (s : simplex 2) :
-    concatSimplex p q s = (p.trans q).extend (s 1 / 2 + s 2) :=
+    concatSimplex p q s = (p.trans q).extend (s.weights 1 / 2 + s.weights 2) :=
   (Path.extend_apply (p.trans q) (concatTime s).property).symm
 
 @[simp]
@@ -82,15 +88,17 @@ theorem concatSimplex_face_zero {X : Type*} [TopologicalSpace X] {x y z : X}
   intro s
   change concatSimplex p q (simplexFace 1 0 s) = pathSimplex q s
   rw [concatSimplex_apply]
-  have h1 : simplexFace 1 0 s 1 = s 0 := simplexFace_apply_succAbove 1 0 s 0
-  have h2 : simplexFace 1 0 s 2 = s 1 := simplexFace_apply_succAbove 1 0 s 1
+  have h1 : (simplexFace 1 0 s).weights 1 = s.weights 0 := simplexFace_apply_succAbove 1 0 s 0
+  have h2 : (simplexFace 1 0 s).weights 2 = s.weights 1 := simplexFace_apply_succAbove 1 0 s 1
   rw [h1, h2]
-  have hs := stdSimplex.add_eq_one s
-  have hnonneg := stdSimplex.zero_le s 1
-  rw [Path.extend_trans_of_half_le p q (show 1 / 2 ≤ s 0 / 2 + s 1 by linarith)]
-  have he : 2 * (s 0 / 2 + s 1) - 1 = s 1 := by linarith
+  have hs := s.total_fin_two
+  have hnonneg := s.weights_nonneg 1
+  rw [Path.extend_trans_of_half_le p q (show 1 / 2 ≤ s.weights 0 / 2 + s.weights 1 by linarith)]
+  have he : 2 * (s.weights 0 / 2 + s.weights 1) - 1 = s.weights 1 := by linarith
   rw [he]
-  exact Path.extend_apply q (simplexCoordinate 1 1 s).property
+  change q.extend (s.weights 1) = q (Convexity.StdSimplex.homeomorphI s)
+  rw [← Convexity.StdSimplex.homeomorphI_apply_coe s]
+  exact Path.extend_apply q (Convexity.StdSimplex.homeomorphI s).property
 
 @[simp]
 theorem concatSimplex_face_one {X : Type*} [TopologicalSpace X] {x y z : X}
@@ -100,9 +108,11 @@ theorem concatSimplex_face_one {X : Type*} [TopologicalSpace X] {x y z : X}
   intro s
   change concatSimplex p q (simplexFace 1 1 s) = pathSimplex (p.trans q) s
   rw [concatSimplex_apply, simplexFace_apply_self]
-  have h2 : simplexFace 1 1 s 2 = s 1 := simplexFace_apply_succAbove 1 1 s 1
+  have h2 : (simplexFace 1 1 s).weights 2 = s.weights 1 := simplexFace_apply_succAbove 1 1 s 1
   rw [h2, zero_div, zero_add]
-  exact Path.extend_apply (p.trans q) (simplexCoordinate 1 1 s).property
+  change (p.trans q).extend (s.weights 1) = (p.trans q) (Convexity.StdSimplex.homeomorphI s)
+  rw [← Convexity.StdSimplex.homeomorphI_apply_coe s]
+  exact Path.extend_apply (p.trans q) (Convexity.StdSimplex.homeomorphI s).property
 
 @[simp]
 theorem concatSimplex_face_two {X : Type*} [TopologicalSpace X] {x y z : X}
@@ -112,12 +122,14 @@ theorem concatSimplex_face_two {X : Type*} [TopologicalSpace X] {x y z : X}
   intro s
   change concatSimplex p q (simplexFace 1 2 s) = pathSimplex p s
   rw [concatSimplex_apply, simplexFace_apply_self]
-  have h1 : simplexFace 1 2 s 1 = s 1 := simplexFace_apply_succAbove 1 2 s 1
+  have h1 : (simplexFace 1 2 s).weights 1 = s.weights 1 := simplexFace_apply_succAbove 1 2 s 1
   rw [h1, add_zero]
-  have hle := stdSimplex.le_one s 1
-  rw [Path.extend_trans_of_le_half p q (show s 1 / 2 ≤ 1 / 2 by linarith)]
-  rw [show 2 * (s 1 / 2) = s 1 by ring]
-  exact Path.extend_apply p (simplexCoordinate 1 1 s).property
+  have hle := s.weights_apply_le_one 1
+  rw [Path.extend_trans_of_le_half p q (show s.weights 1 / 2 ≤ 1 / 2 by linarith)]
+  rw [show 2 * (s.weights 1 / 2) = s.weights 1 by ring]
+  change p.extend (s.weights 1) = p (Convexity.StdSimplex.homeomorphI s)
+  rw [← Convexity.StdSimplex.homeomorphI_apply_coe s]
+  exact Path.extend_apply p (Convexity.StdSimplex.homeomorphI s).property
 
 def lowerTriangleMap : C(simplex 2, unitInterval × unitInterval) where
   toFun s := (simplexCoordinate 2 2 s, unitInterval.symm (simplexCoordinate 2 0 s))
@@ -134,9 +146,9 @@ def upperTriangleMap : C(simplex 2, unitInterval × unitInterval) where
 theorem lowerTriangle_face_zero (s : simplex 1) :
     lowerTriangleMap (simplexFace 1 0 s) = (simplexCoordinate 1 1 s, 1) := by
   apply Prod.ext <;> apply Subtype.ext
-  · change simplexFace 1 0 s 2 = s 1
+  · change (simplexFace 1 0 s).weights 2 = s.weights 1
     exact congrFun (simplexFace_one_zero s) 2
-  · change 1 - simplexFace 1 0 s 0 = 1
+  · change 1 - (simplexFace 1 0 s).weights 0 = 1
     rw [simplexFace_apply_self]
     ring
 
@@ -144,51 +156,51 @@ theorem lowerTriangle_face_one (s : simplex 1) :
     lowerTriangleMap (simplexFace 1 1 s) =
       (simplexCoordinate 1 1 s, simplexCoordinate 1 1 s) := by
   apply Prod.ext <;> apply Subtype.ext
-  · change simplexFace 1 1 s 2 = s 1
+  · change (simplexFace 1 1 s).weights 2 = s.weights 1
     exact congrFun (simplexFace_one_one s) 2
-  · change 1 - simplexFace 1 1 s 0 = s 1
-    have h0 : simplexFace 1 1 s 0 = s 0 := congrFun (simplexFace_one_one s) 0
+  · change 1 - (simplexFace 1 1 s).weights 0 = s.weights 1
+    have h0 : (simplexFace 1 1 s).weights 0 = s.weights 0 := congrFun (simplexFace_one_one s) 0
     rw [h0]
-    linarith [stdSimplex.add_eq_one s]
+    linarith [s.total_fin_two]
 
 theorem lowerTriangle_face_two (s : simplex 1) :
     lowerTriangleMap (simplexFace 1 2 s) = (0, simplexCoordinate 1 1 s) := by
   apply Prod.ext <;> apply Subtype.ext
-  · change simplexFace 1 2 s 2 = 0
+  · change (simplexFace 1 2 s).weights 2 = 0
     exact simplexFace_apply_self 1 2 s
-  · change 1 - simplexFace 1 2 s 0 = s 1
-    have h0 : simplexFace 1 2 s 0 = s 0 := congrFun (simplexFace_one_two s) 0
+  · change 1 - (simplexFace 1 2 s).weights 0 = s.weights 1
+    have h0 : (simplexFace 1 2 s).weights 0 = s.weights 0 := congrFun (simplexFace_one_two s) 0
     rw [h0]
-    linarith [stdSimplex.add_eq_one s]
+    linarith [s.total_fin_two]
 
 theorem upperTriangle_face_zero (s : simplex 1) :
     upperTriangleMap (simplexFace 1 0 s) = (1, simplexCoordinate 1 1 s) := by
   apply Prod.ext <;> apply Subtype.ext
-  · change 1 - simplexFace 1 0 s 0 = 1
+  · change 1 - (simplexFace 1 0 s).weights 0 = 1
     rw [simplexFace_apply_self]
     ring
-  · change simplexFace 1 0 s 2 = s 1
+  · change (simplexFace 1 0 s).weights 2 = s.weights 1
     exact congrFun (simplexFace_one_zero s) 2
 
 theorem upperTriangle_face_one (s : simplex 1) :
     upperTriangleMap (simplexFace 1 1 s) =
       (simplexCoordinate 1 1 s, simplexCoordinate 1 1 s) := by
   apply Prod.ext <;> apply Subtype.ext
-  · change 1 - simplexFace 1 1 s 0 = s 1
-    have h0 : simplexFace 1 1 s 0 = s 0 := congrFun (simplexFace_one_one s) 0
+  · change 1 - (simplexFace 1 1 s).weights 0 = s.weights 1
+    have h0 : (simplexFace 1 1 s).weights 0 = s.weights 0 := congrFun (simplexFace_one_one s) 0
     rw [h0]
-    linarith [stdSimplex.add_eq_one s]
-  · change simplexFace 1 1 s 2 = s 1
+    linarith [s.total_fin_two]
+  · change (simplexFace 1 1 s).weights 2 = s.weights 1
     exact congrFun (simplexFace_one_one s) 2
 
 theorem upperTriangle_face_two (s : simplex 1) :
     upperTriangleMap (simplexFace 1 2 s) = (simplexCoordinate 1 1 s, 0) := by
   apply Prod.ext <;> apply Subtype.ext
-  · change 1 - simplexFace 1 2 s 0 = s 1
-    have h0 : simplexFace 1 2 s 0 = s 0 := congrFun (simplexFace_one_two s) 0
+  · change 1 - (simplexFace 1 2 s).weights 0 = s.weights 1
+    have h0 : (simplexFace 1 2 s).weights 0 = s.weights 0 := congrFun (simplexFace_one_two s) 0
     rw [h0]
-    linarith [stdSimplex.add_eq_one s]
-  · change simplexFace 1 2 s 2 = 0
+    linarith [s.total_fin_two]
+  · change (simplexFace 1 2 s).weights 2 = 0
     exact simplexFace_apply_self 1 2 s
 
 def homotopyLowerSimplex {X : Type*} [TopologicalSpace X] {x y : X} {p q : Path x y}
@@ -233,6 +245,8 @@ theorem homotopyLowerSimplex_face_two {X : Type*} [TopologicalSpace X]
   intro s
   change H (lowerTriangleMap (simplexFace 1 2 s)) = pathSimplex p s
   rw [lowerTriangle_face_two]
+  rw [simplexCoordinate_one_one]
+  change H (0, Convexity.StdSimplex.homeomorphI s) = p _
   exact H.map_zero_left _
 
 @[simp]
@@ -243,6 +257,8 @@ theorem homotopyUpperSimplex_face_zero {X : Type*} [TopologicalSpace X]
   intro s
   change H (upperTriangleMap (simplexFace 1 0 s)) = pathSimplex q s
   rw [upperTriangle_face_zero]
+  rw [simplexCoordinate_one_one]
+  change H (1, Convexity.StdSimplex.homeomorphI s) = q _
   exact H.map_one_left _
 
 @[simp]
@@ -797,7 +813,7 @@ theorem pathOpchainClass_symm {X : Type} [TopologicalSpace X] {x y : X}
 def basePathChain {X : Type} [TopologicalSpace X] {b : X}
     (r : ∀ a : X, Path b a) : chains X 0 →+ chains X 1 :=
   chainLiftTo X 0 (chains X 1)
-    (fun s ↦ pathChain (r (s (stdSimplex.vertex (S := ℝ) (0 : Fin 1)))))
+    (fun s ↦ pathChain (r (s (Convexity.StdSimplex.single (R := ℝ) (0 : Fin 1)))))
 
 @[simp]
 theorem basePathChain_pointChain {X : Type} [TopologicalSpace X] {b : X}

@@ -222,6 +222,7 @@ public theorem range_map_id : (FundamentalGroup.map (ContinuousMap.id Y) base).r
     apply Path.Homotopic.Quotient.eq.mpr
     exact ⟨Path.Homotopy.refl _⟩
 
+omit [PathConnectedSpace Y] in
 /-- A filling lift agreeing with the core lift at the connector's endpoint. -/
 public theorem exists_filling_lift (H : Subgroup (FundamentalGroup Y base))
     (sCore : C(D.core, SubgroupQuotient base H))

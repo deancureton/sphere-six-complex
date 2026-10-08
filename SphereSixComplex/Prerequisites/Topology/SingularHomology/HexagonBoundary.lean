@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Hurewicz.ChainInverse
+import Mathlib.Algebra.Category.Grp.EpiMono
 
 @[expose] public section
 noncomputable section

@@ -1,6 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.MappingTorus.Identity
+public import SphereSixComplex.Prerequisites.Topology.MappingTorus.WangExactness
 public import ForMathlib.Algebra.Module.Projective
 public import SphereSixComplex.Prerequisites.Topology.Torus.CircleDegree
 public import SphereSixComplex.Prerequisites.Geometry.IntegerRealPeriodCoordinates
@@ -1231,13 +1232,13 @@ private theorem simplexFace_comp_simplexFace (n : ℕ) (i j : Fin (n + 2)) (h : 
       (simplexFace (n + 1) i.castSucc).comp (simplexFace n j) := by
   apply DFunLike.ext _ _
   intro s
-  change stdSimplex.map _ (stdSimplex.map _ s) = stdSimplex.map _ (stdSimplex.map _ s)
-  rw [stdSimplex.map_comp_apply, stdSimplex.map_comp_apply]
+  change (s.map _).map _ = (s.map _).map _
+  rw [Convexity.StdSimplex.map_map, Convexity.StdSimplex.map_map]
   have hδ := congrArg SimplexCategory.Hom.toOrderHom (SimplexCategory.δ_comp_δ h)
   have hδ' := congrArg
     (fun f : Fin (n + 1) →o Fin (n + 3) ↦ (f : Fin (n + 1) → Fin (n + 3)))
     (by simpa [SimplexCategory.comp_toOrderHom] using hδ)
-  exact congrArg (fun f ↦ stdSimplex.map f s) hδ'
+  exact congrArg (fun f ↦ s.map f) hδ'
 
 private noncomputable def cupOneOne {X : Type} [TopologicalSpace X]
     (u v : chains X 1 →+ ℤ) : chains X 2 →+ ℤ :=
@@ -1337,28 +1338,28 @@ private def standardTwoTorusSecondEdge : Fin 2 → ℤ := ![0, 1]
 private def standardTwoTorusIntegerEdge (v : Fin 2 → ℤ) :
     SingularSimplex (StdTorus 2) 1 where
   toFun s i :=
-    (((stdSimplexHomeomorphUnitInterval s : ℝ) * (v i : ℝ) : ℝ) : UnitAddCircle)
+    (((Convexity.StdSimplex.homeomorphI s : ℝ) * (v i : ℝ) : ℝ) : UnitAddCircle)
   continuous_toFun := by fun_prop
 
 private def standardTwoTorusTriangleA : SingularSimplex (StdTorus 2) 2 where
-  toFun s := ![((s 1 + s 2 : ℝ) : UnitAddCircle), ((s 2 : ℝ) : UnitAddCircle)]
+  toFun s := ![((s.weights 1 + s.weights 2 : ℝ) : UnitAddCircle), ((s.weights 2 : ℝ) : UnitAddCircle)]
   continuous_toFun := by
-    have h1 : Continuous (fun s : simplex 2 ↦ s 1) :=
-      (continuous_apply 1).comp continuous_subtype_val
-    have h2 : Continuous (fun s : simplex 2 ↦ s 2) :=
-      (continuous_apply 2).comp continuous_subtype_val
+    have h1 : Continuous (fun s : simplex 2 ↦ s.weights 1) :=
+      Convexity.StdSimplex.continuous_weights_apply ℝ 1
+    have h2 : Continuous (fun s : simplex 2 ↦ s.weights 2) :=
+      Convexity.StdSimplex.continuous_weights_apply ℝ 2
     exact continuous_pi fun i ↦ by
       fin_cases i
       · exact (AddCircle.continuous_mk' 1).comp (h1.add h2)
       · exact (AddCircle.continuous_mk' 1).comp h2
 
 private def standardTwoTorusTriangleB : SingularSimplex (StdTorus 2) 2 where
-  toFun s := ![((s 2 : ℝ) : UnitAddCircle), ((s 1 + s 2 : ℝ) : UnitAddCircle)]
+  toFun s := ![((s.weights 2 : ℝ) : UnitAddCircle), ((s.weights 1 + s.weights 2 : ℝ) : UnitAddCircle)]
   continuous_toFun := by
-    have h1 : Continuous (fun s : simplex 2 ↦ s 1) :=
-      (continuous_apply 1).comp continuous_subtype_val
-    have h2 : Continuous (fun s : simplex 2 ↦ s 2) :=
-      (continuous_apply 2).comp continuous_subtype_val
+    have h1 : Continuous (fun s : simplex 2 ↦ s.weights 1) :=
+      Convexity.StdSimplex.continuous_weights_apply ℝ 1
+    have h2 : Continuous (fun s : simplex 2 ↦ s.weights 2) :=
+      Convexity.StdSimplex.continuous_weights_apply ℝ 2
     exact continuous_pi fun i ↦ by
       fin_cases i
       · exact (AddCircle.continuous_mk' 1).comp h2
@@ -1373,16 +1374,15 @@ private theorem standardTwoTorusTriangleA_face_zero :
   fin_cases i
   · apply (unitAddCircle_eq_iff _ _).mpr
     refine ⟨1, ?_⟩
-    have hs := stdSimplex.sum_eq_one s
-    rw [Fin.sum_univ_two] at hs
-    norm_num [standardTwoTorusSecondEdge]
+    have hs := s.total_fin_two
+    norm_num [standardTwoTorusSecondEdge, Convexity.StdSimplex.homeomorphI_apply_coe]
     rw [show (1 : Fin 3) = (0 : Fin 3).succAbove (0 : Fin 2) by decide,
       show (2 : Fin 3) = (0 : Fin 3).succAbove (1 : Fin 2) by decide,
       simplexFace_apply_succAbove, simplexFace_apply_succAbove]
     exact hs
   · apply (unitAddCircle_eq_iff _ _).mpr
     refine ⟨0, ?_⟩
-    norm_num [standardTwoTorusSecondEdge]
+    norm_num [standardTwoTorusSecondEdge, Convexity.StdSimplex.homeomorphI_apply_coe]
     rw [show (2 : Fin 3) = (0 : Fin 3).succAbove (1 : Fin 2) by decide,
       simplexFace_apply_succAbove]
     exact sub_self _
@@ -1396,12 +1396,12 @@ private theorem standardTwoTorusTriangleA_face_two :
   fin_cases i
   · apply (unitAddCircle_eq_iff _ _).mpr
     refine ⟨0, ?_⟩
-    norm_num [standardTwoTorusFirstEdge]
+    norm_num [standardTwoTorusFirstEdge, Convexity.StdSimplex.homeomorphI_apply_coe]
     rw [show (1 : Fin 3) = (2 : Fin 3).succAbove (1 : Fin 2) by decide,
       simplexFace_apply_succAbove]
     exact sub_self _
   · apply (unitAddCircle_eq_iff _ _).mpr
-    exact ⟨0, by norm_num [standardTwoTorusFirstEdge]⟩
+    exact ⟨0, by norm_num [standardTwoTorusFirstEdge, Convexity.StdSimplex.homeomorphI_apply_coe]⟩
 
 private theorem standardTwoTorusTriangleB_face_zero :
     standardTwoTorusTriangleB.comp (simplexFace 1 0) =
@@ -1412,15 +1412,14 @@ private theorem standardTwoTorusTriangleB_face_zero :
   fin_cases i
   · apply (unitAddCircle_eq_iff _ _).mpr
     refine ⟨0, ?_⟩
-    norm_num [standardTwoTorusFirstEdge]
+    norm_num [standardTwoTorusFirstEdge, Convexity.StdSimplex.homeomorphI_apply_coe]
     rw [show (2 : Fin 3) = (0 : Fin 3).succAbove (1 : Fin 2) by decide,
       simplexFace_apply_succAbove]
     exact sub_self _
   · apply (unitAddCircle_eq_iff _ _).mpr
     refine ⟨1, ?_⟩
-    have hs := stdSimplex.sum_eq_one s
-    rw [Fin.sum_univ_two] at hs
-    norm_num [standardTwoTorusFirstEdge]
+    have hs := s.total_fin_two
+    norm_num [standardTwoTorusFirstEdge, Convexity.StdSimplex.homeomorphI_apply_coe]
     rw [show (1 : Fin 3) = (0 : Fin 3).succAbove (0 : Fin 2) by decide,
       show (2 : Fin 3) = (0 : Fin 3).succAbove (1 : Fin 2) by decide,
       simplexFace_apply_succAbove, simplexFace_apply_succAbove]
@@ -1434,10 +1433,10 @@ private theorem standardTwoTorusTriangleB_face_two :
   funext i
   fin_cases i
   · apply (unitAddCircle_eq_iff _ _).mpr
-    exact ⟨0, by norm_num [standardTwoTorusSecondEdge]⟩
+    exact ⟨0, by norm_num [standardTwoTorusSecondEdge, Convexity.StdSimplex.homeomorphI_apply_coe]⟩
   · apply (unitAddCircle_eq_iff _ _).mpr
     refine ⟨0, ?_⟩
-    norm_num [standardTwoTorusSecondEdge]
+    norm_num [standardTwoTorusSecondEdge, Convexity.StdSimplex.homeomorphI_apply_coe]
     rw [show (1 : Fin 3) = (2 : Fin 3).succAbove (1 : Fin 2) by decide,
       simplexFace_apply_succAbove]
     exact sub_self _
@@ -1577,8 +1576,8 @@ private theorem standardTwoTorusMatrixMap_integerEdge
   apply ContinuousMap.ext
   intro s
   change (∑ b, M i b •
-      (((stdSimplexHomeomorphUnitInterval s : ℝ) * (v b : ℝ) : ℝ) : UnitAddCircle)) =
-    (((stdSimplexHomeomorphUnitInterval s : ℝ) *
+      (((Convexity.StdSimplex.homeomorphI s : ℝ) * (v b : ℝ) : ℝ) : UnitAddCircle)) =
+    (((Convexity.StdSimplex.homeomorphI s : ℝ) *
       ((Matrix.mulVec M v i : ℤ) : ℝ) : ℝ) : UnitAddCircle)
   simp only [Fin.sum_univ_two, ← AddCircle.coe_zsmul, ← AddCircle.coe_add]
   congr 1

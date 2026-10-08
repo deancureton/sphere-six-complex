@@ -72,6 +72,7 @@ public theorem range_map_le_of_path {Q : Type*} [TopologicalSpace Q] (q : C(Q, Y
 variable [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
   [SemilocallySimplyConnectedSpace Y]
 
+omit [PathConnectedSpace Y] in
 /-- A lift of a piece inclusion into the covering attached to `H`. -/
 public theorem exists_lift (H : Subgroup (FundamentalGroup Y base)) {P : Set Y} (hPopen : IsOpen P)
     (hP : IsPathConnected P) {pt : Y} (hpt : pt ∈ P)

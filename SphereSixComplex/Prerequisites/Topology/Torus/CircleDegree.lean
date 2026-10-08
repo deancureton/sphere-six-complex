@@ -1,6 +1,7 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.MappingTorus.WangExactness
+public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.StarGluing
+public import SphereSixComplex.Prerequisites.Topology.SingularHomology.SimplexCoordinates
 public import Mathlib.Algebra.Homology.SingleHomology
 public import Mathlib.Topology.Covering.AddCircle
 public import Mathlib.Topology.Homotopy.Lifting
@@ -29,83 +30,73 @@ end SphereSixComplex.StandardTorusHomology
 
 namespace SphereSixComplex.StandardCircleHomologyLiftDegree
 
-abbrev simplex (n : ℕ) := stdSimplex ℝ (Fin (n + 1))
+abbrev simplex (n : ℕ) := Convexity.StdSimplex ℝ (Fin (n + 1))
 
 def simplexFace (n : ℕ) (i : Fin (n + 2)) : C(simplex n, simplex (n + 1)) :=
-  ⟨stdSimplex.map (SimplexCategory.δ i).toOrderHom,
-    stdSimplex.continuous_map (SimplexCategory.δ i).toOrderHom⟩
+  ⟨Convexity.StdSimplex.map (SimplexCategory.δ i).toOrderHom,
+    Convexity.StdSimplex.continuous_map ℝ (SimplexCategory.δ i).toOrderHom⟩
 
 @[simp]
 theorem simplexFace_apply_self (n : ℕ) (i : Fin (n + 2)) (s : simplex n) :
-    simplexFace n i s i = 0 := by
-  change FunOnFinite.linearMap ℝ ℝ i.succAbove (s : Fin (n + 1) → ℝ) i = 0
-  rw [FunOnFinite.linearMap_apply_apply]
-  apply Finset.sum_eq_zero
-  intro k hk
-  exact False.elim (Fin.succAbove_ne i k (Finset.mem_filter.mp hk).2)
+    (simplexFace n i s).weights i = 0 := by
+  exact Finsupp.mapDomain_of_notMem_range (f := i.succAbove) s.weights i
+    (by simp)
 
 @[simp]
 theorem simplexFace_apply_succAbove (n : ℕ) (i : Fin (n + 2)) (s : simplex n)
-    (k : Fin (n + 1)) : simplexFace n i s (i.succAbove k) = s k := by
-  change FunOnFinite.linearMap ℝ ℝ i.succAbove (s : Fin (n + 1) → ℝ)
-      (i.succAbove k) = s k
-  simp [FunOnFinite.linearMap_apply_apply, Fin.succAbove_right_injective.eq_iff,
-    Finset.sum_filter]
+    (k : Fin (n + 1)) : (simplexFace n i s).weights (i.succAbove k) = s.weights k := by
+  exact Finsupp.mapDomain_apply_of_injective (Fin.succAbove_right_injective) s.weights k
 
 theorem simplexFace_vertex (n : ℕ) (i : Fin (n + 2)) (k : Fin (n + 1)) :
-    simplexFace n i (stdSimplex.vertex (S := ℝ) k) =
-      stdSimplex.vertex (S := ℝ) (i.succAbove k) := by
-  change stdSimplex.map i.succAbove (stdSimplex.vertex (S := ℝ) k) = _
-  rw [stdSimplex.map_vertex]
+    simplexFace n i (Convexity.StdSimplex.single (R := ℝ) k) =
+      Convexity.StdSimplex.single (R := ℝ) (i.succAbove k) := by
+  change Convexity.StdSimplex.map i.succAbove (Convexity.StdSimplex.single (R := ℝ) k) = _
+  rw [Convexity.StdSimplex.map_single]
 
 theorem simplexZero_eq_vertex (s : simplex 0) :
-    s = stdSimplex.vertex (S := ℝ) (0 : Fin 1) := by
-  let _ : Unique (Fin (0 + 1)) := inferInstanceAs (Unique (Fin 1))
-  apply Subtype.ext
-  funext k
-  fin_cases k
-  exact stdSimplex.eq_one_of_unique s 0
+    s = Convexity.StdSimplex.single (R := ℝ) (0 : Fin 1) :=
+  Subsingleton.elim _ _
 
 @[simp]
 theorem simplexFace_zero_zero (s : simplex 0) :
-    simplexFace 0 0 s = stdSimplex.vertex (S := ℝ) (1 : Fin 2) := by
+    simplexFace 0 0 s = Convexity.StdSimplex.single (R := ℝ) (1 : Fin 2) := by
   rw [simplexZero_eq_vertex s, simplexFace_vertex]
   rfl
 
 @[simp]
 theorem simplexFace_zero_one (s : simplex 0) :
-    simplexFace 0 1 s = stdSimplex.vertex (S := ℝ) (0 : Fin 2) := by
+    simplexFace 0 1 s = Convexity.StdSimplex.single (R := ℝ) (0 : Fin 2) := by
   rw [simplexZero_eq_vertex s, simplexFace_vertex]
   rfl
 
 def simplexPath {X : Type*} [TopologicalSpace X] (σ : C(simplex 1, X)) :
-    Path (σ (stdSimplex.vertex (S := ℝ) (0 : Fin 2)))
-      (σ (stdSimplex.vertex (S := ℝ) (1 : Fin 2))) where
-  toFun t := σ (stdSimplexHomeomorphUnitInterval.symm t)
-  continuous_toFun := σ.continuous.comp stdSimplexHomeomorphUnitInterval.symm.continuous
+    Path (σ (Convexity.StdSimplex.single (R := ℝ) (0 : Fin 2)))
+      (σ (Convexity.StdSimplex.single (R := ℝ) (1 : Fin 2))) where
+  toFun t := σ (Convexity.StdSimplex.homeomorphI.symm t)
+  continuous_toFun := σ.continuous.comp Convexity.StdSimplex.homeomorphI.symm.continuous
   source' := congrArg σ
-    (stdSimplexHomeomorphUnitInterval.symm_apply_eq.mpr
-      stdSimplexHomeomorphUnitInterval_zero.symm)
+    (Convexity.StdSimplex.homeomorphI.symm_apply_eq.mpr
+      Convexity.StdSimplex.homeomorphI_single_zero.symm)
   target' := congrArg σ
-    (stdSimplexHomeomorphUnitInterval.symm_apply_eq.mpr
-      stdSimplexHomeomorphUnitInterval_one.symm)
+    (Convexity.StdSimplex.homeomorphI.symm_apply_eq.mpr
+      Convexity.StdSimplex.homeomorphI_single_one.symm)
 
 def pathSimplex {X : Type*} [TopologicalSpace X] {x y : X} (p : Path x y) :
     C(simplex 1, X) :=
   p.toContinuousMap.comp
-    ⟨stdSimplexHomeomorphUnitInterval, stdSimplexHomeomorphUnitInterval.continuous⟩
+    ⟨Convexity.StdSimplex.homeomorphI, Convexity.StdSimplex.homeomorphI.continuous⟩
 
 @[simp]
 theorem pathSimplex_vertex_zero {X : Type*} [TopologicalSpace X] {x y : X}
-    (p : Path x y) : pathSimplex p (stdSimplex.vertex (S := ℝ) (0 : Fin 2)) = x := by
-  change p (stdSimplexHomeomorphUnitInterval _) = x
-  rw [stdSimplexHomeomorphUnitInterval_zero, p.source]
+    (p : Path x y) : pathSimplex p (Convexity.StdSimplex.single (R := ℝ) (0 : Fin 2)) = x := by
+  change p (Convexity.StdSimplex.homeomorphI _) = x
+  rw [Convexity.StdSimplex.homeomorphI_single_zero, p.source]
 
 @[simp]
 theorem pathSimplex_vertex_one {X : Type*} [TopologicalSpace X] {x y : X}
-    (p : Path x y) : pathSimplex p (stdSimplex.vertex (S := ℝ) (1 : Fin 2)) = y := by
-  change p (stdSimplexHomeomorphUnitInterval _) = y
-  rw [stdSimplexHomeomorphUnitInterval_one, p.target]
+    (p : Path x y) : pathSimplex p (Convexity.StdSimplex.single (R := ℝ) (1 : Fin 2)) = y := by
+  change p (Convexity.StdSimplex.homeomorphI _) = y
+  rw [Convexity.StdSimplex.homeomorphI_single_one, p.target]
 
 @[simp]
 theorem pathSimplex_face_zero {X : Type*} [TopologicalSpace X] {x y : X}
@@ -128,8 +119,8 @@ theorem pathSimplex_simplexPath {X : Type*} [TopologicalSpace X]
     (σ : C(simplex 1, X)) : pathSimplex (simplexPath σ) = σ := by
   apply ContinuousMap.ext
   intro s
-  change σ (stdSimplexHomeomorphUnitInterval.symm
-    (stdSimplexHomeomorphUnitInterval s)) = σ s
+  change σ (Convexity.StdSimplex.homeomorphI.symm
+    (Convexity.StdSimplex.homeomorphI s)) = σ s
   rw [Homeomorph.symm_apply_apply]
 
 theorem simplexPath_pathSimplex {X : Type*} [TopologicalSpace X] {x y : X}
@@ -137,8 +128,8 @@ theorem simplexPath_pathSimplex {X : Type*} [TopologicalSpace X] {x y : X}
     simplexPath (pathSimplex p) = p.cast (by simp [pathSimplex]) (by simp [pathSimplex]) := by
   apply Path.ext
   funext t
-  change p (stdSimplexHomeomorphUnitInterval
-    (stdSimplexHomeomorphUnitInterval.symm t)) = p t
+  change p (Convexity.StdSimplex.homeomorphI
+    (Convexity.StdSimplex.homeomorphI.symm t)) = p t
   rw [Homeomorph.apply_symm_apply]
 
 abbrev integralChains (X : Type) [TopologicalSpace X] : ChainComplex AddCommGrpCat ℕ :=
@@ -262,10 +253,21 @@ theorem chainHom_ext (X : Type) [TopologicalSpace X] (n : ℕ)
       h (singularSimplexContinuousMapEquiv (TopCat.of X) (.op (SimplexCategory.mk n)) s)
   exact congrArg AddCommGrpCat.Hom.hom hcat
 
-theorem simplex_contractible (n : ℕ) : ContractibleSpace (simplex n) :=
-  (convex_stdSimplex ℝ (Fin (n + 1))).contractibleSpace
-    ⟨(stdSimplex.vertex (S := ℝ) (0 : Fin (n + 1))).val,
-      (stdSimplex.vertex (S := ℝ) (0 : Fin (n + 1))).property⟩
+theorem simplex_contractible (n : ℕ) : ContractibleSpace (simplex n) := by
+  apply (contractible_iff_id_nullhomotopic _).2
+  refine ⟨Convexity.StdSimplex.single 0, ⟨{
+    toFun := fun p ↦ Convexity.convexCombPair (R := ℝ) (unitInterval.symm p.1) p.1
+      (unitInterval.nonneg _) (unitInterval.nonneg _) (by simp) p.2
+      (Convexity.StdSimplex.single 0)
+    continuous_toFun := ?_
+    map_zero_left := by intro s; simp
+    map_one_left := by intro s; simp }⟩⟩
+  rw [(Convexity.StdSimplex.isEmbedding_toFun_comp_weights ℝ _).continuous_iff]
+  apply continuous_pi
+  intro i
+  simp only [Function.comp_def, Convexity.StdSimplex.weights_convexCombPair,
+    Finsupp.coe_add, Finsupp.coe_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
+  fun_prop
 
 theorem simplex_simplyConnected (n : ℕ) : SimplyConnectedSpace (simplex n) := by
   let _ := simplex_contractible n
@@ -273,25 +275,25 @@ theorem simplex_simplyConnected (n : ℕ) : SimplyConnectedSpace (simplex n) := 
 
 def triangleFacePath {X : Type*} [TopologicalSpace X] (σ : C(simplex 2, X))
     (i : Fin 3) :
-    Path (σ (stdSimplex.vertex (S := ℝ) (i.succAbove (0 : Fin 2))))
-      (σ (stdSimplex.vertex (S := ℝ) (i.succAbove (1 : Fin 2)))) :=
+    Path (σ (Convexity.StdSimplex.single (R := ℝ) (i.succAbove (0 : Fin 2))))
+      (σ (Convexity.StdSimplex.single (R := ℝ) (i.succAbove (1 : Fin 2)))) :=
   (simplexPath (σ.comp (simplexFace 1 i))).cast
     (congrArg σ (simplexFace_vertex 1 i 0)).symm
     (congrArg σ (simplexFace_vertex 1 i 1)).symm
 
 abbrev triangleEdge01 {X : Type*} [TopologicalSpace X] (σ : C(simplex 2, X)) :
-    Path (σ (stdSimplex.vertex (S := ℝ) (0 : Fin 3)))
-      (σ (stdSimplex.vertex (S := ℝ) (1 : Fin 3))) :=
+    Path (σ (Convexity.StdSimplex.single (R := ℝ) (0 : Fin 3)))
+      (σ (Convexity.StdSimplex.single (R := ℝ) (1 : Fin 3))) :=
   triangleFacePath σ 2
 
 abbrev triangleEdge12 {X : Type*} [TopologicalSpace X] (σ : C(simplex 2, X)) :
-    Path (σ (stdSimplex.vertex (S := ℝ) (1 : Fin 3)))
-      (σ (stdSimplex.vertex (S := ℝ) (2 : Fin 3))) :=
+    Path (σ (Convexity.StdSimplex.single (R := ℝ) (1 : Fin 3)))
+      (σ (Convexity.StdSimplex.single (R := ℝ) (2 : Fin 3))) :=
   triangleFacePath σ 0
 
 abbrev triangleEdge02 {X : Type*} [TopologicalSpace X] (σ : C(simplex 2, X)) :
-    Path (σ (stdSimplex.vertex (S := ℝ) (0 : Fin 3)))
-      (σ (stdSimplex.vertex (S := ℝ) (2 : Fin 3))) :=
+    Path (σ (Convexity.StdSimplex.single (R := ℝ) (0 : Fin 3)))
+      (σ (Convexity.StdSimplex.single (R := ℝ) (2 : Fin 3))) :=
   triangleFacePath σ 1
 
 theorem triangleEdges_homotopic {X : Type*} [TopologicalSpace X]
