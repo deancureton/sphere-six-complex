@@ -1,4 +1,4 @@
-module
+module -- shake: keep-all
 
 
 public import SphereSixComplex.Final
@@ -102,7 +102,6 @@ public import SphereSixComplex.Periods.FuchsianModularLift.CuspBounds
 public import SphereSixComplex.Periods.ModularFrame.Cusp
 public import SphereSixComplex.Periods.ModularFrame.EisensteinSixRoot
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.OrbifoldCoordinate
-public import Mathlib.Topology.ContinuousMap.Basic
 public import SphereSixComplex.Periods.InvariantHolomorphicDescent
 public import SphereSixComplex.Periods.ModularFrame.Construction
 public import SphereSixComplex.Periods.ModularFrame.Basic
@@ -141,7 +140,6 @@ public import SphereSixComplex.Regular.Cover.MappingTorusUniversalCover
 public import SphereSixComplex.FundamentalGroup.AffineTransport
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.ChainModel
 public import SphereSixComplex.Cusp.Wang.HomologyBases
-public import VanKampen
 public import SphereSixComplex.FundamentalGroup.Geometry
 public import SphereSixComplex.Toric.Boundary.DeckAttachment
 public import SphereSixComplex.Toric.Boundary.PhaseCancellation
@@ -199,25 +197,16 @@ public import SphereSixComplex.Cusp.Sweep.CoordinateCircleTransport
 public import SphereSixComplex.Cusp.Homology.DeckHomologyOne
 public import SphereSixComplex.FundamentalGroup.Presentation
 public import SphereSixComplex.Prerequisites.Topology.Covering.AffineVanKampen
-public import Mathlib.GroupTheory.FreeGroup.CyclicallyReduced
 public import SphereSixComplex.Prerequisites.Topology.PuncturedPlane.PowerFactorization
 public import SphereSixComplex.Elliptic.Cover.FillingDeckTransport
 public import SphereSixComplex.Cusp.Cover.BoundaryUniversalCover
 public import SphereSixComplex.Elliptic.Collar.CanonicalFiniteMarking
-public import Mathlib.Algebra.Group.Opposite
-public import Mathlib.Algebra.Group.Equiv.Basic
-public import Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup
-public import Mathlib.Topology.Homotopy.Lifting
 public import SphereSixComplex.Elliptic.FundamentalGroup.Relators
 public import SphereSixComplex.Elliptic.Band.MarkedDisc
 public import SphereSixComplex.Elliptic.Band.OverlapCompletionData
 public import SphereSixComplex.Elliptic.Band.RadialEquivalence
 public import SphereSixComplex.Elliptic.Band.OverlapInterleaving
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.FreeLoopProduct
-public import Mathlib.Topology.Subpath
-public import Mathlib.Topology.Homotopy.Path
-public import Mathlib.Topology.ContinuousMap.Interval
-public import Mathlib.Topology.ContinuousMap.Ordered
 public import SphereSixComplex.TriangleGroup.Representation
 
 public import SphereSixComplex.Cusp.Specialization.FiberSpecializationBijective
@@ -271,8 +260,6 @@ public import SphereSixComplex.FundamentalGroup.Generators
 public import SphereSixComplex.Prerequisites.Topology.Gluing.FiniteIntersections
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyZero
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.StarGluing
-public import Mathlib.Algebra.Homology.ShortComplex.Ab
-public import Mathlib.Algebra.Category.Grp.Zero
 public import SphereSixComplex.Prerequisites.Topology.Sphere.PositiveHomology
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.OpenCover
@@ -321,7 +308,6 @@ public import SphereSixComplex.Elliptic.CyclicCover.QuotientCovering
 public import SphereSixComplex.Elliptic.CyclicCover.QuotientHomologyCoordinates
 public import SphereSixComplex.Elliptic.CyclicCover.RadialQuotientCovering
 public import SphereSixComplex.Elliptic.CyclicCover.ReducedFiberMappingTorus
-public import Mathlib.GroupTheory.SemidirectProduct
 public import SphereSixComplex.Regular.Homology.Euler
 public import SphereSixComplex.Regular.FundamentalGroup.Generation
 public import SphereSixComplex.Homology.CollarMappingTori
@@ -403,7 +389,6 @@ public import SphereSixComplex.Prerequisites.Topology.MappingTorus.ProductBounda
 public import SphereSixComplex.Cusp.Wang.FiberSlice
 public import SphereSixComplex.Cusp.Wang.CoverNaturality
 
-public import Mathlib.Algebra.Category.Grp.EpiMono
 
 public import SphereSixComplex.Cusp.Wang.BandCoordinates
 
@@ -431,17 +416,8 @@ public import SphereSixComplex.Prerequisites.Geometry.Gluing.FourPieceStar
 public import SphereSixComplex.Prerequisites.Topology.MayerVietoris.OpenCover
 public import SphereSixComplex.Homology.Euler.LocalCalculation
 public import SphereSixComplex.Homology.Euler.LocalModels
-public import Mathlib.Algebra.Homology.HomotopyCofiber
 public import SphereSixComplex.Homology.Euler.MayerVietoris
 public import SphereSixComplex.Cusp.Homology.AttachmentCover
-public import Mathlib.Algebra.BigOperators.Fin
-public import Mathlib.Data.Fintype.Lattice
-public import Mathlib.LinearAlgebra.Finsupp.LinearCombination
-public import Mathlib.Order.Monotone.Basic
-public import Mathlib.Algebra.Category.Grp.AB
-public import Mathlib.Algebra.Homology.HomologicalComplexLimits
-public import Mathlib.Algebra.Homology.Homotopy
-public import Mathlib.Algebra.Homology.TotalComplex
 public import SphereSixComplex.Cusp.Homology.SquareRadialCircle
 public import SphereSixComplex.Toric.Boundary.FaceCoverage
 public import SphereSixComplex.Toric.CentralFiber.OneCells

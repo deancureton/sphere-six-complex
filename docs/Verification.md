@@ -14,6 +14,7 @@ LEAN_NUM_THREADS=3 nice -n 15 lake build
 CHECK_AXIOMS_SKIP_BUILD=1 LEAN_NUM_THREADS=1 nice -n 15 ./scripts/check-axioms.sh
 uv run --no-project python scripts/check-imports.py
 uv run --no-project python scripts/check-sorries.py
+lake shake --keep-public SphereSixComplex.All Solution
 ```
 
 [AxiomAudit.lean](../scripts/AxiomAudit.lean) traverses the compiled dependency
@@ -31,6 +32,11 @@ intentional statement placeholders in [Challenge.lean](../Challenge.lean).
 [Solution.lean](../Solution.lean) proves those statements without importing
 Challenge. The compiled axiom audit checks imported proof dependencies as well;
 a source scan alone is not a proof audit.
+
+Run the import audit without `Challenge`: it intentionally declares the same
+endpoint names as `Solution`, so those modules cannot share an environment.
+The two library indexes retain explicit project-module imports, as Mathlib's
+own index does; their `shake: keep-all` annotations preserve that organization.
 
 ## Comparator and Blueprint
 
@@ -51,6 +57,7 @@ reported separately.
 CI reports the proof build and axiom audit separately from Comparator and the
 Blueprint. Comparator runs on Linux with bubblewrap; publishing documentation
 does not stand in for proof verification.
+GitHub Pages uses the Actions workflow as its publishing source.
 
 The [Blueprint](../blueprint/) has its own Lake project. To build it and check the
 generated index, declaration manifest, and HTML cache:
@@ -61,7 +68,8 @@ LEAN_NUM_THREADS=3 nice -n 15 bash scripts/ci-pages.sh
 ```
 
 The cleanup checkpoint passed the full project build, compiled axiom audit, source
-checks, Blueprint build, and workflow linting. The audit traversed 184,788 constants
+checks, targeted import audit, Blueprint build, and workflow linting. The axiom audit
+traversed 184,756 constants
 and found only the standard three axioms. Existing Lean and documentation warnings
 remain. These are local checks; they do not establish a successful remote Comparator
 run or a cold-build speedup. Workflow definitions are under
@@ -102,6 +110,10 @@ notices remain with the corresponding code.
   The retained source headers record attribution and Apache-2.0 provenance.
 
 ## Maintenance limits
+
+Develop further proof simplifications internally. Do not port additional code or
+proof arguments from plby's HopfProblem development. The provenance above records
+earlier imports, not a source for future cleanup.
 
 The mathematical statement audit traced the atlas definitions to Mathlib and
 checked that recognition preserves the independently supplied smooth atlas. It

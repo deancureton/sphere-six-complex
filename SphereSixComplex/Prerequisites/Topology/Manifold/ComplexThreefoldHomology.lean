@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.Manifold.Homology
 public import SphereSixComplex.Prerequisites.Topology.Manifold.RestrictScalars
-public import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 public import SphereSixComplex.Prerequisites.Topology.Sphere.Homology
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.EulerCharacteristic
 

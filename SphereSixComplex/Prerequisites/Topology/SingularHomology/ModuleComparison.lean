@@ -2,14 +2,8 @@ module
 
 public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.Cochains
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Cohomology
-public import Mathlib.Algebra.Category.Grp.ZModuleEquivalence
-public import Mathlib.Algebra.Category.ModuleCat.Abelian
-public import Mathlib.Algebra.Category.ModuleCat.Colimits
-public import Mathlib.Algebra.Module.ULift
 public import Mathlib.AlgebraicTopology.SimplicialSet.Homology.MapHomologicalComplex
-public import Mathlib.Algebra.Homology.ShortComplex.PreservesHomology
 public import Mathlib.CategoryTheory.Abelian.Ext
-public import Mathlib.LinearAlgebra.FreeModule.Basic
 
 /-!
 # Comparing integral singular chains and cochains across coefficient categories

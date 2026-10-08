@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Toric.Positive.HeightRetraction
 public import SphereSixComplex.Prerequisites.Topology.Collar.Cofibration
-public import SphereSixComplex.Prerequisites.Topology.Homotopy.StrongDeformationRetraction
 public import TauCeti.Topology.Homotopy.Extension.DeformationRetract
 
 @[expose] public section

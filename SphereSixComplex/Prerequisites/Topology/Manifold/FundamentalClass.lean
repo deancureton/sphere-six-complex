@@ -1,7 +1,6 @@
 module
 
 public import DifferentialGeometry.Topology.Homology.CompactHomologyFamily
-public import DifferentialGeometry.External.CanonicalTopology.Topology.Homology.RelativeEmpty
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.RelativeComparison
 
 /-! # Global fundamental classes generate local top homology -/

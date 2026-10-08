@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Toric.Positive.Quotient
-public import SphereSixComplex.Cusp.FillingRadialCompactness
 import all SphereSixComplex.Cusp.FillingRadialCompactness
 
 @[expose] public section

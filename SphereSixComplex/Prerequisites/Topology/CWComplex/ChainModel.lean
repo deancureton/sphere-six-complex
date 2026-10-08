@@ -2,7 +2,6 @@ module
 
 public import SphereSixComplex.Prerequisites.Topology.CWComplex.Homology
 public import Mathlib.Algebra.Category.Grp.Zero
-public import Mathlib.Algebra.Category.Grp.EpiMono
 
 /-!
 # Cellular chains of a CW complex

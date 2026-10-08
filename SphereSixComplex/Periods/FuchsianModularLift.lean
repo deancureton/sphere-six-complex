@@ -1,7 +1,6 @@
 module
 
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Source.OrbifoldCoordinate
-public import SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.ModularForms
 import all SphereSixComplex.Prerequisites.Periods.Uniformization.ModularJ.ModularForms
 public import SphereSixComplex.Prerequisites.Periods.Uniformization.Lifting.Existence
 

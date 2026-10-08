@@ -1,7 +1,6 @@
 module
 
 public import Mathlib.LinearAlgebra.Dimension.Localization
-public import Mathlib.LinearAlgebra.FreeModule.StrongRankCondition
 
 /-!
 # Euler characteristic of finite exact sequences over the integers

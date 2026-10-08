@@ -6,10 +6,6 @@ Authors: The Tau Ceti contributors
 module
 
 public import Mathlib.Topology.UnitInterval
-public import Mathlib.Topology.ContinuousMap.Basic
-public import Mathlib.Tactic.FunProp
-public import Mathlib.Tactic.Linarith
-public import Mathlib.Tactic.Ring
 
 /-! # Retraction of the unit square onto two adjacent sides
 

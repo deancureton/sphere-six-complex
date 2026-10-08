@@ -1,6 +1,5 @@
 module
 public import SphereSixComplex.Cusp.Sweep.ChosenThirdSweep
-public import SphereSixComplex.Cusp.Sweep.CoordinateCircleTransport
 public import SphereSixComplex.Prerequisites.Topology.Homotopy.CircleSweep
 
 @[expose] public section

@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Toric.Positive.InteriorTorus
 public import SphereSixComplex.Cusp.Positive.Projection
 public import SphereSixComplex.Cusp.FundamentalGroup.FiniteFiberCoordinateTori
 

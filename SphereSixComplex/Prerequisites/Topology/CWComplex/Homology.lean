@@ -1,11 +1,7 @@
 module
 
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologySphere
-public import Mathlib.Algebra.Category.ModuleCat.Colimits
-public import Mathlib.Algebra.Category.Grp.ZModuleEquivalence
-import Mathlib.Algebra.Category.Grp.AB
 public import TauCeti.AlgebraicTopology.Cellular.Comparison
-public import TauCeti.AlgebraicTopology.Singular.Empty
 
 /-!
 # Integral cellular homology

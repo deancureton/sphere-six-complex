@@ -3,8 +3,6 @@ module
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.Excision.SmallChains
 import DifferentialGeometry.Topology.Homology.SmallChains.QuasiIso
 import Mathlib.AlgebraicTopology.SimplicialSet.Homology.MapHomologicalComplex
-import Mathlib.Algebra.Category.Grp.ZModuleEquivalence
-import Mathlib.Algebra.Homology.ShortComplex.PreservesHomology
 
 /-!
 # Small-chain approximation for open covers

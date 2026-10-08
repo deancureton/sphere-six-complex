@@ -1,6 +1,5 @@
 module
 
-public import SphereSixComplex.Prerequisites.Topology.Sphere.SmoothRecognition
 import Wikipedia.NoExoticSixSphere.Classification
 public import SphereSixComplex.Prerequisites.Topology.Sphere.HomologyRecognition
 public import SphereSixComplex.Prerequisites.Topology.SingularHomology.ModuleComparison
