@@ -69,12 +69,9 @@ public theorem range_map_le_of_path {Q : Type*} [TopologicalSpace Q] (q : C(Q, Y
   rw [map_fundamentalGroupMulEquivOfPath, hδ]
   exact (FundamentalGroup.fundamentalGroupMulEquivOfPath (σ.map q.continuous)).apply_symm_apply γ
 
-variable [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
-  [SemilocallySimplyConnectedSpace Y]
-
-omit [PathConnectedSpace Y] in
 /-- A lift of a piece inclusion into the covering attached to `H`. -/
-public theorem exists_lift (H : Subgroup (FundamentalGroup Y base)) {P : Set Y} (hPopen : IsOpen P)
+public theorem exists_lift [LocallyPathConnectedSpace Y] [SemilocallySimplyConnectedSpace Y]
+    (H : Subgroup (FundamentalGroup Y base)) {P : Set Y} (hPopen : IsOpen P)
     (hP : IsPathConnected P) {pt : Y} (hpt : pt ∈ P)
     (f₀ : SubgroupQuotient base H) (hf₀ : subgroupQuotientProj base H f₀ = pt)
     (hle : (FundamentalGroup.map (subsetInclusion P) (⟨pt, hpt⟩ : P)).range ≤
@@ -97,8 +94,6 @@ public theorem exists_lift (H : Subgroup (FundamentalGroup Y base)) {P : Set Y} 
         exact h)
   exact ⟨g, hg₀, fun z => congrFun hgcomp z⟩
 
-omit [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
-  [SemilocallySimplyConnectedSpace Y] in
 /-- Transporting the base lift along a path moves the recovered subgroup accordingly. -/
 public theorem mem_range_mapOfEq_of_path {Q : Type*} [TopologicalSpace Q] (q : C(Q, Y))
     {e₀ e₁ : Q} (σ : Path e₀ e₁) {y₀ y₁ : Y} (h₀ : q e₀ = y₀) (h₁ : q e₁ = y₁)

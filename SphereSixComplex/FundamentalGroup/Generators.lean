@@ -161,11 +161,6 @@ hypotheses let each of the four pieces be lifted through `q`, the four lifts agr
 because those are path-connected, and the glued section forces `q_*` to be onto, i.e. `H = ⊤`.
 -/
 
-section Covering
-
-variable [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
-  [SemilocallySimplyConnectedSpace Y] (D : PaperVanKampenFourPieceCover base)
-
 /-- The four pieces of the cover, indexed. -/
 public def piece (D : PaperVanKampenFourPieceCover base) : Fin 4 → Set Y
   | 0 => D.core
@@ -173,9 +168,6 @@ public def piece (D : PaperVanKampenFourPieceCover base) : Fin 4 → Set Y
   | 2 => D.ellipticThree
   | 3 => D.ellipticFour
 
-
-omit [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
-  [SemilocallySimplyConnectedSpace Y] in
 public theorem piece_covers (D : PaperVanKampenFourPieceCover base) (y : Y) :
     ∃ i, D.piece i ∈ nhds y := by
   have hy : y ∈ D.core ∪ D.cusp ∪ D.ellipticThree ∪ D.ellipticFour := by
@@ -186,10 +178,9 @@ public theorem piece_covers (D : PaperVanKampenFourPieceCover base) (y : Y) :
   · exact ⟨2, (D.ellipticThree_isOpen).mem_nhds hy⟩
   · exact ⟨3, (D.ellipticFour_isOpen).mem_nhds hy⟩
 
-omit [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
-  [SemilocallySimplyConnectedSpace Y] in
 /-- The filling lifts agree with the core lift on the overlap. -/
-public theorem lift_agree {Q : Type*} [TopologicalSpace Q] (q : C(Q, Y))
+public theorem lift_agree (D : PaperVanKampenFourPieceCover base)
+    {Q : Type*} [TopologicalSpace Q] (q : C(Q, Y))
     (hq : IsCoveringMap q) {P : Set Y} (hP : IsPathConnected (D.core ∩ P))
     (sCore : C(D.core, Q)) (sP : C(P, Q))
     (hsCore : ∀ z : D.core, q (sCore z) = z) (hsP : ∀ z : P, q (sP z) = z)
@@ -209,8 +200,6 @@ public theorem lift_agree {Q : Type*} [TopologicalSpace Q] (q : C(Q, Y))
   have := hq.eq_of_comp_eq hcont₁ hcont₂ hcomp ⟨pt, hpt⟩ hagree
   exact congrFun this ⟨x, hx⟩
 
-omit [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
-  [SemilocallySimplyConnectedSpace Y] in
 /-- The identity induces the identity on the fundamental group, so its image is everything. -/
 public theorem range_map_id : (FundamentalGroup.map (ContinuousMap.id Y) base).range = ⊤ := by
   rw [MonoidHom.range_eq_top]
@@ -222,9 +211,10 @@ public theorem range_map_id : (FundamentalGroup.map (ContinuousMap.id Y) base).r
     apply Path.Homotopic.Quotient.eq.mpr
     exact ⟨Path.Homotopy.refl _⟩
 
-omit [PathConnectedSpace Y] in
 /-- A filling lift agreeing with the core lift at the connector's endpoint. -/
-public theorem exists_filling_lift (H : Subgroup (FundamentalGroup Y base))
+public theorem exists_filling_lift [LocallyPathConnectedSpace Y]
+    [SemilocallySimplyConnectedSpace Y] (D : PaperVanKampenFourPieceCover base)
+    (H : Subgroup (FundamentalGroup Y base))
     (sCore : C(D.core, SubgroupQuotient base H))
     (hsCoreBase : sCore ⟨base, D.base_mem_core⟩ = SubgroupQuotient.basepoint base H)
     (hsCore : ∀ z : D.core, subgroupQuotientProj base H (sCore z) = z)
@@ -250,6 +240,11 @@ public theorem exists_filling_lift (H : Subgroup (FundamentalGroup Y base))
     exact (hsCore ⟨conn t, hconn t⟩).symm
   · rw [hH]
     exact hle ⟨x, rfl⟩
+
+section Covering
+
+variable [LocallyPathConnectedSpace Y] [PathConnectedSpace Y]
+  [SemilocallySimplyConnectedSpace Y] (D : PaperVanKampenFourPieceCover base)
 
 /-- Van Kampen generation for the paper's four-piece star, for a locally nice ambient space. -/
 public theorem localFundamentalGroupImages_generate'
